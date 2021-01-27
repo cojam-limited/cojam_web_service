@@ -205,7 +205,7 @@
   .view-section > div {padding:20px;}
   .view-section > div > h2 {font-size:14px; line-height:18px;}
   .view-section > div > h2 span {padding:4px 10px; font-size:13px; line-height:13px;}
-  .view-section > div > p iframe {height:250px;}
+  .view-section > div > p iframe {height:200px;}
   .view-section > dl {flex-wrap:wrap;}
   .view-section > dl > dt {width:100%; padding:20px;}
   .view-section > dl > dt > p {height:200px;}
@@ -233,14 +233,42 @@
   .vs-info > ul > li div {padding:2px 0 0 20px; font-size:13px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
-  .list-columns > ul > li {width:100%; margin-bottom:17px; padding:17px;}
-  .list-columns > ul > li > h2 {padding:2px 0; font-size:17px; line-height:17px;}
-  .list-columns > ul > li > h4 {margin-top:15px; font-size:14px;}
-  .list-columns > ul > li > ul {height:auto; margin-top:15px;}
-  .list-columns > ul > li > ul li {padding:10px 17px;}
+  .view-section > div {padding:20px;}
+  .view-section > div > h2 {font-size:14px; line-height:18px;}
+  .view-section > div > h2 span {padding:4px 10px; font-size:13px; line-height:13px;}
+  .view-section > div > p iframe {height:200px;}
+  .view-section > dl {flex-wrap:wrap;}
+  .view-section > dl > dt {width:100%; padding:20px;}
+  .view-section > dl > dt > p {height:200px;}
+  .view-section > dl > dt > h3 {font-size:15px; line-height:19px;}
+  .view-section > dl > dd {width:100%; padding:20px;}
+  .view-section > dl > dd > ul li {margin-right:20px; padding:5px 3px 12px 3px; font-size:15px; line-height:20px;}
+
+  .vs-chart > h2 {margin-top:30px; font-size:16px; line-height:16px;}
+  .vs-chart > p {margin-top:30px;}
+  .vs-chart > p img {width:100%;}
+
+  .vs-vol > h2 {margin-top:30px; font-size:16px; line-height:16px;}
+  .vs-vol > ul {margin-top:30px;}
+  .vs-vol > ul > li {width:100%; padding:10px 0 10px 0;}
+  .vs-vol > ul > li div:nth-child(1) {font-size:13px;}
+  .vs-vol > ul > li div:nth-child(1) i {font-size:11px;}
+  .vs-vol > ul > li div:nth-child(2) {font-size:13px;}
+  .vs-vol > ul > li div:nth-child(3) {font-size:13px;}
+
+  .vs-info > h2 {margin-top:30px; font-size:16px; line-height:16px;}
+  .vs-info > ul {margin-top:30px;}
+  .vs-info > ul > li {width:100%; padding:12px 0 12px 0;}
+  .vs-info > ul > li h2 {font-size:13px;}
+  .vs-info > ul > li h2 i {font-size:15px;}
+  .vs-info > ul > li div {padding:2px 0 0 20px; font-size:13px;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
-
+  .view-section > div > p iframe {height:350px;}
+  .view-section > dl {flex-wrap:wrap;}
+  .view-section > dl > dt {width:100%; padding:20px;}
+  .view-section > dl > dt > p {height:350px;}
+  .view-section > dl > dd {width:100%; padding:20px;}
 }
 @media all and (min-width:992px) and (max-width:1299px) {
 
