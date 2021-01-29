@@ -39,41 +39,34 @@
 
 
 
-			<!-- 로그인 -->
-			<div class="login-area">
-				<div>
-					<form name="loginForm" method="post" action="#">
+			<!-- 아이디 찾기 -->
+			<div class="idpw-area">
+				<div class="pos-idfind">
+					<form name="idForm" method="post" action="#">
 						<fieldset>
-							<legend>로그인</legend>
-							<h2><a href="/"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
-							<div>
-								<a href="login.html" class="active">Sing In</a>
-								<a href="join.html">Sing up</a>
-							</div>
+							<legend>아이디 찾기</legend>
+              <h2><a href="/"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+              <h3>Forgot your ID?</h3>
+              <h4>Please enter the name and email you entered when registering as a member.</h4>
 							<ul>
 								<li>
-									<input type="text" name="id" title="ID" maxlength="35" class="id-icn" placeholder="ID" />
+									<input type="text" name="name" title="name" maxlength="20" class="name-icn" placeholder="Name" />
 								</li>
 								<li>
-									<input type="password" name="pw" title="Password" maxlength="20" class="pw-icn" placeholder="PASSWORD" />
+									<input type="text" name="email" title="email" maxlength="35" class="email-icn" placeholder="E-Mail" />
 								</li>
 							</ul>
-							<h3>
-								<input type="checkbox" name="" value="" id="idSaveCheck" title="Stay signed in" checked="checked" />
-								<label for="idSaveCheck">Stay signed in</label>
-							</h3>
+							<div>
+								<a href="pwEmail.html">Reset Password</a>
+              </div>
 							<p>
-								<a href="#">Login</a>
+								<a href="idFindComplete.html">Confirm</a>
 							</p>
-							<dl>
-								<dt><a href="idFind.html">Find ID</a></dt>
-								<dd><a href="pwEmail.html">Reset Password</a></dd>
-							</dl>
 						</fieldset>
 					</form>
 				</div>
 			</div>
-			<!-- 로그인 끝 -->
+			<!-- 아이디 찾기 끝 -->
 
 
 
