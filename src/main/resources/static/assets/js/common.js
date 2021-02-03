@@ -73,7 +73,7 @@ $(document).ready(function() {
 	});
 
 
-	//  //
+	// 상세 - 탭버튼 //
 	$('.vs-tab01').click(function(){ 
 		$('.view-section > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
@@ -98,5 +98,43 @@ $(document).ready(function() {
 		$('.vs-vol').css({ display : 'none' });
 		$('.vs-info').css({ display : 'block' });
 	});
+
+
+	// 모달 - 퀘스트 등록 //
+	$('#modalAdd, .add-btn a').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-add').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 퀘스트 시즌 //
+	$('#modalSeason').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-season').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 닫기 //
+	$(".modal-bg, .modal-close").on('click',function(){
+		$('.modal-area').stop().animate({ marginTop : '-15px' }, 300, 'easeOutQuad');
+		$(".modal-bg").fadeOut(300);
+		$(".modal-area").fadeOut(300);
+	});
+
+
+	// 날짜 - 퀘스트 등록 //
+	$("#schDate").datetimepicker({
+		dateFormat:'yy-mm-dd',
+
+		// timepicker 설정
+		timeFormat:'hh:mm:ss',
+		//controlType:'select',
+		//oneLine:true,
+	});
+	$('#schDate').val($.datepicker.formatDate('yy-mm-dd', new Date()));
 	
 });
