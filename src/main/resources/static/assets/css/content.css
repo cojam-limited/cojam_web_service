@@ -2,6 +2,55 @@
 
 
 /* 공통  /////////////////////////////////////////////////////////////////////////*/
+/* 배경이미지 */
+.bg-quest {background:url('/assets/image/common/body_quest.jpg') center -130px no-repeat, #eef0f8;}
+.bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
+.bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
+.bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+
+@media all and (max-width:479px) {
+  .bg-quest {background:url('/assets/image/common/body_quest.jpg') center -180px no-repeat, #eef0f8;}
+  .bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
+  .bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
+  .bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+  .bg-quest {background:url('/assets/image/common/body_quest.jpg') center -130px no-repeat, #eef0f8;}
+  .bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
+  .bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
+  .bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1299px) {
+
+}
+@media all and (min-width:1300px) {
+
+}
+
+
+/* 기본영역 (타이틀) */
+.title-area {width:1300px; margin:0 auto; padding:170px 0 100px 0; text-align:center; font-weight:700; font-size:40px; line-height:40px; color:#fff;}
+
+@media all and (max-width:479px) {
+  .title-area {width:100%; padding:120px 0 70px 0; font-size:26px; line-height:28px;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+  .title-area {width:470px; padding:120px 0 70px 0; font-size:26px; line-height:28px;}
+}
+@media all and (min-width:768px) and (max-width:991px) {
+  .title-area {width:750px;}
+}
+@media all and (min-width:992px) and (max-width:1299px) {
+  .title-area {width:1024px;}
+}
+@media all and (min-width:1300px) {
+
+}
+
+
 /* 기본영역 (타이틀/네비/버튼) */
 .title-section {display:flex; justify-content:space-between; align-items:flex-end; width:1300px; margin:0 auto; padding:120px 0 40px 0;}
 .title-section dt h2 {font-weight:600; font-size:28px; line-height:30px; color:#fff;}

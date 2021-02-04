@@ -33,6 +33,31 @@ $(document).ready(function() {
 		}
 	});
 
+	$('.header').addClass("active");
+	// URL에서 파일명 추출하기
+	// var totalUrl = document.URL;
+	// if (totalUrl.indexOf('/main') !== -1) {
+	// 	alert ('quest');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(1)').addClass('active');
+	// } else if (totalUrl.indexOf('/quest') !== -1) {
+	// 	alert ('quest');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(2)').addClass('active');
+	// } else if (totalUrl.indexOf('/service') !== -1) {
+	// 	alert ('service');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(3)').addClass('active');
+	// } else if (totalUrl.indexOf('/about') !== -1) {
+	// 	alert ('about');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(4)').addClass('active');
+	// } else if (totalUrl.indexOf('/notice') !== -1) {
+	// 	alert ('notice');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(5)').addClass('active');
+	// }
+
 
 	// 카타고리 상단 고정 //
 	var categoryOffset = $( '.category-section' ).offset();
@@ -129,7 +154,6 @@ $(document).ready(function() {
 	// 날짜 - 퀘스트 등록 //
 	$("#schDate").datetimepicker({
 		dateFormat:'yy-mm-dd',
-
 		// timepicker 설정
 		timeFormat:'hh:mm:ss',
 		//controlType:'select',
