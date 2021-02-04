@@ -33,7 +33,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.header').addClass("active");
+	//$('.header').addClass("active");
 	// URL에서 파일명 추출하기
 	// var totalUrl = document.URL;
 	// if (totalUrl.indexOf('/main') !== -1) {
@@ -98,30 +98,38 @@ $(document).ready(function() {
 	});
 
 
-	// 상세 - 탭버튼 //
-	$('.vs-tab01').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
-		$(this).addClass('active');
-
-		$('.vs-chart').css({ display : 'block' });
-		$('.vs-vol').css({ display : 'none' });
-		$('.vs-info').css({ display : 'none' });
+	// 퀘스트 - 오버효과 //
+	$('.quest-list-columns > ul > li').hover(function (event) {
+		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+	}, function (event) {
+		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
 	});
-	$('.vs-tab02').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
+
+
+	// 퀘스트 - 상세 - 탭버튼 //
+	$('.qv-tab01').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
-		$('.vs-chart').css({ display : 'none' });
-		$('.vs-vol').css({ display : 'block' });
-		$('.vs-info').css({ display : 'none' });
+		$('.qv-chart').css({ display : 'block' });
+		$('.qv-vol').css({ display : 'none' });
+		$('.qv-info').css({ display : 'none' });
 	});
-	$('.vs-tab03').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
+	$('.qv-tab02').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
-		$('.vs-chart').css({ display : 'none' });
-		$('.vs-vol').css({ display : 'none' });
-		$('.vs-info').css({ display : 'block' });
+		$('.qv-chart').css({ display : 'none' });
+		$('.qv-vol').css({ display : 'block' });
+		$('.qv-info').css({ display : 'none' });
+	});
+	$('.qv-tab03').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
+		$(this).addClass('active');
+
+		$('.qv-chart').css({ display : 'none' });
+		$('.qv-vol').css({ display : 'none' });
+		$('.qv-info').css({ display : 'block' });
 	});
 
 
