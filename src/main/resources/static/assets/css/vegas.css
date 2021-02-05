@@ -22,13 +22,13 @@
 .vegas-timer {
     top: auto;
     bottom: 0;
-    height: 1px;
+    height: 3px;
 }
 
 .vegas-timer-progress {
     width: 0%;
     height: 100%;
-    background: none;
+    background: #8950fc;
     -webkit-transition: width ease-out;
     transition: width ease-out;
 }

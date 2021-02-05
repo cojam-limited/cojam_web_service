@@ -2,9 +2,11 @@
 
 @import url('jquery-ui.css');
 @import url('jquery-ui-timepicker-addon.css');
+@import url('animate.css');
 @import url('xeicon.css');
 @import url('fontawesome.css');
 @import url('swiper.css');
+@import url('vegas.css');
 
 @import url('font.css');
 @import url('content.css');

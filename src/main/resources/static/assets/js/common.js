@@ -59,6 +59,40 @@ $(document).ready(function() {
 	// }
 
 
+	// 메인 비주얼 //
+	$(".main-vegas").vegas({
+		slides: [
+			{ src: "/assets/image/content/main_visual_img01.jpg" },
+			{ src: "/assets/image/content/main_visual_img02.jpg" },
+			{ src: "/assets/image/content/main_visual_img03.jpg" },
+		],
+		animation: 'kenburns',
+		delay: 7000
+		//overlay: '../../images/btnIcn/overlay_07.png'
+	});
+
+	$('.mv-btm').click(function(){ 
+		$('html, body').animate({ scrollTop : $(window).height()-50 }, 900, 'easeOutQuad');
+	});
+	
+	
+	// 메인 카피 //
+	$('.mv-copy > h2').textillate({ 
+		in: { effect: 'flash', delay: 200, shuffle: true },
+		out: { effect: 'flash', delay: 200, shuffle: true },
+		loop: true
+	});
+	$('.mv-copy > h3').textillate({ 
+		in: { effect: 'bounceIn', delay: 30, shuffle: true },
+		out: { effect: 'bounceOut', delay: 30, shuffle: true },
+		loop: true
+	});
+
+	setTimeout(function() {
+		$('.mv-copy div').animate({ opacity : '1.0' }, 350, 'easeOutQuad');
+	}, 2500);
+
+
 	// 카타고리 상단 고정 //
 	var categoryOffset = $( '.category-section' ).offset();
 	$( window ).scroll( function() {
