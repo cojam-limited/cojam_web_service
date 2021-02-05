@@ -33,6 +33,31 @@ $(document).ready(function() {
 		}
 	});
 
+	//$('.header').addClass("active");
+	// URL에서 파일명 추출하기
+	// var totalUrl = document.URL;
+	// if (totalUrl.indexOf('/main') !== -1) {
+	// 	alert ('quest');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(1)').addClass('active');
+	// } else if (totalUrl.indexOf('/quest') !== -1) {
+	// 	alert ('quest');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(2)').addClass('active');
+	// } else if (totalUrl.indexOf('/service') !== -1) {
+	// 	alert ('service');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(3)').addClass('active');
+	// } else if (totalUrl.indexOf('/about') !== -1) {
+	// 	alert ('about');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(4)').addClass('active');
+	// } else if (totalUrl.indexOf('/notice') !== -1) {
+	// 	alert ('notice');
+	// 	$('.header > dl > dt > div > a').removeClass('active');
+	// 	$('.header > dl > dt > div > a:nth-child(5)').addClass('active');
+	// }
+
 
 	// 카타고리 상단 고정 //
 	var categoryOffset = $( '.category-section' ).offset();
@@ -73,30 +98,75 @@ $(document).ready(function() {
 	});
 
 
-	//  //
-	$('.vs-tab01').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
+	// 퀘스트 - 오버효과 //
+	$('.quest-list-columns > ul > li').hover(function (event) {
+		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+	}, function (event) {
+		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 퀘스트 - 상세 - 탭버튼 //
+	$('.qv-tab01').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
-		$('.vs-chart').css({ display : 'block' });
-		$('.vs-vol').css({ display : 'none' });
-		$('.vs-info').css({ display : 'none' });
+		$('.qv-chart').css({ display : 'block' });
+		$('.qv-vol').css({ display : 'none' });
+		$('.qv-info').css({ display : 'none' });
 	});
-	$('.vs-tab02').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
+	$('.qv-tab02').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
-		$('.vs-chart').css({ display : 'none' });
-		$('.vs-vol').css({ display : 'block' });
-		$('.vs-info').css({ display : 'none' });
+		$('.qv-chart').css({ display : 'none' });
+		$('.qv-vol').css({ display : 'block' });
+		$('.qv-info').css({ display : 'none' });
 	});
-	$('.vs-tab03').click(function(){ 
-		$('.view-section > dl > dd > ul li').removeClass('active');
+	$('.qv-tab03').click(function(){ 
+		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
-		$('.vs-chart').css({ display : 'none' });
-		$('.vs-vol').css({ display : 'none' });
-		$('.vs-info').css({ display : 'block' });
+		$('.qv-chart').css({ display : 'none' });
+		$('.qv-vol').css({ display : 'none' });
+		$('.qv-info').css({ display : 'block' });
 	});
+
+
+	// 모달 - 퀘스트 등록 //
+	$('#modalAdd, .add-btn a').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-add').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 퀘스트 시즌 //
+	$('#modalSeason').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-season').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 닫기 //
+	$(".modal-bg, .modal-close").on('click',function(){
+		$('.modal-area').stop().animate({ marginTop : '-15px' }, 300, 'easeOutQuad');
+		$(".modal-bg").fadeOut(300);
+		$(".modal-area").fadeOut(300);
+	});
+
+
+	// 날짜 - 퀘스트 등록 //
+	$("#schDate").datetimepicker({
+		dateFormat:'yy-mm-dd',
+		// timepicker 설정
+		timeFormat:'hh:mm:ss',
+		//controlType:'select',
+		//oneLine:true,
+	});
+	$('#schDate').val($.datepicker.formatDate('yy-mm-dd', new Date()));
 	
 });

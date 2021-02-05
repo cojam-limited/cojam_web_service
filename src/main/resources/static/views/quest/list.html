@@ -26,12 +26,13 @@
 
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <script src="/assets/js/jquery-ui.js"></script>
+    <script src="/assets/js/jquery-ui-timepicker-addon.js"></script>
     <script src="/assets/js/easing.js"></script>
     <script src="/assets/js/fontawesome.js"></script>
     <script src="/assets/js/swiper.js"></script>
     <script src="/assets/js/common.js"></script>
 	</head>
-	<body>
+	<body class="bg-quest">
 		<div class="wrap">
 			
 
@@ -42,6 +43,128 @@
         <!-- 상단영역 끝 -->
 
 
+        <!-- 모달 - 퀘스트 등록 -->
+        <div class="modal-bg"></div>
+        <div class="modal-area modal-add">
+          <form name="addForm" method="post" action="">
+            <fieldset>
+              <legend>등록</legend>
+              <dl>
+                <dt>Create New Prediction</dt>
+                <dd><i class="uil uil-times modal-close"></i></dd>
+              </dl>
+              <ul>
+                <li><input name="name" type="text" class="w100p" placeholder="Please enter a title" /></li>
+                <li>
+                  <select name="name" title="" class="w100p">
+                    <option value="" selected="selected">Please select a category</option>
+                    <option value="">Art & Culture</option>
+                    <option value="">Community</option>
+                    <option value="">Competition</option>
+                    <option value="">Crowd Solving</option>
+                    <option value="">Economy</option>
+                    <option value="">Science</option>
+                  </select>
+                </li>
+                <li><input name="name" type="text" id="schDate" class="w100p" placeholder="Please enter a date" /></li>
+                <li>
+                  <div class="input-file">
+                    <label>
+                      File Attach
+                      <input type="file" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                    </label>
+                    <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="Attach an image">
+                </div>
+                </li>
+                <li><input name="name" type="text" class="w100p" placeholder="Enter the sns url" /></li>
+              </ul>
+              <ol>
+                <li>Select a Type</li>
+                <li>
+                  <a href="#"><i class="uil uil-plus-circle"></i></a>
+                  <a href="#"><i class="uil uil-minus-circle"></i></a>
+                </li>
+              </ol>
+              <ul>
+                <li><input name="name" type="text" class="w100p" placeholder="" /></li>
+                <li><input name="name" type="text" class="w100p" placeholder="" /></li>
+              </ul>
+              <p>
+								<a href="#">Complete</a>
+							</p>
+            </fieldset>
+          </form>
+        </div>
+        <!-- 모달 - 퀘스트 등록 끝 -->
+
+
+        <!-- 모달 - 퀘스트 시즌 -->
+        <div class="modal-area modal-season">
+          <dl>
+            <dt>Create Season of COJAM Service!</dt>
+            <dd><i class="uil uil-times modal-close"></i></dd>
+          </dl>
+          <h2><i class="uil uil-calendar-alt"></i> 2021.01.4 ~ 2021.12.31 (331)</h2>
+          <ul>
+            <li>
+              <h3>ART</h3>
+              <div>
+                <div style="width:30%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+            <li>
+              <h3>Science</h3>
+              <div>
+                <div style="width:10%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+            <li>
+              <h3>Crowdsolving</h3>
+              <div>
+                <div style="width:60%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+            <li>
+              <h3>Competition</h3>
+              <div>
+                <div style="width:50%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+            <li>
+              <h3>Economy</h3>
+              <div>
+                <div style="width:3%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+            <li>
+              <h3>Community</h3>
+              <div>
+                <div style="width:10%"></div>
+                <p>1 / 100</p>
+              </div>
+            </li>
+          </ul>
+          <div>
+            <h2>Titel : Create Season of COJAM Service!</h2>
+            <h2>Description : Create Season of COJAM Service!</h2>
+            <div>
+              COJAM Fee : <span>8%</span><br />
+              Charity Fee : <span>2%</span><br />
+              Creator Fee : <span>5%</span><br />
+              Creator Pay : <span>0CT</span><br />
+              Minimum Pay : <span>5,000CT</span><br />
+              Maximum Pay : <span>300,000CT</span>
+            </div>
+          </div>
+        </div>
+        <!-- 모달 - 퀘스트 시즌 끝 -->
+
+
 				<!-- 기본영역 (타이틀/네비/버튼) -->
 				<dl class="title-section">
 					<dt>
@@ -49,8 +172,8 @@
 						<h3><i class="uil uil-estate"></i> Home · Quest · <span>Art & Culture</span></h3>
 					</dt>
 					<dd>
-						<a href="#"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
-						<a href="#"><i class="uil uil-info-circle"></i> <span>SeaSon Info</span></a>
+						<a href="#" id="modalAdd"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+						<a href="#" id="modalSeason"><i class="uil uil-info-circle"></i> <span>SeaSon Info</span></a>
 					</dd>
 				</dl>
 				<!-- 기본영역 끝 -->
@@ -82,11 +205,13 @@
 
 
           <!-- 리스트 끝 -->
-          <div class="list-columns">
+          <div class="quest-list-columns">
             <ul>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
                 <ul>
@@ -110,7 +235,9 @@
               </li>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/38/cb/36/38cb36f10e0a2913a436893226a22319.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/38/cb/36/38cb36f10e0a2913a436893226a22319.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>Predict ! Who will win the match between Arsenal and Liverpool on September 28, 2020</h4>
                 <ul>
@@ -130,7 +257,9 @@
               </li>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/65/f1/77/65f17733bb1ca10fd3a54745610a767a.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/65/f1/77/65f17733bb1ca10fd3a54745610a767a.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>How many goals will Heung-min Son(Tottenham) will score at Men's Soccer A matches with Mexico (15, November 2020) and Katar (17, November 2020)?</h4>
                 <ul>
@@ -166,7 +295,9 @@
               </li>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/17/81/41/1781415124ad3c138736bd8aa6bc583b.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/17/81/41/1781415124ad3c138736bd8aa6bc583b.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
                 <ul>
@@ -190,7 +321,9 @@
               </li>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
                 <ul>
@@ -214,7 +347,9 @@
               </li>
               <li onclick="location.href='view.html';">
                 <h2>Total <span>258,025</span> CT</h2>
-                <p style="background:url('https://i.pinimg.com/564x/a3/ef/7d/a3ef7d3372f46d737c706ef549d496c6.jpg') center no-repeat; background-size:cover;"></p>
+                <p>
+                  <span style="background:url('https://i.pinimg.com/564x/a3/ef/7d/a3ef7d3372f46d737c706ef549d496c6.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
                 <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
                 <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
                 <ul>
@@ -242,7 +377,7 @@
 
 
           <!-- 페이지넘버링 -->
-          <div class="list-paging">
+          <div class="paging-list">
             <a href="#"><i class="fas fa-caret-left"></i></a>
             <a href="#">1</a>
             <a href="#" class="active">2</a>
