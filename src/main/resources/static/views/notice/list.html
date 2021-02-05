@@ -25,7 +25,8 @@
     <![endif]-->
 
     <script src="/assets/js/jquery-3.3.1.js"></script>
-    <script src="/assets/js/jquery-ui.js"></script>
+		<script src="/assets/js/jquery-ui.js"></script>
+		<script src="/assets/js/jquery-ui-timepicker-addon.js"></script>
     <script src="/assets/js/easing.js"></script>
     <script src="/assets/js/fontawesome.js"></script>
 		<script src="/assets/js/swiper.js"></script>
@@ -53,50 +54,9 @@
 
 
 			  <div class="container-top-round">
-					<script>
-						$(document).ready(function() {
-							// 제품 - 리스트 //
-							var $productList = $('.product-list > ul').isotope({
-								itemSelector: '.item',
-								layoutMode: 'masonry'
-							});
-	
-							$productList.imagesLoaded().progress( function() {
-								$productList.isotope('layout');
-							});
-	
-							$('#PLfilters').on( 'click', 'a', function() {
-								var filterValue = $(this).attr('data-filter');
-								$productList.isotope({ filter: filterValue });
-								$('#PLfilters > a').removeClass('on');
-								$(this).addClass('on');
-							});
-	
-							$('.product-list ul li').hover(function (event) {
-								$(this).find('> p img').stop().animate({ width : '105%', margin : '-2.5% 0 0 -2.5%', opacity: '0.9' }, 300, 'easeOutQuad');
-								$(this).find('> h2').stop().animate({ bottom : '70px', opacity: '1.0' }, 400, 'easeOutQuad');
-							}, function (event) {
-								$(this).find('> p img').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
-								$(this).find('> h2').stop().animate({ bottom : '50px', opacity: '0.0' }, 400, 'easeOutQuad');
-							});
-	
-							$productList.isotope({ filter: '<%=sortMain%>' });
-							$('#PLfilters > a').removeClass('on');
-							var sortTabChk = '<%=sortMain%>'
-							if (sortTabChk == '.sort03') {
-								$('#PLfilters > a:nth-child(2)').addClass('on');
-							} else if (sortTabChk == '.sort06') {
-								$('#PLfilters > a:nth-child(5)').addClass('on');
-							} else if (sortTabChk == '.sort09') {
-								$('#PLfilters > a:nth-child(8)').addClass('on');
-							}
-						});
-					</script>
-	
-	
 					<!-- 탭메뉴 -->
-					<div class="notice-tab" id="PLfilters">
-						<a href="#posChk" data-filter="*" class="on">All</a>
+					<div class="notice-tab" id="noticefilters">
+						<a href="#posChk" data-filter="*" class="active">All</a>
 						<a href="#posChk" data-filter=".sort01">Notice</a>
 						<a href="#posChk" data-filter=".sort02">News</a>
 					</div>
@@ -108,14 +68,130 @@
 						<ul>
 							<li class="item sort01" onclick="location.href='view.html';">
 								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/80/75/e2/8075e2cce90fc123704585de02094b94.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><span>Notice</span></dd>
+										<!-- em -- News -->
+										<!-- <dd><em>News</em></dd> -->
+									</dl>
+									<h2>Simple Manual Of Cojam Service</h2>
+								</div>
+							</li>
+							<li class="item sort02" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/c6/ca/46/c6ca464b49d1ed6fb94190d2d6c584a9.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><em>News</em></dd>
+									</dl>
+									<h2>블록체인 예측시스템 코잼, ‘블록체인 혁신을 실험한다’</h2>
+								</div>
+							</li>
+							<li class="item sort02" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/f1/26/2e/f1262e5bac44e876f9ad28e103f36fce.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><em>News</em></dd>
+									</dl>
+									<h2>블록체인 예측시스템 플랫폼 `코잼`, 손흥민 득점 순위 예측 진행</h2>
+								</div>
+							</li>
+							<li class="item sort01" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/14/5d/a3/145da3993d5458d7963f7bb60bb84698.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><span>Notice</span></dd>
+									</dl>
+									<h2>“블록체인 예측시스템 플랫폼 코잼에서 시청률을 예측한다?”</h2>
+								</div>
+							</li>
+							<li class="item sort02" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/a2/e7/9e/a2e79e5bb424c115500986a2340f1ed4.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><em>News</em></dd>
+									</dl>
+									<h2>Simple Manual Of Cojam Service</h2>
+								</div>
+							</li>
+							<li class="item sort01" onclick="location.href='view.html';">
+								<p>
                   <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
-                </p>
-                <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><span>Notice</span></dd>
+									</dl>
+									<h2>뉴노멀 예측플랫폼 코잼(Cojam Limited), 코로나19 Quest 프로젝트 진행 중</h2>
+								</div>
+							</li>
+							<li class="item sort01" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/09/78/2f/09782f6042ca082907ee22483f763ad8.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><span>Notice</span></dd>
+									</dl>
+									<h2>User 지갑 최소 출금한도 안내</h2>
+								</div>
+							</li>
+							<li class="item sort02" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/08/69/af/0869afeb3bfdb0349904490f1dae67d6.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><em>News</em></dd>
+									</dl>
+									<h2>Simple Manual Of Cojam Service</h2>
+								</div>
+							</li>
+							<li class="item sort01" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/83/96/7f/83967fd32648ffa6986350c58e0dae55.jpg') center no-repeat; background-size:cover;"></span>
+								</p>
+								<div>
+									<dl>
+										<dt><i class="uil uil-calendar-alt"></i> 2021.01.10 10:00</dt>
+										<dd><span>Notice</span></dd>
+									</dl>
+									<h2>Simple Manual Of Cojam Service</h2>
+								</div>
 							</li>
 						</ul>
 					</div>
 					<!-- 리스트 끝 -->
+
+
+					<!-- 페이지넘버링 -->
+          <div class="paging-list">
+            <a href="#"><i class="fas fa-caret-left"></i></a>
+            <a href="#">1</a>
+            <a href="#" class="active">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#"><i class="fas fa-caret-right"></i></a>
+          </div>
+          <!-- 페이지넘버링 끝 -->
         </div>
 
 

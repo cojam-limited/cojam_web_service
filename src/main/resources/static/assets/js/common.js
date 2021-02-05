@@ -168,5 +168,31 @@ $(document).ready(function() {
 		//oneLine:true,
 	});
 	$('#schDate').val($.datepicker.formatDate('yy-mm-dd', new Date()));
+
+
+	// 공지사항 - 오버효과 //
+	$('.notice-list > ul > li').hover(function (event) {
+		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+	}, function (event) {
+		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 공지사항 - 리스트 //
+	var $noticeList = $('.notice-list > ul').isotope({
+		itemSelector: '.item',
+		layoutMode: 'masonry'
+	});
+
+	$noticeList.imagesLoaded().progress( function() {
+		$noticeList.isotope('layout');
+	});
+
+	$('#noticefilters').on( 'click', 'a', function() {
+		var filterValue = $(this).attr('data-filter');
+		$noticeList.isotope({ filter: filterValue });
+		$('#noticefilters > a').removeClass('active');
+		$(this).addClass('active');
+	});
 	
 });
