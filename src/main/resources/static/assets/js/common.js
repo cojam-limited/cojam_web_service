@@ -97,11 +97,32 @@ $(document).ready(function() {
 	$('.main-season > div > ul > li > div > h2').countUp();
 
 
-	// 공지사항 - 오버효과 //
+	// 메인 - 공지사항 - 오버효과 //
 	$('.main-notice > div > ul > li').hover(function (event) {
 		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
 	}, function (event) {
 		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 메인 - Q&A - 업다운 //
+	$('.qna_list > div').each(function (index) {
+		var updownChk = 0+String(index);
+		$('.qna_list > div').eq(index).click(function(){ 
+			if (updownChk == 0+String(index)) {
+				$('.qna_list > div > dl').eq(index).slideDown(300, 'easeOutQuad');
+				//$('.qna_list > div').eq(index).css({ border : '#333 2px solid' });
+				$('.qna_list > div > ul').eq(index).css({ background : '#fff3f3' });
+				$('.qna_list > div').eq(index).find('.xi-plus').removeClass('xi-plus').addClass('xi-minus')
+				updownChk = 1+String(index);
+			} else {
+				$('.qna_list > div > dl').eq(index).slideUp(300, 'easeOutQuad');
+				//$('.qna_list > div').eq(index).css({ border : 'none' });
+				$('.qna_list > div > ul').eq(index).css({ background : '#fff' });
+				$('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
+				updownChk = 0+String(index);
+			}
+		});
 	});
 
 
