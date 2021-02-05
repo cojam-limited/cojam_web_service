@@ -28,7 +28,9 @@
     <script src="/assets/js/jquery-ui.js"></script>
     <script src="/assets/js/easing.js"></script>
     <script src="/assets/js/fontawesome.js"></script>
-    <script src="/assets/js/swiper.js"></script>
+		<script src="/assets/js/swiper.js"></script>
+		<script src="/assets/js/imagesloaded.pkgd.min.js"></script>
+		<script src="/assets/js/isotope.pkgd.min.js"></script>
     <script src="/assets/js/common.js"></script>
 	</head>
 	<body class="bg-notice">
@@ -51,21 +53,69 @@
 
 
 			  <div class="container-top-round">
-					<!-- 탭버튼 -->
-					<div>
-						<a href="#">All</a>
-						<a href="#">Notice</a>
-						<a href="#">News</a>
+					<script>
+						$(document).ready(function() {
+							// 제품 - 리스트 //
+							var $productList = $('.product-list > ul').isotope({
+								itemSelector: '.item',
+								layoutMode: 'masonry'
+							});
+	
+							$productList.imagesLoaded().progress( function() {
+								$productList.isotope('layout');
+							});
+	
+							$('#PLfilters').on( 'click', 'a', function() {
+								var filterValue = $(this).attr('data-filter');
+								$productList.isotope({ filter: filterValue });
+								$('#PLfilters > a').removeClass('on');
+								$(this).addClass('on');
+							});
+	
+							$('.product-list ul li').hover(function (event) {
+								$(this).find('> p img').stop().animate({ width : '105%', margin : '-2.5% 0 0 -2.5%', opacity: '0.9' }, 300, 'easeOutQuad');
+								$(this).find('> h2').stop().animate({ bottom : '70px', opacity: '1.0' }, 400, 'easeOutQuad');
+							}, function (event) {
+								$(this).find('> p img').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+								$(this).find('> h2').stop().animate({ bottom : '50px', opacity: '0.0' }, 400, 'easeOutQuad');
+							});
+	
+							$productList.isotope({ filter: '<%=sortMain%>' });
+							$('#PLfilters > a').removeClass('on');
+							var sortTabChk = '<%=sortMain%>'
+							if (sortTabChk == '.sort03') {
+								$('#PLfilters > a:nth-child(2)').addClass('on');
+							} else if (sortTabChk == '.sort06') {
+								$('#PLfilters > a:nth-child(5)').addClass('on');
+							} else if (sortTabChk == '.sort09') {
+								$('#PLfilters > a:nth-child(8)').addClass('on');
+							}
+						});
+					</script>
+	
+	
+					<!-- 탭메뉴 -->
+					<div class="notice-tab" id="PLfilters">
+						<a href="#posChk" data-filter="*" class="on">All</a>
+						<a href="#posChk" data-filter=".sort01">Notice</a>
+						<a href="#posChk" data-filter=".sort02">News</a>
 					</div>
-					<!-- 탭버튼 끝 -->
-
-					<div>
+					<!-- 탭메뉴 끝 -->
+	
+	
+					<!-- 리스트 -->
+					<div class="notice-list">
 						<ul>
-							<li>
-								<p></p>
+							<li class="item sort01" onclick="location.href='view.html';">
+								<p>
+                  <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
+                </p>
+                <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
 							</li>
 						</ul>
 					</div>
+					<!-- 리스트 끝 -->
         </div>
 
 
