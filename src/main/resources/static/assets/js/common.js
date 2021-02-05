@@ -59,7 +59,7 @@ $(document).ready(function() {
 	// }
 
 
-	// 메인 비주얼 //
+	// 메인 - 비주얼 //
 	$(".main-vegas").vegas({
 		slides: [
 			{ src: "/assets/image/content/main_visual_img01.jpg" },
@@ -76,7 +76,7 @@ $(document).ready(function() {
 	});
 	
 	
-	// 메인 카피 //
+	// 메인 - 카피 //
 	$('.mv-copy > h2').textillate({ 
 		in: { effect: 'flash', delay: 200, shuffle: true },
 		out: { effect: 'flash', delay: 200, shuffle: true },
@@ -93,7 +93,19 @@ $(document).ready(function() {
 	}, 2500);
 
 
-	// 카타고리 상단 고정 //
+	// 메인 - 시즌 - 카운터 //
+	$('.main-season > div > ul > li > div > h2').countUp();
+
+
+	// 공지사항 - 오버효과 //
+	$('.main-notice > div > ul > li').hover(function (event) {
+		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+	}, function (event) {
+		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 카타고리 - 상단 고정 //
 	var categoryOffset = $( '.category-section' ).offset();
 	$( window ).scroll( function() {
 		if ($(window).width() < 991) {
@@ -124,7 +136,7 @@ $(document).ready(function() {
 	});
 
 
-	// 카타고리 Swiper //
+	// 카타고리 - Swiper //
 	var swiper = new Swiper('.category-section > dl > dt', {
 		slidesPerView: 'auto',
 		spaceBetween: 10,
