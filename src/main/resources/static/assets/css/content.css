@@ -285,9 +285,9 @@
 .main-season > div > ul > li div {display:flex; justify-content:center; align-items:center; flex-direction:column; width:239px; height:239px; margin:0 auto; border-radius:50%; background:url('/assets/image/content/main_season_circle.svg') center no-repeat; background-size:cover; transition:all 0.7s;}
 .main-season > div > ul > li div h2 {width:100%; font-weight:700; font-size:50px; line-height:50px; color:#fff; transition:all 0.7s;}
 .main-season > div > ul > li div h3 {width:100%; margin-top:10px; font-weight:600; font-size:14px; transition:all 0.7s;}
-.main-season > div > ul > li:hover div {background:#730C8A;}
+/* .main-season > div > ul > li:hover div {background:#730C8A;}
 .main-season > div > ul > li:hover div h2 {color:#fff;}
-.main-season > div > ul > li:hover div h3 {color:#fff;}
+.main-season > div > ul > li:hover div h3 {color:#fff;} */
 
 @media all and (max-width:479px) {
   .main-season > div {width:100%; padding:60px 20px 45px 20px;}
