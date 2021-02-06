@@ -71,8 +71,9 @@ $(document).ready(function() {
 		//overlay: '../../images/btnIcn/overlay_07.png'
 	});
 
+	var mainBtmOffset = $('.main-quest').offset();
 	$('.mv-btm').click(function(){ 
-		$('html, body').animate({ scrollTop : $(window).height()-50 }, 900, 'easeOutQuad');
+		$('html, body').animate({ scrollTop : mainBtmOffset.top-50 }, 900, 'easeOutQuad');
 	});
 	
 	
