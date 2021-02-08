@@ -270,5 +270,32 @@ $(document).ready(function() {
 	}, function (event) {
 		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
 	});
+
+
+	// 마이페이지 - 탭버튼 //
+	$('.mt-tab01').click(function(){ 
+		$('.mypage-tab li').removeClass('active');
+		$(this).addClass('active');
+
+		$('.mc-votings').css({ display : 'block' });
+		$('.mc-grounds').css({ display : 'none' });
+		$('.mc-transfer').css({ display : 'none' });
+	});
+	$('.mt-tab02').click(function(){ 
+		$('.mypage-tab li').removeClass('active');
+		$(this).addClass('active');
+
+		$('.mc-votings').css({ display : 'none' });
+		$('.mc-grounds').css({ display : 'block' });
+		$('.mc-transfer').css({ display : 'none' });
+	});
+	$('.mt-tab03').click(function(){ 
+		$('.mypage-tab li').removeClass('active');
+		$(this).addClass('active');
+
+		$('.mc-votings').css({ display : 'none' });
+		$('.mc-grounds').css({ display : 'none' });
+		$('.mc-transfer').css({ display : 'block' });
+	});
 	
 });

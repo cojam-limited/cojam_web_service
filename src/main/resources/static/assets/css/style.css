@@ -245,7 +245,7 @@ html {
 .btn-green {display:inline-block; height:38px; padding:12px 12px 0 12px; text-align:center; font-size:13px; line-height:13px; color:#fff; border-radius:3px; background:#1bc5bd; transition: 0.3s;}
 .btn-green:hover {color:#fff; box-shadow:inset 0 0 8px rgba(0,0,0,0.4);}
 
-.btn-red {display:inline-block; height:38px; padding:12px 12px 0 12px; text-align:center; font-size:13px; line-height:13px; color:#fff; border-radius:3px; background:#f64e60; transition: 0.3s;}
+.btn-red {display:inline-block; height:38px; padding:12px 12px 0 12px; text-align:center; font-size:13px; line-height:13px; color:#fff; border-radius:3px; background:#ef168f; transition: 0.3s;}
 .btn-red:hover {color:#fff; box-shadow:inset 0 0 8px rgba(0,0,0,0.4);}
 
 .btn-orange {display:inline-block; height:38px; padding:12px 12px 0 12px; text-align:center; font-size:13px; line-height:13px; color:#fff; border-radius:3px; background:#ffa800; transition: 0.3s;}

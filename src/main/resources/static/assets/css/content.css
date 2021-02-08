@@ -7,18 +7,21 @@
 .bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
 .bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
 .bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+.bg-mypage {background:url('/assets/image/common/body_mypage.jpg') center -590px no-repeat, #eef0f8;}
 
 @media all and (max-width:479px) {
   .bg-quest {background:url('/assets/image/common/body_quest.jpg') center -180px no-repeat, #eef0f8;}
   .bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
   .bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
   .bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+  .bg-mypage {background:url('/assets/image/common/body_mypage.jpg') center -590px no-repeat, #fff;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
   .bg-quest {background:url('/assets/image/common/body_quest.jpg') center -130px no-repeat, #eef0f8;}
   .bg-service {background:url('/assets/image/common/body_service.jpg') center -590px no-repeat, #fff;}
   .bg-about {background:url('/assets/image/common/body_about.jpg') center -590px no-repeat, #fff;}
   .bg-notice {background:url('/assets/image/common/body_notice.jpg') center -590px no-repeat, #fff;}
+  .bg-mypage {background:url('/assets/image/common/body_mypage.jpg') center -590px no-repeat, #fff;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
 
@@ -861,6 +864,84 @@
 
 }
 @media all and (min-width:1300px) {
+
+}
+
+
+
+
+
+
+
+
+
+/* 마이페이지 //////////////////////////////////////////////////////////////////////////////////////////*/
+/* 기본정보 */
+.mypage-info {display:flex; justify-content:space-between; align-items:flex-end; width:1300px; margin:0 auto; padding:40px; border:#e5e5e5 1px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1);}
+.mypage-info dt {font-weight:700; font-size:20px; line-height:30px; color:#222;}
+.mypage-info dd a {padding:12px 20px 0 20px;}
+
+@media all and (max-width:479px) {
+
+}
+@media all and (min-width:480px) and (max-width:767px) {
+
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+
+}
+@media all and (min-width:1200px) {
+
+}
+
+
+/* 탭버튼 */
+.mypage-tab {display:flex; align-items:center; width:1300px; margin:30px auto 0 auto;}
+.mypage-tab li {display:flex; align-items:center; margin-right:5px; padding:20px 80px; font-weight:600; font-size:16px; line-height:20px; border-left:#e5e5e5 1px solid; border-top:#e5e5e5 1px solid; border-right:#e5e5e5 1px solid; border-top-left-radius:10px; border-top-right-radius:10px; box-shadow:0 0 -10px 0 rgba(0,0,0,0.1); cursor:pointer; transition:all 0.3s;}
+.mypage-tab li:hover {color:#8950fc; background:#fff;}
+.mypage-tab li.active {color:#8950fc; background:#fff;}
+.mypage-tab li i {margin-right:5px; font-size:20px;}
+
+@media all and (max-width:479px) {
+
+}
+@media all and (min-width:480px) and (max-width:767px) {
+
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+
+}
+@media all and (min-width:1200px) {
+
+}
+
+
+/* 내용 */
+.mypage-content {width:1300px; margin:-1px auto 70px auto; padding:50px 40px 40px 40px; border:#e5e5e5 1px solid; border-top-left-radius:0; border-top-right-radius:10px;  border-bottom-right-radius:10px; border-bottom-right-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1);}
+.mypage-content > div {display:none;}
+.mypage-content > div h2 {font-weight:700; font-size:18px; line-height:18px; color:#222;}
+.mypage-content > div div {margin-top:25px;}
+.mypage-content > div.mc-votings {display:block;}
+
+@media all and (max-width:479px) {
+
+}
+@media all and (min-width:480px) and (max-width:767px) {
+
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+
+}
+@media all and (min-width:1200px) {
 
 }
 
