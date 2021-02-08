@@ -262,5 +262,13 @@ $(document).ready(function() {
 		$('#noticefilters > a').removeClass('active');
 		$(this).addClass('active');
 	});
+
+
+	// 공지사항 - 상세 - 오버효과 //
+	$('.notice-view > dl > dd > ul li').hover(function (event) {
+		$(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+	}, function (event) {
+		$(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+	});
 	
 });

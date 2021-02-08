@@ -816,6 +816,55 @@
 }
 
 
+/* 상세 */
+.notice-view {width:100%; overflow:hidden;}
+.notice-view > dl {display:flex; justify-content:space-between; flex-wrap:wrap; width:100%; overflow:hidden;}
+.notice-view > dl > dt {width:76%;}
+.notice-view > dl > dt > h2 {font-weight:600; font-size:22px; line-height:30px; color:#222;}
+.notice-view > dl > dt > h2 span {color:#8950fc;}
+.notice-view > dl > dt > h3 {margin-top:10px; font-size:12px; line-height:12px; color:#222;}
+.notice-view > dl > dt > div {margin-top:30px;}
+.notice-view > dl > dd {width:20%; padding-top:40px;}
+.notice-view > dl > dd > h2 {font-weight:600; font-size:18px; color:#222;}
+.notice-view > dl > dd > ul {width:100%; margin-top:20px; overflow:hidden;}
+.notice-view > dl > dd > ul li {margin-bottom:20px; border:#e5e5e5 0.5px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1); overflow:hidden; cursor:pointer;}
+.notice-view > dl > dd > ul li p {height:150px; background:#000; overflow:hidden;}
+.notice-view > dl > dd > ul li p span {display:block; height:250px;}
+.notice-view > dl > dd > ul li h2 {padding:15px 15px; color:#222; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+.notice-view > div {margin-top:30px; padding-top:30px; text-align:center; border-top:#e5e5e5 1px solid;}
+.notice-view > div a {width:150px;}
+
+@media all and (max-width:479px) {
+  .notice-view > dl > dt {width:100%;}
+  .notice-view > dl > dt > h2 {font-size:18px; line-height:26px;}
+  .notice-view > dl > dd {width:100%; margin-top:30px; padding-top:30px; border-top:#e5e5e5 1px solid;}
+  .notice-view > dl > dd > ul {display:flex; justify-content:space-between; flex-wrap:wrap;}
+  .notice-view > dl > dd > ul li {width:48%; margin-bottom:15px;}
+  .notice-view > dl > dd > ul li p {height:120px;}
+  .notice-view > div {margin-top:10px; padding-top:20px;}
+  .notice-view > div a {width:100%;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+  .notice-view > dl > dt {width:100%;}
+  .notice-view > dl > dt > h2 {font-size:18px; line-height:26px;}
+  .notice-view > dl > dd {width:100%; margin-top:30px; padding-top:30px; border-top:#e5e5e5 1px solid;}
+  .notice-view > dl > dd > ul {display:flex; justify-content:space-between; flex-wrap:wrap;}
+  .notice-view > dl > dd > ul li {width:48%; margin-bottom:15px;}
+  .notice-view > dl > dd > ul li p {height:120px;}
+  .notice-view > div {margin-top:10px; padding-top:20px;}
+  .notice-view > div a {width:100%;}
+}
+@media all and (min-width:768px) and (max-width:991px) {
+  .notice-list > ul > li {width:48%; margin:0 1% 20px 1%;}
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+
+}
+@media all and (min-width:1300px) {
+
+}
+
+
 
 
 
