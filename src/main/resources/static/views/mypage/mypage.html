@@ -57,108 +57,913 @@
 			<!-- 타이틀영역 끝 -->
 
 
+			<!-- 모달 - SEND CT -->
+			<div class="modal-bg"></div>
+			<div class="modal-area modal-send-ct">
+				<form name="addForm" method="post" action="">
+					<fieldset>
+						<legend>SEND CT</legend>
+						<dl>
+							<dt>SEND CT</dt>
+							<dd><i class="uil uil-times modal-close"></i></dd>
+						</dl>
+						<ul>
+							<li><input name="name" type="text" class="w100p" placeholder="Enter the recipient address" /></li>
+							<li><input name="name" type="text" class="w100p" placeholder="Please enter CT amount" /></li>
+						</ul>
+						<p>
+							<a href="#">Send CT</a>
+						</p>
+					</fieldset>
+				</form>
+			</div>
+			<!-- 모달 - SEND CT 끝 -->
+
+
+			<!-- 모달 - 마이페이지 - Voting 상세 -->
+			<div class="modal-area modal-mypage-view modal-mypage-voting">
+				<form name="addForm" method="post" action="">
+					<fieldset>
+						<legend>Voting Detail</legend>
+						<dl>
+							<dt>Voting Detail</dt>
+							<dd><i class="uil uil-times modal-close"></i></dd>
+						</dl>
+						<ul>
+							<li>
+								<span>Title</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Category</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Status</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Approve Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Adjourn Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Success Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Answer List</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>My Answer</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Selected Answer</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Spender Address</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Betting Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+						</ul>
+						<p>
+							<a href="#">Confirm</a>
+						</p>
+					</fieldset>
+				</form>
+			</div>
+			<!-- 모달 - 마이페이지 - Voting 상세 끝 -->
+
+
+			<!-- 모달 - 마이페이지 - Ground 상세 -->
+			<div class="modal-area modal-mypage-view modal-mypage-ground">
+				<form name="addForm" method="post" action="">
+					<fieldset>
+						<legend>Ground Detail</legend>
+						<dl>
+							<dt>Ground Detail</dt>
+							<dd><i class="uil uil-times modal-close"></i></dd>
+						</dl>
+						<ul>
+							<li>
+								<span>Title</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Category</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Status</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Description</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Approve Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Adjourn Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Success Transaction</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Answer List</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Selected Answer</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+							<li>
+								<span>Season</span>
+								<input name="name" type="text" class="w100p" placeholder="" />
+							</li>
+						</ul>
+						<p>
+							<a href="#">Confirm</a>
+						</p>
+					</fieldset>
+				</form>
+			</div>
+			<!-- 모달 - 마이페이지 - Ground 상세 끝 -->
+
+
 			<!-- 마이페이지 - 기본정보 -->
 			<div class="mypage-info">
 				<dt>
-					Email : <span>kcv5106@naver.com</span><br />
-					Wallet address : <span>0xe539c08cb274877d1373da2a46f04b92193bfa66</span>
+					<div><i class="uil uil-envelope-check"></i> Email : <span>kcv5106@naver.com</span></div>
+					<div><i class="uil uil-wallet"></i> Wallet address : <span>0xe539c08cb274877d1373da2a46f04b92193bfa66</span></div>
 				</dt>
 				<dd>
 					<a href="#" class="btn-red">Click to be Reward!</a>
-					<a href="#" class="btn-purple">CT Send</a>
+					<a href="#" class="btn-purple" id="modalSendCT">CT Send</a>
 				</dd>
 			</div>
 			<!-- 마이페이지 - 기본정보 끝 -->
 
 
+			<!-- 마이페이지 - 탭버튼 -->
 			<ul class="mypage-tab">
 				<li class="mt-tab01 active"><i class="uil uil-chart-line"></i> <span>Votings</span></li>
 				<li class="mt-tab02"><i class="uil uil-files-landscapes-alt"></i> <span>Grounds</span></li>
 				<li class="mt-tab03"><i class="uil uil-file-info-alt"></i> <span>CT Transfer</span></li>
 			</ul>
+			<!-- 마이페이지 - 탭버튼 끝 -->
 
 
 			<!-- 마이페이지 - 내용 -->
 			<div class="mypage-content">
 				<div class="mc-votings">
-					<h2>Votings</h2>
+					<h2><span>Votings</span></h2>
 					<div>
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
+						<ul>
+							<li><strong>Category</strong></li>
+							<li><strong>Title</strong></li>
+							<li><strong>Status Flow</strong></li>
+							<li style="text-align:center;"><strong>My Answer</strong></li>
+							<li style="text-align:center;"><strong>Multiply</strong></li>
+							<li style="text-align:center;"><strong>Prediction Fee</strong></li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
+						<ul class="modalMypageVoting">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>My Answer : </span>Yes (10,000 CT)</li>
+							<li><span>Multiply : </span>0.85</li>
+							<li><span>Prediction Fee : </span>8,500 CT</li>
+						</ul>
 					</div>
 				</div>
 				<div class="mc-grounds">
-					<h2>Grounds</h2>
+					<h2><span>Grounds</span></h2>
 					<div>
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
+						<ul>
+							<li><strong>Category</strong></li>
+							<li><strong>Title</strong></li>
+							<li><strong>Status Flow</strong></li>
+							<li style="text-align:center;"><strong>Total</strong></li>
+							<li style="text-align:center;"><strong>Total Creator Fee</strong></li>
+							<li style="text-align:center;"><strong>Donation Fee</strong></li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
+						<ul class="modalMypageGround">
+							<li><span>Category : </span>art</li>
+							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
+							<li>
+								<span>Status Flow : </span>
+								<ul>
+									<li class="complete">
+										<span></span>
+										<h2>Ongoing</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Invaild</h2>
+									</li>
+									<li class="complete">
+										<span></span>
+										<h2>Approve</h2>
+									</li>
+									<li class="ing">
+										<span></span>
+										<h2>Adjourn</h2>
+									</li>
+									<li>
+										<span></span>
+										<h2>Success</h2>
+									</li>
+								</ul>
+							</li>
+							<li><span>Total  : </span>10,000 CT</li>
+							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
+							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
+						</ul>
 					</div>
 				</div>
 				<div class="mc-transfer">
-					<h2>CT Transfer</h2>
+					<h2><span>CT Transfer</span></h2>
 					<div>
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
-						내용 <br />
+						<ul>
+							<li><strong>Spender Address</strong></li>
+							<li><strong>Recipient Address</strong></li>
+							<li style="text-align:center;"><strong>CT Amount</strong></li>
+							<li><strong>Created DTTM</strong></li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
+						<ul>
+							<li><span>Spender Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>Recipient Address : </span>0xe539c08cb274877d1373da2a46f04b92193bfa66</li>
+							<li><span>CT Amount : </span>10,000 CT</li>
+							<li><span>Created DTTM : </span>2021.01.06 (14:00:00)</li>
+						</ul>
 					</div>
 				</div>
 			</div>

@@ -219,6 +219,33 @@ $(document).ready(function() {
 	});
 
 
+	// 모달 - SEND CT //
+	$('#modalSendCT').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-send-ct').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 마이페이지 Voting 상세 //
+	$('.modalMypageVoting').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-mypage-voting').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
+	// 모달 - 마이페이지 Ground 상세 //
+	$('.modalMypageGround').on('click',function(event){
+		event.preventDefault();
+		$(".modal-bg").fadeIn(300);
+		$('.modal-mypage-ground').fadeIn(300);
+		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
+	});
+
+
 	// 모달 - 닫기 //
 	$(".modal-bg, .modal-close").on('click',function(){
 		$('.modal-area').stop().animate({ marginTop : '-15px' }, 300, 'easeOutQuad');
