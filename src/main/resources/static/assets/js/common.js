@@ -201,59 +201,6 @@ $(document).ready(function() {
 	});
 
 
-	// 모달 - 퀘스트 등록 //
-	$('#modalAdd, .add-btn a').on('click',function(event){
-		event.preventDefault();
-		$(".modal-bg").fadeIn(300);
-		$('.modal-add').fadeIn(300);
-		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
-	});
-
-
-	// 모달 - 퀘스트 시즌 //
-	$('#modalSeason').on('click',function(event){
-		event.preventDefault();
-		$(".modal-bg").fadeIn(300);
-		$('.modal-season').fadeIn(300);
-		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
-	});
-
-
-	// 모달 - SEND CT //
-	$('#modalSendCT').on('click',function(event){
-		event.preventDefault();
-		$(".modal-bg").fadeIn(300);
-		$('.modal-send-ct').fadeIn(300);
-		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
-	});
-
-
-	// 모달 - 마이페이지 Voting 상세 //
-	$('.modalMypageVoting').on('click',function(event){
-		event.preventDefault();
-		$(".modal-bg").fadeIn(300);
-		$('.modal-mypage-voting').fadeIn(300);
-		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
-	});
-
-
-	// 모달 - 마이페이지 Ground 상세 //
-	$('.modalMypageGround').on('click',function(event){
-		event.preventDefault();
-		$(".modal-bg").fadeIn(300);
-		$('.modal-mypage-ground').fadeIn(300);
-		$('.modal-area').stop().animate({ marginTop : '0' }, 300, 'easeOutQuad');
-	});
-
-
-	// 모달 - 닫기 //
-	$(".modal-bg, .modal-close").on('click',function(){
-		$('.modal-area').stop().animate({ marginTop : '-15px' }, 300, 'easeOutQuad');
-		$(".modal-bg").fadeOut(300);
-		$(".modal-area").fadeOut(300);
-	});
-
-
 	// 날짜 - 퀘스트 등록 //
 	$("#schDate").datetimepicker({
 		dateFormat:'yy-mm-dd',

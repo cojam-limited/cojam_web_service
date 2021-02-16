@@ -29,6 +29,7 @@
 		<script src="/assets/js/jquery-ui-timepicker-addon.js"></script>
     <script src="/assets/js/easing.js"></script>
     <script src="/assets/js/fontawesome.js"></script>
+		<script src="/assets/js/iziModal.js"></script>
 		<script src="/assets/js/swiper.js"></script>
 		<script src="/assets/js/imagesloaded.pkgd.min.js"></script>
 		<script src="/assets/js/isotope.pkgd.min.js"></script>
@@ -58,22 +59,23 @@
 
 
 			<!-- 모달 - SEND CT -->
-			<div class="modal-bg"></div>
-			<div class="modal-area modal-send-ct">
+			<div class="modal-send-ct" id="modalSendCT">
 				<form name="addForm" method="post" action="">
 					<fieldset>
 						<legend>SEND CT</legend>
-						<dl>
-							<dt>SEND CT</dt>
-							<dd><i class="uil uil-times modal-close"></i></dd>
-						</dl>
-						<ul>
-							<li><input name="name" type="text" class="w100p" placeholder="Enter the recipient address" /></li>
-							<li><input name="name" type="text" class="w100p" placeholder="Please enter CT amount" /></li>
-						</ul>
-						<p>
-							<a href="#">Send CT</a>
-						</p>
+						<div class="msc-area">
+							<dl>
+								<dt>SEND CT</dt>
+								<dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+							</dl>
+							<ul>
+								<li><input name="name" type="text" class="w100p" placeholder="Enter the recipient address" /></li>
+								<li><input name="name" type="text" class="w100p" placeholder="Please enter CT amount" /></li>
+							</ul>
+							<p>
+								<a href="#">Send CT</a>
+							</p>
+						</div>
 					</fieldset>
 				</form>
 			</div>
@@ -81,63 +83,65 @@
 
 
 			<!-- 모달 - 마이페이지 - Voting 상세 -->
-			<div class="modal-area modal-mypage-view modal-mypage-voting">
+			<div class="modal-mypage-view" id="modalMypageVoting">
 				<form name="addForm" method="post" action="">
 					<fieldset>
 						<legend>Voting Detail</legend>
-						<dl>
-							<dt>Voting Detail</dt>
-							<dd><i class="uil uil-times modal-close"></i></dd>
-						</dl>
-						<ul>
-							<li>
-								<span>Title</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Category</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Status</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Approve Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Adjourn Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Success Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Answer List</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>My Answer</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Selected Answer</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Spender Address</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Betting Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-						</ul>
-						<p>
-							<a href="#">Confirm</a>
-						</p>
+						<div class="mmv-area">
+							<dl>
+								<dt>Voting Detail</dt>
+								<dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+							</dl>
+							<ul>
+								<li>
+									<span>Title</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Category</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Status</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Approve Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Adjourn Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Success Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Answer List</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>My Answer</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Selected Answer</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Spender Address</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Betting Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+							</ul>
+							<p>
+								<a href="#">Confirm</a>
+							</p>
+						</div>
 					</fieldset>
 				</form>
 			</div>
@@ -145,59 +149,61 @@
 
 
 			<!-- 모달 - 마이페이지 - Ground 상세 -->
-			<div class="modal-area modal-mypage-view modal-mypage-ground">
+			<div class="modal-mypage-view" id="modalMypageGround">
 				<form name="addForm" method="post" action="">
 					<fieldset>
 						<legend>Ground Detail</legend>
-						<dl>
-							<dt>Ground Detail</dt>
-							<dd><i class="uil uil-times modal-close"></i></dd>
-						</dl>
-						<ul>
-							<li>
-								<span>Title</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Category</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Status</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Description</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Approve Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Adjourn Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Success Transaction</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Answer List</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Selected Answer</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-							<li>
-								<span>Season</span>
-								<input name="name" type="text" class="w100p" placeholder="" />
-							</li>
-						</ul>
-						<p>
-							<a href="#">Confirm</a>
-						</p>
+						<div class="mmv-area">
+							<dl>
+								<dt>Ground Detail</dt>
+								<dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+							</dl>
+							<ul>
+								<li>
+									<span>Title</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Category</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Status</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Description</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Approve Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Adjourn Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Success Transaction</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Answer List</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Selected Answer</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+								<li>
+									<span>Season</span>
+									<input name="name" type="text" class="w100p" placeholder="" />
+								</li>
+							</ul>
+							<p>
+								<a href="#">Confirm</a>
+							</p>
+						</div>
 					</fieldset>
 				</form>
 			</div>
@@ -212,7 +218,7 @@
 				</dt>
 				<dd>
 					<a href="#" class="btn-red">Click to be Reward!</a>
-					<a href="#" class="btn-purple" id="modalSendCT">CT Send</a>
+					<a href="#" class="btn-purple" data-izimodal-open="#modalSendCT" data-izimodal-transitionin="comingIn">CT Send</a>
 				</dd>
 			</div>
 			<!-- 마이페이지 - 기본정보 끝 -->
@@ -240,7 +246,7 @@
 							<li style="text-align:center;"><strong>Multiply</strong></li>
 							<li style="text-align:center;"><strong>Prediction Fee</strong></li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -272,7 +278,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -304,7 +310,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -336,7 +342,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -368,7 +374,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -400,7 +406,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -432,7 +438,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -464,7 +470,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -496,7 +502,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -528,7 +534,7 @@
 							<li><span>Multiply : </span>0.85</li>
 							<li><span>Prediction Fee : </span>8,500 CT</li>
 						</ul>
-						<ul class="modalMypageVoting">
+						<ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -573,7 +579,7 @@
 							<li style="text-align:center;"><strong>Total Creator Fee</strong></li>
 							<li style="text-align:center;"><strong>Donation Fee</strong></li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -605,7 +611,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -637,7 +643,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -669,7 +675,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -701,7 +707,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -733,7 +739,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -765,7 +771,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -797,7 +803,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -829,7 +835,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -861,7 +867,7 @@
 							<li><span>Total Creator Fee : </span>7472.75 CT (5%)</li>
 							<li><span>Donation Fee : </span>2989.1 CT (2%)</li>
 						</ul>
-						<ul class="modalMypageGround">
+						<ul data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
 							<li><span>Category : </span>art</li>
 							<li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
 							<li>
@@ -976,6 +982,20 @@
 			<div id="footer">
 			</div>
 			<!-- 하단영역 끝 -->
+
+
+			<script>
+        $(document).ready(function() {
+          // 모달 - 마이페이지 - SEND CT //
+					$('#modalSendCT').iziModal({width : '500px'});
+
+					// 모달 - 마이페이지 - Voting //
+					$('#modalMypageVoting').iziModal({width : '500px'});
+
+					// 모달 - 마이페이지 - Ground //
+					$('#modalMypageGround').iziModal({width : '500px'});
+        });
+      </script>
 
 
 			

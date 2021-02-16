@@ -176,27 +176,6 @@
 }
 
 
-/* 모달 - 레이아웃 */
-.modal-bg {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9998;}
-.modal-area {display:none; position:fixed; top:50%; left:50%; margin-top:-15px; transform:translate(-50%,-50%); background:#fff; z-index:9999;}
-
-@media all and (max-width:479px) {
-  .modal-area {position:absolute; top:20px; transform:translate(-50%,0%); overflow:auto;}
-}
-@media all and (min-width:480px) and (max-width:767px) {
-  .modal-area {position:absolute; top:20px; transform:translate(-50%,0%); overflow:auto;}
-}
-@media all and (min-width:768px) and (max-width:991px) {
-
-}
-@media all and (min-width:992px) and (max-width:1299px) {
-
-}
-@media all and (min-width:1300px) {
-
-}
-
-
 
 
 
@@ -684,27 +663,29 @@
 
 
 /* 모달 - 등록 */
-.modal-add {width:500px; padding:30px; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
-.modal-add dl {display:flex; justify-content:space-between; align-items:center;}
-.modal-add dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
-.modal-add dl dd {font-size:30px; color:#222;}
-.modal-add ol {display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:20px; border-top:#e5e5e5 1px solid;}
-.modal-add ol li:nth-child(1) {font-weight:700; font-size:16px; line-height:16px; color:#222;}
-.modal-add ol li:nth-child(2) a {font-size:30px; color:#8950fc;}
-.modal-add ol li:nth-child(2) a:hover {font-size:30px; color:#222;}
-.modal-add ul {margin-top:15px;}
-.modal-add ul li {padding:5px 0;}
-.modal-add ul li input {height:50px;}
-.modal-add ul li select {height:52px;}
-.modal-add p {margin-top:10px;}
-.modal-add p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
-.modal-add p a:hover {background:#222;}
+.modal-quest-add {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2); overflow:hidden;}
+.modal-quest-add .mqa-area {padding:30px;}
+.modal-quest-add .mqa-area .mqa-header {display:flex; justify-content:space-between; align-items:center; overflow:hidden;}
+.modal-quest-add .mqa-area .mqa-header dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
+.modal-quest-add .mqa-area .mqa-header dd {font-size:30px; color:#222;}
+.modal-quest-add .mqa-area .mqa-content1 {display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:20px; border-top:#e5e5e5 1px solid; overflow:hidden;}
+.modal-quest-add .mqa-area .mqa-content1 li:nth-child(1) {font-weight:700; font-size:16px; line-height:16px; color:#222;}
+.modal-quest-add .mqa-area .mqa-content1 li:nth-child(2) a {font-size:30px; color:#8950fc;}
+.modal-quest-add .mqa-area .mqa-content1 li:nth-child(2) a:hover {font-size:30px; color:#222;}
+.modal-quest-add .mqa-area .mqa-content2 {margin-top:15px; overflow:hidden;}
+.modal-quest-add .mqa-area .mqa-content2 li {padding:5px 0;}
+.modal-quest-add .mqa-area .mqa-content2 li input {height:50px;}
+.modal-quest-add .mqa-area .mqa-content2 li select {height:52px;}
+.modal-quest-add .mqa-area .mqa-btn {margin-top:10px; overflow:hidden;}
+.modal-quest-add .mqa-area .mqa-btn a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
+.modal-quest-add .mqa-area .mqa-btn a:hover {background:#222;}
 
 .input-file label {width:30%; height:50px;}
 .input-file input[type=text] {width:69%;}
 
 @media all and (max-width:479px) {
-  .modal-add {width:90%; padding:25px 20px;}
+  .modal-quest-add {width:90%;}
+  .modal-quest-add .mqa-area {padding:25px;}
   .input-file input[type=text] {width:68% !important;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
@@ -722,24 +703,26 @@
 
 
 /* 모달 - 시즌 */
-.modal-season {width:500px; padding:30px; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
-.modal-season > dl {display:flex; justify-content:space-between; align-items:center;}
-.modal-season > dl > dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
-.modal-season > dl > dd {font-size:30px; color:#222;}
-.modal-season > h2 {margin-top:10px; font-size:12px;}
-.modal-season > ul {width:100%; margin-top:15px; padding-top:15px; border-top:#e5e5e5 1px solid; overflow:hidden;}
-.modal-season > ul > li {padding:8px 0;}
-.modal-season > ul > li > h3 {font-weight:600; font-size:13px; line-height:13px; color:#222;}
-.modal-season > ul > li > div {position:relative; margin-top:7px; border-radius:20px; background:#e1e6eb; overflow:hidden;}
-.modal-season > ul > li > div div {padding:10px 20px;background:#8950fc;}
-.modal-season > ul > li > div p {position:absolute; top:0; right:15px; padding-top:4px; font-weight:600; font-size:12px; line-height:12px; color:#222;}
-.modal-season > div {margin-top:20px; padding:20px; border:#e5e5e5 1px solid; border-radius:10px; background:#f3f6f9;}
-.modal-season > div h2 {font-weight:600; line-height:24px; color:#222;}
-.modal-season > div div {margin-top:15px; padding-top:15px; border-top:#e5e5e5 1px solid;}
-.modal-season > div div span {font-weight:600; color:#222;}
+.modal-quest-season {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
+.modal-quest-season .mqs-area {padding:30px;}
+.modal-quest-season .mqs-area .mqs-header {display:flex; justify-content:space-between; align-items:center;}
+.modal-quest-season .mqs-area .mqs-header > dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
+.modal-quest-season .mqs-area .mqs-header > dd {font-size:30px; color:#222;}
+.modal-quest-season .mqs-area .mqs-date {margin-top:10px; font-size:12px;}
+.modal-quest-season .mqs-area .mqs-content {width:100%; margin-top:15px; padding-top:15px; border-top:#e5e5e5 1px solid; overflow:hidden;}
+.modal-quest-season .mqs-area .mqs-content > li {padding:8px 0;}
+.modal-quest-season .mqs-area .mqs-content > li > h3 {font-weight:600; font-size:13px; line-height:13px; color:#222;}
+.modal-quest-season .mqs-area .mqs-content > li > div {position:relative; margin-top:7px; border-radius:20px; background:#e1e6eb; overflow:hidden;}
+.modal-quest-season .mqs-area .mqs-content > li > div div {padding:10px 20px;background:#8950fc;}
+.modal-quest-season .mqs-area .mqs-content > li > div p {position:absolute; top:0; right:15px; padding-top:4px; font-weight:600; font-size:12px; line-height:12px; color:#222;}
+.modal-quest-season .mqs-area .mqs-info {margin-top:20px; padding:20px; border:#e5e5e5 1px solid; border-radius:10px; background:#f3f6f9;}
+.modal-quest-season .mqs-area .mqs-info h2 {font-weight:600; line-height:24px; color:#222;}
+.modal-quest-season .mqs-area .mqs-info div {margin-top:15px; padding-top:15px; border-top:#e5e5e5 1px solid;}
+.modal-quest-season .mqs-area .mqs-info div span {font-weight:600; color:#222;}
 
 @media all and (max-width:479px) {
-  .modal-season {width:90%; padding:25px 20px;}
+  .modal-quest-season {width:90%;}
+  .modal-quest-season .mqs-area {padding:25px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
 
@@ -1134,20 +1117,22 @@
 
 
 /* 모달 - SEND CT */
-.modal-send-ct {width:500px; padding:30px; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
-.modal-send-ct dl {display:flex; justify-content:space-between; align-items:center;}
-.modal-send-ct dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
-.modal-send-ct dl dd {font-size:30px; color:#222;}
-.modal-send-ct ul {margin-top:15px;}
-.modal-send-ct ul li {padding:5px 0;}
-.modal-send-ct ul li input {height:50px;}
-.modal-send-ct ul li select {height:52px;}
-.modal-send-ct p {margin-top:10px;}
-.modal-send-ct p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
-.modal-send-ct p a:hover {background:#222;}
+.modal-send-ct {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
+.modal-send-ct .msc-area {padding:30px;}
+.modal-send-ct .msc-area dl {display:flex; justify-content:space-between; align-items:center;}
+.modal-send-ct .msc-area dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
+.modal-send-ct .msc-area dl dd {font-size:30px; color:#222;}
+.modal-send-ct .msc-area ul {margin-top:15px;}
+.modal-send-ct .msc-area ul li {padding:5px 0;}
+.modal-send-ct .msc-area ul li input {height:50px;}
+.modal-send-ct .msc-area ul li select {height:52px;}
+.modal-send-ct .msc-area p {margin-top:10px;}
+.modal-send-ct .msc-area p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
+.modal-send-ct .msc-area p a:hover {background:#222;}
 
 @media all and (max-width:479px) {
-  .modal-send-ct {width:90%; padding:25px 20px;}
+  .modal-send-ct {width:90%;}
+  .modal-send-ct .msc-area {padding:25px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
 
@@ -1164,21 +1149,23 @@
 
 
 /* 모달 - 마이페이지 - 상세 */
-.modal-mypage-view {width:500px; padding:30px; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
-.modal-mypage-view dl {display:flex; justify-content:space-between; align-items:center;}
-.modal-mypage-view dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
-.modal-mypage-view dl dd {font-size:30px; color:#222;}
-.modal-mypage-view ul {margin-top:15px;}
-.modal-mypage-view ul li {padding:5px 0;}
-.modal-mypage-view ul li span {display:inline-block; padding-bottom:5px; font-weight:600; color:#222;}
-.modal-mypage-view ul li input {height:40px;}
-.modal-mypage-view ul li select {height:42px;}
-.modal-mypage-view p {margin-top:10px;}
-.modal-mypage-view p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
-.modal-mypage-view p a:hover {background:#222;}
+.modal-mypage-view {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
+.modal-mypage-view .mmv-area {padding:30px;}
+.modal-mypage-view .mmv-area dl {display:flex; justify-content:space-between; align-items:center;}
+.modal-mypage-view .mmv-area dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
+.modal-mypage-view .mmv-area dl dd {font-size:30px; color:#222;}
+.modal-mypage-view .mmv-area ul {margin-top:15px;}
+.modal-mypage-view .mmv-area ul li {padding:5px 0;}
+.modal-mypage-view .mmv-area ul li span {display:inline-block; padding-bottom:5px; font-weight:600; color:#222;}
+.modal-mypage-view .mmv-area ul li input {height:40px;}
+.modal-mypage-view .mmv-area ul li select {height:42px;}
+.modal-mypage-view .mmv-area p {margin-top:10px;}
+.modal-mypage-view .mmv-area p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
+.modal-mypage-view .mmv-area p a:hover {background:#222;}
 
 @media all and (max-width:479px) {
-  .modal-mypage-view {width:90%; padding:25px 20px;}
+  .modal-mypage-view {width:90%;}
+  .modal-mypage-view .mmv-area {padding:25px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
 
