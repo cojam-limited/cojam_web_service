@@ -271,5 +271,16 @@ $(document).ready(function() {
 		$('.mc-grounds').css({ display : 'none' });
 		$('.mc-transfer').css({ display : 'block' });
 	});
+
+
+	// 마이페이지 날짜 - Transfer 등록 //
+	$("#schDateTransfer").datetimepicker({
+		dateFormat:'yy-mm-dd',
+		// timepicker 설정
+		timeFormat:'hh:mm:ss',
+		//controlType:'select',
+		//oneLine:true,
+	});
+	$('#schDateTransfer').val($.datepicker.formatDate('yy-mm-dd', new Date()));
 	
 });
