@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="title" content="COJAM " />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="robots" content="index, follow">
+		<link rel="canonical" href="https://www.cojam.io/">
+		<meta property="og:type" content="article" />
+		<meta property="og:site_name" content="COJAM">
+		<meta property="og:type" content="article">
+		<meta property="og:url" content="https://www.cojam.io/">
+		<meta property="og:title" content="COJAM">
+		<meta property="og:image" content="/assets/image/common/meta_img.jpg">
+		<meta property="og:description" content="" />
+		<title>COJAM</title>
+		<link href="/admin/assets/css/style.css" rel="stylesheet">
+		<link rel="shortcut icon" href="/assets/image/common/favicon.ico">
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="/admin/assets/js/jquery-3.3.1.js"></script>
+		<script src="/admin/assets/js/jquery-ui.js"></script>
+		<script src="/admin/assets/js/jquery-ui-timepicker-addon.js"></script>
+    <script src="/admin/assets/js/easing.js"></script>
+    <script src="/admin/assets/js/fontawesome.js"></script>
+		<script src="/admin/assets/js/iziModal.js"></script>
+    <script src="/admin/assets/js/common.js"></script>
+	</head>
+	<body>
+		<div class="wrap">
+			
+				<!-- 상단영역 -->
+				<div id="header">
+        </div>
+        <!-- 상단영역 끝 -->
+        <div class="content-wrap">
+          
+          <!-- 왼쪽영역 -->
+          <div id="left-sidebar">
+          </div>
+          <!-- 왼쪽영역 끝 -->
+          <div class="content">
+
+            <div class="table-title">
+              <h2><i class="uil uil-file-alt"></i>  Post > regist Post </h2>
+            </div>
+            
+            <div class="post-form-wrap">
+              <div class="post-form-img">
+                <p style="background:url('../../assets/image/no-image.jpg') center; background-size: cover;"></p>
+                <div class="input-file">
+                  <label>
+                    찾아보기
+                    <input type="file" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                  </label> <br>
+                  <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="사진을 첨부해주세요.">
+                </div>
+              </div>
+
+              <form method="" action="">
+                <fieldset>
+                  <div>
+                    <table class="post-form">
+                      <colgroup>
+                        <col style="width:300px;"><col>
+                      </colgroup>
+                      <tbody>
+                        <tr>
+                          <th><label for="post-view-txt1">카테고리</label> <span>*</span></th>
+                          <td> <select name="catgory" id="post-view-txt1">
+                            <option value="category" selected="selected">Category</option>
+                            <option value="notice">Notice</option>
+                            <option value="news">News</option>
+                          </select></td>
+                        </tr>
+                        <tr>
+                          <th><label for="post-view-txt2">제목</label> <span>*</span></th>
+                          <td><input type="text" id="post-view-txt2" placeholder="제목을 입력해주세요."></td>
+                        </tr>
+                        <tr>
+                          <th><label for="post-view-txt3">담당자</label> <span>*</span></th>
+                          <td><input type="text" id="post-view-txt3" placeholder="담당자를 입력해주세요."></td>
+                        </tr>
+                        <tr>
+                          <th><label for="post-view-txt4">담당부서</label> <span>*</span></th>
+                          <td><input type="text" id="post-view-txt4" placeholder="담당부서를 입력해주세요."></td>
+                        </tr>
+                        <tr>
+                          <th><label for="post-view-txt5">내용</label></th>
+                          <td><textarea  id="post-view-txt5" placeholder="내용을 입력해주세요."></textarea></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </fieldset>
+              </form>
+            </div> <!--.post-view-wrap  -->
+
+            <div class="form-button">
+              <a href="#">뒤로가기</a>
+              <a href="#" style="background-color:#8950fc; color: #fff;">등록하기</a>
+            </div>
+          </div> <!--.content -->
+        </div> <!--.content-wrap -->
+    </div> <!--.wrap  --> 
+  </body> 
+</html>
+
