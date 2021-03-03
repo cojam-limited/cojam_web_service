@@ -176,6 +176,33 @@
 }
 
 
+/* 레이어팝업 - 메인 */
+.main-popup {position:absolute; border:#000 2px solid; z-index:99999;}
+.main-popup dl {padding:5px 10px; font-size:12px; color:#fff; letter-spacing:-1px; background:#000; overflow:hidden;}
+.main-popup dl dt {float:left; cursor:pointer;}
+.main-popup dl dd {float:right; cursor:pointer;}
+
+@media all and (max-width:479px) {
+.main-popup {top:120px !important; left:50% !important; width:300px; margin-left:-150px;}
+.main-popup > div {width:300px;}
+.main-popup > div img {width:100%;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+.main-popup {top:120px !important; left:50% !important; width:400px; margin-left:-200px;}
+.main-popup > div {width:400px;}
+.main-popup > div img {width:100%;}
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1199px) {
+
+}
+@media all and (min-width:1200px) {
+
+}
+
+
 
 
 
