@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-users-alt"></i>  Members </h2>
+            <div>
+                <a href="#">Approve</a>
+                <a href="#">Lockup</a>
+                <a href="#">Unlock</a>
+            </div>
+        </div>
+        <form th:name="boardFrm" th:method="GET" action="/cms/members">
+            <div class="table-option">
+                <div>
+                    <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
+                </div>
+                <ul>
+                    <li><i class="uil uil-file-plus-alt"></i></li>
+                    <li><i class="uil uil-trash-alt"></i></li>
+                </ul>
+            </div>
+        </form>
+
+        <div class="table-default" id="memberList">
+            <table>
+                <colgroup>
+                    <col width="3%"/>
+                    <col width="4%"/>
+                    <col width="10%"/>
+                    <col width="15%"/>
+                    <col width="12%"/>
+                    <col width="18%"/>
+                    <col width="*"/>
+                    <col width="6%"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <td><input type="checkbox" name="xxx" value="yyy" class="checkAll"></td>
+                    <td>No.</td>
+                    <td>Authority</td>
+                    <td>Name</td>
+                    <td>ID</td>
+                    <td>E-mail</td>
+                    <td>Wallet Address</td>
+                    <td>Lock</td>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:if="${memberList} !=null">
+                    <tr th:each="item : ${memberList}">
+                        <td><input type="checkbox" name="xxx" th:value="${item.memberKey}" class="check"></td>
+                        <td>1</td>
+                        <td>
+                            <select name="memberRole" id="">
+                                <option
+                                        th:each="auth : ${authList}"
+                                        th:value="${auth.authCode}"
+                                        th:text="${auth.authName}"
+                                        th:selected="${auth.authCode eq item.memberRole}"
+                                >Customer</option>
+                            </select>
+                        </td>
+                        <td th:text="${item.memberName}"></td>
+                        <td th:text="${item.memberId}"></td>
+                        <td th:text="${item.memberEmail}"></td>
+                        <td>0x000000000000000</td>
+                        <td>F</td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+
+        </div>
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                fnGetList();
+            });
+
+            function fnGetList(){
+                $.ajax({
+                    url:"/cms/members",
+                    type :  "POST",
+                    data : $("form[name=boardFrm]").serialize(),
+                }).done(function (fragment) {
+                    $("#memberList").replaceWith(fragment);
+                });
+            }
+
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+        </script>
+    </th:block>
+</th:block>
+</html>

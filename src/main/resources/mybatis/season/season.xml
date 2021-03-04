@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.SeasonDao">
+
+    <select id="getSeasonInfo" resultType="io.cojam.web.domain.Season">
+        SELECT
+            SEASON_KEY,
+            ALPHA_DTTM,
+            DATEDIFF(omega_dttm,now()) D_DAY,
+            CHARITY_FEE,
+            COJAM_FEE,
+            CREATED_DTTM,
+            CREATOR_FEE,
+            CREATOR_PAY,
+            DESCRIPTION,
+            IS_ACTIVE,
+            MINIMUM_PAY,
+            OMEGA_DTTM,
+            TITLE,
+            MAXIMUM_PAY,
+            TRANSFER_PAY
+        FROM	TB_SEASON
+        WHERE	IS_ACTIVE = true
+    </select>
+
+    <select id="getSeasonCategoryList" resultType="io.cojam.web.domain.SeasonCategory">
+        SELECT
+            CATEGORY_KEY,
+            CATEGORY_NAME,
+            ORDER_NUMBER
+        FROM	TB_SEASON_CATEGORY
+        ORDER BY ORDER_NUMBER
+    </select>
+</mapper>

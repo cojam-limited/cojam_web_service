@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/main_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+
+</th:block>
+<th:block layout:fragment="content">
+    <!-- 비주얼영역 -->
+    <div class="main-vegas" >
+        <div class="mv-btm"><img src="/assets/image/content/main_visual_scroll.svg" width="100" alt="" title="" /></div>
+        <div class="mv-copy">
+            <h2>COJAM</h2>
+            <h3>Let's enjoy the prediction platform through COJAM</h3>
+        </div>
+    </div>
+    <!-- 비주얼영역 끝 -->
+    <!-- 퀘스트 - 카타고리 -->
+    <div class="main-quest">
+        <div>
+            <h2>Ongoing Vote 6</h2>
+            <h3>Convergence Platform of Knowledge based on Prediction</h3>
+            <ul>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon01.svg" width="90" alt="" title="" /> </p>
+                    <h2>Art & Culture</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon02.svg" width="90" alt="" title="" /> </p>
+                    <h2>Community</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon03.svg" width="90" alt="" title="" /></p>
+                    <h2>Competition</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon04.svg" width="90" alt="" title="" /></p>
+                    <h2>Crowd Solving</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon05.svg" width="90" alt="" title="" /></p>
+                    <h2>Economy</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+                <li>
+                    <p><img src="/assets/image/content/main_quest_icon06.svg" width="90" alt="" title="" /></p>
+                    <h2>Sience</h2>
+                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 퀘스트 - 카타고리 끝 -->
+
+
+    <!-- 시즌 -->
+    <div class="main-season" th:disabled="${seasonInfo} == null" id="seasonInfo">
+        <div>
+            <h2>Cojam Active Season</h2>
+            <h3>Create Season of Cojam Service!</h3>
+            <ul th:if="${seasonInfo} != null">
+                <li>
+                    <div>
+                        <h2 th:text="${seasonInfo.dDay}"></h2>
+                        <h3>Day</h3>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h2 th:text="${seasonInfo.charityFee}"></h2>
+                        <h3>Charity Fee(%)</h3>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h2 th:text="${seasonInfo.creatorFee}"></h2>
+                        <h3>Creator Fee(%)</h3>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <h2 th:text="${seasonInfo.cojamFee}"></h2>
+                        <h3>Cojam Fee(%)</h3>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 시즌 끝 -->
+
+
+    <!-- 공지사항 -->
+    <div class="main-notice" th:disabled="${boardList} == null">
+        <div>
+            <h2>Notice & News</h2>
+            <h3>Sharing News, Issues, Histories of COJAM!</h3>
+            <ul id="noticeTop3">
+                <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
+                    th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                >
+                    <p>
+                        <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                    </p>
+                    <div>
+                        <dl>
+                            <dt>
+                                <i class="uil uil-calendar-alt"></i>&nbsp;
+                                <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
+                            </dt>
+                            <dd>
+                                <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                            <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                            </dd>
+                        </dl>
+                        <h2 th:text="${item.boardTitle}"></h2>
+                    </div>
+                </li>
+            </ul>
+            <div><a th:href="@{/user/notice}">More</a></div>
+        </div>
+    </div>
+    <!-- 공지사항 끝 -->
+
+
+    <!-- 서비스 -->
+    <div class="main-service">
+        <div>
+            <h2>Cojam Service</h2>
+            <h3>Operate the Service Through Advanced Technology</h3>
+            <dl>
+                <dt>&nbsp;</dt>
+                <dd>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon01.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>AWS Cloud</h2>
+                        <h3>Our Service based on AWS Cloud Service for Security and Stability.</h3>
+                    </div>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon02.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>Blockchain</h2>
+                        <h3>It ensures transparency and stability and can participate in predictive platforms.</h3>
+                    </div>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon03.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>HTML5 Web Standard</h2>
+                        <h3>Developed by HTML5 Web Standard to support a variety of browsers.</h3>
+                    </div>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon04.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>Mobile Application</h2>
+                        <h3>Any Where! Any Time! You can enjoy with Mobile.</h3>
+                    </div>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon05.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>Responsible Web</h2>
+                        <h3>It is possible to participate in services from browsers on various devices through Responsible Web.</h3>
+                    </div>
+                    <div>
+                        <p>
+                            <span><img src="/assets/image/content/main_service_icon06.svg" alt="" title="" /></span>
+                        </p>
+                        <h2>Realtime Service</h2>
+                        <h3>If you have any questions about the service, please feel free to contact us.</h3>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <!-- 서비스 끝 -->
+
+
+    <!-- 질문답변 -->
+    <div class="main-qna" th:disabled="${questionList} == null">
+        <div>
+            <h2>Q&A</h2>
+            <h3>If you have any other questions, please feel free to ask us!</h3>
+            <div class="qna_list" id="questionList">
+                <div th:each="item : ${questionList}">
+                    <ul>
+                        <li><i class="xi-help-o"></i></li>
+                        <li th:text="${item.question}"></li>
+                        <li><i class="xi-plus"></i></li>
+                    </ul>
+                    <dl>
+                        <dt><i class="xi-comment-o"></i></dt>
+                        <dd>
+                            <h2>The answer is.</h2>
+                            <div th:text="${item.answer}"></div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block  th:replace="thymeleaf/fragment/popup :: homePopup(${mainPopupList})"></th:block>
+    <!-- 질문답변 끝 -->
+    <script th:inline="javascript">
+        $(document).ready(function (){
+            fnGetSeasonInfo();
+            fnGetNoticeList();
+            fnGetQuestionList();
+        });
+
+        function fnGetSeasonInfo(){
+            $.ajax({
+                url:"/user/home/seasonInfo",
+                type :  "POST",
+            }).done(function (fragment) {
+                $("#seasonInfo").replaceWith(fragment);
+                $('.main-season > div > ul > li > div > h2').countUp();
+            });
+        }
+
+        function fnGetNoticeList(){
+            $.ajax({
+                url:"/user/home/notice",
+                type :  "POST",
+            }).done(function (fragment) {
+                $("#noticeTop3").replaceWith(fragment);
+            });
+        }
+
+        function fnGetQuestionList(){
+            $.ajax({
+                url:"/user/home/question",
+                type :  "POST",
+            }).done(function (fragment) {
+                $("#questionList").replaceWith(fragment);
+            });
+        }
+
+        $(document).on('click','.qna_list > div',function (){
+            const index = $('.qna_list > div').index(this);
+            if($('.qna_list > div').eq(index).find('.xi-plus') && $('.qna_list > div').eq(index).find('.xi-plus').length > 0){
+                $('.qna_list > div > dl').eq(index).slideDown(300, 'easeOutQuad');
+                $('.qna_list > div > ul').eq(index).css({ background : '#fff3f3' });
+                $('.qna_list > div').eq(index).find('.xi-plus').removeClass('xi-plus').addClass('xi-minus')
+            }else {
+                $('.qna_list > div > dl').eq(index).slideUp(300, 'easeOutQuad');
+                $('.qna_list > div > ul').eq(index).css({ background : '#fff' });
+                $('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
+            }
+        });
+
+        $(document).on({
+            mouseenter: function () {
+                $(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+            },
+
+            mouseleave: function () {
+                $(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+            }
+
+        }, '.main-notice > div > ul > li');
+    </script>
+</th:block>
+</html>

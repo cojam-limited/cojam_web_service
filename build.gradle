@@ -6,11 +6,14 @@ plugins {
 
 group = 'io.cojam'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '8'
 
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
+    }
+    all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
 }
 
@@ -20,11 +23,73 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation('org.springframework.boot:spring-boot-starter-validation')
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     compile('org.springframework.boot:spring-boot-devtools')
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'	
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    compile('org.apache.tomcat.embed:tomcat-embed-jasper')
+    compile('javax.servlet:jstl:1.2')
+    //security
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+    // MyBatis
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4")
+    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('mysql:mysql-connector-java')
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.4.1'
+    // lombok
+    annotationProcessor("org.projectlombok:lombok")
+    compileOnly("org.projectlombok:lombok")
+    // AOP
+    compile('org.springframework.boot:spring-boot-starter-aop')
+    // guava
+    implementation group: 'com.google.guava', name: 'guava', version: '30.0-jre'
+    //common-lang
+    implementation 'org.apache.commons:commons-lang3:3.0'
+
+
+    // jackson
+    //compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10'
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    // https://mvnrepository.com/artifact/net.coobird/thumbnailator
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+    // https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // web3
+    implementation ('org.web3j:core:4.5.12') {
+        exclude group: 'org.web3j', module: 'crypto:4.5.12'
+    }
+    //// ref: https://github.com/web3j/web3j/issues/1167
+    //// https://github.com/web3j/web3j/commit/92ecdb7288df61faad106a95c6a545bf9734152c
+    compile 'com.squareup.okhttp3:okhttp:4.3.1'
+    compile 'com.squareup.okhttp3:okhttp-ws:3.4.2'
+
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.44'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation 'com.klaytn.caver:core:1.0.2'
 }
 
 test {
     useJUnitPlatform()
 }
+
+
+
+
+

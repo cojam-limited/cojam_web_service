@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+        <div class="table-title">
+            <h2><i class="uil uil-files-landscapes"></i> Pop-Up </h2>
+            <!-- <ul class="tab-ongoing-nav">
+              <li>Retreive</li>
+            </ul> -->
+        </div>
+
+        <form th:name="boardFrm" th:method="GET" action="/cms/post">
+            <input th:type="hidden" th:name="page" />
+            <div class="table-option">
+                <div>
+                    <input type="text" placeholder="검색어를 입력하세요." > <button><i class="uil uil-search"></i></button>
+                </div>
+                <ul>
+                    <li><a href="/cms/popup/register"><abbr TITLE="등록"><i class="uil uil-file-plus-alt"></i></abbr></a></li>
+                </ul>
+            </div>
+        </form>
+
+        <div class="table-default" id="popupList">
+            <table>
+                <colgroup>
+                    <col width="7%"/>
+                    <col width="*"/>
+                    <col width="18%"/>
+                    <col width="18%"/>
+                    <col width="15%"/>
+                    <col width="10%"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>사용</td>
+                    <td>공지기간</td>
+                    <td>등록일</td>
+                    <td>기능</td>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:if="${popupList} !=null">
+                    <tr th:each="item,i :${popupList}">
+                        <td th:text="${i.index}"></td>
+                        <td th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''">
+                            <h5 th:text="${item.popupTitle}"></h5>
+                        </td>
+                        <td th:text="${item.actived}"></td>
+                        <td th:text="${item.startDateTime}+' ~ '+${item.endDateTime}"></td>
+                        <td th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd')}"></td>
+                        <td>
+                            <ul>
+                                <li><a th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
+                                <li><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                fnGetList();
+            });
+
+            function fnGetList(){
+                $.ajax({
+                    url:"/cms/popup/list",
+                    type :  "POST",
+                    data : $("form[name=boardFrm]").serialize(),
+                }).done(function (fragment) {
+                    $("#popupList").replaceWith(fragment);
+                });
+            }
+
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+        </script>
+    </th:block>
+</th:block>
+</html>

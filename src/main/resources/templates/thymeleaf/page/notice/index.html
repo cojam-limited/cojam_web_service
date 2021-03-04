@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/default_layout">
+
+<th:block layout:fragment="css">
+</th:block>
+
+
+<div layout:fragment="content">
+    <!-- 타이틀영역 -->
+    <div class="title-area">
+        Notice & News
+    </div>
+    <!-- 타이틀영역 끝 -->
+
+
+
+    <div class="container-top-round">
+        <!-- 탭메뉴 -->
+        <div class="notice-tab" id="noticefilters" th:if="${categoryList} != null">
+            <a href="#posChk" data-filter="*" th:classappend="${param.boardCategoryKey eq null or param.boardCategoryKey eq ''}?'active':''">All</a>
+            <a th:each="item : ${categoryList}"
+               th:attrappend="data-value=${item.boardCategoryKey}"
+               th:attr="data-filter='.sort0'+${item.orderNumber}"
+               th:classappend="${item.boardCategoryKey eq param.boardCategoryKey}?'active':''"
+               th:text="${item.categoryName}"
+               href="#posChk"
+            ></a>
+        </div>
+        <!-- 탭메뉴 끝 -->
+        <form th:name="boardFrm" th:method="POST">
+            <input th:type="hidden" th:name="boardCategoryKey" th:value="${param.boardCategoryKey}"/>
+            <input th:type="hidden" th:name="page" />
+        </form>
+
+        <!-- 리스트 -->
+        <div id="boardList">
+            <div class="notice-list">
+                <ul>
+                    <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" th:each="item, i: ${boardList}"
+                        th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                    >
+                        <p>
+                            <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                        </p>
+                        <div>
+                            <dl>
+                                <dt>
+                                    <i class="uil uil-calendar-alt"></i>&nbsp;
+                                    <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
+                                </dt>
+                                <dd>
+                                    <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                                <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                                </dd>
+                            </dl>
+                            <h2 th:text="${item.boardTitle}"></h2>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 리스트 끝 -->
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+        </div>
+
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $("body").addClass("bg-notice");
+            $(document).ready(function (){
+                fnGetList();
+            });
+            $(document).on('click','.notice-tab > a',function (e){
+               const dataValue= $(this).attr('data-value')=='*'?'':$(this).attr('data-value');
+               $("input[name=boardCategoryKey]").val(dataValue);
+                $("input[name=page]").val(1);
+                fnGetList();
+            });
+
+
+            function fnGetList(){
+                $.ajax({
+                    url:"/user/notice/list",
+                    type :  "POST",
+                    data : $("form[name=boardFrm]").serialize(),
+                }).done(function (fragment) {
+                    $("#boardList").replaceWith(fragment);
+                });
+            }
+
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+            // 공지사항 - 오버효과 //
+            $(document).on({
+                mouseenter: function () {
+                    $(this).find('p span').stop().animate({ width : '105%', margin : '0 0 0 -2.5%', opacity: '0.5' }, 300, 'easeOutQuad');
+                },
+
+                mouseleave: function () {
+                    $(this).find('p span').stop().animate({ width : '100%', margin : '0', opacity: '1.0' }, 300, 'easeOutQuad');
+                }
+
+            }, '.notice-list > ul > li');
+        </script>
+    </th:block>
+</div>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-alt"></i>  Pop-Up > regist Pop-Up </h2>
+        </div>
+
+        <div class="popup-form-wrap">
+            <form name="popupForm" id="popupForm" method="POST" action="">
+                <fieldset>
+                    <div>
+                        <table class="popup-form">
+
+                            <tbody>
+                            <tr>
+                                <th><span>*</span> 제목</th>
+                                <td colspan="3"><input type="text" name="popupTitle" th:maxlength="50" placeholder="3자 - 50자 이내로 입력하세요."></td>
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 게시기간</th>
+                                <td colspan="3">
+                                    <ul>
+                                        <li><input name="startDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                        <li>~</li>
+                                        <li><input name="endDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 사용여부</th>
+                                <td colspan="3">
+                                    <label for="Usage1"><input type="radio" name="actived" value="1" id="Usage1" checked>사용함</label>
+                                    <label for="Usage2"><input type="radio" name="actived" value="0" id="Usage2">사용 안 함</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 위치</th>
+                                <td>
+                                    <label for="">X: <input type="number" name="positionX"></label>
+                                    <label for="">Y: <input type="number" name="positionY"></label>
+                                </td>
+                                <th><span>*</span> 크기</th>
+                                <td>
+                                    <label for="">가로: <input type="number" name="sizeX"></label>
+                                    <label for="">세로: <input type="number" name="sizeY"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 링크주소</th>
+                                <td colspan="3"><input type="url" name="popupLink" placeholder="https://example.com"></td>
+
+                            </tr>
+                            <tr style="height:250px">
+                                <th><span>*</span> 팝업이미지</th>
+                                <td colspan="3">
+                                    <div>
+                                        <div><p><img id="preview" th:src="@{/admin/assets/image/no-image.jpg}"  alt=""></p></div>
+                                        <div class="input-file">
+                                            <label>
+                                                찾아보기
+                                                <input type="file" name="file" id="imgSelector" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                                            </label> <br>
+                                            <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="사진을 첨부해주세요.">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </form>
+        </div> <!--popup-form-wrap  -->
+        <div class="form-button">
+            <a href="/cms/popup">뒤로가기</a>
+            <a href="javascript:fnSavePopup();" style="background-color:#8950fc; color: #fff;">등록하기</a>
+        </div>
+    </div> <!--.content -->
+
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                $(".date-icon").datetimepicker({
+                    dateFormat:'yy-mm-dd',
+                    // timepicker 설정
+                    timeFormat:'hh',
+                    //controlType:'select',
+                    //oneLine:true,
+                });
+                $('.date-icon').val($.datepicker.formatDate('yy-mm-dd', new Date())+' 00');
+            });
+            $('#imgSelector').change(function(){
+                setImageFromFile(this, '#preview');
+            });
+
+            function setImageFromFile(input, expression) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(expression).attr("src",e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            function fnSavePopup(){
+
+
+                const form = $('#popupForm')[0];
+                const data = new FormData(form);
+                $.ajax({
+                    url:"/cms/popup/register",
+                    type :  "POST",
+                    enctype: 'multipart/form-data',
+                    data : data,
+                    contentType : false,
+                    processData : false,
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                            location.href = '/cms/popup/view?idx='+response.item;
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        </script>
+    </th:block>
+</th:block>
+</html>

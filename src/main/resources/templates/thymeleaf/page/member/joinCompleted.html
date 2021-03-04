@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/login_layout">
+<th:block layout:fragment="css">
+    <!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<div layout:fragment="content" class="join-complete-area">
+    <div>
+        <p><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></p>
+        <h2>Membership registration is complete.<br />Welcome to the Cojam.</h2>
+        <h3><img src="/assets/image/content/member_join_complete.png" alt="" title="" /></h3>
+        <div>
+            <a href="/user/home">Main</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+</div>
+</html>

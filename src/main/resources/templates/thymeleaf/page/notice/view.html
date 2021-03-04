@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/default_layout">
+
+<th:block layout:fragment="css">
+</th:block>
+
+
+<th:block layout:fragment="content">
+    <!-- 타이틀영역 -->
+    <div class="title-area">
+        Notice & News
+    </div>
+    <!-- 타이틀영역 끝 -->
+
+
+
+    <div class="container-top-round">
+        <!-- 상세 -->
+        <div class="notice-view">
+            <dl>
+                <dt>
+                    <h2><span th:text="'['+${detail.categoryName}+']'"></span> <th:block th:text="${detail.boardTitle}"></th:block></h2>
+                    <h3><i class="uil uil-calendar-alt"></i> <th:block th:text="${#dates.format(detail.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block></h3>
+                    <div>
+                        <p><img th:src="@{/user/media/image(id=${detail.boardFile})}" width="100%" alt="" title="" /></p>
+                        <br /><br />
+                        <div th:utext="${detail.boardContext}">
+                        </div>
+                    </div>
+                </dt>
+                <dd id="relatedList">
+                    <h2>Related</h2>
+                    <ul th:disabled="${relatedList}==null">
+                        <li
+                                th:each="item : ${relatedList}"
+                                th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                        >
+                            <p>
+                                <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                            </p>
+                            <h2 th:text="${item.boardTitle}"></h2>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+            <div>
+                <a th:href="@{/user/notice}" class="btn-purple">List</a>
+            </div>
+        </div>
+        <!-- 상세 끝 -->
+
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $("body").addClass("bg-notice");
+        </script>
+    </th:block>
+</th:block>
+
+
+</html>

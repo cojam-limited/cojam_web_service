@@ -1,4 +1,44 @@
+# 기본 환경 선택
 spring:
+  profiles:
+    active: local # 기본 환경 선택
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 8090
+
+#local 환경
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  redis:
+    host: localhost
+    port: 6379
+    password: ''
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save
+  datasource:
+    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    username: cojam
+    password: '@2cojam'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connectionTimeout: 30000
+      maximumPoolSize: 10
+      maxLifetime: 1800000
+      poolName: HikariCP
+      readOnly: false
+      connectionTestQuery: SELECT 1
   devtools:
     remote:
       restart:
@@ -6,6 +46,151 @@ spring:
     livereload:
       enabled: true
   thymeleaf:
+    view-names: thymeleaf/*
+    prefix: classpath:/templates/
+    suffix: .html
     cache: false
-server:
-  port: 8090
+    check-template-location: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: choojameschoo@gmail.com
+    password: '!1wjdwogjs'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+logging:
+  level:
+    root: info
+    io.cojam.web: debug
+myConfig:
+  uploadPath: "/Users/jaeheonjung/PROJECT/localUpload/cojam"
+  hostUrl: "http://localhost:8090"
+
+#개발 환경
+---
+spring:
+  config:
+    activate:
+      on-profile: real
+  redis:
+    host: localhost
+    port: 6379
+    password: ''
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save
+  datasource:
+    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    username: cojam
+    password: '@2cojam'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connectionTimeout: 30000
+      maximumPoolSize: 10
+      maxLifetime: 1800000
+      poolName: HikariCP
+      readOnly: false
+      connectionTestQuery: SELECT 1
+  devtools:
+    remote:
+      restart:
+        enabled: true
+    livereload:
+      enabled: true
+  thymeleaf:
+    view-names: thymeleaf/*
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: true
+    check-template-location: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: choojameschoo@gmail.com
+    password: '!1wjdwogjs'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+logging:
+  level:
+    root: info
+    io.cojam.web: debug
+myConfig:
+  uploadPath: "/Users/jaeheonjung/PROJECT/localUpload"
+  hostUrl: "https://cojamdev.hiblocks.io"
+#운영 환경
+---
+spring:
+  config:
+    activate:
+      on-profile: real
+  redis:
+    host: localhost
+    port: 6379
+    password: ''
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save
+  datasource:
+    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    username: cojam
+    password: '@2cojam'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connectionTimeout: 30000
+      maximumPoolSize: 10
+      maxLifetime: 1800000
+      poolName: HikariCP
+      readOnly: false
+      connectionTestQuery: SELECT 1
+  devtools:
+    remote:
+      restart:
+        enabled: true
+    livereload:
+      enabled: true
+  thymeleaf:
+    view-names: thymeleaf/*
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: true
+    check-template-location: true
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: choojameschoo@gmail.com
+    password: '!1wjdwogjs'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+logging:
+  level:
+    root: info
+    io.cojam.web: debug
+myConfig:
+  uploadPath: "/Users/jaeheonjung/PROJECT/localUpload"
+  hostUrl: "http://localhost:8090"

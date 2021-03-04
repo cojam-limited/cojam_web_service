@@ -1,0 +1,167 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<!-- 모달 - 퀘스트 등록 -->
+<th:block  th:fragment="modalQuestAdd(${seasonCategoryList})">
+    <div th:class="modal-quest-add" th:id="modalQuestAdd">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>등록</legend>
+                <div class="mqa-area">
+                    <dl class="mqa-header">
+                        <dt>Create New Prediction</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul class="mqa-content2">
+                        <li><input name="name" type="text" class="w100p" placeholder="Please enter a title" /></li>
+                        <li>
+                            <select name="name" title="" class="w100p">
+                                <option value="" selected="selected">Please select a category</option>
+                                <option th:if="${seasonCategoryList} != null"
+                                        th:each="item : ${seasonCategoryList}"
+                                        th:value="${item.categoryKey}" th:text="${item.categoryName}"></option>
+                            </select>
+                        </li>
+                        <li><input name="name" type="text" id="schDate" class="w100p" placeholder="Please enter a date" /></li>
+                        <li>
+                            <div class="input-file">
+                                <label>
+                                    File Attach
+                                    <input type="file" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                                </label>
+                                <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="Attach an image">
+                            </div>
+                        </li>
+                        <li><input name="name" type="text" class="w100p" placeholder="Enter the sns url" /></li>
+                    </ul>
+                    <ol class="mqa-content1">
+                        <li>Select a Type</li>
+                        <li>
+                            <a><i class="uil uil-plus-circle"></i></a>
+                            <a><i class="uil uil-minus-circle"></i></a>
+                        </li>
+                    </ol>
+                    <ul class="mqa-content2" id="answerList">
+                        <li><input name="answers" type="text" class="w100p" placeholder="" value="Yes" /></li>
+                        <li><input name="answers" type="text" class="w100p" placeholder="" value="No" /></li>
+                    </ul>
+                    <p class="mqa-btn">
+                        <a href="#">Complete</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function(){
+                $('#modalQuestAdd').iziModal({width : '500px'});
+            });
+
+            $(document).on('click','.mqa-content1 > li > a',function (e){
+
+                if($(this).find('.uil-plus-circle').length > 0){
+                    const liChild = document.createElement('li');
+                    const inputChild = document.createElement('input');
+
+                    inputChild.setAttribute("type", "text");
+                    inputChild.setAttribute("name", "answers");
+                    inputChild.setAttribute("value", "Yes");
+                    inputChild.setAttribute("class", "w100p");
+                    inputChild.setAttribute("placeholder", "");
+                    liChild.appendChild(inputChild);
+
+                    $('#answerList').append(liChild);
+                }else{
+                    $('#answerList > li').last().remove();
+                }
+            });
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalCategoryAdd(${categoryList})">
+    <!-- 모달 - 카테고리 등록 -->
+    <div class="modal-category-add" id="modalCategoryAdd">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <div class="mca-area">
+                    <h2>Add New Category</h2>
+                    <div>
+                        <input type="text" placeholder="카테고리명을 입력하세요.">
+                        <a href="#" class="mca-add-btn"><i class="uil uil-plus-circle"></i></a>
+                    </div>
+                    <h2>Delete Category</h2>
+                    <p class="close-btn"><i class="uil uil-times modal-close" data-izimodal-close=""></i></p>
+                    <ul>
+                        <li th:each="item : ${categoryList}">
+                            <div th:text="${item.categoryName}"></div>
+                            <a href="#"class=mca-delete-btn>
+                                <i class="uil uil-minus-circle"></i>
+                            </a>
+                            <input th:type="hidden" th:name="categoryList" th:value="${item.boardCategoryKey}+'|'+${item.categoryName}">
+                        </li>
+                    </ul>
+                    <p class="mca-btn">
+                        <a href="#">Complete</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - 카테고리 등록 끝 -->
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function(){
+                $('#modalCategoryAdd').iziModal({width : '500px'})
+            });
+        </script>
+    </th:block>
+</th:block>
+<th:block th:fragment="homePopup(${mainPopupList})">
+    <script th:src="@{/assets/js/jquery.cookie.js}"></script>
+    <th:block
+        th:if="${mainPopupList} != null"
+        th:each="popup : ${mainPopupList}"
+    >
+        <!-- 레이어팝업 -->
+        <div th:id="'mainPop'+${popup.popupKey}" class="main-popup" th:style="'top:'+${popup.positionX}+'px; left:'+${popup.positionY}+'px;display:none;'" >
+            <div>
+                <a href="#">
+                    <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" />
+                </a>
+            </div>
+            <dl>
+                <dt class="mainPopDayClose">Don't open any more today</dt>
+                <dd class="mainPopupClose">Close</dd>
+            </dl>
+        </div>
+        <!-- 레이어팝업 끝 -->
+        <script>
+            $(document).ready(function(){
+
+            });
+
+
+            $('.main-popup').each(function (){
+               const popId = $(this).attr('id');
+               if($.cookie(popId)!='Y'){
+                   $(this).fadeIn();
+               }
+            });
+
+            $(document).on('click','.mainPopupClose',function (e){
+               const popIndex = $('.mainPopupClose').index(this);
+               $('.main-popup').eq(popIndex).fadeOut('fast');
+
+            });
+
+            $(document).on('click','.mainPopDayClose',function (e){
+                const popIndex = $('.mainPopDayClose').index(this);
+                $.cookie($('.main-popup').eq(popIndex).attr('id'), 'Y', {expires : 1});
+                $('.main-popup').eq(popIndex).fadeOut('fast');
+            });
+        </script>
+    </th:block>
+
+
+</th:block>
+</html>

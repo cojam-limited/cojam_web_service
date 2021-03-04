@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.FileDao">
+
+    <select id="getFileInfo" parameterType="String" resultType="io.cojam.web.domain.FileInfo">
+       SELECT
+            FILE_KEY,
+            TABLE_KEY,
+            FILE_REAL_NAME,
+            FILE_CHANGE_NAME,
+            FILE_PATH,
+            FILE_SIZE,
+            FILE_EXTENSION,
+            CREATE_MEMBER_KEY,
+            CREATE_DATE_TIME,
+            UPDATE_MEMBER_KEY,
+            UPDATE_DATE_TIME,
+            DELETED
+        FROM	TB_FILE
+        WHERE	FILE_KEY = #{fileKey}
+    </select>
+
+    <insert id="saveFileInfo" parameterType="io.cojam.web.domain.FileInfo">
+        INSERT INTO TB_FILE
+        (
+            FILE_KEY, TABLE_KEY, FILE_REAL_NAME, FILE_CHANGE_NAME, FILE_PATH, FILE_SIZE, FILE_EXTENSION, CREATE_MEMBER_KEY, UPDATE_MEMBER_KEY
+        )
+        VALUES
+        (
+            #{fileKey}, #{tableKey}, #{fileRealName}, #{fileChangeName}, #{filePath}, #{fileSize}, #{fileExtension}, #{createMemberKey}, #{updateMemberKey}
+        )
+    </insert>
+
+
+    <delete id="deleteFileInfo" parameterType="io.cojam.web.domain.FileInfo">
+        DELETE
+        FROM TB_FILE
+        WHERE FILE_KEY = #{fileKey}
+        AND DELETED = true
+    </delete>
+</mapper>

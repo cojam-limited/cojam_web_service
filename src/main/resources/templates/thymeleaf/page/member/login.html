@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/login_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<!-- 로그인 -->
+<div layout:fragment="content" class="login-area">
+    <div>
+        <form name="loginForm" method="post" action="#">
+            <fieldset>
+                <legend>로그인</legend>
+                <h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+                <div>
+                    <a href="/user/login" class="active">Sing In</a>
+                    <a href="/user/join">Sing up</a>
+                </div>
+                <ul>
+                    <li>
+                        <input type="text" name="userIdText" title="ID" maxlength="35" class="id-icn" placeholder="ID" value=""/>
+                    </li>
+                    <li>
+                        <input type="password" name="userPassText" title="Password" maxlength="20" class="pw-icn" placeholder="PASSWORD" autocomplete="off"/>
+                    </li>
+                </ul>
+                <h3>
+                    <input type="checkbox" name="" value="" id="idSaveCheck" title="Stay signed in" checked="checked" />
+                    <label for="idSaveCheck">Stay signed in</label>
+                </h3>
+                <p>
+                    <a th:onclick="|javascript:fnLogin()|">Login</a>
+                </p>
+                <dl>
+                    <dt><a href="/user/idFind">Find ID</a></dt>
+                    <dd><a href="/user/pass/email">Reset Password</a></dd>
+                </dl>
+            </fieldset>
+        </form>
+    </div>
+    <!-- index.html 고유 스크립트 추가 -->
+    <th:block layout:fragment="script">
+
+        <script>
+            $(document).ready(function() {
+                $("input").keydown(function(key) {
+                    if (key.keyCode == 13) {
+                        fnLogin();
+                    }
+                });
+            });
+
+            function fnLogin(){
+
+                const id = $("input[name=userIdText]");
+                const pw = $("input[name=userPassText]");
+
+                if(id.val() == ""){
+                    toastr.error('Please enter your ID');
+                    return false;
+                }
+
+                if(pw.val() == ""){
+                    toastr.error('Please enter your Password');
+                    pw.focus();
+                    return false;
+                }
+                $.ajax({
+                    url:"/login",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        memberId : id.val(),
+                        memberPassword : pw.val()
+                    },
+                    success : function(response){
+                        if(response.code == "200"){
+                            window.location = response.item.url;
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        </script>
+    </th:block>
+</div>
+<!-- 로그인 끝 -->
+</html>

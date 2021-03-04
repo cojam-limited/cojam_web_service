@@ -1,0 +1,145 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<div th:fragment="headerFragment" id="header" th:with="currentPage=${#httpServletRequest.requestURI}">
+    <div class="header">
+        <dl>
+            <dt>
+                <h2>
+                    <a href="/user/home"><img src="/assets/image/common/logo_white.png" alt="" title=""/></a>
+                </h2>
+                <div>
+                    <a href="/user/home">Home</a>
+                    <a href="/user/quest">Quest</a>
+                    <a href="/user/service">Service</a>
+                    <a href="/user/about">About</a>
+                    <a href="/user/notice">Notice</a>
+                </div>
+            </dt>
+            <dd sec:authorize="isAuthenticated()">
+                <!-- 로그인 했을때 -->
+                <h2><i class="uil uil-user-circle"></i> <th:block sec:authentication="principal.memberName"></th:block> <span>(1,234 CT)</span></h2>
+                <div>
+                    <a href="/cms/home" sec:authorize="hasAnyAuthority('ADMIN','VIP')" ><i class="uil uil-user-circle"></i> ADMIN</a>
+                    <a href="/user/mypage"><i class="uil uil-user-circle"></i> MYPAGE</a>
+                    <a href="javascript:fnLogOut();"><i class="uil uil-sign-out-alt"></i> LOGOUT</a>
+                </div>
+            </dd>
+            <dd sec:authorize="!isAuthenticated()">
+                <!-- 로그인 안했을때 -->
+                <div>
+                    <a href="/user/join"><i class="uil uil-user-circle"></i> JOIN</a>
+                    <a href="/login"><i class="uil uil-sign-in-alt"></i> LOGIN</a>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <!-- 상단영역 끝 -->
+
+
+    <!-- 모바일 - 상단영역 -->
+    <div class="header-mobile">
+        <dl>
+            <dt>
+                <a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title=""/></a>
+            </dt>
+            <dd sec:authorize="isAuthenticated()">
+                <a href="/user/mypage"><i class="uil uil-user-circle"></i></a>
+                <a th:onclick="|javascript:fnLogOut()|"><i class="uil uil-sign-out-alt"></i></a>
+            </dd>
+            <dd sec:authorize="!isAuthenticated()">
+                <a href="/user/join"><i class="uil uil-user-circle"></i></a>
+                <a href="/login"><i class="uil uil-sign-in-alt"></i></a>
+            </dd>
+        </dl>
+    </div>
+    <!-- 모바일 - 상단영역 끝 -->
+
+
+    <!-- 모바일 - 하단영역 -->
+    <div class="footer-mobile">
+        <ul>
+            <li onclick="location.href='/user/home';"
+                th:classappend="${#strings.contains(currentPage, '/user/home')}?'active':''">
+                <p><i class="uil uil-estate"></i></p>
+                <div>Home</div>
+            </li>
+            <li onclick="location.href='/user/quest';"
+                th:classappend="${#strings.contains(currentPage, '/user/quest')}?'active':''">
+                <p><i class="uil uil-file-question-alt"></i></p>
+                <div>Quest</div>
+            </li>
+            <li onclick="location.href='/user/service';"
+                th:classappend="${#strings.contains(currentPage, '/user/service')}?'active':''">
+                <p><i class="uil uil-book"></i></p>
+                <div>Service</div>
+            </li>
+            <li onclick="location.href='/user/about';"
+                th:classappend="${#strings.contains(currentPage, '/user/about')}?'active':''">
+                <p><i class="uil uil-building"></i></p>
+                <div>About</div>
+            </li>
+            <li onclick="location.href='/user/notice';"
+                th:classappend="${#strings.contains(currentPage, '/user/notice')}?'active':''">
+                <p><i class="uil uil-newspaper"></i></p>
+                <div>Notice</div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!-- 상단영역 끝 -->
+<th:block th:fragment="headerCMSFragment" th:with="currentPage=${#httpServletRequest.requestURI}">
+    <!-- 상단영역 -->
+    <div id="header">
+        <!-- 상단영역 -->
+        <div class="header" sec:authorize="isAuthenticated()">
+            <dl>
+                <dt>
+                    <h2>
+                        <a href="/cms/home"><img src="/assets/image/common/logo_white.png" alt="" title="" /></a>
+                    </h2>
+                </dt>
+                <dd>
+                    <h2><i class="uil uil-user-circle"></i> <th:block sec:authentication="principal.memberName"></th:block> <span>님 반갑습니다.</span> </h2>
+                    <!-- 로그인 했을때 -->
+                    <div>
+                        <a href="/user/home" target="_blank"><i class="uil uil-user-circle"></i> HOME</a>
+                        <a href="javascript:fnLogOut()"><i class="uil uil-sign-out-alt"></i> LOGOUT</a>
+                    </div>
+                    <!-- 로그인 안했을때 -->
+                    <!-- <div>
+                      <a href="../member/join.html"><i class="uil uil-user-circle"></i> JOIN</a>
+                      <a href="../member/login.html"><i class="uil uil-sign-in-alt"></i> LOGIN</a>
+                                  </div> -->
+                </dd>
+            </dl>
+        </div>
+        <!-- 상단영역 끝 -->
+    </div>
+    <!-- 상단영역 끝 -->
+    <script>
+        function fnLogOut() {
+
+            $.ajax({
+                url:"/logout",
+                type :  "POST",
+                dataType : "json",
+                beforeSend : function(xhr)
+                {
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+                },
+                success : function(response){
+                    console.debug(response)
+                    if(response.code == "200"){
+                        window.location = response.item.url;
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="thymeleaf/layout/login_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- 비밀번호 변경 -->
+<div layout:fragment="content" class="idpw-area">
+	<div class="pos-pw-change">
+		<form name="pwForm" method="post" action="#">
+			<input type="hidden" name="fpNumber"  th:value="${fpNumber}"	/>
+			<input type="hidden" name="memberKey" th:value="${memberKey}"	/>
+			<input type="hidden" name="memberId"  th:value="${memberId}"	/>
+			<fieldset>
+				<legend>비밀번호 변경</legend>
+				<h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+				<h3>Please change your password.</h3>
+				<h4>If you forget or lose your password, you will need to change or reset your password.</h4>
+				<ul>
+					<li>
+						<input type="password" name="memberPass" title="Password" maxlength="20" class="pw-icn" placeholder="PASSWORD" autocomplete="off"/>
+					</li>
+					<li>
+						<input type="password" name="memberPassConfirm" title="Confirm Password" maxlength="20" class="pw-icn" placeholder="Confirm Password" autocomplete="off"/>
+					</li>
+				</ul>
+				<div>
+					<a href="/user/idFind">Find ID</a>
+				</div>
+				<p>
+					<a href="javascript:fnChangePass()">Change</a>
+				</p>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<!-- 비밀번호 변경 끝 -->
+<th:block layout:fragment="script">
+	<script>
+		$(document).ready(function() {
+			$("input").keydown(function(key) {
+				if (key.keyCode == 13) {
+					fnChangePass();
+				}
+			});
+		});
+
+		function fnChangePass() {
+
+
+			if($("input[name=memberPass]").val()==""){
+				toastr.warning('Please enter your password');
+				return;
+			}
+
+			if($("input[name=memberPass]").val() != $("input[name=memberPassConfirm]").val()){
+				toastr.warning('Passwords do not match each other.');
+				return;
+			}
+
+			const passwdCheck = RegExp(/^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,16}$/);
+			if( !passwdCheck.test( $("input[name=memberPass]").val() ) ) {
+				toastr.warning('The password must be 8-16 characters long, including at least one English uppercase and lowercase letter, number, and special character.');
+				return;
+			}
+
+			$.ajax({
+				url:"/user/pass/change",
+				type :  "POST",
+				dataType : "json",
+				data : $('form[name=pwForm]').serialize(),
+				success : function(response){
+					if(response.check){
+						toastr.error(response.message);
+						location.href ='/login';
+					} else {
+						toastr.error(response.message);
+					}
+				}
+			});
+
+		}
+	</script>
+</th:block>
+</html>

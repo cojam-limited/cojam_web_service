@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/login_layout">
+<th:block layout:fragment="css">
+
+</th:block>
+
+<div layout:fragment="content" class="idpw-area">
+    <div class="pos-idfind" id="searchArea">
+        <form name="idSearchForm" method="post" action="#">
+            <fieldset>
+                <legend>아이디 찾기</legend>
+                <h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+                <h3>Forgot your ID?</h3>
+                <h4>Please enter the name and email you entered when registering as a member.</h4>
+                <ul>
+                    <li>
+                        <input type="text" name="memberName" title="name" maxlength="20" class="name-icn" placeholder="Name" />
+                    </li>
+                    <li>
+                        <input type="text" name="memberEmail" title="email" maxlength="35" class="email-icn" placeholder="E-Mail" />
+                    </li>
+                </ul>
+                <div>
+                    <a href="/user/pass/email">Reset Password</a>
+                </div>
+                <p>
+                    <a href="javascript:fnSearchId()">Confirm</a>
+                </p>
+            </fieldset>
+        </form>
+    </div>
+    <div class="pos-idfind-complete" id="confirmArea" style="display: none">
+        <h2><a href="/"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+        <h3>I found the ID for the information you entered.</h3>
+        <h5 id="textMemberName">
+        </h5>
+        <p>
+            <a href="/user/home" class="w48p">Main</a>
+            <a href="/login" class="w48p">Login</a>
+        </p>
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+    <script>
+        function fnSearchId() {
+
+            if($("input[name=memberName]").val()==""){
+                toastr.warning('Please enter your name');
+                return;
+            }
+
+            if($("input[name=memberEmail]").val()==""){
+                toastr.warning('Please enter your email');
+                return;
+            }
+
+            const emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+            if( !emailCheck.test( $("input[name=memberEmail]").val() ) ) {
+                toastr.warning('Email format is incorrect.');
+                return;
+            }
+            $.ajax({
+                url:"/user/idFind",
+                type :  "POST",
+                dataType : "json",
+                data : $('form[name=idSearchForm]').serialize(),
+                success : function(response){
+                    console.debug(response);
+                    if(response.check){
+                        $("#textMemberName").html(response.item.memberId);
+                        $("#searchArea").hide();
+                        $("#confirmArea").show();
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+
+        }
+    </script>
+</th:block>
+</html>
