@@ -48,11 +48,35 @@
           <!-- 왼쪽영역 끝 -->
           <div class="content">
 
+            <!-- 모달 - 펜딩사유 등록 -->
+            <div class="modal-pending-reason" id="modalPendingReason">
+              <form name="addForm" method="post" action="">
+                <fieldset>
+                  <div class="mpr-area">
+                    <h2>Please select a reason.</h2>
+                    <div>
+                      <label for="reason1"><input type="radio" name="reason" value="reason1" id="reason1"> Pending1</label>
+                      <label for="reason2"><input type="radio" name="reason" value="reason2" id="reason2"> Pending2</label>
+                      <label for="reason3"><input type="radio" name="reason" value="reason3" id="reason3"> Pending3</label>
+                      <label for="reason4"><input type="radio" name="reason" value="reason4" id="reason4"> Pending4</label>
+                    </div>
+                    <div>
+                      <label for="reason5"><input type="radio" name="reason" value="reason5" id="reason5">기타</label><input type="text" placeholder="기타사유를 입력해주세요.">
+                    </div>
+                    <p class="close-btn"><i class="uil uil-times modal-close" data-izimodal-close=""></i></p>
+                    <p class="mpr-btn">
+                      <a href="#">Complete</a>
+                    </p>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <!-- 모달 - 펜딩사유 등록 끝 -->
             <div class="table-title">
               <h2><i class="uil uil-chat-info"></i>  Approve Market </h2>
               <div>
                 <a href="#">Hot</a>
-                <a href="#">Pend</a>
+                <a href="#" data-izimodal-open="#modalPendingReason" data-izimodal-transitionin="comingIn" class="modal-btn">Pend</a>
                 <a href="#">Finish</a>
                 <a href="#">Adjourn</a>
                 <a href="#">Success</a>
@@ -63,10 +87,6 @@
               <div>
                 <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
               </div>
-              <ul>
-                <li><i class="uil uil-file-plus-alt"></i></li>
-                <li><i class="uil uil-trash-alt"></i></li>
-              </ul>
             </div>
 
             <div class="table-default">
@@ -212,6 +232,12 @@
             </div>
           </div>
         </div>
+        <script>
+          $(document).ready(function() {
+            // 모달 - 카테고리 - 등록/상세 //
+            $('#modalPendingReason').iziModal({width : '500px'})
+          });
+        </script>
     </div>
   </body>
 </html>
