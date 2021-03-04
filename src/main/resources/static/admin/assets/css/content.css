@@ -1,41 +1,42 @@
 @charset "utf-8";
 
 #left-sidebar {width: 14%;  min-width:260px;} 
-.content {width:86%;}
+.content {width:86%; padding-bottom: 50px; } 
 /*/////////////////////////////////////content 공통css/////////////////////////////////// */
 /* content제목 공통css */
 .table-title {display:flex; justify-content:space-between; align-items:flex-end; width:100%; min-width:1300px; padding:30px 10% 30px 30px; border-bottom:1px solid rgba(0,0,0,0.1);}
 .table-title h2 {font-size:35px; color:#333; font-weight:700;  }
-.table-title div a {background-color: #e9e9e9; padding:10px; border-radius: 5px; margin-left: 5px; box-sizing: border-box;  font-weight: 600; font-size: 14px;}
+.table-title div a {background-color: #192e39; padding:10px; border-radius: 5px; margin-left: 5px; box-sizing: border-box;  font-weight: 600; font-size: 14px; color: #fff;}
 .table-title div a:hover {background-color: #8950fc; color: #fff;}
 .modal-btn a {background-color: #ef168f !important; color: #fff;}
 .modal-btn a:hover {box-shadow:inset 0 0 10px rgba(0,0,0,0.4);}
 
 
 .table-option {display:flex; justify-content:space-between; width:80%; min-width:1300px; margin:auto;  padding:50px 0 10px 0; }
-.table-option div {display:flex; padding:3px 10px; border:1px solid #e1e1e1; border-radius:10px;}
+.table-option div {display:flex; padding:3px 10px; border:2px solid #d1d1d1; border-radius:10px; background-color: #fff;}
 .table-option div input {height:30px; outline:none; background-color:#fff; border:none;}
 .table-option div button {border:none; outline:none; font-size:20px; background-color:#fff; cursor:pointer;}
 .table-option div select {height:30px; border:none; background-color:transparent; outline:none; margin-right:15px;}
 .table-option ul {display:flex; justify-content:space-between; font-size:26px; text-align:center;}
-.table-option ul li {background-color:#e9e9e9; border-radius:5px; cursor:pointer; transition:0.5s; padding: 2px 7px; margin-left:10px;}
+.table-option ul li {background-color:#f2f5fb; border-radius:5px; cursor:pointer; transition:0.5s; padding: 2px 7px; margin-left:10px; color: #555; border:2px solid #d1d1d1;}
 .table-option ul li:nth-child(1):hover {background-color:#8950fc; color:#fff;}
 .table-option ul li:nth-child(2):hover {background-color:red; color:#fff;}
 .table-option ul li:nth-child(1):hover a {color: #fff;}
 
 /* content 테이블 공통 css */
 .table-default {width:100%; min-width:1200px; }
-.table-default table {width:80%; min-width:1200px; margin:auto; text-align:center; font-size:15px; background-color: #fff; border-radius: 10px;}
-.table-default table thead {background-color:#192e39; color:#fff; font-weight: 600;}
+.table-default table {width:80%; min-width:1200px; margin:auto; text-align:center; font-size:15px; background-color: #f9f9f9; border-radius: 10px; box-shadow:0 0 10px rgba(0,0,0,0.2); overflow: hidden;}
+.table-default table thead {background-color:#f2f5fb; color:#555; font-weight: 600; border-bottom:2px solid #d1d1d1;}
 .table-default table tr {padding:10px 0; height:3.0em; border-bottom:1px solid rgba(0,0,0,0.1);}
+.table-default table tr:last-child {border-bottom:none;}
 .table-default table tr td select {outline:none; background-color:transparent; cursor:pointer;}
-.table-default table tr td a {color: #fff;}
+.table-default table tr td a {color: #555;}
 .table-default table tr td img {border-radius:5px; width:50px; height:50px; margin:5px 0; cursor:pointer;}
 .table-default table tr td h5 {max-width:550px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; cursor:pointer; font-size: 15px; margin: auto;}
 .table-default table tr td ul {display:flex; justify-content:space-around; width:80%; margin:auto;}
-.table-default table tr td ul li {width:35%; border-radius:10px; color:#fff; cursor:pointer; line-height:35px; font-size:20px;}
-.table-default table tr td ul li:nth-child(1) {background-color:#8950fc;}
-.table-default table tr td ul li:nth-child(2) {background-color:#ef5350;}
+.table-default table tr td ul li {width:35%; border-radius:10px; cursor:pointer; line-height:35px; font-size:20px;}
+.table-default table tr td ul li:nth-child(1):hover a {color: #8950fc;}
+.table-default table tr td ul li:nth-child(2):hover a { color:red;}
 /*///////////////////// 클릭시 각 차순 정렬 ////////////////////////*/
 .table-default table tr td span {font-size:20px; cursor:pointer;  }
 
@@ -49,7 +50,8 @@
 .paging-list > a:last-child:hover {background-color:#e9e9e9; color:#777; border:#e9e9e9 1px solid; box-shadow:inset 1px 1px 3px rgba(0,0,0,0.1);}
 
 
-/* 모달 카테고리 등록 */
+/* 모달 등록 */
+/*/////////////카테고리 추가///////////////*/
 .modal-category-add {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.3); overflow:hidden;}  
 .mca-area {padding:0px 30px 30px 30px;}
 .mca-area h2 {margin-top:35px; font-weight:700; font-size:20px; line-height:30px; color:#222; text-align:center;} 
@@ -65,60 +67,88 @@
 .mca-area .mca-btn {margin-top:30px; overflow:hidden;}
 .mca-area .mca-btn a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:7px; background:#8950fc; overflow:hidden;}
 .mca-area .mca-btn a:hover {color:#fff; background-color:#192e39;}
-/* 모달 카테고리 끝 */
+/*/////////////펜딩사유 ///////////////*/
+.modal-pending-reason{width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.3); overflow:hidden; }  
+.mpr-area {padding:0px 30px 30px 30px;}
+.mpr-area h2 {margin-top:35px; font-weight:700; font-size:20px; line-height:30px; color:#222; text-align:center;} 
+.mpr-area > div {display: flex; justify-content: space-between; align-items: center; margin-top:20px;}
+.mpr-area > div input[type="text"] {width:380px;}
+.mpr-area > div input[type="radio"] {margin-top:-1px; margin-right:10px; vertical-align:middle;}
+.mpr-area > div label {cursor: pointer;}
+.mpr-area .close-btn {position:absolute; right:10px; top:10px; font-size:30px; color:#222; cursor:pointer; }
+.mpr-area .mpr-btn {margin-top:30px; overflow:hidden;}
+.mpr-area .mpr-btn a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:7px; background:#8950fc; overflow:hidden;}
+.mpr-area .mpr-btn a:hover {color:#fff; background-color:#192e39;}
+/* 모달 끝 */
 /*/////////////////////////////////////공통css 끝/////////////////////////////////// */
 
 
 /* post-form 시작 */
-.post-form-wrap {width:1200px; margin:auto; margin-top:50px; padding:30px; box-shadow:1px 1px 10px rgba(0,0,0,0.1);   border-radius: 15px;}
-.post-form-wrap > div {display: flex; align-items:flex-end; width:1000px; margin:auto; border-bottom: 1px solid #eee; padding-bottom:30px;}
+.post-form-wrap {width:1200px; margin:auto; margin-top:50px; padding:30px; box-shadow:1px 1px 10px rgba(0,0,0,0.1);   border-radius: 15px; background-color: #fff;}
+.post-form-wrap > div {display:flex; align-items:flex-end; width:1000px; margin:auto; border-bottom:2px solid #e1e1e1; padding-bottom:30px;}
 .post-form-wrap > div > p {width:220px; height:170px; border-radius:10px; overflow:hidden;}
 .post-form-wrap > div > div {margin-left:75px; width:700px;}
 .post-form-wrap > div > div > label {width:100px; height:30px; line-height:30px; background-color:#192e39;}
-.post-form-wrap > div > div > input {width:1000px; margin-top:10px;}
+.post-form-wrap > div > div > input {width:1000px; margin-top:10px; }
 .post-form-wrap .post-form {width:1000px; margin:auto; margin-top:20px; text-align:left; font-size:16px;  } 
 .post-form-wrap .post-form th, table.post-view td {padding:5px;}
 .post-form-wrap .post-form th {font-size:15px;}
 .post-form-wrap .post-form th span {color:red;}
-.post-form-wrap .post-form td input {padding:15px; border:1px solid #e9e9e9; background-color:transparent;}
-.post-form-wrap .post-form td select {width:250px; background-color:transparent; border:1px solid #e9e9e9;}
-.post-form-wrap .post-form td textarea {width:700px; height:200px; padding:15px; background-color:transparent; border:1px solid #e9e9e9;}
+.post-form-wrap .post-form td input {padding:15px; border:1px solid #e1e1e1; background-color:transparent;}
+.post-form-wrap .post-form td select {width:250px; background-color:transparent; border:1px solid #e1e1e1;}
+.post-form-wrap .post-form td textarea {width:700px; height:200px; padding:15px; background-color:transparent; border:1px solid #e1e1e1;}
 
 .form-button {display:flex; justify-content:flex-end; width:1200px; margin:auto; margin-top:20px;}
-.form-button a {padding:0px 20px; margin-left:15px; line-height:40px; text-align:center; color:#000; font-size:15px;  background-color:#e1e1e1; border-radius:5px;}
-.form-button a:hover {color: #000; box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);}
+.form-button a {padding:0px 20px; margin-left:15px; line-height:40px; text-align:center; color:#000; font-size:15px; background-color:#e1e1e1; border-radius:5px;}
+.form-button a:hover {color:#000; box-shadow:inset 0px 0px 10px rgba(0,0,0,0.3);}
 /* post-form 끝 */
 
 /* pop-up form 시작 */
-.popup-form-wrap {width:1200px; margin:auto; padding:30px; margin-top:50px; box-shadow:1px 1px 10px rgba(0,0,0,0.1); border-radius:15px; }
-.popup-form  {width:1000px; margin:auto; text-align:left; font-size:16px; border:1px solid #e9e9e9;}
-.popup-form tr {line-height:30px; }
-.popup-form tr td {width:300px; padding-left: 10px; border:1px solid #e9e9e9;}
+.popup-form-wrap {width:1200px; margin:auto; margin-top:50px; box-shadow:1px 1px 10px rgba(0,0,0,0.1); border-radius:15px; background-color:#fff; overflow: hidden; }
+.popup-form  {width:1200px; margin:auto; text-align:left; font-size:16px; border:1px solid #e9e9e9;}
+.popup-form tr {line-height:35px; }
+.popup-form tr td {width:300px; padding-left:10px; border:1px solid #e9e9e9;}
 .popup-form tr td input {padding:0; border:none; background-color:transparent; outline:none; font-size:14px;}
 .popup-form tr td input[type="radio"] {margin-top:-1px; margin-right:10px; vertical-align:middle; cursor:pointer;}
 .popup-form tr td input[type="number"]  {width:30%; padding:5px; border:1px solid #efefef; border-radius:5px;} 
-.popup-form tr td input[type="url"] {width: 100%;}
+.popup-form tr td input[type="url"] {width:100%;}
 .popup-form tr td label {margin-right:15px;}
-.popup-form tr td ul {display:flex; justify-content:start; align-items: center;}
+.popup-form tr td ul {display:flex; justify-content:start; align-items:center;}
 .popup-form tr td ul li {margin-right:15px;}
 .popup-form tr td p {width:200px; height:200px; border-radius:10px; overflow:hidden;}
-.popup-form tr td img {width: 100%; }
+.popup-form tr td img {width:100%; }
 .popup-form tr td > div {display:flex; }
-.popup-form th {width:200px; font-size:15px; border-bottom:1px solid #e9e9e9; border-right:2px solid #e1e1e1; background-color:#efefef;}
+.popup-form th {width:200px; font-size:15px; border-bottom:1px solid #e9e9e9; border-right:2px solid #e1e1e1; background-color:#f2f5fb;}
 .popup-form th span {color:red;}
 .popup-form th, table.popup-form-table td {padding:5px 15px;}
 .popup-form .input-file {margin-left:15px; margin-top:120px;}
 .popup-form .input-file label {width:100px; height:30px; line-height:30px; background-color:#192e39;}
-.popup-form .input-file input[type="text"] {width: 500px; margin-top:10px; padding-left:10px; border: 1px solid #e9e9e9;}
+.popup-form .input-file input[type="text"] {width:500px; margin-top:10px; padding-left:10px; border:1px solid #e9e9e9;}
 
 /* season */
-.season-list-wrap {width:1300px; margin: auto; padding-bottom:80px;}
-.season-list-option {display: flex; justify-content: flex-end; align-items: center; margin-right:50px; margin-top:50px;}
-.season-list-option label {margin-right:30px;  font-size:15px;}
-.season-list-option input[type="radio"] {margin-top:-1px; margin-right:10px; vertical-align: middle;}
-.season-list {width:1200px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.3); border-radius:15px; margin-top:20px; overflow: hidden;}
-.season-list-option a {padding:10px 15px; color: #fff; font-weight: 600; background-color: #8950fc; border-radius:5px;}
+.season-list-wrap {width:1300px; margin:auto; padding-bottom:150px;}
+.season-list-option {display:flex; justify-content:flex-end; align-items:center; margin-right:50px; margin-top:50px;}
+.season-list-option label {margin-right:30px; font-size:15px;}
+.season-list-option input[type="radio"] {margin-top:-1px; margin-right:10px; vertical-align:middle;}
+.season-list-option a {padding:10px 15px; font-size:14px; font-weight:700; background-color:#8950fc; border-radius:5px; transition: 0.7s; color: #fff; }
+.season-list-option a:hover {color:#fff; background-color:#8950fc; box-shadow:inset 0 0 10px rgba(0,0,0,0.4);}
+.season-list-option input[type="radio"] {cursor:pointer;}
+.season-list {width:1200px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.1); border-radius:15px; margin-top:20px; overflow:hidden;}
 .season-list table {width:1200px; margin:auto; font-size:15px; text-align:left;}
-.season-list table tr {height:3em; border-bottom:1px solid #c5c5c5; }
-.season-list table th {width:250px; padding-left:15px; color:#fff; font-size:15px; border-bottom:1px solid #a1a1a1; background-color:#192e39; font-weight: 600; }
-.season-list table td {padding-left:15px;} 
+.season-list table tr {height:3em; border-bottom:1px solid #e9e9e9; }
+.season-list table th {width:250px; padding-left:15px; color:#333; font-size:15px; border-bottom:1px solid #e9e9e9; background-color:#f2f5fb; font-weight:600; border-right: 2px solid #e9e9e9;}
+.season-list table td {padding-left:15px;  background-color: #fff;} 
+.season-add-btn {width:1200px; margin:auto;}
+.season-add-btn a {float:right; padding:10px 15px; margin-top:30px; font-size:15px; color:#fff; font-weight:600; background-color:#8950fc; border-radius:5px;}
+.season-add-btn a:hover {color:#fff; box-shadow:inset 0 0 10px rgba(0,0,0,0.4);}
+
+/* season-form 시작 */
+.season-form-wrap {width:1200px; margin:auto; box-shadow:0px 0px 10px rgba(0,0,0,0.3);border-radius:15px; padding:30px 0; margin-top:50px; background-color:#fff; }
+.season-form-wrap h2 {width:1000px; margin:auto; font-size:26px; font-weight:600; color:#000;}
+.season-form {width:1000px; margin:auto; border-collapse:separate; border-spacing:0 15px; text-align:left;  margin-top:30px; }
+.season-form tr {line-height:30px;}
+.season-form th {font-size:15px; font-weight:600;}
+.season-form td {border:1px solid #cdcdcd; border-radius:5px; padding:3px 10px;}
+.season-form td input[type="text"] {background-color:transparent; outline:none; border: none; padding: 0; height: 25px;}
+.season-form td input[type="number"] {width:100%; background-color:transparent; outline:none; border:none; height:25px; }
+.season-form tr td > table {width:90%; border-collapse:separate; border-spacing:0 5px;}
