@@ -112,7 +112,9 @@ html {
 .left > .accordion-menu  {width:100%; }
 .left > .accordion-menu ul li {padding:10px 15px 10px 30px; font-size:16px; color:#fff; cursor:pointer; line-height:30px; font-weight:500; border-bottom:1px solid rgba(255,255,255,0.2 ); }
 .left > .accordion-menu ul li a {color:#fff;}
-.left > .accordion-menu ul li:hover {font-weight:700; }
+.left > .accordion-menu ul li:hover {font-weight:700;}
+.left > .accordion-menu ul li.active {font-weight:700; color:#333; background:#e9e9e9; box-shadow:inset 3px 3px 5px rgba(0,0,0,0.2);}
+.left > .accordion-menu ul li.active a { color:#333;}
 .left > .accordion-menu ul li p span {color:#8950fc; font-size:22px;}
 .left > .accordion-menu ul li a span {color:#8950fc; font-size:22px;}
 .left > .accordion-menu ul li div { padding:0 30px; color:#777; font-weight:500; display:none;}
