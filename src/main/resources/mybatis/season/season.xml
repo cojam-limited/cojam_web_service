@@ -32,4 +32,42 @@
         FROM	TB_SEASON_CATEGORY
         ORDER BY ORDER_NUMBER
     </select>
+
+
+    <select id="getSeasonList" parameterType="io.cojam.web.domain.Season" resultType="io.cojam.web.domain.Season">
+        SELECT
+            S.SEASON_KEY,
+            S.ALPHA_DTTM,
+            S.CHARITY_FEE,
+            S.COJAM_FEE,
+            S.CREATED_DTTM,
+            S.CREATOR_FEE,
+            S.CREATOR_PAY,
+            S.DESCRIPTION,
+            S.IS_ACTIVE,
+            S.MINIMUM_PAY,
+            S.OMEGA_DTTM,
+            S.TITLE,
+            S.MAXIMUM_PAY,
+            S.TRANSFER_PAY,
+            CT.CT_JSON
+        FROM	TB_SEASON S ,(
+                         SELECT
+                CM.SEASON_KEY
+                 ,CONCAT('[',
+                     GROUP_CONCAT(
+                            CONCAT('{')
+                            ,CONCAT('"categoryKey":"',CM.CATEGORY_KEY,'"')
+                            ,CONCAT(',"categoryName":"',CT.CATEGORY_NAME,'"')
+                            ,CONCAT(',"limitation":"',CM.LIMITATION,'"')
+                            ,CONCAT('}',',')
+                         ORDER BY CT.ORDER_NUMBER)
+                     ,']') AS CT_JSON
+            FROM TB_SEASON_CATEGORY_MAPPING CM ,TB_SEASON_CATEGORY CT
+            WHERE CM.CATEGORY_KEY = CT.CATEGORY_KEY
+            GROUP BY CM.SEASON_KEY
+            ) CT
+        WHERE S.SEASON_KEY = CT.SEASON_KEY
+        ORDER BY is_active DESC , created_dttm DESC;
+    </select>
 </mapper>

@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class MyConfig {
+
     @Value("${myConfig.uploadPath}")
     private String uploadPath;
 
+    @Value("${myConfig.hostUrl}")
+    private String hostUrl;
 }

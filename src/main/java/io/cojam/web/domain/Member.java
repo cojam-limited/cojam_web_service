@@ -28,5 +28,7 @@ public class Member extends Common{
     @JsonIgnore
     private String fpNumber;
     private String memberRole;
+    private String walletAddress;
+
 
 }

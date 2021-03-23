@@ -10,75 +10,8 @@
 
 <div layout:fragment="content">
     <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestAdd(${seasonCategoryList})"></th:block>
-    <!-- 모달 - 퀘스트 시즌 -->
-    <div class="modal-quest-season" id="modalQuestSeason">
-        <div class="mqs-area">
-            <dl class="mqs-header">
-                <dt>Create Season of COJAM Service!</dt>
-                <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
-            </dl>
-            <div class="mqs-date"><i class="uil uil-calendar-alt"></i> 2021.01.4 ~ 2021.12.31 (331)</div>
-            <ul class="mqs-content">
-                <li>
-                    <h3>ART</h3>
-                    <div>
-                        <div style="width:30%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Science</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Crowdsolving</h3>
-                    <div>
-                        <div style="width:60%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Competition</h3>
-                    <div>
-                        <div style="width:50%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Economy</h3>
-                    <div>
-                        <div style="width:3%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Community</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-            </ul>
-            <div class="mqs-info">
-                <h2>Title : Create Season of COJAM Service!</h2>
-                <h2>Description : Create Season of COJAM Service!</h2>
-                <div>
-                    COJAM Fee : <span>8%</span><br />
-                    Charity Fee : <span>2%</span><br />
-                    Creator Fee : <span>5%</span><br />
-                    Creator Pay : <span>0CT</span><br />
-                    Minimum Pay : <span>5,000CT</span><br />
-                    Maximum Pay : <span>300,000CT</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 모달 - 퀘스트 시즌 끝 -->
 
-
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestSeason"></th:block>
     <!-- 기본영역 (타이틀/네비/버튼) -->
     <dl class="title-section">
         <dt>
@@ -120,7 +53,7 @@
         <!-- 리스트 끝 -->
         <div class="quest-list-columns">
             <ul>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></span>
@@ -146,7 +79,7 @@
                         </li>
                     </ul>
                 </li>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/38/cb/36/38cb36f10e0a2913a436893226a22319.jpg') center no-repeat; background-size:cover;"></span>
@@ -168,7 +101,7 @@
                         </li>
                     </ul>
                 </li>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/65/f1/77/65f17733bb1ca10fd3a54745610a767a.jpg') center no-repeat; background-size:cover;"></span>
@@ -206,7 +139,7 @@
                         </li>
                     </ul>
                 </li>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/17/81/41/1781415124ad3c138736bd8aa6bc583b.jpg') center no-repeat; background-size:cover;"></span>
@@ -232,7 +165,7 @@
                         </li>
                     </ul>
                 </li>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
@@ -258,7 +191,7 @@
                         </li>
                     </ul>
                 </li>
-                <li onclick="location.href='view.html';">
+                <li onclick="location.href='/user/quest/view';">
                     <h2>Total <span>258,025</span> CT</h2>
                     <p>
                         <span style="background:url('https://i.pinimg.com/564x/a3/ef/7d/a3ef7d3372f46d737c706ef549d496c6.jpg') center no-repeat; background-size:cover;"></span>
@@ -312,7 +245,6 @@
         <script>
             $("body").addClass("bg-quest");
             // 모달 - 퀘스트 - 시즌정보 //
-            $('#modalQuestSeason').iziModal({width : '500px'});
         </script>
     </th:block>
 </div>

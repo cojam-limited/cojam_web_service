@@ -25,5 +25,6 @@ public class Season {
     private String maximumPay;
     private String transferPay;
     private String dDay;
+    private String ctJson;
 
 }

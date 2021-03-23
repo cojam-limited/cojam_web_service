@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.WalletDao">
+
+    <insert id="saveWallet" parameterType="io.cojam.web.domain.Wallet" >
+        INSERT INTO TB_WALLET
+        (
+            MEMBER_KEY, WALLET_ID, WALLET_NAME, WALLET_ADDRESS, BLOCK_CHAIN, TRANSACTION_ID, WALLET_STATUS
+        )
+        VALUES
+        (
+            #{memberKey}, #{walletId}, #{walletName}, #{walletAddress}, #{blockChain}, #{transactionId}, #{walletStatus}
+        )
+    </insert>
+
+    <select id="getWalletInfo" parameterType="string" resultType="io.cojam.web.domain.Wallet">
+        SELECT
+            MEMBER_KEY
+            , WALLET_ID
+            , WALLET_NAME
+            , WALLET_ADDRESS
+        FROM TB_WALLET
+        WHERE MEMBER_KEY = #{value}
+    </select>
+</mapper>

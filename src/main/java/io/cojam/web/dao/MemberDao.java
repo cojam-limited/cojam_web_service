@@ -37,4 +37,8 @@ public interface MemberDao {
     List<Member> getMemberUserList(Member member);
 
     Integer getMemberUserListCnt(Member member);
+
+    int updateMemberRole(Member member);
+
+    Member getMemberInfoForMemberKey(Member member);
 }

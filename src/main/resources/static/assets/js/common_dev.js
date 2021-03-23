@@ -317,7 +317,9 @@ $.ajaxSetup({
 		xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
 	},
 	error : function(error){
-		console.log('error',error);
+		if(error.status =='403'){
+			location.reload();
+		}
 		toastr.error(error.status,error.statusText);
 	}
 });

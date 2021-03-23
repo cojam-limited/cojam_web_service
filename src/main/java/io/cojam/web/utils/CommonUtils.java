@@ -1,6 +1,8 @@
 package io.cojam.web.utils;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommonUtils {
 
@@ -27,6 +29,21 @@ public class CommonUtils {
 
 
         return authCode;
+    }
+
+    public static String getYoutubeVideoId(String youtubeUrl) {
+        // TODO Auto-generated method stub
+
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|watch\\?v%3D|%2Fvideos%2F|embed%2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+
+        if (matcher.find()) {
+            return matcher.group().split("\\\"")[0];
+        } else {
+            return null;
+        }
     }
 
 }

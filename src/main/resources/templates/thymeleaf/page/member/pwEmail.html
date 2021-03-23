@@ -64,7 +64,7 @@
 				success : function(response){
 					console.debug(response);
 					if(response.check){
-						toastr.error(response.message);
+						toastr.success(response.message);
 					} else {
 						toastr.error(response.message);
 					}

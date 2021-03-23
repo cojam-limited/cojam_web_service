@@ -14,6 +14,70 @@
         ORDER BY ORDER_NUMBER
     </select>
 
+    <select id="getQuestionList" parameterType="io.cojam.web.domain.Question" resultType="io.cojam.web.domain.Question">
+        SELECT
+            Q.QUESTION_KEY,
+            Q.QUESTION,
+            Q.ANSWER,
+            Q.OP_YN,
+            Q.ORDER_NUMBER,
+            Q.CREATE_MEMBER_KEY,
+            Q.CREATE_DATE_TIME,
+            Q.UPDATE_MEMBER_KEY,
+            Q.UPDATE_DATE_TIME,
+            M.MEMBER_NAME
+        FROM	TB_QUESTION Q , TB_MEMBER M
+        WHERE Q.CREATE_MEMBER_KEY = M.MEMBER_KEY
+        ORDER BY ORDER_NUMBER ASC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
 
+    <select id="getQuestionListCnt" parameterType="io.cojam.web.domain.Question" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM	TB_QUESTION
+        WHERE	1=1
+    </select>
 
+    <insert id="saveQuestionInfo" parameterType="io.cojam.web.domain.Question">
+        INSERT INTO TB_QUESTION
+        (
+            QUESTION_KEY, QUESTION, ANSWER, OP_YN, ORDER_NUMBER, CREATE_MEMBER_KEY, UPDATE_MEMBER_KEY
+        )
+        VALUES
+        (
+            #{questionKey}, #{question}, #{answer}, #{opYn}, #{orderNumber}, #{createMemberKey}, #{updateMemberKey}
+        )
+    </insert>
+
+    <update id="updateQuestionInfo" parameterType="io.cojam.web.domain.Question">
+        UPDATE	TB_QUESTION
+        SET	QUESTION = #{question},
+            ANSWER = #{answer},
+            OP_YN = #{opYn},
+            ORDER_NUMBER = #{orderNumber},
+            UPDATE_MEMBER_KEY = #{updateMemberKey},
+            UPDATE_DATE_TIME = now()
+        WHERE	QUESTION_KEY = #{questionKey}
+    </update>
+
+    <delete id="deleteQuestionInfo" parameterType="io.cojam.web.domain.Question">
+        DELETE FROM TB_QUESTION
+        WHERE QUESTION_KEY = #{questionKey}
+    </delete>
+
+    <select id="getQuestionInfo" parameterType="io.cojam.web.domain.Question" resultType="io.cojam.web.domain.Question">
+        SELECT
+            QUESTION_KEY,
+            QUESTION,
+            ANSWER,
+            OP_YN,
+            ORDER_NUMBER,
+            CREATE_MEMBER_KEY,
+            CREATE_DATE_TIME,
+            UPDATE_MEMBER_KEY,
+            UPDATE_DATE_TIME
+        FROM	TB_QUESTION
+        WHERE	QUESTION_KEY = #{questionKey}
+    </select>
 </mapper>

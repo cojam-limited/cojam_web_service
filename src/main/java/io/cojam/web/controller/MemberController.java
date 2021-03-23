@@ -1,11 +1,12 @@
 package io.cojam.web.controller;
 
+import io.cojam.web.account.Account;
 import io.cojam.web.domain.*;
 import io.cojam.web.service.MemberService;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +145,21 @@ public class MemberController {
         model.addAttribute("pagination", pagination);
 
         return "thymeleaf/page/cms/members/members :: #memberList";
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/member/changeAuth", method= RequestMethod.POST)
+    public ResponseDataDTO changeAuth(
+            @NotNull @NotEmpty String memberRole
+            ,@NotNull @NotEmpty String memberKey
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        Member member = new Member();
+        member.setMemberRole(memberRole);
+        member.setMemberKey(memberKey);
+        return memberService.changeMemberAuth(member,account);
     }
 
 }

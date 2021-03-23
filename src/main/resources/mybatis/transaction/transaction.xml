@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.TransactionDao">
+    <insert id="saveTransaction" parameterType="io.cojam.web.domain.wallet.Transaction">
+        INSERT INTO TB_TRANSACTION
+        (
+            AMOUNT, RECIPIENT_ADDRESS, SPENDER_ADDRESS, TRANSACTION_ID, TRANSACTION_TYPE, MEMBER_KEY
+        )
+        VALUES
+        (
+             #{amount}, #{recipientAddress}, #{spenderAddress}, #{transactionId}, #{transactionType}, #{memberKey}
+        )
+    </insert>
+
+    <select id="getTransactionList" parameterType="io.cojam.web.domain.wallet.Transaction" resultType="io.cojam.web.domain.wallet.Transaction">
+        SELECT
+            *
+        FROM 
+        (
+             SELECT T.amount / 1000000000000000000 as amount
+                  , T.amount                       AS ORIGIN_AMOUNT
+                  , T.TRANSACTION_KEY
+                  , T.CREATED_DATE_TIME
+                  , T.SPENDER_ADDRESS
+                  , T.RECIPIENT_ADDRESS
+                  , T.transaction_type
+                  , T.transaction_id
+                  , T.status
+                  , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
+                       T.RECIPIENT_ADDRESS)        AS address
+                  , TMW.MEMBER_ID
+             FROM TB_TRANSACTION T
+                      LEFT OUTER JOIN (
+                 SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
+                 FROM TB_MEMBER TM
+                    , TB_WALLET w2
+                 WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
+             ) TMW ON TMW.WALLET_ADDRESS = T.RECIPIENT_ADDRESS
+             WHERE T.SPENDER_ADDRESS = #{address}
+             UNION ALL
+             SELECT T.amount / 1000000000000000000 as amount
+                  , T.amount                       AS ORIGIN_AMOUNT
+                  , T.TRANSACTION_KEY
+                  , T.CREATED_DATE_TIME
+                  , T.SPENDER_ADDRESS
+                  , T.RECIPIENT_ADDRESS
+                  , T.transaction_type
+                  , T.transaction_id
+                  , T.status
+                  , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
+                       T.RECIPIENT_ADDRESS)        AS address
+                  , TMW.MEMBER_ID
+             FROM TB_TRANSACTION T
+                      LEFT OUTER JOIN (
+                 SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
+                 FROM TB_MEMBER TM
+                    , TB_WALLET w2
+                 WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
+             ) TMW ON TMW.WALLET_ADDRESS = T.SPENDER_ADDRESS
+             WHERE T.RECIPIENT_ADDRESS = #{address}
+         ) T
+        ORDER BY T.CREATED_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+
+    <select id="getTransactionListCnt" parameterType="io.cojam.web.domain.wallet.Transaction" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM 
+        (
+             SELECT T.amount / 1000000000000000000 as amount
+                  , T.amount                       AS ORIGIN_AMOUNT
+                  , T.CREATED_DATE_TIME
+                  , T.SPENDER_ADDRESS
+                  , T.RECIPIENT_ADDRESS
+                  , T.transaction_type
+                  , T.transaction_id
+                  , T.status
+                  , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
+                       T.RECIPIENT_ADDRESS)        AS address
+                  , TMW.MEMBER_ID
+             FROM TB_TRANSACTION T
+                      LEFT OUTER JOIN (
+                 SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
+                 FROM TB_MEMBER TM
+                    , TB_WALLET w2
+                 WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
+             ) TMW ON TMW.WALLET_ADDRESS = T.RECIPIENT_ADDRESS
+             WHERE T.SPENDER_ADDRESS = #{address}
+             UNION ALL
+             SELECT T.amount / 1000000000000000000 as amount
+                  , T.amount                       AS ORIGIN_AMOUNT
+                  , T.CREATED_DATE_TIME
+                  , T.SPENDER_ADDRESS
+                  , T.RECIPIENT_ADDRESS
+                  , T.transaction_type
+                  , T.transaction_id
+                  , T.status
+                  , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
+                       T.RECIPIENT_ADDRESS)        AS address
+                  , TMW.MEMBER_ID
+             FROM TB_TRANSACTION T
+                      LEFT OUTER JOIN (
+                 SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
+                 FROM TB_MEMBER TM
+                    , TB_WALLET w2
+                 WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
+             ) TMW ON TMW.WALLET_ADDRESS = T.RECIPIENT_ADDRESS
+             WHERE T.RECIPIENT_ADDRESS = #{address}
+         ) T
+    </select>
+
+
+    <select id="getTransaction" parameterType="io.cojam.web.domain.wallet.Transaction" resultType="io.cojam.web.domain.wallet.Transaction">
+        SELECT
+            T.amount / 1000000000000000000 as amount
+            , T.amount                       AS ORIGIN_AMOUNT
+            , T.TRANSACTION_KEY
+            , T.CREATED_DATE_TIME
+            , T.SPENDER_ADDRESS
+            , T.RECIPIENT_ADDRESS
+            , T.transaction_type
+            , T.transaction_id
+            , T.status
+        FROM TB_TRANSACTION T
+        WHERE T.TRANSACTION_KEY = #{transactionKey}
+    </select>
+
+    <update id="updateTransactionStatus" parameterType="io.cojam.web.domain.wallet.Transaction">
+        UPDATE TB_TRANSACTION
+        SET STATUS = #{status}
+        WHERE TRANSACTION_KEY = #{transactionKey}
+    </update>
+</mapper>

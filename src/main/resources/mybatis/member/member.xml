@@ -93,46 +93,71 @@
     </delete>
 
     <select id="getServiceUserList" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
-       SELECT
-            MEMBER_KEY
-            ,MEMBER_ID
-            ,MEMBER_NAME
-            ,MEMBER_EMAIL
-            ,MEMBER_ROLE
-            ,CREATED_DATE_TIME
-        FROM TB_MEMBER
-        WHERE MEMBER_ROLE ='USER'
-        ORDER BY CREATED_DATE_TIME DESC
+        SELECT
+            M.MEMBER_KEY
+            ,M.MEMBER_ID
+            ,M.MEMBER_NAME
+            ,M.MEMBER_EMAIL
+            ,M.MEMBER_ROLE
+            ,M.CREATED_DATE_TIME
+            ,W.WALLET_ADDRESS
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE ='USER'
+        ORDER BY M.CREATED_DATE_TIME DESC
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
     <select id="getServiceUserListCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
        SELECT
-            COUNT(*) CNT
-        FROM TB_MEMBER
-        WHERE MEMBER_ROLE ='USER'
+           COUNT(*) CNT
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE ='USER'
     </select>
 
 
     <select id="getMemberUserList" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
        SELECT
-            MEMBER_KEY
-            ,MEMBER_ID
-            ,MEMBER_NAME
-            ,MEMBER_EMAIL
-            ,MEMBER_ROLE
-            ,CREATED_DATE_TIME
-        FROM TB_MEMBER
-        WHERE MEMBER_ROLE IN ('ADMIN','VIP')
-        ORDER BY CREATED_DATE_TIME DESC
+            M.MEMBER_KEY
+            ,M.MEMBER_ID
+            ,M.MEMBER_NAME
+            ,M.MEMBER_EMAIL
+            ,M.MEMBER_ROLE
+            ,M.CREATED_DATE_TIME
+            ,W.WALLET_ADDRESS
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE IN ('ADMIN','VIP')
+        ORDER BY M.CREATED_DATE_TIME DESC
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
 
     <select id="getMemberUserListCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
         SELECT
-            COUNT(*) CNT
+             COUNT(*) CNT
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND M.MEMBER_ROLE IN ('ADMIN','VIP')
+    </select>
+
+    <update id="updateMemberRole" parameterType="io.cojam.web.domain.Member">
+        UPDATE TB_MEMBER
+        SET MEMBER_ROLE = #{memberRole}
+        ,UPDATED_DATE_TIME = now()
+        WHERE MEMBER_KEY = #{memberKey}
+    </update>
+
+    <select id="getMemberInfoForMemberKey" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            MEMBER_KEY
+            , MEMBER_ID
+            , MEMBER_ROLE
+            , MEMBER_NAME
+            , MEMBER_EMAIL
+            , MEMBER_PASS
         FROM TB_MEMBER
-        WHERE MEMBER_ROLE IN ('ADMIN','VIP')
+        WHERE MEMBER_KEY = #{memberKey}
     </select>
 </mapper>

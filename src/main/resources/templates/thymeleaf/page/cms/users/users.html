@@ -7,7 +7,7 @@
     <div class="content">
 
         <div class="table-title">
-            <h2><i class="uil uil-user"></i>  Service Users </h2>
+            <h2><i class="uil uil-user"></i> Service Users </h2>
             <div>
                 <a href="#">Approve</a>
                 <a href="#">Lockup</a>
@@ -17,12 +17,9 @@
         <form th:name="boardFrm" th:method="GET" action="/cms/users">
             <div class="table-option">
                 <div>
-                    <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
+                    <input type="text" placeholder="검색어를 입력하세요.">
+                    <button><i class="uil uil-search"></i></button>
                 </div>
-                <ul>
-                    <li><i class="uil uil-file-plus-alt"></i></li>
-                    <li><i class="uil uil-trash-alt"></i></li>
-                </ul>
             </div>
         </form>
 
@@ -51,55 +48,94 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <th:block th:if="${memberList} !=null">
-                        <tr th:each="item : ${memberList}">
-                            <td><input type="checkbox" name="xxx" th:value="${item.memberKey}" class="check"></td>
-                            <td>1</td>
-                            <td>
-                                <select name="memberRole" id="">
-                                    <option
-                                            th:each="auth : ${authList}"
-                                            th:value="${auth.authCode}"
-                                            th:text="${auth.authName}"
-                                            th:selected="${auth.authCode eq item.memberRole}"
-                                    >Customer</option>
-                                </select>
-                            </td>
-                            <td th:text="${item.memberName}"></td>
-                            <td th:text="${item.memberId}"></td>
-                            <td th:text="${item.memberEmail}"></td>
-                            <td>0x000000000000000</td>
-                            <td>F</td>
-                        </tr>
-                    </th:block>
+                <th:block th:if="${memberList} !=null">
+                    <tr th:each="item : ${memberList}">
+                        <td><input type="checkbox" name="memberKeys" th:value="${item.memberKey}" class="check"></td>
+                        <td>1</td>
+                        <td>
+                            <select name="memberRole">
+                                <option
+                                        th:each="auth : ${authList}"
+                                        th:value="${auth.authCode}"
+                                        th:text="${auth.authName}"
+                                        th:selected="${auth.authCode eq item.memberRole}"
+                                >Customer
+                                </option>
+                            </select>
+                        </td>
+                        <td th:text="${item.memberName}"></td>
+                        <td th:text="${item.memberId}"></td>
+                        <td th:text="${item.memberEmail}"></td>
+                        <td th:text="${item.walletAddress}"></td>
+                        <td>F</td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
 
-            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+            <th:block th:if="${pagination} != null"
+                      th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
 
         </div>
     </div>
 
     <th:block layout:fragment="script">
         <script>
-            $(document).ready(function (){
+            $(document).ready(function () {
                 fnGetList();
             });
 
-            function fnGetList(){
+            function fnGetList() {
                 $.ajax({
-                    url:"/cms/users",
-                    type :  "POST",
-                    data : $("form[name=boardFrm]").serialize(),
+                    url: "/cms/users",
+                    type: "POST",
+                    data: $("form[name=boardFrm]").serialize(),
                 }).done(function (fragment) {
                     $("#memberList").replaceWith(fragment);
                 });
             }
 
-            function fnMovePage(page){
+            function fnMovePage(page) {
                 $("input[name=page]").val(page);
                 fnGetList();
             }
+
+            let previous;
+            $(document).on('focus click','select[name=memberRole]',function (e){
+                previous = $(this).val();
+            });
+
+            $(document).on('change','select[name=memberRole]',function (e){
+                const result = confirm("상태를 변경 하시겠습니까?");
+                const index = $('select[name=memberRole]').index(this);
+                if (result) {
+
+                    $.ajax({
+                        url: "/cms/member/changeAuth",
+                        type: "POST",
+                        data: {
+                            "memberRole" : $(this).val()
+                            ,"memberKey" : $("input[name=memberKeys]").eq(index).val()
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                                $('select[name=memberRole]').eq(index).val(previous).prop("selected", true);
+                            }
+                        },
+                        error : function(error){
+                            toastr.error(error.status,error.statusText);
+                            $('select[name=memberRole]').eq(index).val(previous).prop("selected", true);
+                        }
+                    });
+                } else{
+                    $('select[name=memberRole]').eq(index).val(previous).prop("selected", true);
+
+                }
+            });
         </script>
     </th:block>
 </th:block>

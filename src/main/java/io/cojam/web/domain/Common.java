@@ -11,4 +11,5 @@ public class Common {
     private int startIndex = 0;
     @JsonIgnore
     private int pageSize = 10;
+    private String memberName;
 }

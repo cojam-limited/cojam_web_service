@@ -19,7 +19,26 @@
             </dt>
             <dd sec:authorize="isAuthenticated()">
                 <!-- 로그인 했을때 -->
-                <h2><i class="uil uil-user-circle"></i> <th:block sec:authentication="principal.memberName"></th:block> <span>(1,234 CT)</span></h2>
+                <h2>
+                    <i class="uil uil-user-circle"></i>
+                    <th:block sec:authentication="principal.memberName"></th:block>
+                    <span id="myToken"></span>
+                    <script>
+                        $.ajax({
+                            url:"/user/wallet/balance",
+                            type :  "POST",
+                            contentType : false,
+                            processData : false,
+                            success : function(response){
+                                if(response.check){
+                                    $('#myToken').html("("+response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    </script>
+                </h2>
                 <div>
                     <a href="/cms/home" sec:authorize="hasAnyAuthority('ADMIN','VIP')" ><i class="uil uil-user-circle"></i> ADMIN</a>
                     <a href="/user/mypage"><i class="uil uil-user-circle"></i> MYPAGE</a>

@@ -1,22 +1,18 @@
 package io.cojam.web.service;
 
+import io.cojam.web.account.Account;
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.dao.MemberDao;
-import io.cojam.web.domain.Mail;
-import io.cojam.web.domain.Member;
-import io.cojam.web.domain.PassChange;
-import io.cojam.web.domain.ResponseDataDTO;
+import io.cojam.web.domain.*;
 import io.cojam.web.encoder.PasswordEncoding;
 import io.cojam.web.encoder.SHA256Util;
 import io.cojam.web.utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -33,7 +29,14 @@ public class MemberService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    WalletService walletService;
 
+    @Autowired
+    MyConfig myConfig;
+
+
+    @Transactional
     public ResponseDataDTO saveMember(Member member){
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         responseDataDTO.setCode(ResponseDataCode.SUCCESS);
@@ -82,6 +85,11 @@ public class MemberService {
         member.setMemberPass(password);
         //멤버 정보 저장
         memberDao.saveMemberInfo(member);
+
+        //지갑 생성
+        walletService.saveWallet(member.getMemberKey());
+
+
         responseDataDTO.setCheck(true);
         responseDataDTO.setMessage("success.");
         return responseDataDTO;
@@ -124,11 +132,12 @@ public class MemberService {
         //fpNumber 생성
         detail.setFpNumber(CommonUtils.getAuthCode(13));
         //정보 저장
+        memberDao.deletePassHistory(detail);
         memberDao.saveMemberPassReset(detail);
         //이메일 전송
         Mail mail = new Mail();
         String message = "Change Password (Link) : ";
-        message+="http://localhost:8090/user/pass/change?";
+        message+=myConfig.getHostUrl()+"/user/pass/change?";
         message+="fpNumber="+detail.getFpNumber()+"&";
         message+="memberKey="+detail.getMemberKey()+"&";
         message+="memberId="+detail.getMemberId();
@@ -212,5 +221,37 @@ public class MemberService {
 
     public Integer getMemberUserListCnt(Member member){
         return memberDao.getMemberUserListCnt(member);
+    }
+
+    public Member getMemberInfoForMemberKey(Member member){
+        return memberDao.getMemberInfoForMemberKey(member);
+    }
+
+
+    @Transactional
+    public ResponseDataDTO changeMemberAuth(Member member , Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Member regParam = new Member();
+        regParam.setMemberKey(account.getMemberKey());
+        Member regUser = memberDao.getMemberInfoForMemberKey(regParam);
+        if(!"VIP".equals(regUser.getMemberRole())){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("You do not have permission.");
+            return responseDataDTO;
+        }
+
+        Member changeUser = memberDao.getMemberInfoForMemberKey(member);
+        if(changeUser == null){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("There are no users.");
+            return responseDataDTO;
+        }
+
+        memberDao.updateMemberRole(member);
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
     }
 }

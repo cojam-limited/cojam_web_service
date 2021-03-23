@@ -4,6 +4,114 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="thymeleaf/layout/cms_default_layout">
 <th:block layout:fragment="content">
-    <h1>관리자 페이지 입니다.</h1>
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-redo-alt"></i>  Season > Edit season</h2>
+        </div>
+
+        <form action="">
+            <fielset>
+                <div class="season-form-wrap">
+                    <h2>Detail of Season</h2>
+                    <table class="season-form">
+                        <colgroup>
+                            <col width="350px"/>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td>
+                                <input type="text" placeholder="제목을 입력해주세요.">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>
+                                <input type="text" placeholder="자세한 설명을 입력해주세요.">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Minimum Amount</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Maximum Amount</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>COJAM Fee</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Creator Fee</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Creator Salary</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Transfer Minimum Pay</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Charity Fee</th>
+                            <td><input type="number" value="0"></td>
+                        </tr>
+                        <tr>
+                            <th>Category Limitaion</th>
+                            <td>
+                                <table>
+                                    <colgroup>
+                                        <col width="200px"/>
+                                    </colgroup>
+                                    <tr>
+                                        <th>art</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>science</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>crowdsolving</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>competition</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>economy</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>community</th>
+                                        <td><input type="number" value="0"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Alpha Date</th>
+                            <td><input name="name" type="text" class="date-icon" placeholder="Please enter a date" /></td>
+                        </tr>
+                        <tr>
+                            <th>Omega Date</th>
+                            <td><input name="name" type="text" class="date-icon" placeholder="Please enter a date" /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </fielset>
+        </form>
+        <div class="form-button">
+            <a href="#">취소</a>
+            <a href="#" style="background-color:#8950fc; color: #fff;">저장</a>
+        </div>
+
+
+    </div> <!--.content -->
 </th:block>
 </html>

@@ -58,7 +58,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo@gmail.com
+    username: choojameschoo
     password: '!1wjdwogjs'
     properties:
       mail:
@@ -73,15 +73,29 @@ logging:
 myConfig:
   uploadPath: "/Users/jaeheonjung/PROJECT/localUpload/cojam"
   hostUrl: "http://localhost:8090"
-
+app:
+  name: hiblocks-internal
+  adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
+  cache:
+    specs:
+      token-price:
+        timeout: 60
+  klaytn:
+    contracts:
+  sdk-enclave:
+    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
+    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
+    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
+    passphrase: "!1wjdwogjs"
+    url: http://localhost:3000
 #개발 환경
 ---
 spring:
   config:
     activate:
-      on-profile: real
+      on-profile: dev
   redis:
-    host: localhost
+    host: 10.192.240.3
     port: 6379
     password: ''
   session:
@@ -100,12 +114,6 @@ spring:
       poolName: HikariCP
       readOnly: false
       connectionTestQuery: SELECT 1
-  devtools:
-    remote:
-      restart:
-        enabled: true
-    livereload:
-      enabled: true
   thymeleaf:
     view-names: thymeleaf/*
     prefix: classpath:/templates/
@@ -119,7 +127,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo@gmail.com
+    username: choojameschoo
     password: '!1wjdwogjs'
     properties:
       mail:
@@ -132,14 +140,29 @@ logging:
     root: info
     io.cojam.web: debug
 myConfig:
-  uploadPath: "/Users/jaeheonjung/PROJECT/localUpload"
+  uploadPath: "/cojam_data/web_upload"
   hostUrl: "https://cojamdev.hiblocks.io"
+app:
+  name: hiblocks-internal
+  adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
+  cache:
+    specs:
+      token-price:
+        timeout: 60
+  klaytn:
+    contracts:
+  sdk-enclave:
+    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
+    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
+    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
+    passphrase: "!1wjdwogjs"
+    url: http://localhost:3000
 #운영 환경
 ---
 spring:
   config:
     activate:
-      on-profile: real
+      on-profile: prod
   redis:
     host: localhost
     port: 6379
@@ -155,17 +178,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connectionTimeout: 30000
-      maximumPoolSize: 10
+      maximumPoolSize: 150
       maxLifetime: 1800000
       poolName: HikariCP
       readOnly: false
       connectionTestQuery: SELECT 1
-  devtools:
-    remote:
-      restart:
-        enabled: true
-    livereload:
-      enabled: true
+    tomcat:
+      max-idle:
   thymeleaf:
     view-names: thymeleaf/*
     prefix: classpath:/templates/
@@ -179,7 +198,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo@gmail.com
+    username: choojameschoo
     password: '!1wjdwogjs'
     properties:
       mail:
@@ -194,3 +213,18 @@ logging:
 myConfig:
   uploadPath: "/Users/jaeheonjung/PROJECT/localUpload"
   hostUrl: "http://localhost:8090"
+app:
+  name: hiblocks-internal
+  adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
+  cache:
+    specs:
+      token-price:
+        timeout: 60
+  klaytn:
+    contracts:
+  sdk-enclave:
+    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
+    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
+    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
+    passphrase: "!1wjdwogjs"
+    url: http://localhost:3000

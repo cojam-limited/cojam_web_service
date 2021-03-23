@@ -14,4 +14,6 @@ public interface SeasonDao {
     Season getSeasonInfo();
 
     List<SeasonCategory> getSeasonCategoryList();
+
+    List<Season> getSeasonList(Season season);
 }
