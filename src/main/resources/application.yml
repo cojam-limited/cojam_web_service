@@ -39,17 +39,12 @@ spring:
       poolName: HikariCP
       readOnly: false
       connectionTestQuery: SELECT 1
-  devtools:
-    remote:
-      restart:
-        enabled: true
-    livereload:
-      enabled: true
   thymeleaf:
     view-names: thymeleaf/*
     prefix: classpath:/templates/
     suffix: .html
     cache: false
+    check-template-location: true
   mvc:
     view:
       prefix: /WEB-INF/views/
@@ -113,17 +108,12 @@ spring:
       poolName: HikariCP
       readOnly: false
       connectionTestQuery: SELECT 1
-  devtools:
-    remote:
-      restart:
-        enabled: true
-    livereload:
-      enabled: true
   thymeleaf:
     view-names: thymeleaf/*
     prefix: classpath:/templates/
     suffix: .html
     cache: true
+    check-template-location: true
   mvc:
     view:
       prefix: /WEB-INF/views/

@@ -52,7 +52,6 @@ public class MyPageController {
     }
 
 
-    @GetMapping
     @RequestMapping(value = "/transaction" , method = RequestMethod.GET)
     public String transactionList(
             Model model
@@ -118,7 +117,6 @@ public class MyPageController {
         return responseDataDTO;
     }
 
-    @GetMapping
     @RequestMapping(value = "/ground" , method = RequestMethod.GET)
     public String groundList(
             Model model
