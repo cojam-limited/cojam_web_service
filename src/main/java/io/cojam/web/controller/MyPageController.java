@@ -140,7 +140,7 @@ public class MyPageController {
         model.addAttribute("pagination", pagination);
 
 
-        return "thymeleaf/page/mypage/index :: #groundList";
+        return "thymeleaf/page/myPage/index :: #groundList";
 
     }
 }
