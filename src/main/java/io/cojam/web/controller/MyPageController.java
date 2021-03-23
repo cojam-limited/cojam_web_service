@@ -52,7 +52,7 @@ public class MyPageController {
     }
 
 
-    @RequestMapping(value = "/transaction" , method = RequestMethod.GET)
+    @RequestMapping(value = "/transaction" , method = RequestMethod.POST)
     public String transactionList(
             Model model
             , String memberId
@@ -84,7 +84,7 @@ public class MyPageController {
         model.addAttribute("transactionList", list);
         model.addAttribute("pagination", pagination);
 
-        return "thymeleaf/page/mypage/index :: #transactionList";
+        return "thymeleaf/page/myPage/index :: #transactionList";
 
     }
 
@@ -117,7 +117,7 @@ public class MyPageController {
         return responseDataDTO;
     }
 
-    @RequestMapping(value = "/ground" , method = RequestMethod.GET)
+    @RequestMapping(value = "/ground" , method = RequestMethod.POST)
     public String groundList(
             Model model
             , Quest quest

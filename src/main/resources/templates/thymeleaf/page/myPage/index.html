@@ -592,7 +592,7 @@
 
             $.ajax({
                 url:"/user/mypage/transaction",
-                type :  "GET",
+                type :  "POST",
                 data : $("form[name=listFrm]").serialize(),
             }).done(function (fragment) {
                 $("#transactionList").replaceWith(fragment);
@@ -603,7 +603,7 @@
 
             $.ajax({
                 url:"/user/mypage/ground",
-                type :  "GET",
+                type :  "POST",
                 data : $("form[name=listFrm]").serialize(),
             }).done(function (fragment) {
                 $("#groundList").replaceWith(fragment);
