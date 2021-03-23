@@ -1,0 +1,108 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!--configFragment 선언-->
+<th:block th:fragment="configFragment">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" >
+    <link rel="stylesheet" th:href="@{/assets/css/toastr.min.css}" >
+    <script th:src="@{/assets/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/assets/js/jquery-ui.js}"></script>
+    <script th:src="@{/assets/js/jquery-ui-timepicker-addon.js}"></script>
+    <script th:src="@{/assets/js/easing.js}"></script>
+    <script th:src="@{/assets/js/fontawesome.js}"></script>
+    <script th:src="@{/assets/js/iziModal.js}"></script>
+    <script th:src="@{/assets/js/swiper.js}"></script>
+    <script th:src="@{/assets/js/imagesloaded.pkgd.min.js}"></script>
+    <script th:src="@{/assets/js/isotope.pkgd.min.js}"></script>
+    <script th:src="@{/assets/js/vegas.js}"></script>
+    <script th:src="@{/assets/js/fittext.js}"></script>
+    <script th:src="@{/assets/js/lettering.js}"></script>
+    <script th:src="@{/assets/js/textillate.js}"></script>
+    <script th:src="@{/assets/js/waypoints.js}"></script>
+    <script th:src="@{/assets/js/countup.js}"></script>
+    <script th:src="@{/assets/js/common_dev.js}"></script>
+    <script th:src="@{/assets/js/toastr.min.js}"></script>
+
+
+    <!-- Content Page의 CSS fragment 삽입 -->
+    <th:block layout:fragment="css"></th:block>
+
+    <!-- Content Page의 script fragment 삽입 -->
+    <th:block layout:fragment="script">
+        <script>
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "1000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        </script>
+    </th:block>
+
+</th:block>
+
+<th:block th:fragment="configFragmentCMS">
+
+    <link th:href="@{/admin/assets/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/css/toastr.min.css}" >
+    <script th:src="@{/admin/assets/js/jquery-3.3.1.js}" ></script>
+    <script th:src="@{/admin/assets/js/jquery-ui.js}" ></script>
+    <script th:src="@{/admin/assets/js/jquery-ui-timepicker-addon.js}" ></script>
+    <script th:src="@{/admin/assets/js/easing.js}" ></script>
+    <script th:src="@{/admin/assets/js/fontawesome.js}" ></script>
+    <script th:src="@{/admin/assets/js/iziModal.js}" ></script>
+    <script th:src="@{/admin/assets/js/common_dev.js}" ></script>
+    <script th:src="@{/assets/js/toastr.min.js}"></script>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "1000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        $.ajaxSetup({
+            beforeSend : function(xhr)
+            {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+            },
+            error : function(error){
+                if(error.status == '403'){
+                    location.href = '/login';
+                }
+                toastr.error(error.status,error.statusText);
+            }
+        });
+    </script>
+    <!-- Content Page의 CSS fragment 삽입 -->
+    <th:block layout:fragment="css"></th:block>
+
+    <!-- Content Page의 script fragment 삽입 -->
+    <th:block layout:fragment="script"></th:block>
+
+
+</th:block>
+</html>

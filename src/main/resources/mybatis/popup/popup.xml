@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.PopupDao">
+
+    <insert id="savePopupInfo" parameterType="io.cojam.web.domain.Popup">
+        INSERT INTO TB_POPUP
+        (
+            POPUP_KEY, POPUP_TITLE, ACTIVED, START_DATE_TIME, END_DATE_TIME, POSITION_X, POSITION_Y, SIZE_X, SIZE_Y, POPUP_LINK, POPUP_FILE_KEY, CREATE_MEMBER_KEY, UPDATE_MEMBER_KEY
+        )
+        VALUES
+        (
+            #{popupKey}, #{popupTitle}, #{actived}, #{startDateTime}, #{endDateTime}, #{positionX}, #{positionY}, #{sizeX}, #{sizeY}, #{popupLink}, #{popupFileKey}, #{createMemberKey}, #{updateMemberKey}
+        )
+    </insert>
+
+    <select id="getPopupList" parameterType="io.cojam.web.domain.Popup" resultType="io.cojam.web.domain.Popup">
+        SELECT
+            POPUP_KEY,
+            POPUP_TITLE,
+            ACTIVED,
+            START_DATE_TIME,
+            END_DATE_TIME,
+            POSITION_X,
+            POSITION_Y,
+            SIZE_X,
+            SIZE_Y,
+            POPUP_LINK,
+            POPUP_FILE_KEY,
+            CREATE_MEMBER_KEY,
+            CREATE_DATE_TIME,
+            UPDATE_MEMBER_KEY,
+            UPDATE_DATE_TIME
+        FROM	TB_POPUP
+        WHERE	1=1
+        ORDER BY ACTIVED DESC , START_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getPopupListCnt" parameterType="io.cojam.web.domain.Popup" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM	TB_POPUP
+        WHERE	1=1
+    </select>
+
+
+    <select id="getPopupInfo" parameterType="io.cojam.web.domain.Popup" resultType="io.cojam.web.domain.Popup">
+        SELECT
+            POPUP_KEY,
+            POPUP_TITLE,
+            ACTIVED,
+            START_DATE_TIME,
+            END_DATE_TIME,
+            POSITION_X,
+            POSITION_Y,
+            SIZE_X,
+            SIZE_Y,
+            POPUP_LINK,
+            POPUP_FILE_KEY,
+            CREATE_MEMBER_KEY,
+            CREATE_DATE_TIME,
+            UPDATE_MEMBER_KEY,
+            UPDATE_DATE_TIME
+        FROM	TB_POPUP
+        WHERE	POPUP_KEY = #{popupKey}
+    </select>
+
+    <select id="getMainPopupList" parameterType="io.cojam.web.domain.Popup" resultType="io.cojam.web.domain.Popup">
+        SELECT
+            POPUP_KEY,
+            POPUP_TITLE,
+            ACTIVED,
+            START_DATE_TIME,
+            END_DATE_TIME,
+            POSITION_X,
+            POSITION_Y,
+            SIZE_X,
+            SIZE_Y,
+            POPUP_LINK,
+            POPUP_FILE_KEY
+        FROM	TB_POPUP
+        WHERE	ACTIVED = true
+        AND NOW() BETWEEN START_DATE_TIME AND END_DATE_TIME
+    </select>
+    
+    <update id="updatePopupInfo" parameterType="io.cojam.web.domain.Popup">
+        UPDATE	TB_POPUP
+        SET	POPUP_KEY = #{popupKey},
+            POPUP_TITLE = #{popupTitle},
+            ACTIVED = #{actived},
+            START_DATE_TIME = #{startDateTime},
+            END_DATE_TIME = #{endDateTime},
+            POSITION_X = #{positionX},
+            POSITION_Y = #{positionY},
+            SIZE_X = #{sizeX},
+            SIZE_Y = #{sizeY},
+            POPUP_LINK = #{popupLink},
+            <if test='popupFileKey != null and !popupFileKey.equals("")'>
+                POPUP_FILE_KEY = #{popupFileKey},
+            </if>
+            UPDATE_MEMBER_KEY = #{updateMemberKey},
+            UPDATE_DATE_TIME = now()
+        WHERE	POPUP_KEY = #{popupKey}
+    </update>
+</mapper>

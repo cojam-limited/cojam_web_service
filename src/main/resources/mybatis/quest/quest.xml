@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.QuestDao">
+
+    <insert id="saveQuest" parameterType="io.cojam.web.domain.Quest">
+        INSERT INTO TB_QUEST
+        (
+            QUEST_KEY, SEASON_CATEGORY_KEY, START_DATE_TIME, END_DATE_TIME, QUEST_TITLE,
+            COMPLETED, CREATOR_ADDRESS, QUEST_DESC, HOT, PENDING,
+            QUEST_STATUS, MEMBER_KEY, SEASON_KEY, ANSWERS_TX, SNS_URL,
+            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC
+        )
+        VALUES
+        (
+            #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endDateTime}, #{questTitle},
+            #{completed}, #{creatorAddress}, #{questDesc}, #{hot}, #{pending},
+            #{questStatus}, #{memberKey}, #{seasonKey}, #{answersTx}, #{snsUrl},
+            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}
+        )
+    </insert>
+    <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
+        INSERT INTO TB_QUEST_ANSWER
+        (
+            QUEST_ANSWER_KEY, QUEST_KEY, QUEST_EXAMPLE, ANSWER_TITLE
+        )
+        VALUES
+        (
+            #{questAnswerKey}, #{questKey}, #{questExample}, #{answerTitle}
+        )
+    </insert>
+
+
+    <select id="getQuestListAdminCnt" parameterType="io.cojam.web.domain.Quest" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM	TB_QUEST Q
+        JOIN TB_SEASON S
+        ON Q.SEASON_KEY = S.SEASON_KEY
+        JOIN TB_SEASON_CATEGORY C
+        ON Q.SEASON_CATEGORY_KEY = C.CATEGORY_KEY
+        WHERE QUEST_STATUS = #{questStatus}
+    </select>
+
+    <select id="getQuestListAdmin" parameterType="io.cojam.web.domain.Quest" resultType="io.cojam.web.domain.Quest">
+        SELECT
+            Q.QUEST_KEY,
+            Q.ADJOURN_DATE_TIME,
+            Q.ADJOURN_TX,
+            Q.APPROVE_DATE_TIME,
+            Q.APPROVE_TX,
+            Q.SEASON_CATEGORY_KEY,
+            Q.START_DATE_TIME,
+            Q.END_DATE_TIME,
+            Q.QUEST_TITLE,
+            Q.COMPLETED,
+            Q.CREATOR_ADDRESS,
+            Q.QUEST_DESC,
+            Q.HOT,
+            Q.PENDING,
+            Q.QUEST_STATUS,
+            Q.SUCCESS_DATE_TIME,
+            Q.SUCCESS_TX,
+            Q.MEMBER_KEY,
+            Q.SEASON_KEY,
+            Q.FINISH_DATE_TIME,
+            Q.FINISH_TX,
+            Q.RETRIEVE_DATE_TIME,
+            Q.RETRIEVE_TX,
+            Q.ANSWERS_TX,
+            Q.DRAFT_DATE_TIME,
+            Q.DRAFT_TX,
+            Q.SNS_URL,
+            Q.SNS_ID,
+            Q.SNS_TYPE,
+            Q.SNS_TITLE,
+            Q.SNS_DESC,
+            Q.FILE_KEY,
+            Q.CREATE_MEMBER_KEY,
+            Q.CREATE_DATE_TIME,
+            Q.UPDATE_MEMBER_KEY,
+            Q.UPDATE_DATE_TIME,
+            C.CATEGORY_NAME
+        FROM	TB_QUEST Q
+        JOIN TB_SEASON S
+        ON Q.SEASON_KEY = S.SEASON_KEY
+        JOIN TB_SEASON_CATEGORY C
+        ON Q.SEASON_CATEGORY_KEY = C.CATEGORY_KEY
+        WHERE QUEST_STATUS = #{questStatus}
+        <choose>
+            <when test='"C".equals(orderType)'>
+                ORDER BY C.CATEGORY_NAME ASC
+            </when>
+            <otherwise>
+                ORDER BY Q.CREATE_DATE_TIME DESC
+            </otherwise>
+        </choose>
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+
+    <select id="getQuestListMypage" parameterType="io.cojam.web.domain.Quest" resultType="io.cojam.web.domain.Quest">
+        SELECT
+            Q.QUEST_KEY,
+            Q.ADJOURN_DATE_TIME,
+            Q.ADJOURN_TX,
+            Q.APPROVE_DATE_TIME,
+            Q.APPROVE_TX,
+            Q.SEASON_CATEGORY_KEY,
+            Q.START_DATE_TIME,
+            Q.END_DATE_TIME,
+            Q.QUEST_TITLE,
+            Q.COMPLETED,
+            Q.CREATOR_ADDRESS,
+            Q.QUEST_DESC,
+            Q.HOT,
+            Q.PENDING,
+            Q.QUEST_STATUS,
+            Q.SUCCESS_DATE_TIME,
+            Q.SUCCESS_TX,
+            Q.MEMBER_KEY,
+            Q.SEASON_KEY,
+            Q.FINISH_DATE_TIME,
+            Q.FINISH_TX,
+            Q.RETRIEVE_DATE_TIME,
+            Q.RETRIEVE_TX,
+            Q.ANSWERS_TX,
+            Q.DRAFT_DATE_TIME,
+            Q.DRAFT_TX,
+            Q.SNS_URL,
+            Q.SNS_ID,
+            Q.SNS_TYPE,
+            Q.SNS_TITLE,
+            Q.SNS_DESC,
+            Q.FILE_KEY,
+            Q.CREATE_MEMBER_KEY,
+            Q.CREATE_DATE_TIME,
+            Q.UPDATE_MEMBER_KEY,
+            Q.UPDATE_DATE_TIME,
+            C.CATEGORY_NAME,
+            S.creator_fee,
+            S.charity_fee,
+            S.maximum_pay,
+            S.minimum_pay
+        FROM	TB_QUEST Q
+        JOIN TB_SEASON S
+        ON Q.SEASON_KEY = S.SEASON_KEY
+        JOIN TB_SEASON_CATEGORY C
+        ON Q.SEASON_CATEGORY_KEY = C.CATEGORY_KEY
+        WHERE MEMBER_KEY = #{memberKey}
+        ORDER BY Q.CREATE_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+
+    <select id="getQuestListMypageCnt" parameterType="io.cojam.web.domain.Quest" resultType="integer">
+        SELECT
+           COUNT(*) CNT
+        FROM	TB_QUEST Q
+        JOIN TB_SEASON S
+        ON Q.SEASON_KEY = S.SEASON_KEY
+        JOIN TB_SEASON_CATEGORY C
+        ON Q.SEASON_CATEGORY_KEY = C.CATEGORY_KEY
+        WHERE MEMBER_KEY = #{memberKey}
+        ORDER BY Q.CREATE_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+</mapper>

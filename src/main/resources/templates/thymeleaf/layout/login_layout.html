@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="title" content="COJAM " />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.cojam.io/">
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="COJAM">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.cojam.io/">
+    <meta property="og:title" content="COJAM">
+    <meta property="og:image" content="/assets/image/common/meta_img.jpg">
+    <meta property="og:description" content="" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>COJAM</title>
+    <link rel="shortcut icon" href="/assets/image/common/favicon.ico">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- config fragment 사용 -->
+    <th:block th:replace="thymeleaf/fragment/config :: configFragment" ></th:block>
+    <script>
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "1000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+</head>
+
+<body>
+<div class="wrap">
+    <th:block layout:fragment="content"></th:block>
+    <th:block layout:fragment="script"></th:block>
+</div>
+</body>
+</html>

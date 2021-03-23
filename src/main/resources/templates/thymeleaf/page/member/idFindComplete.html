@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="thymeleaf/layout/login_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- 아이디 찾기 완료 -->
+<div layout:fragment="content" class="idpw-area">
+	<div class="pos-idfind-complete">
+		<h2><a href="/"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+		<h3>I found the ID for the information you entered.</h3>
+		<h5>
+			abcdefgfdf@gmail.com
+		</h5>
+		<p>
+			<a href="/user/home" class="w48p">Main</a>
+			<a href="/login" class="w48p">Login</a>
+		</p>
+	</div>
+</div>
+<!-- 아이디 찾기 완료 끝 -->
+</html>

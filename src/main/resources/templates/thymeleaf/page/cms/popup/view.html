@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-alt"></i>  Pop-Up > Edit Pop-Up </h2>
+        </div>
+
+        <div class="popup-form-wrap">
+            <form name="popupForm" id="popupForm" method="POST" action="">
+                <input th:type="hidden" th:name="popupKey" th:value="${detail.popupKey}"/>
+                <fieldset>
+                    <div>
+                        <table class="popup-form">
+                            <tbody>
+                            <tr>
+                                <th><span>*</span> 제목</th>
+                                <td colspan="3"><input type="text" name="popupTitle" th:value="${detail.popupTitle}" th:maxlength="50" placeholder="3자 - 50자 이내로 입력하세요."></td>
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 게시기간</th>
+                                <td colspan="3">
+                                    <ul>
+                                        <li><input name="startDateTime" th:value="${detail.startDateTime}" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                        <li>~</li>
+                                        <li><input name="endDateTime" th:value="${detail.endDateTime}" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                    </ul>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 사용여부</th>
+                                <td colspan="3">
+                                    <label for="Usage1"><input type="radio" name="actived" value="1" id="Usage1" th:checked="${detail.actived}">사용함</label>
+                                    <label for="Usage2"><input type="radio" name="actived" value="0" id="Usage2" th:checked="${!detail.actived}">사용 안 함</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 위치</th>
+                                <td>
+                                    <label>X: <input type="number" name="positionX" th:value="${detail.positionX}"></label>
+                                    <label>Y: <input type="number" name="positionY" th:value="${detail.positionY}"></label>
+                                </td>
+                                <th><span>*</span> 크기</th>
+                                <td>
+                                    <label>가로: <input type="number" name="sizeX" th:value="${detail.sizeX}"></label>
+                                    <label>세로: <input type="number" name="sizeY" th:value="${detail.sizeY}"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><span>*</span> 링크주소</th>
+                                <td colspan="3"><input type="url" name="popupLink" placeholder="https://example.com" th:value="${detail.popupLink}"></td>
+
+                            </tr>
+                            <tr style="height:250px">
+                                <th><span>*</span> 팝업이미지</th>
+                                <td colspan="3">
+                                    <div>
+                                        <div><p><img id="preview" th:src="@{/user/media/image(id=${detail.popupFileKey})}"  alt=""></p></div>
+                                        <div class="input-file">
+                                            <label>
+                                                찾아보기
+                                                <input type="file" name="file" id="imgSelector" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                                            </label> <br>
+                                            <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="사진을 첨부해주세요.">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </form>
+        </div> <!--popup-form-wrap  -->
+        <div class="form-button">
+            <a href="/cms/popup">뒤로가기</a>
+            <a href="javascript:fnUpdatePopup();" style="background-color:#ef168f; color: #fff;">수정하기</a>
+        </div>
+
+    </div> <!--.content -->
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                $(".date-icon").datetimepicker({
+                    dateFormat:'yy-mm-dd',
+                    // timepicker 설정
+                    timeFormat:'hh',
+                    //controlType:'select',
+                    //oneLine:true,
+                });
+                //$('.date-icon').val($.datepicker.formatDate('yy-mm-dd hh', new Date()));
+            });
+            $('#imgSelector').change(function(){
+                setImageFromFile(this, '#preview');
+            });
+
+            function setImageFromFile(input, expression) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(expression).attr("src",e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+
+            function fnUpdatePopup(){
+
+
+                const form = $('#popupForm')[0];
+                const data = new FormData(form);
+                $.ajax({
+                    url:"/cms/popup/update",
+                    type :  "POST",
+                    enctype: 'multipart/form-data',
+                    data : data,
+                    contentType : false,
+                    processData : false,
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        </script>
+    </th:block>
+</th:block>
+</html>

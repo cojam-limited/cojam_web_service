@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title success-title">
+            <h2><i class="uil uil-file-alt"></i>  Post > Modify Post </h2>
+        </div>
+        <form name="boardFrm" id="boardFrm" method="post" action="" enctype="multipart/form-data">
+            <input th:type="hidden" th:name="boardKey" th:value="${detail.boardKey}" />
+            <fieldset>
+                <div class="post-form-wrap">
+
+                            <div>
+                                <p id="preview" th:style="'background:url(/user/media/image?id='+${detail.boardFile}+') center no-repeat; background-size:cover;'"></p>
+                                <div class="input-file">
+                                    <label>
+                                        찾아보기
+                                        <input type="file" onchange="javascript:document.getElementById('fileRoute').value=this.value" name="file" id="imgSelector">
+                                    </label> <br>
+                                    <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="사진을 첨부해주세요.">
+                                </div>
+                            </div>
+                            <div>
+                                <table class="post-form">
+                                    <colgroup>
+                                        <col style="width:300px;"><col>
+                                    </colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <th><label for="post-view-txt1">카테고리</label> <span>*</span></th>
+                                        <td>
+                                            <select name="boardCategoryKey" id="post-view-txt1">
+                                                <option
+                                                        th:each="item : ${categoryList}"
+                                                        th:value="${item.boardCategoryKey}"
+                                                        th:text="${item.categoryName}"
+                                                        th:selected="${item.boardCategoryKey eq detail.boardCategoryKey}"
+                                                ></option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="post-view-txt2">제목</label> <span>*</span></th>
+                                        <td><input type="text" name="boardTitle" id="post-view-txt2" placeholder="제목을 입력해주세요." th:value="${detail.boardTitle}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label for="post-view-txt5">내용</label></th>
+                                        <td><textarea id="post-view-txt5" placeholder="내용을 입력해주세요." name="boardContext" th:text="${detail.boardContext}"></textarea></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                </div> <!--.post-form-wrap  -->
+            </fieldset>
+        </form>
+        <div class="form-button">
+            <a href="/cms/post">뒤로가기</a>
+            <a href="javascript:fnUpdateBoard();" style="background-color:#ef168f; color: #fff;">수정하기</a>
+        </div>
+
+    </div> <!--.content -->
+    <script>
+        $('#imgSelector').change(function(){
+            setImageFromFile(this, '#preview');
+        });
+
+        function setImageFromFile(input, expression) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $(expression).css({"background":"url("+e.target.result+") center","background-size":"cover"});
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function fnUpdateBoard(){
+
+
+            const form = $('#boardFrm')[0];
+            console.debug('form',form)
+            const data = new FormData(form);
+            $.ajax({
+                url:"/cms/post/update",
+                type :  "POST",
+                enctype: 'multipart/form-data',
+                data : data,
+                contentType : false,
+                processData : false,
+                success : function(response){
+                    if(response.check){
+                        toastr.success(response.message);
+                        //location.href="/cms/post/view?idx="+$('input[name=boardKey]').val();
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+    </script>
+</th:block>
+</html>

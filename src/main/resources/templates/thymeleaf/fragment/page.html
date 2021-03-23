@@ -1,0 +1,26 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<!-- 페이지넘버링 -->
+<div th:fragment="paging-list(paganation)"
+     class="paging-list"
+     th:if="${pagination} != null"
+>
+    <th:block
+            th:with="startPage=${pagination.startPage}
+            , endPage=${pagination.endPage}
+            , prevBlock=${pagination.prevBlock}
+            , nextBlock=${pagination.nextBlock}"
+    >
+        <a th:href="'javascript:fnMovePage('+${prevBlock}+')'"><i class="fas fa-caret-left"></i></a>
+        <a
+           th:each="listPage : ${#numbers.sequence(startPage, endPage)}"
+           th:text="${listPage}"
+           th:if="${listPage}!=0"
+           th:classappend="${paganation.page eq listPage}?'active':''"
+           th:href="'javascript:fnMovePage('+${listPage}+')'"
+        ></a>
+        <a th:href="'javascript:fnMovePage('+${nextBlock == 0 ?'1':nextBlock}+')'"><i class="fas fa-caret-right"></i></a>
+    </th:block>
+</div>
+<!-- 페이지넘버링 끝 -->
+</html>

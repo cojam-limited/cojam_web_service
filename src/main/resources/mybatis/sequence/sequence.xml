@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.SequenceDao">
+
+    <insert id="addSequence" parameterType="String">
+       INSERT INTO
+            TB_SEQ (SEQ_CODE,YYYYMMDD, SEQ)
+       VALUES
+            (#{value},DATE_FORMAT(NOW(), '%Y%m%d'), 1)
+       ON DUPLICATE KEY UPDATE
+            SEQ=SEQ+1
+    </insert>
+
+    <insert id="addSequenceTest" parameterType="String">
+       INSERT INTO
+            TB_SEQ (SEQ_CODE,YYYYMMDD, SEQ , AA)
+       VALUES
+            (#{value},DATE_FORMAT(NOW(), '%Y%m%d'), 1)
+       ON DUPLICATE KEY UPDATE
+            SEQ=SEQ+1
+    </insert>
+
+
+    <select id="getSequence" parameterType="String" resultType="String">
+        SELECT
+            CONCAT(SEQ_CODE,YYYYMMDD,LPAD(SEQ,8,'0')) SEQ
+        FROM TB_SEQ
+        WHERE YYYYMMDD= DATE_FORMAT(NOW(), '%Y%m%d')
+        AND SEQ_CODE= #{value};
+    </select>
+</mapper>

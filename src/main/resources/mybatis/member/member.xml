@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.MemberDao">
+
+    <select id="getLoginUserInfo" parameterType="io.cojam.web.domain.LoginDto" resultType="io.cojam.web.domain.AccountDto">
+       SELECT
+            MEMBER_KEY
+            ,MEMBER_ID
+            ,MEMBER_NAME
+            ,MEMBER_ROLE
+            ,MEMBER_PASS AS member_password
+        FROM TB_MEMBER
+        WHERE MEMBER_ID = #{userId}
+    </select>
+
+    <insert id="saveMemberInfo" parameterType="io.cojam.web.domain.Member">
+        INSERT INTO TB_MEMBER
+        (
+            MEMBER_KEY, MEMBER_ID, MEMBER_NAME, MEMBER_EMAIL, MEMBER_PASS
+        )
+        VALUES
+        (
+            #{memberKey}, #{memberId}, #{memberName}, #{memberEmail}, #{memberPass}
+        )
+    </insert>
+
+
+    <select id="getMemberInfo" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            MEMBER_KEY
+            , MEMBER_ID
+            , MEMBER_ROLE
+            , MEMBER_NAME
+            , MEMBER_EMAIL
+            , MEMBER_PASS
+        FROM TB_MEMBER
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="getMemberInfByEmail" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            MEMBER_KEY
+            , MEMBER_ID
+            , MEMBER_NAME
+            , MEMBER_EMAIL
+            , MEMBER_PASS
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+
+    <select id="getMemberInfoByEmailName" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            MEMBER_KEY
+            , MEMBER_ID
+            , MEMBER_NAME
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+        AND MEMBER_NAME = #{memberName}
+    </select>
+
+
+    <select id="getMemberPassResetCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_MEMBER M , TB_FIND_PASS P
+        WHERE P.MEMBER_KEY = M.MEMBER_KEY
+        AND M.MEMBER_ID = #{memberId}
+        AND P.MEMBER_KEY = #{memberKey}
+        AND P.FP_NUMBER = #{fpNumber}
+        AND P.CREATED_DATE_TIME > DATE_ADD(NOW(),interval -1 HOUR )
+    </select>
+
+    <insert id="saveMemberPassReset" parameterType="io.cojam.web.domain.Member">
+       INSERT INTO
+            TB_FIND_PASS (MEMBER_EMAIL,MEMBER_KEY, FP_NUMBER)
+       VALUES
+            (#{memberEmail},#{memberKey},#{fpNumber})
+       ON DUPLICATE KEY UPDATE
+           FP_NUMBER = #{fpNumber}
+    </insert>
+
+    <update id="updateMemberPass" parameterType="io.cojam.web.domain.Member" >
+        UPDATE TB_MEMBER
+        SET MEMBER_PASS = #{memberPass}
+        WHERE MEMBER_KEY = #{memberKey}
+    </update>
+
+    <delete id="deletePassHistory" parameterType="io.cojam.web.domain.Member">
+        DELETE FROM TB_FIND_PASS
+        WHERE MEMBER_KEY = #{memberKey}
+    </delete>
+
+    <select id="getServiceUserList" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            M.MEMBER_KEY
+            ,M.MEMBER_ID
+            ,M.MEMBER_NAME
+            ,M.MEMBER_EMAIL
+            ,M.MEMBER_ROLE
+            ,M.CREATED_DATE_TIME
+            ,W.WALLET_ADDRESS
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE ='USER'
+        ORDER BY M.CREATED_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getServiceUserListCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
+       SELECT
+           COUNT(*) CNT
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE ='USER'
+    </select>
+
+
+    <select id="getMemberUserList" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+       SELECT
+            M.MEMBER_KEY
+            ,M.MEMBER_ID
+            ,M.MEMBER_NAME
+            ,M.MEMBER_EMAIL
+            ,M.MEMBER_ROLE
+            ,M.CREATED_DATE_TIME
+            ,W.WALLET_ADDRESS
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND MEMBER_ROLE IN ('ADMIN','VIP')
+        ORDER BY M.CREATED_DATE_TIME DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+
+    <select id="getMemberUserListCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
+        SELECT
+             COUNT(*) CNT
+        FROM TB_MEMBER M , TB_WALLET W
+        WHERE M.MEMBER_KEY = W.MEMBER_KEY
+        AND M.MEMBER_ROLE IN ('ADMIN','VIP')
+    </select>
+
+    <update id="updateMemberRole" parameterType="io.cojam.web.domain.Member">
+        UPDATE TB_MEMBER
+        SET MEMBER_ROLE = #{memberRole}
+        ,UPDATED_DATE_TIME = now()
+        WHERE MEMBER_KEY = #{memberKey}
+    </update>
+
+    <select id="getMemberInfoForMemberKey" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+        SELECT
+            MEMBER_KEY
+            , MEMBER_ID
+            , MEMBER_ROLE
+            , MEMBER_NAME
+            , MEMBER_EMAIL
+            , MEMBER_PASS
+        FROM TB_MEMBER
+        WHERE MEMBER_KEY = #{memberKey}
+    </select>
+</mapper>

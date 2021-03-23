@@ -11,7 +11,7 @@ $(document).ready(function() {
 			$('.header > dl > dt > h2 > a img').attr("src", '/assets/image/common/logo_black.png');
 			$('.header > dl > dt > div').stop().animate({ padding : '15px 0' }, 350, 'easeOutQuad');
 			$('.header > dl > dt > div > a').css({ color : '#222' });
-			$('.header > dl > dt > div > a:hover').css({ background : '#edf3f8' });
+			$('.headeår > dl > dt > div > a:hover').css({ background : '#edf3f8' });
 			$('.header > dl > dt > div > a.active').css({ background : '#edf3f8' });
 			$('.header > dl > dt > div > div').stop().animate({ top : '65px' }, 350, 'easeOutQuad');
 			$('.header > dl > dd > h2').css({ color : '#222' });
@@ -72,18 +72,18 @@ $(document).ready(function() {
 	});
 
 	var mainBtmOffset = $('.main-quest').offset();
-	$('.mv-btm').click(function(){ 
+	$('.mv-btm').click(function(){
 		$('html, body').animate({ scrollTop : mainBtmOffset.top-50 }, 900, 'easeOutQuad');
 	});
-	
-	
+
+
 	// 메인 - 카피 //
-	$('.mv-copy > h2').textillate({ 
+	$('.mv-copy > h2').textillate({
 		in: { effect: 'flash', delay: 200, shuffle: true },
 		out: { effect: 'flash', delay: 200, shuffle: true },
 		loop: true
 	});
-	$('.mv-copy > h3').textillate({ 
+	$('.mv-copy > h3').textillate({
 		in: { effect: 'bounceIn', delay: 30, shuffle: true },
 		out: { effect: 'bounceOut', delay: 30, shuffle: true },
 		loop: true
@@ -109,7 +109,7 @@ $(document).ready(function() {
 	// 메인 - Q&A - 업다운 //
 	$('.qna_list > div').each(function (index) {
 		var updownChk = 0+String(index);
-		$('.qna_list > div').eq(index).click(function(){ 
+		$('.qna_list > div').eq(index).click(function(){
 			if (updownChk == 0+String(index)) {
 				$('.qna_list > div > dl').eq(index).slideDown(300, 'easeOutQuad');
 				//$('.qna_list > div').eq(index).css({ border : '#333 2px solid' });
@@ -175,7 +175,7 @@ $(document).ready(function() {
 
 
 	// 퀘스트 - 상세 - 탭버튼 //
-	$('.qv-tab01').click(function(){ 
+	$('.qv-tab01').click(function(){
 		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
@@ -183,7 +183,7 @@ $(document).ready(function() {
 		$('.qv-vol').css({ display : 'none' });
 		$('.qv-info').css({ display : 'none' });
 	});
-	$('.qv-tab02').click(function(){ 
+	$('.qv-tab02').click(function(){
 		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
@@ -191,7 +191,7 @@ $(document).ready(function() {
 		$('.qv-vol').css({ display : 'block' });
 		$('.qv-info').css({ display : 'none' });
 	});
-	$('.qv-tab03').click(function(){ 
+	$('.qv-tab03').click(function(){
 		$('.quest-view > dl > dd > ul li').removeClass('active');
 		$(this).addClass('active');
 
@@ -247,7 +247,7 @@ $(document).ready(function() {
 
 
 	// 마이페이지 - 탭버튼 //
-	$('.mt-tab01').click(function(){ 
+	$('.mt-tab01').click(function(){
 		$('.mypage-tab li').removeClass('active');
 		$(this).addClass('active');
 
@@ -255,7 +255,7 @@ $(document).ready(function() {
 		$('.mc-grounds').css({ display : 'none' });
 		$('.mc-transfer').css({ display : 'none' });
 	});
-	$('.mt-tab02').click(function(){ 
+	$('.mt-tab02').click(function(){
 		$('.mypage-tab li').removeClass('active');
 		$(this).addClass('active');
 
@@ -263,7 +263,7 @@ $(document).ready(function() {
 		$('.mc-grounds').css({ display : 'block' });
 		$('.mc-transfer').css({ display : 'none' });
 	});
-	$('.mt-tab03').click(function(){ 
+	$('.mt-tab03').click(function(){
 		$('.mypage-tab li').removeClass('active');
 		$(this).addClass('active');
 
@@ -271,5 +271,16 @@ $(document).ready(function() {
 		$('.mc-grounds').css({ display : 'none' });
 		$('.mc-transfer').css({ display : 'block' });
 	});
-	
+
+
+	// 마이페이지 날짜 - Transfer 등록 //
+	$("#schDateTransfer").datetimepicker({
+		dateFormat:'yy-mm-dd',
+		// timepicker 설정
+		timeFormat:'hh:mm:ss',
+		//controlType:'select',
+		//oneLine:true,
+	});
+	$('#schDateTransfer').val($.datepicker.formatDate('yy-mm-dd', new Date()));
+
 });

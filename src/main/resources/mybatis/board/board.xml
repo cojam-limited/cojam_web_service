@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.BoardDao">
+
+    <select id="getHomeBoardList" parameterType="io.cojam.web.domain.Board" resultType="io.cojam.web.domain.Board">
+       SELECT
+            B.BOARD_KEY,
+            B.BOARD_CATEGORY_KEY,
+            B.BOARD_TITLE,
+            B.BOARD_FILE,
+            B.CREATE_MEMBER_KEY,
+            B.CREATE_DATE_TIME,
+            B.UPDATE_MEMBER_KEY,
+            B.UPDATE_DATE_TIME,
+            C.CATEGORY_NAME
+        FROM	TB_BOARD B,TB_BOARD_CATEGORY C
+        WHERE B.BOARD_CATEGORY_KEY = C.BOARD_CATEGORY_KEY
+        ORDER BY B.BOARD_KEY DESC
+        LIMIT 3
+    </select>
+
+
+    <select id="getNoticeBoardList" parameterType="io.cojam.web.domain.Board" resultType="io.cojam.web.domain.Board">
+        SELECT
+            B.BOARD_KEY,
+            B.BOARD_CATEGORY_KEY,
+            B.BOARD_TITLE,
+            B.BOARD_FILE,
+            B.CREATE_MEMBER_KEY,
+            B.CREATE_DATE_TIME,
+            B.UPDATE_MEMBER_KEY,
+            B.UPDATE_DATE_TIME,
+            C.CATEGORY_NAME,
+            M.MEMBER_NAME
+        FROM	TB_BOARD B,TB_BOARD_CATEGORY C , TB_MEMBER M
+        WHERE B.BOARD_CATEGORY_KEY = C.BOARD_CATEGORY_KEY
+        AND B.CREATE_MEMBER_KEY = M.MEMBER_KEY
+        <if test='boardCategoryKey != null and !boardCategoryKey.equals("")'>
+            AND B.BOARD_CATEGORY_KEY =#{boardCategoryKey}
+        </if>
+        <if test='searchWord != null and !searchWord.equals("")'>
+            AND
+            (
+                LOWER(B.BOARD_TITLE) like CONCAT('%',LOWER(#{searchWord}),'%')
+                OR
+                LOWER(B.BOARD_CONTEXT) like CONCAT('%',LOWER(#{searchWord}),'%')
+            )
+        </if>
+        ORDER BY B.BOARD_KEY DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getNoticeBoardListCnt" parameterType="io.cojam.web.domain.Board" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM	TB_BOARD B
+        WHERE 1=1
+        <if test='boardCategoryKey != null and !boardCategoryKey.equals("")'>
+            AND B.BOARD_CATEGORY_KEY =#{boardCategoryKey}
+        </if>
+        <if test='searchWord != null and !searchWord.equals("")'>
+            AND
+            (
+            LOWER(B.BOARD_TITLE) like CONCAT('%',LOWER(#{searchWord}),'%')
+            OR
+            LOWER(B.BOARD_CONTEXT) like CONCAT('%',LOWER(#{searchWord}),'%')
+            )
+        </if>
+    </select>
+
+    <select id="getNoticeCategoryList"  resultType="io.cojam.web.domain.BoardCategory">
+        SELECT
+            BOARD_CATEGORY_KEY,
+            CATEGORY_NAME,
+            ORDER_NUMBER
+        FROM	TB_BOARD_CATEGORY
+        ORDER BY ORDER_NUMBER , BOARD_CATEGORY_KEY
+    </select>
+
+
+    <select id="getNoticeBoardDetail" parameterType="io.cojam.web.domain.Board" resultType="io.cojam.web.domain.Board">
+        SELECT
+            B.BOARD_KEY,
+            B.BOARD_CATEGORY_KEY,
+            B.BOARD_TITLE,
+            B.BOARD_CONTEXT,
+            B.BOARD_FILE,
+            B.CREATE_MEMBER_KEY,
+            B.CREATE_DATE_TIME,
+            B.UPDATE_MEMBER_KEY,
+            B.UPDATE_DATE_TIME,
+            C.CATEGORY_NAME
+        FROM	TB_BOARD B,TB_BOARD_CATEGORY C
+        WHERE B.BOARD_CATEGORY_KEY = C.BOARD_CATEGORY_KEY
+        AND B.BOARD_KEY = #{boardKey}
+    </select>
+
+    <select id="getNoticeRelatedList" parameterType="io.cojam.web.domain.Board" resultType="io.cojam.web.domain.Board">
+       SELECT
+            B.BOARD_KEY,
+            B.BOARD_CATEGORY_KEY,
+            B.BOARD_TITLE,
+            B.BOARD_FILE,
+            B.CREATE_MEMBER_KEY,
+            B.CREATE_DATE_TIME,
+            B.UPDATE_MEMBER_KEY,
+            B.UPDATE_DATE_TIME
+        FROM	TB_BOARD B
+        WHERE B.BOARD_KEY != #{boardKey}
+        ORDER BY B.BOARD_KEY DESC
+        LIMIT 5
+    </select>
+
+    <insert id="saveBoard" parameterType="io.cojam.web.domain.Board">
+        INSERT INTO TB_BOARD
+        (
+            BOARD_KEY, BOARD_CATEGORY_KEY, BOARD_TITLE, BOARD_CONTEXT, BOARD_FILE, CREATE_MEMBER_KEY, UPDATE_MEMBER_KEY
+        )
+        VALUES
+        (
+            #{boardKey}, #{boardCategoryKey}, #{boardTitle}, #{boardContext}, #{boardFile}, #{createMemberKey}, #{updateMemberKey}
+        )
+    </insert>
+
+    <update id="updateBoard" parameterType="io.cojam.web.domain.Board">
+       UPDATE	TB_BOARD
+        SET	BOARD_CATEGORY_KEY = #{boardCategoryKey},
+            BOARD_TITLE = #{boardTitle},
+            BOARD_CONTEXT = #{boardContext},
+            <if test='boardFile != null and !boardFile.equals("")'>
+                BOARD_FILE = #{boardFile},
+            </if>
+            UPDATE_MEMBER_KEY = #{updateMemberKey},
+            UPDATE_DATE_TIME = now()
+        WHERE BOARD_KEY = #{boardKey}
+    </update>
+
+    <delete id="deleteBoard" parameterType="io.cojam.web.domain.Board">
+        DELETE
+        FROM TB_BOARD
+        WHERE BOARD_KEY = #{boardKey}
+    </delete>
+
+    <insert id="saveBoardCategory" parameterType="io.cojam.web.domain.BoardCategory">
+        INSERT INTO TB_BOARD_CATEGORY
+        (
+            BOARD_CATEGORY_KEY, CATEGORY_NAME, ORDER_NUMBER
+        )
+        VALUES
+        (
+            #{boardCategoryKey}, #{categoryName}, #{orderNumber}
+        )
+    </insert>
+
+    <update id="updateBoardCategory" parameterType="io.cojam.web.domain.BoardCategory">
+        UPDATE TB_BOARD_CATEGORY
+        SET CATEGORY_NAME = #{categoryName}
+        ,ORDER_NUMBER = #{ORDER_NUMBER}
+        ,UPDATE_DATE_TIME = now()
+        WHERE BOARD_CATEGORY_KEY = #{boardCategoryKey}
+    </update>
+
+    <delete id="deleteBoardCategory" parameterType="io.cojam.web.domain.BoardCategory">
+        DELETE FROM TB_BOARD_CATEGORY
+        WHERE BOARD_CATEGORY_KEY = #{boardCategoryKey}
+    </delete>
+
+
+</mapper>

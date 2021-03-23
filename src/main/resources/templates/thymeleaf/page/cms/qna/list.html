@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:tr="http://www.thymeleaf.org"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+        <div class="table-title">
+            <h2><i class="uil uil-file-alt"></i> Q&A </h2>
+        </div>
+        <form th:name="boardFrm" th:method="GET" action="/cms/qna">
+            <input th:type="hidden" th:name="page" />
+            <div class="table-option">
+                <div>
+                    <input type="text" name="searchWord" placeholder="검색어를 입력하세요." th:value="${param.searchWord}"><button type="button" th:onclick="|javascript:fnSearch()|"><i class="uil uil-search"></i></button>
+                </div>
+                <ul>
+                    <li>
+                        <a href="/cms/qna/register"><abbr TITLE="등록"><i class="uil uil-file-plus-alt"></i></abbr></a>
+                    </li>
+                </ul>
+            </div>
+        </form>
+
+        <div class="table-default" id="qnaList">
+            <table>
+                <colgroup>
+                    <col width="15%"/>
+                    <col width="*"/>
+                    <col width="7%"/>
+                    <col width="18%"/>
+                    <col width="10%"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>사용 여부</td>
+                    <td>작성자</td>
+                    <td>기능</td>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:if="${qnaList} !=null">
+                    <tr th:each="item : ${qnaList}">
+
+                        <td th:text="${item.orderNumber}"></td>
+                        <td th:onclick="'window.location.href = \'' + @{/cms/qna/view(idx=${item.questionKey})} + '\''">
+                            <h5 th:text="${item.question}"></h5>
+                        </td>
+                        <td th:text="${item.opYn}"></td>
+                        <td th:text="${item.memberName}"></td>
+                        <td>
+                            <ul>
+                                <li th:onclick="'window.location.href = \'' + @{/cms/qna/view(idx=${item.questionKey})} + '\''"><a><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
+                                <li th:attr="onclick=|fnDeleteBoard('${item.questionKey}')|"><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function (){
+            fnGetList();
+        });
+
+        function fnGetList(){
+            $.ajax({
+                url:"/cms/qna/list",
+                type :  "POST",
+                data : $("form[name=boardFrm]").serialize(),
+            }).done(function (fragment) {
+                $("#qnaList").replaceWith(fragment);
+            });
+        }
+
+        function fnMovePage(page){
+            $("input[name=page]").val(page);
+            fnGetList();
+        }
+
+        function fnSearch(){
+            $("input[name=page]").val(1);
+            fnGetList();
+        }
+
+        function fnDeleteBoard(questionKey){
+            if(confirm('삭제하시겠습니까?')){
+                $.ajax({
+                    url:"/cms/qna/delete",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        "questionKey" : questionKey
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('Post is deleted.')
+                            fnGetList();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+
+        }
+    </script>
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+</html>

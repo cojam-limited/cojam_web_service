@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-redo-alt"></i>  Season </h2>
+        </div>
+
+        <div class="season-list-wrap">
+            <th:block
+                    th:each="item : ${seasonList}"
+            >
+                <div class="season-list-option">
+                    <label for="season-use1"><input type="radio" name="use" value="use1" id="season-use1" th:checked="${item.isActive}">사용여부</label>
+                    <a th:href="@{/cms/season/view}" >Edit</a>
+                </div>
+                <div class="season-list">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>Title</th>
+                            <td colspan="3"><p th:text="${item.title}"></p></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td colspan="3"><p th:text="${item.description}"></p></td>
+                        </tr>
+                        <tr>
+                            <th>Minimum Amount</th>
+                            <td th:text="${item.minimumPay}+'CT'"></td>
+                            <th>Maximum Amount</th>
+                            <td th:text="${item.maximumPay}+'CT'"></td>
+                        </tr>
+                        <tr>
+                            <th>COJAM Fee</th>
+                            <td th:text="${item.cojamFee}+'%'"></td>
+                            <th>Creator Fee</th>
+                            <td th:text="${item.creatorFee}+'%'"></td>
+                        </tr>
+                        <tr>
+                            <th>Creator Salary</th>
+                            <td th:text="${item.creatorPay}+'CT'"></td>
+                            <th>Transfer Minimum Pay</th>
+                            <td th:text="${item.transferPay}+'CT'"></td>
+                        </tr>
+                        <tr>
+                            <th>Charity Fee</th>
+                            <td><p th:text="${item.charityFee}+'%'"></p></td>
+                            <th>-</th>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <th>Category Limitation</th>
+                            <td colspan="3">
+                                <p th:text="${item.ctJson}">
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Alpha Date</th>
+                            <td th:text="${item.alphaDttm}"></td>
+                            <th>Omega Date</th>
+                            <td><p th:text="${item.omegaDttm}"></p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </th:block>
+            <div class="season-add-btn">
+                <a th:href="@{/cms/season/regiter}">Add Season</a>
+            </div>
+        </div> <!--.season-list-wrap -->
+
+
+    </div> <!--.content -->
+</th:block>
+</html>

@@ -46,13 +46,29 @@ a:hover {text-decoration:none; color:#8950fc;}
 
 
 /* 폼구성 */
-input[type="file"] {width:100%; height:38px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:4px; background:#f3f6f9;}
-input[type="text"] {width:100%; height:38px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:4px; background:#f3f6f9;}
-select {width:100%; height:40px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:4px; background:#f3f6f9;}
+input[type="file"] {height:38px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:3px; background:#f3f6f9;}
+input[type="text"] {height:38px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:3px; background:#f3f6f9;}
+input[type="password"] {height:38px; padding:0 10px; border:#e9e9e9 1px solid; border-radius:3px; background:#f3f6f9;}
+select {height:40px; padding:0 10px 0 6px; border:#e9e9e9 1px solid; border-radius:3px; background:#f3f6f9;}
+textarea {height:150px; padding:10px; border:#e9e9e9 1px solid; border-radius:3px; background:#f3f6f9;}
+
+.radio-box input[type="radio"] {display:none;}
+.radio-box input[type="radio"] + span {display:inline-block; height:38px; padding:8px 10px 0 10px; text-align:center; border:#e5e5e5 1px solid; border-radius:3px; background:#f3f6f9; cursor:pointer;}
+.radio-box input[type="radio"]:checked + span {color:#fff; border:1px solid #1bc5bd; background:#1bc5bd;}
+
+.check-box {display:inline-block; position:relative;}
+.check-box input[type="checkbox"] {position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;}
+.check-box input[type="checkbox"] + label {display:inline-block; position:relative; letter-spacing:-0.5px; cursor:pointer; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;}
+.check-box input[type="checkbox"] + label:before {content:' '; display:inline-block; width:21px; height:21px; line-height:21px; margin:-2px 5px 0 0; text-align:center; vertical-align:middle; background:#fafafa; border:1px solid #cacece; border-radius:3px; box-shadow:0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);}
+.check-box input[type="checkbox"] + label:active:before,
+.check-box input[type="checkbox"]:checked + label:active:before {box-shadow:0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);}
+.check-box input[type="checkbox"]:checked + label:before {content:'\2714'; color:#99a1a7; text-shadow:1px 1px #fff; background:#e9ecee; border-color:#adb8c0; box-shadow:0px 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);}
 
 .input-file label {display:inline-block; position:relative; width:30%; height:50px; vertical-align:middle; color:#fff; text-align:center; line-height:46px; border-radius:4px; background:#ccc; overflow:hidden; cursor:pointer;}
 .input-file label input {display:none; position:absolute; width:0; height:0; overflow:hidden;}
 .input-file input[type=text] {display:inline-block; width:69%; vertical-align:middle;}
+
+.date-icon {background:url('/assets/image/content/btn_calendar.png') right center no-repeat, #f3f6f9 !important;} 
 
 
 /* 스크롤바 */

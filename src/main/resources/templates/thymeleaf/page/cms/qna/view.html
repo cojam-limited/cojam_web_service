@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-alt"></i>  Q&A > Modify Q&A </h2>
+        </div>
+        <form name="boardFrm" id="boardFrm" method="post" action="" enctype="multipart/form-data">
+            <input type="hidden" th:name="questionKey" th:value="${detail.questionKey}">
+            <fieldset>
+                <div class="popup-form-wrap">
+                    <div>
+                        <table class="popup-form">
+                            <tbody>
+                            <tr>
+                                <th>순서 <span>*</span></th>
+                                <td>
+                                    <label for=""><input type="number" name="orderNumber" th:value="${detail.orderNumber}"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>사용여부 <span>*</span></th>
+                                <td colspan="3">
+                                    <label for="Usage1"><input type="radio" name="opYn" value="Y" id="Usage1" th:checked="${detail.opYn eq 'Y'}">사용함</label>
+                                    <label for="Usage2"><input type="radio" name="opYn" value="N" id="Usage2" th:checked="${detail.opYn eq 'N'}">사용 안 함</label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <th><label for="post-view-txt2">Question</label> <span>*</span></th>
+                                <td><input type="text" name="question" id="post-view-txt2" placeholder="질문을 입력해주세요." th:value="${detail.question}"></td>
+                            </tr>
+                            <tr>
+                                <th><label for="post-view-txt5">Answer</label> <span>*</span></th>
+                                <td><textarea id="post-view-txt5" placeholder="답변을 입력해주세요." name="answer" style="width: 100%" th:text="${detail.answer}"></textarea></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!--.post-view-wrap  -->
+            </fieldset>
+        </form>
+        <div class="form-button">
+            <a href="/cms/qna">뒤로가기</a>
+            <a href="javascript:fnUpdateQna();" style="background-color:#8950fc; color: #fff;">수정하기</a>
+        </div>
+        <script>
+            function fnUpdateQna(){
+
+
+                const form = $('#boardFrm')[0];
+                const data = new FormData(form);
+                $.ajax({
+                    url:"/cms/qna/update",
+                    type :  "POST",
+                    enctype: 'multipart/form-data',
+                    data : data,
+                    contentType : false,
+                    processData : false,
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        </script>
+    </div> <!--.content -->
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+</html>

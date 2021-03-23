@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div class="table-title">
+            <h2><i class="uil uil-chat-info"></i>  Ongoing Market </h2>
+            <div>
+                <a href="#">Pend</a>
+                <a href="#">Invalid</a>
+                <a href="#">Draft</a>
+                <a href="#">Answer</a>
+                <a href="#">Approve</a>
+            </div>
+        </div>
+
+        <form th:name="boardFrm" th:method="GET" action="/cms/post">
+            <input th:type="hidden" th:name="page" />
+            <div class="table-option">
+                <div>
+                    <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-default" id="questList">
+            <table>
+                <colgroup>
+                    <col width="6%"/>
+                    <col width="6%"/>
+                    <col width="10%"/>
+                    <col width="*"/>
+                    <col width="15%"/>
+                    <col width="15%"/>
+                    <col width="6%"/>
+                    <col width="6%"/>
+                    <col width="6%"/>
+                    <col width="6%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td><input type="checkbox" name="xxx" value="yyy" class="checkAll"></td>
+                        <td>No.</td>
+                        <td>Category <span><i class="uil uil-align-center-v"></i></span></td>
+                        <td>Title</td>
+                        <td>End Date <span><i class="uil uil-align-center-v"></i></span></td>
+                        <td>Total(minimum)</td>
+                        <td>Draft</td>
+                        <td>Answers</td>
+                        <td>Pend <span><i class="uil uil-align-center-v"></i></span></td>
+                        <td>hot <span><i class="uil uil-align-center-v"></i></span></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${questList} !=null">
+                        <tr th:each="item,i :${questList}">
+                            <td><input type="checkbox" name="questKeys" th:value="${item.questKey}" class="check"></td>
+                            <td th:text="${i.index}"></td>
+                            <td th:text="${item.categoryName}"></td>
+                            <td>
+                                <h5 th:text="${item.questTitle}"></h5>
+                            </td>
+                            <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
+                            <td>0(5000)</td>
+                            <td>F</td>
+                            <td>F</td>
+                            <td th:text="${item.pending}?'T':'F'"></td>
+                            <td th:text="${item.hot}?'T':'F'">
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+        </div> <!-- .table-content  -->
+
+    </div> <!-- .content  -->
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                fnGetList();
+            });
+
+            function fnGetList(){
+                $.ajax({
+                    url:"/cms/ground/ongoing/list",
+                    type :  "GET",
+                    data : $("form[name=boardFrm]").serialize(),
+                }).done(function (fragment) {
+                    $("#questList").replaceWith(fragment);
+                });
+            }
+
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+        </script>
+    </th:block>
+</th:block>
+</html>

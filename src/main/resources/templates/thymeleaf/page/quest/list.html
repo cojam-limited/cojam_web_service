@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/default_layout">
+
+<th:block layout:fragment="css">
+</th:block>
+
+
+<div layout:fragment="content">
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestAdd(${seasonCategoryList})"></th:block>
+
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestSeason"></th:block>
+    <!-- 기본영역 (타이틀/네비/버튼) -->
+    <dl class="title-section">
+        <dt>
+            <h2>Art & Culture</h2>
+            <h3><i class="uil uil-estate"></i> Home · Quest · <span>Art & Culture</span></h3>
+        </dt>
+        <dd>
+            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+            <a href="#" data-izimodal-open="#modalQuestSeason" data-izimodal-transitionin="comingIn"><i class="uil uil-info-circle"></i> <span>Season Info</span></a>
+        </dd>
+    </dl>
+    <!-- 기본영역 끝 -->
+
+
+
+    <div class="container">
+        <!-- 카타고리 영역 -->
+        <div class="category-section">
+            <dl>
+                <dt>
+                    <div class="swiper-wrapper">
+                        <a href="#" class="swiper-slide">All</a>
+                        <a href="#" class="swiper-slide">Hot Quest</a>
+                        <a th:if="${seasonCategoryList} != null"
+                                th:each="item : ${seasonCategoryList}"
+                                th:text="${item.categoryName}"
+                            class="swiper-slide"
+                        ></a>
+                    </div>
+                </dt>
+                <dd>
+                    <a href="#"><i class="uil uil-history"></i><span>History</span></a>
+                </dd>
+            </dl>
+        </div>
+        <!-- 카타고리 영역 끝 -->
+
+
+        <!-- 리스트 끝 -->
+        <div class="quest-list-columns">
+            <ul>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
+                    <ul>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/38/cb/36/38cb36f10e0a2913a436893226a22319.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>Predict ! Who will win the match between Arsenal and Liverpool on September 28, 2020</h4>
+                    <ul>
+                        <li>
+                            <div>Arsenal</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Draws</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Livepool</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/65/f1/77/65f17733bb1ca10fd3a54745610a767a.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>How many goals will Heung-min Son(Tottenham) will score at Men's Soccer A matches with Mexico (15, November 2020) and Katar (17, November 2020)?</h4>
+                    <ul>
+                        <li>
+                            <div>One Goal</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Two Goals</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Three Goals or More</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Invalid (no goals)</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/17/81/41/1781415124ad3c138736bd8aa6bc583b.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
+                    <ul>
+                        <li>
+                            <div>Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
+                    <ul>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="location.href='/user/quest/view';">
+                    <h2>Total <span>258,025</span> CT</h2>
+                    <p>
+                        <span style="background:url('https://i.pinimg.com/564x/a3/ef/7d/a3ef7d3372f46d737c706ef549d496c6.jpg') center no-repeat; background-size:cover;"></span>
+                    </p>
+                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
+                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
+                    <ul>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                        <li>
+                            <div>Yes</div>
+                            <p>1.66X</p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- 리스트 끝 -->
+
+
+        <!-- 페이지넘버링 -->
+        <div class="paging-list">
+            <a href="#"><i class="fas fa-caret-left"></i></a>
+            <a href="#">1</a>
+            <a href="#" class="active">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#"><i class="fas fa-caret-right"></i></a>
+        </div>
+        <!-- 페이지넘버링 끝 -->
+
+
+        <!-- 등록버튼 -->
+        <div class="add-btn">
+            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
+        </div>
+        <!-- 등록버튼 끝 -->
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $("body").addClass("bg-quest");
+            // 모달 - 퀘스트 - 시즌정보 //
+        </script>
+    </th:block>
+</div>
+
+</html>

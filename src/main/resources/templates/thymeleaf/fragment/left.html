@@ -1,0 +1,64 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<th:block th:fragment="leftCMS">
+    <!-- 왼쪽영역 -->
+    <div id="left-sidebar">
+        <!-- 왼쪽영역 -->
+        <div class="left">
+            <!-- 로그인영역 -->
+            <div class="left-login">
+                <p>Welcome</p>
+                <div><img src="/admin/assets/image/login_img02.png" alt=""></div>
+                <h2 sec:authentication="principal.memberName"></h2>
+                <!--<h3>최종접속 : 2021-02-17 13:12</h3>-->
+                <ul>
+                    <li th:onclick="fnLogin()">로그아웃</li>
+                </ul>
+            </div>
+            <!--로그인영역 끝 -->
+
+            <!-- 왼쪽메뉴 -->
+            <div class="accordion-menu" th:with="currentPage=${#httpServletRequest.requestURI}">
+                <ul>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/ground')}?'active':''">
+                        <p id="clickDown"> <span><i class="uil uil-chat-info"></i></span> COJAM Ground </p>
+                        <div class="down" th:style="${#strings.contains(currentPage, '/cms/ground')}?'display:block;':''">
+                            <a th:href="@{/cms/ground/ongoing}" th:style="${#strings.contains(currentPage, '/cms/ground/ongoing')}?'font-weight:700;color:#8950fc;':''">&#149; Ongoing Market</a> <br>
+                            <a th:href="@{/cms/ground/invalid}" th:style="${#strings.contains(currentPage, '/cms/ground/invalid')}?'font-weight:700;color:#8950fc;':''">&#149; Invalid Market</a> <br>
+                            <a th:href="@{/cms/ground/approve}" th:style="${#strings.contains(currentPage, '/cms/ground/approve')}?'font-weight:700;color:#8950fc;':''">&#149; Approve Market</a> <br>
+                            <a th:href="@{/cms/ground/adjourn}" th:style="${#strings.contains(currentPage, '/cms/ground/adjourn')}?'font-weight:700;color:#8950fc;':''">&#149; Adjourn Market</a> <br>
+                            <a th:href="@{/cms/ground/success}" th:style="${#strings.contains(currentPage, '/cms/ground/success')}?'font-weight:700;color:#8950fc;':''">&#149; Success Market</a> <br>
+                        </div>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/users')}?'active':''">
+                        <a th:href="@{/cms/users}"><span><i class="uil uil-user"></i></span> Service Users</a>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/members')}?'active':''">
+                        <a th:href="@{/cms/members}"><span><i class="uil uil-users-alt"></i></span> Members</a>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/post')}?'active':''">
+                        <a th:href="@{/cms/post}"><span><i class="uil uil-file-alt"></i></span> Post</a>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/qna')}?'active':''">
+                        <a th:href="@{/cms/qna}"><span><i class="uil uil-file-alt"></i></span> Q&A</a>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/popup')}?'active':''">
+                        <a th:href="@{/cms/popup}"><span><i class="uil uil-files-landscapes"></i></span> Pop-Up</a>
+                    </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/season')}?'active':''">
+                        <a th:href="@{/cms/season}"><span><i class="uil uil-file-redo-alt"></i></span> Season</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 왼쪽메뉴 끝 -->
+            <p>Copyright © <b>COJAM</b> Co., LTD. All Rights Reserved.</p>
+        </div>
+
+
+        <!-- 왼쪽영역 끝 -->
+    </div>
+    <!-- 왼쪽영역 끝 -->
+</th:block>
+</html>

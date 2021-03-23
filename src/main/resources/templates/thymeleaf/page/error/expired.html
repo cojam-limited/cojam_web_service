@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="thymeleaf/layout/login_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- 비밀번호 변경 -->
+<div layout:fragment="content" class="idpw-area">
+	<div class="pos-pw-change">
+		<h3>This page has expired.</h3>
+	</div>
+</div>
+<!-- 비밀번호 변경 끝 -->
+</html>

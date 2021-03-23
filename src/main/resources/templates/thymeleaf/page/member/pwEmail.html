@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="thymeleaf/layout/login_layout">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- 비밀번호 이메일 발송 -->
+<div layout:fragment="content"  class="idpw-area">
+	<div class="pos-pw-email">
+		<form name="pwForm" method="post" action="#">
+			<input type="text" name="pass" value="" style="display: none">
+			<fieldset>
+				<legend>비밀번호 이메일 발송</legend>
+				<h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
+				<h3>Forgot your password?</h3>
+				<h4>Password information will be sent to the registered e-mail when registering as a member.</h4>
+				<ul>
+					<li>
+						<input type="text" name="memberEmail" title="email" maxlength="35" class="email-icn" placeholder="E-Mail" />
+					</li>
+				</ul>
+				<div>
+					<a href="/user/idFind">Find ID</a>
+				</div>
+				<p>
+					<a href="javascript:fnChangePass()">Find</a>
+				</p>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<!-- 비밀번호 이메일 발송 끝 -->
+<th:block layout:fragment="script">
+	<script>
+		$(document).ready(function() {
+			$("input").keydown(function(key) {
+				if (key.keyCode == 13) {
+					fnChangePass();
+				}
+			});
+		});
+
+		function fnChangePass() {
+
+			if($("input[name=memberEmail]").val()==""){
+				toastr.warning('Please enter your email');
+				return;
+			}
+
+			const emailCheck = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+			if( !emailCheck.test( $("input[name=memberEmail]").val() ) ) {
+				toastr.warning('Email format is incorrect.');
+				return;
+			}
+			$.ajax({
+				url:"/user/pass/email",
+				type :  "POST",
+				dataType : "json",
+				data : $('form[name=pwForm]').serialize(),
+				success : function(response){
+					console.debug(response);
+					if(response.check){
+						toastr.success(response.message);
+					} else {
+						toastr.error(response.message);
+					}
+				}
+			});
+
+		}
+	</script>
+</th:block>
+</html>
