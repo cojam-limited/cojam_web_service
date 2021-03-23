@@ -89,7 +89,7 @@ spring:
     activate:
       on-profile: dev
   redis:
-    host: 10.192.240.3
+    host: localhost
     port: 6379
     password: ''
   session:
@@ -135,7 +135,7 @@ logging:
     io.cojam.web: debug
 myConfig:
   uploadPath: "/cojam_data/web_upload"
-  hostUrl: "https://cojamdev.hiblocks.io"
+  hostUrl: "http://cojamdev.hiblocks.io"
 app:
   name: hiblocks-internal
   adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
