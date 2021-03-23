@@ -319,7 +319,8 @@ $.ajaxSetup({
 	error : function(error){
 		if(error.status =='403'){
 			location.reload();
+		}else{
+			toastr.error(error.status,error.statusText);
 		}
-		toastr.error(error.status,error.statusText);
 	}
 });
