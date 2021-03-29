@@ -15,10 +15,12 @@
             </div>
         </div>
         <form th:name="boardFrm" th:method="GET" action="/cms/users">
+            <input th:type="hidden" th:name="page" />
+            <input th:type="hidden" th:name="orderType" />
+            <input type="text" style="display: none"/>
             <div class="table-option">
                 <div>
-                    <input type="text" placeholder="검색어를 입력하세요.">
-                    <button><i class="uil uil-search"></i></button>
+                    <input type="text"name="searchText" id="searchText" placeholder="검색어를 입력하세요."> <button  type="button"  onclick="fnSearch();"><i class="uil uil-search"></i></button>
                 </div>
             </div>
         </form>
@@ -83,16 +85,15 @@
         <script>
             $(document).ready(function () {
                 fnGetList();
+                $("#searchText").keydown(function(key) {
+                    if (key.keyCode == 13) {
+                        fnMovePage(1);
+                    }
+                });
             });
 
             function fnGetList() {
-                $.ajax({
-                    url: "/cms/users",
-                    type: "POST",
-                    data: $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#memberList").replaceWith(fragment);
-                });
+                ajaxView("/cms/users","POST",$("form[name=boardFrm]").serialize(),"memberList");
             }
 
             function fnMovePage(page) {
@@ -136,6 +137,10 @@
 
                 }
             });
+
+            function fnSearch(){
+                fnMovePage(1);
+            }
         </script>
     </th:block>
 </th:block>

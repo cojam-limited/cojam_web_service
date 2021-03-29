@@ -67,6 +67,7 @@ logging:
 myConfig:
   uploadPath: "/Users/jaeheonjung/PROJECT/localUpload/cojam"
   hostUrl: "http://localhost:8090"
+  klaytnScpe: "https://baobab.scope.klaytn.com/"
 app:
   name: hiblocks-internal
   adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
@@ -81,6 +82,8 @@ app:
     accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
     masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
     passphrase: "!1wjdwogjs"
+    TOKEN_ADDRESS: "0xd6cdaB407f47AFaa8800aF5006061DB8DC92AAe7"
+    MARKET_ADDRESS: "0xB5c31C08aeA6Cb1d326Cd5b956950B9c98f5260f"
     url: http://localhost:3000
 #개발 환경
 ---
@@ -92,6 +95,7 @@ spring:
     host: localhost
     port: 6379
     password: ''
+    timeout: 0
   session:
     store-type: redis
     redis:
@@ -136,6 +140,7 @@ logging:
 myConfig:
   uploadPath: "/cojam_data/web_upload"
   hostUrl: "http://cojamdev.hiblocks.io"
+  klaytnScpe: "https://baobab.scope.klaytn.com/"
 app:
   name: hiblocks-internal
   adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx
@@ -207,6 +212,7 @@ logging:
 myConfig:
   uploadPath: "/Users/jaeheonjung/PROJECT/localUpload"
   hostUrl: "http://localhost:8090"
+  klaytnScpe: "https://scope.klaytn.com/"
 app:
   name: hiblocks-internal
   adminToken: RfLS97hYHH9F7WmmFmv5HDWJYUTVGLrkJJEYWChx

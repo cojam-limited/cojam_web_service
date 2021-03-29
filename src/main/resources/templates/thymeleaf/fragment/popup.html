@@ -26,7 +26,7 @@
                             <div class="input-file">
                                 <label>
                                     File Attach
-                                    <input type="file" name="file" onchange="javascript:document.getElementById('fileRoute').value=this.value">
+                                    <input type="file" name="file" id="inputFile" onchange="javascript:document.getElementById('fileRoute').value=this.value">
                                 </label>
                                 <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="Attach an image">
                             </div>
@@ -54,6 +54,13 @@
     <script>
         $(document).ready(function(){
 
+            $("#modalQuestAdd").iziModal({
+                width : '500px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+                    fnQuestRegisterInit();
+                }
+            });
             $('#modalQuestAdd').iziModal({width : '500px'});
             // 날짜 - 퀘스트 등록 //
             $("#endDateTime").datetimepicker({
@@ -63,7 +70,7 @@
                 //controlType:'select',
                 //oneLine:true,
             });
-            $('#endDateTime').val($.datepicker.formatDate('yy-mm-dd', new Date()));
+            $('#endDateTime').val($.datepicker.formatDate('yy-mm-dd 12:00:00', new Date()));
         });
 
         $(document).on('click','.mqa-content1 > li > a',function (e){
@@ -85,6 +92,69 @@
             }
         });
         function fnSaveQuest(){
+            if($('input[name=questTitle]').val() == ""){
+                toastr.error('Please enter a title.');
+                return false;
+            }
+
+            if($('select[name=seasonCategoryKey]').val() == ""){
+                toastr.error('Please select a category.');
+                return false;
+            }
+
+            if($('select[name=seasonCategoryKey]').val() == ""){
+                toastr.error('Please select a category.');
+                return false;
+            }
+
+
+            var imgFile = $('#inputFile').val();
+            var fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;
+            var maxSize = 10 * 1024 * 1024;
+            var fileSize;
+
+            if($('#inputFile').val() == "" && $("input[name=snsUrl]").val()=="") {
+                toastr.error('Please select a sns url or file.');
+                return;
+            }
+
+            if($("input[name=answers]").length < 1){
+                toastr.error('Please enter your answer.');
+                return;
+            }
+
+            if($("input[name=answers]").length < 2){
+                toastr.error('Please enter 2 or more answers.');
+                return;
+            }
+
+            let answerCheck = true;
+            $("input[name=answers]").each(function (e){
+               if($(this).val()==""){
+                   answerCheck = false;
+               }
+            });
+
+            if(!answerCheck){
+                toastr.error('Please enter your answer.');
+                return;
+            }
+
+            if($('#inputFile').val() != ""){
+                if(imgFile != "" && imgFile != null) {
+                    fileSize = document.getElementById("inputFile").files[0].size;
+                    if(!imgFile.match(fileForm)) {
+                        toastr.error("Only image files can be selected.");
+                        return;
+                    } else if(fileSize > maxSize) {
+                        toastr.error("Attachment size is limited to 10MB.");
+                        return;
+                    }
+                }
+            }
+
+
+
             if(confirm("Would you like to register?")){
                 const form = $('#questForm')[0];
                 const data = new FormData(form);
@@ -98,14 +168,43 @@
                     success : function(response){
                         if(response.check){
                             toastr.success('Complete! Please wait manager confirm.');
+                            fnGetList();
                             $('#questModalClose').click();
-                            //location.href = '/cms/popup/view?idx='+response.item;
                         } else {
                             toastr.error(response.message);
                         }
                     }
                 });
             }
+        }
+
+        function fnQuestRegisterInit(){
+            $('input[name=questTitle]').val('');
+            $('select[name=seasonCategoryKey]').val('');
+            $('#isFile').val('');
+            $('input[name=snsUrl]').val('');
+            $('#fileRoute').val('');
+            $('#endDateTime').val($.datepicker.formatDate('yy-mm-dd HH', new Date()));
+            const liChild = document.createElement('li');
+            const inputChild = document.createElement('input');
+
+            inputChild.setAttribute("type", "text");
+            inputChild.setAttribute("name", "answers");
+            inputChild.setAttribute("value", "Yes");
+            inputChild.setAttribute("class", "w100p");
+            inputChild.setAttribute("placeholder", "");
+            liChild.appendChild(inputChild);
+            $('#answerList').html(liChild);
+            const liChild2 = document.createElement('li');
+            const inputChild2 = document.createElement('input');
+
+            inputChild2.setAttribute("type", "text");
+            inputChild2.setAttribute("name", "answers");
+            inputChild2.setAttribute("value", "No");
+            inputChild2.setAttribute("class", "w100p");
+            inputChild2.setAttribute("placeholder", "");
+            liChild2.appendChild(inputChild2);
+            $('#answerList').append(liChild2);
         }
     </script>
     <th:block layout:fragment="script">
@@ -199,74 +298,68 @@
 <th:block  th:fragment="modalQuestSeason">
     <!-- 모달 - 퀘스트 시즌 -->
     <div class="modal-quest-season" id="modalQuestSeason" style="display:none;">
-        <div class="mqs-area">
-            <dl class="mqs-header">
-                <dt>Create Season of COJAM Service!</dt>
-                <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
-            </dl>
-            <div class="mqs-date"><i class="uil uil-calendar-alt"></i> 2021.01.4 ~ 2021.12.31 (331)</div>
-            <ul class="mqs-content">
-                <li>
-                    <h3>ART</h3>
+        <div class="mqs-area" id="questSeaonCntInfo">
+            <th:block th:if="${seasonInfo}!=null">
+                <dl class="mqs-header">
+                    <dt>Create Season of COJAM Service!</dt>
+                    <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                </dl>
+                <div class="mqs-date"><i class="uil uil-calendar-alt"></i> <th:block th:text="${#dates.format(seasonInfo.alphaDttm,'yyyy.MM.dd')}"></th:block> ~ <th:block th:text="${#dates.format(seasonInfo.omegaDttm,'yyyy.MM.dd')}"></th:block> </div>
+                <ul class="mqs-content">
+                    <th:block th:if="${list}!=null">
+                        <li th:each="item : ${list}">
+                            <h3 th:text="${item.categoryName}"></h3>
+                            <div>
+                                <div th:style="'width:'+${item.cnt}+'%'"></div>
+                                <p th:text="${item.cnt}+' / '+${item.limitation}"></p>
+                            </div>
+                        </li>
+                    </th:block>
+                </ul>
+                <div class="mqs-info">
+                    <h2>Title : <th:block th:text="${seasonInfo.title}"></th:block></h2>
+                    <h2>Description : <th:block th:text="${seasonInfo.description}"></th:block></h2>
                     <div>
-                        <div style="width:30%"></div>
-                        <p>1 / 100</p>
+                        COJAM Fee : <span th:text="${#numbers.formatInteger(seasonInfo.cojamFee,0,'COMMA')}+'%'"></span><br />
+                        Charity Fee : <span th:text="${#numbers.formatInteger(seasonInfo.charityFee,0,'COMMA')}+'%'"></span><br />
+                        Creator Fee : <span th:text="${#numbers.formatInteger(seasonInfo.creatorFee,0,'COMMA')}+'%'"></span><br />
+                        Creator Pay : <span th:text="${#numbers.formatInteger(seasonInfo.creatorPay,0,'COMMA')}+'CT'"></span><br />
+                        Minimum Pay : <span th:text="${#numbers.formatInteger(seasonInfo.minimumPay,0,'COMMA')}+'CT'"></span><br />
+                        Maximum Pay : <span th:text="${#numbers.formatInteger(seasonInfo.maximumPay,0,'COMMA')}+'CT'"></span>
                     </div>
-                </li>
-                <li>
-                    <h3>Science</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Crowdsolving</h3>
-                    <div>
-                        <div style="width:60%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Competition</h3>
-                    <div>
-                        <div style="width:50%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Economy</h3>
-                    <div>
-                        <div style="width:3%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Community</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-            </ul>
-            <div class="mqs-info">
-                <h2>Title : Create Season of COJAM Service!</h2>
-                <h2>Description : Create Season of COJAM Service!</h2>
-                <div>
-                    COJAM Fee : <span>8%</span><br />
-                    Charity Fee : <span>2%</span><br />
-                    Creator Fee : <span>5%</span><br />
-                    Creator Pay : <span>0CT</span><br />
-                    Minimum Pay : <span>5,000CT</span><br />
-                    Maximum Pay : <span>300,000CT</span>
                 </div>
-            </div>
+            </th:block>
+
         </div>
     </div>
     <!-- 모달 - 퀘스트 시즌 끝 -->
     <script>
         $(document).ready(function(){
-            $('#modalQuestSeason').iziModal({width : '500px'});
+
+            $("#modalQuestSeason").iziModal({
+                width : '500px',
+                height : '400px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+                    $.ajax({
+                        url: "/user/quest/seasonInfo",
+                        type :  'GET',
+                        beforeSend : function(xhr)
+                        {
+                            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+                            modal.startLoading();
+                        },
+                        complete: function () {
+
+                        },
+                        error : function(error){
+                        }
+                    }).done(function (fragment) {
+                        $("#questSeaonCntInfo").replaceWith(fragment);
+                        modal.stopLoading();
+                    });
+                }
+            });
         });
     </script>
 </th:block>
@@ -406,7 +499,7 @@
 </th:block>
 <th:block  th:fragment="modalGroundDetail">
     <!-- 모달 - 마이페이지 - Ground 상세 -->
-    <div class="modal-mypage-view" id="modalMypageGround" style="display:none;">
+    <div class="modal-mypage-view" id="modalGroundDetail" style="display:none;">
         <form name="addForm" method="post" action="">
             <fieldset>
                 <legend>Ground Detail</legend>
@@ -415,50 +508,95 @@
                         <dt>Ground Detail</dt>
                         <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
                     </dl>
-                    <ul>
-                        <li>
-                            <span>Title</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Category</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Status</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Description</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Approve Transaction</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Adjourn Transaction</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Success Transaction</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Answer List</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Selected Answer</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
-                        <li>
-                            <span>Season</span>
-                            <input name="name" type="text" class="w100p" placeholder="" />
-                        </li>
+                    <ul id="groundDetail">
+                        <th:block th:if="${detail}!= null">
+                            <li th:if="${detail.fileKey} !=null or ${detail.fileKey} !=''">
+                                <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                    <a th:href="${detail.snsUrl}" target="_blank">
+                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                    </a>
+                                    <div>
+                                        <span th:text="${detail.snsDesc} !=null and ${detail.snsDesc} != ''? ${detail.snsDesc}:${detail.snsTitle}"></span>
+                                    </div>
+                                </th:block>
+                                <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                    <a th:href="@{/user/media/image(id=${detail.fileKey})}" target="_blank">
+                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                    </a>
+                                </th:block>
+                            </li>
+                            <li>
+                                <span>Title</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitle}"/>
+                            </li>
+                            <li>
+                                <span>Category</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.categoryName}"/>
+                            </li>
+                            <li>
+                                <span>Status</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questStatus}"/>
+                            </li>
+                            <li>
+                                <span>Description</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questDesc}"/>
+                            </li>
+                            <li>
+                                <span>Draft Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.draftTx}"/>
+                            </li>
+                            <li>
+                                <span>Answers Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.answersTx}"/>
+                            </li>
+                            <li>
+                                <span>Approve Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.approveTx}"/>
+                            </li>
+                            <li>
+                                <span>Adjourn Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.adjournTx}"/>
+                            </li>
+                            <li>
+                                <span>Success Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.successTx}"/>
+                            </li>
+                            <th:block th:if="${answerList}!=null" th:with="seletedAnswer=bbb">
+                                <li>
+                                    <span>Answer List</span>
+                                    <br/>
+                                    <th:block th:each="answer : ${answerList}">
+                                        <input name="name" type="text" style="width: 80%;" placeholder="" th:value="${answer.answerTitle}"/>
+                                        <input name="name" type="text" style="width: 10%;" placeholder="" th:value="${#numbers.formatInteger(answer.totalAmount,0,'COMMA')}"/>
+                                        <th:block th:if="${answer.selected}" th:with="seletedAnswer =AAAA"></th:block>
+                                    </th:block>
+                                </li>
+                                <th:block th:each="answer : ${answerList}">
+                                    <li th:if="${answer.selected}">
+                                        <span>Selected Answer</span>
+                                        <input name="name" type="text" class="w100p" placeholder="" th:value="${answer.answerTitle}"/>
+                                    </li>
+                                </th:block>
+                            </th:block>
+                            <li>
+                                <span>Season</span>
+                                <div class="mqs-info">
+                                    <h2>Title : <th:block th:text="${detail.title}"></th:block></h2>
+                                    <h2>Description : <th:block th:text="${detail.description}"></th:block></h2>
+                                    <div>
+                                        COJAM Fee : <span th:text="${detail.cojamFee}+'%'"></span><br />
+                                        Charity Fee : <span th:text="${detail.charityFee}+'%'"></span><br />
+                                        Creator Fee : <span th:text="${detail.creatorFee}+'%'"></span><br />
+                                        Creator Pay : <span th:text="${detail.creatorPay}+'CT'"></span><br />
+                                        Minimum Pay : <span th:text="${detail.minimumPay}+'CT'"></span><br />
+                                        Maximum Pay : <span th:text="${detail.maximumPay}+'CT'"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </th:block>
                     </ul>
                     <p>
-                        <a href="#">Confirm</a>
+                        <a href="javascript:$('#modalGroundDetail').iziModal('close');">Confirm</a>
                     </p>
                 </div>
             </fieldset>
@@ -467,9 +605,23 @@
     <!-- 모달 - 마이페이지 - Ground 상세 끝 -->
     <th:block layout:fragment="script">
         <script>
+            let detailQuestKey="";
             $(document).ready(function(){
-                // 모달 - 마이페이지 - Ground //
-                $('#modalMypageGround').iziModal({width : '500px'});
+
+                $("#modalGroundDetail").iziModal({
+                    width : '900px',
+                    transitionin : 'comingIn',
+                    onOpening: function(modal){
+
+                        modal.startLoading();
+                        $.post('/user/mypage/quest/'+detailQuestKey, function(data) {
+                            $('#groundDetail').replaceWith(data);
+                            modal.stopLoading();
+                        }).fail(function(response) {
+                            $("#modalGroundDetail").iziModal('close');
+                        });
+                    }
+                });
             });
         </script>
     </th:block>
@@ -554,6 +706,674 @@
                 });
             });
         </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalGroundInvalid">
+    <!-- 모달 - 마이페이지 - Transfer 상세 -->
+    <div class="modal-mypage-view" id="modalGroundInvalid" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Ground Detail</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt>Invaild Answer</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" type="radio" checked class="w100p" value="1. The exact time period for the forecast should be set." placeholder="" style="vertical-align:middle;"/>
+                                1. The exact time period for the forecast should be set.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" type="radio" class="w100p" value="2. The category for the forecast should be matched." placeholder="" style="vertical-align:middle;"/>
+                                2. The category for the forecast should be matched.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" type="radio" class="w100p" value="3. Prediction results should be clearly present." placeholder="" style="vertical-align:middle;"/>
+                                3. Prediction results should be clearly present.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" type="radio" value="4. There should be no overlapping markets." class="w100p" placeholder="" style="vertical-align:middle;"/>
+                                4. There should be no overlapping markets.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" type="radio" value="5. There should be suggestive content." class="w100p" placeholder="" style="vertical-align:middle;"/>
+                                5. There should be suggestive content.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="invalidDesc" value="6" type="radio" class="w100p" placeholder="" style="vertical-align:middle;"/>
+                                6. Etc
+                            </span>
+                        </li>
+                        <li id="descArea" style="display: none">
+                            <input name="descCustom" type="text" class="w200" placeholder=""/>
+                        </li>
+                    </ul>
+                    <p>
+                        <a th:onclick="fnInvalidQuest()">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - 마이페이지 - Transfer 상세 끝 -->
+    <th:block layout:fragment="script">
+        <script>
+            let invalidQuestKey ="";
+            let invalidQuestTitle = "";
+            $(document).ready(function(){
+                $('#modalGroundInvalid').iziModal({width : '500px'});
+            });
+
+            $(document).on('change','input[name=invalidDesc]',function (e){
+                if($(this).val()=="6"){
+                    $("#descArea").show();
+                }else{
+                    $("#descArea").hide();
+                    $('input[name="descCustom"]').val('');
+                }
+
+            });
+
+            function fnInvalidQuest(){
+
+                let radioVal = $('input[name="invalidDesc"]:checked').val();
+                if(typeof radioVal == "undefined" || radioVal == "" || radioVal == null){
+                    toastr.warning('Select invalid answer.');
+                    return;
+                }
+
+                if(radioVal == "6" && $('input[name="descCustom"]').val()==""){
+                    toastr.warning('Input invalid answer.');
+                    return;
+                }
+
+                if(radioVal == "6"){
+                    radioVal = "6. "+$('input[name="descCustom"]').val();
+                }
+
+                if(confirm("will [" + invalidQuestTitle + "] be Invalid?")){
+                    $.ajax({
+                        url: "/cms/ground/invalid",
+                        type: "POST",
+                        data : {
+                            "questKey" : invalidQuestKey
+                            ,"description" : radioVal
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                                $('#modalGroundInvalid').iziModal('close');
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        }
+                    });
+                }
+            }
+
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalGroundDetailCMS">
+    <!-- 모달 - 마이페이지 - Ground 상세 -->
+    <div class="modal-mypage-view" id="modalGroundDetailCMS" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Ground Detail</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt>Ground Detail</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul id="groundDetailCMS">
+                        <th:block th:if="${detail}!= null">
+                            <li th:if="${detail.fileKey} !=null or ${detail.fileKey} !=''">
+                                <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                    <a th:href="${detail.snsUrl}" target="_blank">
+                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                    </a>
+                                    <div>
+                                        <span th:text="${detail.snsDesc} !=null and ${detail.snsDesc} != ''? ${detail.snsDesc}:${detail.snsTitle}"></span>
+                                    </div>
+                                </th:block>
+                                <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                    <a th:href="@{/user/media/image(id=${detail.fileKey})}" target="_blank">
+                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                    </a>
+                                </th:block>
+                            </li>
+                            <li>
+                                <span>Title</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitle}"/>
+                            </li>
+                            <li>
+                                <span>Category</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.categoryName}"/>
+                            </li>
+                            <li>
+                                <span>Status</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questStatus}"/>
+                            </li>
+                            <li>
+                                <span>Description</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questDesc}"/>
+                            </li>
+                            <li>
+                                <span>Draft Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.draftTx}"/>
+                            </li>
+                            <li>
+                                <span>Answers Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.answersTx}"/>
+                            </li>
+                            <li>
+                                <span>Approve Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.approveTx}"/>
+                            </li>
+                            <li>
+                                <span>Adjourn Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.adjournTx}"/>
+                            </li>
+                            <li>
+                                <span>Success Transaction</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.successTx}"/>
+                            </li>
+                            <th:block th:if="${answerList}!=null" th:with="seletedAnswer=bbb">
+                                <li>
+                                    <span>Answer List</span>
+                                    <br/>
+                                    <th:block th:each="answer : ${answerList}">
+                                        <input name="name" type="text" style="width: 80%;" placeholder="" th:value="${answer.answerTitle}"/>
+                                        <input name="name" type="text" style="width: 10%;" placeholder="" th:value="${#numbers.formatInteger(answer.totalAmount,0,'COMMA')}"/>
+                                        <th:block th:if="${answer.selected}" th:with="seletedAnswer =AAAA"></th:block>
+                                    </th:block>
+                                </li>
+                                <th:block th:each="answer : ${answerList}">
+                                    <li th:if="${answer.selected}">
+                                        <span>Selected Answer</span>
+                                        <input name="name" type="text" class="w100p" placeholder="" th:value="${answer.answerTitle}"/>
+                                    </li>
+                                </th:block>
+                            </th:block>
+                            <li>
+                                <span>Season</span>
+                                <div class="mqs-info">
+                                    <h2>Title : <th:block th:text="${detail.title}"></th:block></h2>
+                                    <h2>Description : <th:block th:text="${detail.description}"></th:block></h2>
+                                    <div>
+                                        COJAM Fee : <span th:text="${detail.cojamFee}+'%'"></span><br />
+                                        Charity Fee : <span th:text="${detail.charityFee}+'%'"></span><br />
+                                        Creator Fee : <span th:text="${detail.creatorFee}+'%'"></span><br />
+                                        Creator Pay : <span th:text="${detail.creatorPay}+'CT'"></span><br />
+                                        Minimum Pay : <span th:text="${detail.minimumPay}+'CT'"></span><br />
+                                        Maximum Pay : <span th:text="${detail.maximumPay}+'CT'"></span>
+                                    </div>
+                                </div>
+                            </li>
+                        </th:block>
+                    </ul>
+                    <p>
+                        <a href="javascript:$('#modalGroundDetailCMS').iziModal('close');">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - 마이페이지 - Ground 상세 끝 -->
+    <script>
+        let detailQuestKey="";
+        $(document).ready(function(){
+
+            $("#modalGroundDetailCMS").iziModal({
+                width : '900px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+
+                    modal.startLoading();
+                    $.post('/cms/ground/quest/'+detailQuestKey, function(data) {
+                        $('#groundDetailCMS').replaceWith(data);
+                        modal.stopLoading();
+                    }).fail(function(response) {
+                        $("#modalGroundDetailCMS").iziModal('close');
+                    });
+                }
+            });
+        });
+    </script>
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalSelectedAnswer">
+    <!-- 모달 - 마이페이지 - Ground 상세 -->
+    <div class="modal-mypage-view" id="modalSelectedAnswer" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Ground Detail</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt class="modalQuestTitle">TITLE</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li>
+                            <span>Select Correct Answer.</span>
+                            <select name="selectedAnswers"  id="selectedAnswers">
+                                <option value="">Selected</option>
+                                <option value="">Selected()</option>
+                            </select>
+                        </li>
+                    </ul>
+                    <p>
+                        <a href="#" id="selectedConfirm">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - 마이페이지 - Ground 상세 끝 -->
+    <script>
+        let selectedQuestKey="";
+        let selectedQuestTitle="";
+        $(document).ready(function(){
+            $("#modalSelectedAnswer").iziModal({
+                width : '600px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+                    $('.modalQuestTitle').html(selectedQuestTitle);
+                    modal.startLoading();
+                    $.post('/cms/ground/getAnswerList/?questKey='+selectedQuestKey, function(data) {
+                        modal.stopLoading();
+                        if(data.check){
+                            $('#selectedQuestKey').val(selectedQuestKey);
+                            const list = data.item;
+                            let html = '<option value="">Selected</option>';
+                            list.forEach(function(obj){
+                                html +='<option value="'+obj.questAnswerKey+'">'+obj.answerTitle+'['+(obj.totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))+' CT]'+'('+obj.userCnt+')</option>';
+                            });
+                            $("#selectedAnswers").html(html);
+                        }else{
+                            toastr.error(data.message);
+                            $("#modalSelectedAnswer").iziModal('close');
+                        }
+                    }).fail(function(response) {
+                        $("#modalSelectedAnswer").iziModal('close');
+                    });
+                }
+            });
+        });
+
+
+        $(document).on('click','#selectedConfirm',function (e){
+            if($('#selectedAnswers').val()==''){
+                 toastr.warning('Please select a answer.');
+                 return;
+            }
+
+            if(confirm("will [" + selectedQuestTitle + "] be Success?")){
+                $('#selectedAnswerKey').val($('#selectedAnswers').val());
+                $("#modalSelectedAnswer").iziModal('close');
+                fnViewSuccesInfo();
+            }
+        });
+
+        function fnViewSuccesInfo(){
+            $('#modalViewSuccessInfo').iziModal('open')
+        }
+    </script>
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalViewSuccessInfo">
+    <!-- 모달 - 마이페이지 - Ground 상세 -->
+    <div class="modal-mypage-view" id="modalViewSuccessInfo" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Ground Detail</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt class="modalQuestTitle">Success Result</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li>
+                            <span>Success Result</span>
+                            <span class="table-default" style="min-width: 950px;">
+                                <table style="min-width: 950px;">
+                                    <colgroup>
+                                        <col width="*"/>
+                                        <col width="40%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td>Token(Server)</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="successInfoTable">
+                                    </tbody>
+                                </table>
+                            </span>
+                        </li>
+                    </ul>
+                    <p>
+                        <a href="javascript:fnSuccessMarket()">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+
+            $("#modalViewSuccessInfo").iziModal({
+                width : '1000px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+                    $('#successInfoTable').html("");
+                    modal.startLoading();
+                    $.post('/cms/ground/getSuccessInfo/',$('#successFrm').serialize(), function(data) {
+                        modal.stopLoading();
+                        if(data.check){
+                            const res = data.item;
+                            let serverTotalToken = parseFloat(res.market_total_ct);
+                            let serverResult = {};
+                            for (let key in res.transfer_gospel) {
+                                const _key = key.toUpperCase();
+                                if (serverResult[_key] === undefined) {
+                                    serverResult[_key] = 0;
+                                }
+
+                                serverResult[_key] += parseFloat(res.transfer_gospel[key]);
+                            }
+
+                            serverResult['REMAIN'] = parseFloat(res.remain_ct);
+
+
+                            const result = resultTokenCompare(serverResult, null);
+                            const totalValue = {
+                                left: serverTotalToken,
+                                leftValue: serverTotalToken
+                            };
+                            fnDrawSuccessInfo(totalValue,result);
+                        }else{
+                            toastr.error(data.message);
+                            $("#modalViewSuccessInfo").iziModal('close');
+                        }
+                    }).fail(function(response) {
+                        $("#modalViewSuccessInfo").iziModal('close');
+                    });
+                }
+            });
+        });
+
+        function fnDrawSuccessInfo(totalValue,result){
+            let html='';
+            html+='<tr>';
+            html+='<td>Total Token</td>';
+            html+='<td>'+(totalValue.left.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))+' CT</td>';
+            html+='</tr>';
+            $('#successInfoTable').append(html);
+
+            result.forEach(function(obj){
+
+                html='';
+                html+='<tr>';
+                html+='<td>'+obj.to+'</td>';
+                html+='<td>'+(obj.left.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))+' CT</td>';
+                html+='</tr>';
+                $('#successInfoTable').append(html);
+            });
+
+
+        }
+
+        function fnSuccessMarket(){
+            $.ajax({
+                url: "/cms/ground/successMarket",
+                type: "POST",
+                data : $('form[name=successFrm]').serialize(),
+                success : function(response){
+                    if(response.check){
+                        toastr.success('Success Complete!');
+                        fnGetList();
+                        $("#modalViewSuccessInfo").iziModal('close');
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+
+    </script>
+    <!-- 모달 - 마이페이지 - Ground 상세 끝 -->
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalGroundAdjourn">
+    <!-- 모달 - 마이페이지 - Transfer 상세 -->
+    <div class="modal-mypage-view" id="modalGroundAdjourn" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Adjourn Reason</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt>Adjourn Reason</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li>
+                            <span>
+                                <input name="adjournDesc" type="radio" checked class="w100p" value="1. The results of the predictions should be correctly set." placeholder="" style="vertical-align:middle;"/>
+                                1. The results of the predictions should be correctly set.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="adjournDesc" type="radio" class="w100p" value="2. The result period for the prediction should be set within 60 days." placeholder="" style="vertical-align:middle;"/>
+                                2. The result period for the prediction should be set within 60 days.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="adjournDesc" type="radio" class="w100p" value="3. The minimum number of coins should be exceeded." placeholder="" style="vertical-align:middle;"/>
+                                3. The minimum number of coins should be exceeded.
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <input name="adjournDesc" value="4" type="radio" class="w100p" placeholder="" style="vertical-align:middle;"/>
+                                4. Etc
+                            </span>
+                        </li>
+                        <li id="adjournDescArea" style="display: none">
+                            <input name="adjournDescCustom" type="text" class="w200" placeholder=""/>
+                        </li>
+                    </ul>
+                    <p>
+                        <a th:onclick="fnAdjournQuest()">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - 마이페이지 - Transfer 상세 끝 -->
+    <th:block layout:fragment="script">
+        <script>
+            let adjournQuestKey ="";
+            let adjournQuestTitle = "";
+            $(document).ready(function(){
+                $('#modalGroundAdjourn').iziModal({width : '700px'});
+            });
+
+            $(document).on('change','input[name=adjournDesc]',function (e){
+                if($(this).val()=="4"){
+                    $("#adjournDescArea").show();
+                }else{
+                    $("#adjournDescArea").hide();
+                    $('input[name="adjournDescCustom"]').val('');
+                }
+
+            });
+
+            function fnAdjournQuest(){
+
+                let radioVal = $('input[name="adjournDesc"]:checked').val();
+                if(typeof radioVal == "undefined" || radioVal == "" || radioVal == null){
+                    toastr.warning('Select adjourn answer.');
+                    return;
+                }
+
+                if(radioVal == "4" && $('input[name="adjournDescCustom"]').val()==""){
+                    toastr.warning('Input adjourn answer.');
+                    return;
+                }
+
+                if(radioVal == "4"){
+                    radioVal = "4. "+$('input[name="adjournDescCustom"]').val();
+                }
+                $('#adjournQuestKey').val(adjournQuestKey);
+                $('#adjournDesc').val(radioVal);
+                $('#modalGroundAdjourn').iziModal('close');
+                $('#modalViewAdjournInfo').iziModal('open');
+
+            }
+
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalViewAdjournInfo">
+    <!-- 모달 - 마이페이지 - Ground 상세 -->
+    <div class="modal-mypage-view" id="modalViewAdjournInfo" style="display:none;">
+        <form name="addForm" method="post" action="">
+            <fieldset>
+                <legend>Ground Detail</legend>
+                <div class="mmv-area">
+                    <dl>
+                        <dt class="modalQuestTitle"></dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li>
+                            <span>Adjourn Result</span>
+                            <span class="table-default" style="min-width: 950px;">
+                                <table style="min-width: 950px;">
+                                    <colgroup>
+                                        <col width="*"/>
+                                        <col width="40%"/>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td>Token(Server)</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adjournInfoTable">
+                                    </tbody>
+                                </table>
+                            </span>
+                        </li>
+                    </ul>
+                    <p>
+                        <a href="javascript:fnAdjournMarket()">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.modalQuestTitle').html(adjournQuestTitle);
+            $("#modalViewAdjournInfo").iziModal({
+                width : '1000px',
+                transitionin : 'comingIn',
+                onOpening: function(modal){
+                    $('#adjournInfoTable').html("");
+                    modal.startLoading();
+                    $.post('/cms/ground/getAdjournInfo/',$('#adjournFrm').serialize(), function(data) {
+                        modal.stopLoading();
+                        if(data.check){
+                            const res = data.item;
+                            let serverTotalToken = res.market_total_ct;
+                            let serverResult = {};
+
+                            for (let key in res.transfer_gospel) {
+                                if (serverResult[key] === undefined) {
+                                    serverResult[key] = 0;
+                                }
+
+                                serverResult[key] += parseFloat(res.transfer_gospel[key]);
+                            }
+                            const result = resultTokenCompare(serverResult, null);
+                            const totalValue = {
+                                left: serverTotalToken,
+                                leftValue: serverTotalToken
+                            };
+                            fnDrawAdjournInfo(totalValue,result);
+                        }else{
+                            toastr.error(data.message);
+                            $("#modalViewAdjournInfo").iziModal('close');
+                        }
+                    }).fail(function(response) {
+                        $("#modalViewAdjournInfo").iziModal('close');
+                    });
+                }
+            });
+        });
+
+
+        function fnDrawAdjournInfo(totalValue,result){
+            let html='';
+            html+='<tr>';
+            html+='<td>Total Token</td>';
+            html+='<td>'+(totalValue.left.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))+' CT</td>';
+            html+='</tr>';
+            $('#adjournInfoTable').append(html);
+
+            result.forEach(function(obj){
+
+                html='';
+                html+='<tr>';
+                html+='<td>'+obj.to+'</td>';
+                html+='<td>'+(obj.left.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))+' CT</td>';
+                html+='</tr>';
+                $('#adjournInfoTable').append(html);
+            });
+
+
+        }
+        function fnAdjournMarket(){
+            $.ajax({
+                url: "/cms/ground/adjournMarket",
+                type: "POST",
+                data : $('form[name=adjournFrm]').serialize(),
+                success : function(response){
+                    if(response.check){
+                        toastr.success('Adjourn Complete!');
+                        fnGetList();
+                        $("#modalViewAdjournInfo").iziModal('close');
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+
+    </script>
+    <!-- 모달 - 마이페이지 - Ground 상세 끝 -->
+    <th:block layout:fragment="script">
     </th:block>
 </th:block>
 </html>

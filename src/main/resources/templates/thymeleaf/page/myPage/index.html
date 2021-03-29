@@ -28,7 +28,7 @@
     <div class="mypage-info">
         <dt>
             <div><i class="uil uil-envelope-check"></i> Email : <span th:text="${member.memberEmail}"></span></div>
-            <div><i class="uil uil-wallet"></i> Wallet address : <span th:text="${wallet.walletAddress}"></span></div>
+            <div><i class="uil uil-wallet"></i> Wallet address : <span id="myWalletAddress" th:text="${wallet.walletAddress}"></span></div>
         </dt>
         <dd>
             <a href="#" class="btn-red">Click to be Reward!</a>
@@ -51,7 +51,7 @@
     <div class="mypage-content">
         <div class="mc-votings">
             <h2><span>Votings</span></h2>
-            <div>
+            <div id="myVotingList">
                 <ul>
                     <li><strong>Category</strong></li>
                     <li><strong>Title</strong></li>
@@ -60,326 +60,134 @@
                     <li style="text-align:center;"><strong>Multiply</strong></li>
                     <li style="text-align:center;"><strong>Prediction Fee</strong></li>
                 </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
-                <ul data-izimodal-open="#modalMypageVoting" data-izimodal-transitionin="comingIn">
-                    <li><span>Category : </span>art</li>
-                    <li><span>Title : </span>Will BTS be able to win "BEST POP DUO/GROUP PERFORMANCE" at the Grammy Awards held on March 14, 2021?</li>
-                    <li>
-                        <span>Status Flow : </span>
-                        <ul>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Ongoing</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Invaild</h2>
-                            </li>
-                            <li class="complete">
-                                <span></span>
-                                <h2>Approve</h2>
-                            </li>
-                            <li class="ing">
-                                <span></span>
-                                <h2>Adjourn</h2>
-                            </li>
-                            <li>
-                                <span></span>
-                                <h2>Success</h2>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><span>My Answer : </span>Yes (10,000 CT)</li>
-                    <li><span>Multiply : </span>0.85</li>
-                    <li><span>Prediction Fee : </span>8,500 CT</li>
-                </ul>
+                <th:block th:if="${myVotingList}!=null">
+                    <ul th:each="item : ${myVotingList}" th:data-detailQuestKey="${item.questKey}"
+                        onclick="fnSetGroundDetail(this.getAttribute('data-detailQuestKey'))">
+                        <li><span>Category : </span><th:block th:text="${item.categoryName}"></th:block></li>
+                        <li><span>Title : </span><th:block th:text="${item.questTitle}"></th:block></li>
+                        <li>
+                            <span>Status Flow : </span>
+                            <ul>
+                                <th:block th:switch="${item.questStatus}">
+                                    <th:block th:case="ONGOING">
+                                        <li th:class="ing">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </th:block>
+                                    <th:block th:case="INVALID">
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="ing">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </th:block>
+                                    <th:block th:case="APPROVE">
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </th:block>
+                                    <th:block th:case="ADJOURN">
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li th:class="ing">
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </th:block>
+                                    <th:block th:case="SUCCESS">
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </th:block>
+                                </th:block>
+                            </ul>
+                        </li>
+                        <li><span>My Answer : </span><th:block th:text="${item.answerTitle}"></th:block> (<th:block th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></th:block> CT)</li>
+                        <li><span>Multiply : </span>0.85</li>
+                        <li><span>Prediction Fee : </span>8,500 CT</li>
+                    </ul>
+                </th:block>
+                <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
             </div>
         </div>
         <div class="mc-grounds">
@@ -394,7 +202,10 @@
                     <li style="text-align:center;"><strong>Donation Fee</strong></li>
                 </ul>
                 <th:block th:if="${myQuestList} != null">
-                    <ul th:each="item : ${myQuestList}" data-izimodal-open="#modalMypageGround" data-izimodal-transitionin="comingIn">
+                    <ul th:each="item : ${myQuestList}"
+                        th:data-detailQuestKey="${item.questKey}"
+                        onclick="fnSetGroundDetail(this.getAttribute('data-detailQuestKey'))"
+                    >
                         <li>
                             <span>Category : </span>
                             <th:block th:text="${item.categoryName}"></th:block>
@@ -520,9 +331,9 @@
                                 </th:block>
                             </ul>
                         </li>
-                        <li><span>Total  : </span>10,000 CT</li>
-                        <li><span>Total Creator Fee : </span>7472.75 CT (<th:block th:text="${item.creatorFee}"></th:block>%)</li>
-                        <li><span>Donation Fee : </span>2989.1 CT (<th:block th:text="${item.charityFee}"></th:block>%)</li>
+                        <li><span>Total  : </span><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block> CT</li>
+                        <li><span>Total Creator Fee : </span><th:block th:text="${item.totalCreatorFee} % 1 == 0? ${#numbers.formatInteger(item.totalCreatorFee,0,'COMMA')} :${#numbers.formatDecimal(item.totalCreatorFee, 0, 'COMMA', 2, 'POINT')}"></th:block> CT (<th:block th:text="${item.creatorFee}"></th:block>%)</li>
+                        <li><span>Donation Fee : </span><th:block th:text="${item.totalCharityFee} % 1 == 0? ${#numbers.formatInteger(item.totalCharityFee,0,'COMMA')} :${#numbers.formatDecimal(item.totalCharityFee, 0, 'COMMA', 2, 'POINT')}"></th:block> CT (<th:block th:text="${item.charityFee}"></th:block>%)</li>
                     </ul>
                 </th:block>
                 <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
@@ -556,11 +367,16 @@
                 <input type="hidden" name="walletAddress" th:value="${wallet.walletAddress}"/>
                 <input type="hidden" name="memberId" th:value="${member.memberId}"/>
             </form>
+            <input type="hidden" id="copy_text" value=""/>
         </div>
     </div>
     <!-- 마이페이지 - 내용 끝 -->
     <script>
         $("body").addClass("bg-mypage");
+        $(document).ready(function (e){
+            fnGetMyVotingList();
+        });
+
         function fnSetTransactionKey(key){
             transactionKey = key;
             spenderAddress = $('#spenderAddress'+key).text().replace('Spender Address : ','');
@@ -571,44 +387,51 @@
             $("#modalMypageTransfer").iziModal('open');
         }
 
+        function fnSetGroundDetail(key){
+            detailQuestKey = key;
+            $("#modalGroundDetail").iziModal('open');
+        }
+        let selectTabId='tab_voting';
         $(document).on('click','.mypage-tab > li',function(e){
             const id = $(this).attr('id');
-            $("#listFrm").val(1);
+            $("#listPage").val(1);
             if(id == 'tab_voting'){
-
+                selectTabId='tab_voting';
             }else if(id == 'tab_ground'){
+                selectTabId='tab_ground';
                 fnGetGroundList();
             }else if(id == 'tab_transfer'){
+                selectTabId='tab_transfer';
                 fnGetTransactionList();
             }
         });
 
         function fnMovePage(page){
-            $("#listFrm").val(page);
-            fnGetTransactionList()
+            $("#listPage").val(page);
+            if(selectTabId == 'tab_voting'){
+                fnGetMyVotingList()
+            }else if(selectTabId == 'tab_ground'){
+                fnGetGroundList();
+            }else if(selectTabId == 'tab_transfer'){
+                fnGetTransactionList();
+            }
         }
 
         function fnGetTransactionList(){
+            ajaxView("/user/mypage/transaction","POST",$("form[name=listFrm]").serialize(),"transactionList");
+        }
 
-            $.ajax({
-                url:"/user/mypage/transaction",
-                type :  "POST",
-                data : $("form[name=listFrm]").serialize(),
-            }).done(function (fragment) {
-                $("#transactionList").replaceWith(fragment);
-            });
+        function fnGetMyVotingList(){
+            ajaxView("/user/mypage/voting","POST",$("form[name=listFrm]").serialize(),"myVotingList");
         }
 
         function fnGetGroundList(){
-
-            $.ajax({
-                url:"/user/mypage/ground",
-                type :  "POST",
-                data : $("form[name=listFrm]").serialize(),
-            }).done(function (fragment) {
-                $("#groundList").replaceWith(fragment);
-            });
+            ajaxView("/user/mypage/ground","POST",$("form[name=listFrm]").serialize(),"groundList");
         }
+
+        $(document).on('click','#myWalletAddress',function (e){
+
+        });
     </script>
     <th:block layout:fragment="script">
     </th:block>

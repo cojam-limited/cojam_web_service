@@ -70,4 +70,27 @@
         WHERE S.SEASON_KEY = CT.SEASON_KEY
         ORDER BY is_active DESC , created_dttm DESC;
     </select>
+
+    <select id="getSeasonCategoryCntList" resultType="io.cojam.web.domain.SeasonCategory" parameterType="string">
+        SELECT
+            C.CATEGORY_KEY
+            ,C.CATEGORY_NAME
+            ,IFNULL(S.CNT,0) AS CNT
+            ,TSCM.LIMITATION
+        FROM TB_SEASON_CATEGORY C
+        JOIN TB_SEASON_CATEGORY_MAPPING TSCM on C.CATEGORY_KEY = TSCM.CATEGORY_KEY
+        AND TSCM.SEASON_KEY =  #{seasonKey}
+        LEFT OUTER JOIN (
+                SELECT
+           SEASON_CATEGORY_KEY
+           ,COUNT(*) CNT
+        FROM TB_QUEST
+        WHERE SEASON_KEY = #{seasonKey}
+        AND QUEST_STATUS IN ('SUCCESS','ONGONING','ADJOURN','APPROVE')
+        AND PENDING = FALSE
+        GROUP BY SEASON_CATEGORY_KEY
+            ) S
+        ON C.CATEGORY_KEY = S.SEASON_CATEGORY_KEY
+        ORDER BY C.ORDER_NUMBER
+    </select>
 </mapper>

@@ -104,6 +104,15 @@
         FROM TB_MEMBER M , TB_WALLET W
         WHERE M.MEMBER_KEY = W.MEMBER_KEY
         AND MEMBER_ROLE ='USER'
+        <if test='searchText != null and !searchText.equals("")'>
+            AND (
+                M.MEMBER_NAME like CONCAT('%',#{searchText},'%')
+                OR
+                M.MEMBER_ID like CONCAT('%',#{searchText},'%')
+                OR
+                M.MEMBER_EMAIL like CONCAT('%',#{searchText},'%')
+            )
+        </if>
         ORDER BY M.CREATED_DATE_TIME DESC
         LIMIT #{startIndex}, #{pageSize}
     </select>
@@ -114,6 +123,15 @@
         FROM TB_MEMBER M , TB_WALLET W
         WHERE M.MEMBER_KEY = W.MEMBER_KEY
         AND MEMBER_ROLE ='USER'
+        <if test='searchText != null and !searchText.equals("")'>
+            AND (
+            M.MEMBER_NAME like CONCAT('%',#{searchText},'%')
+            OR
+            M.MEMBER_ID like CONCAT('%',#{searchText},'%')
+            OR
+            M.MEMBER_EMAIL like CONCAT('%',#{searchText},'%')
+            )
+        </if>
     </select>
 
 

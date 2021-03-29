@@ -5,23 +5,26 @@
       layout:decorator="thymeleaf/layout/cms_default_layout">
 <th:block layout:fragment="content">
     <div class="content">
-
+        <th:block  th:replace="thymeleaf/fragment/popup :: modalGroundInvalid"></th:block>
+        <th:block  th:replace="thymeleaf/fragment/popup :: modalGroundDetailCMS"></th:block>
         <div class="table-title">
             <h2><i class="uil uil-chat-info"></i>  Ongoing Market </h2>
             <div>
-                <a href="#">Pend</a>
-                <a href="#">Invalid</a>
-                <a href="#">Draft</a>
-                <a href="#">Answer</a>
-                <a href="#">Approve</a>
+                <a href="javascript:fnQuest('P')">Pend</a>
+                <a href="javascript:fnQuest('I')">Invalid</a>
+                <a href="javascript:fnQuest('D')">Draft</a>
+                <a href="javascript:fnQuest('S')">Answer</a>
+                <a href="javascript:fnQuest('A')">Approve</a>
             </div>
         </div>
 
-        <form th:name="boardFrm" th:method="GET" action="/cms/post">
+        <form th:name="boardFrm" th:method="GET" >
             <input th:type="hidden" th:name="page" />
+            <input th:type="hidden" th:name="orderType" />
+            <input type="text" style="display: none"/>
             <div class="table-option">
                 <div>
-                    <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
+                    <input type="text"name="searchText" id="searchText" placeholder="검색어를 입력하세요."> <button  type="button"  onclick="fnSearch();"><i class="uil uil-search"></i></button>
                 </div>
             </div>
         </form>
@@ -56,17 +59,17 @@
                 </thead>
                 <tbody>
                     <th:block th:if="${questList} !=null">
-                        <tr th:each="item,i :${questList}">
+                        <tr th:each="item,i :${questList}" th:attr="data-questKey=${item.questKey}">
                             <td><input type="checkbox" name="questKeys" th:value="${item.questKey}" class="check"></td>
-                            <td th:text="${i.index}"></td>
+                            <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                             <td th:text="${item.categoryName}"></td>
                             <td>
-                                <h5 th:text="${item.questTitle}"></h5>
+                                <h5 th:id="'questTitle_'+${item.questKey}" th:text="${item.questTitle}" class="groundList" th:attr="data-questKey=${item.questKey}"></h5>
                             </td>
                             <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
-                            <td>0(5000)</td>
-                            <td>F</td>
-                            <td>F</td>
+                            <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
+                            <td th:text="${item.draftTx}!=null?'T':'F'"></td>
+                            <td th:text="${item.answersTx}!=null?'T':'F'"></td>
                             <td th:text="${item.pending}?'T':'F'"></td>
                             <td th:text="${item.hot}?'T':'F'">
                             </td>
@@ -82,21 +85,131 @@
         <script>
             $(document).ready(function (){
                 fnGetList();
+                $("#searchText").keydown(function(key) {
+                    if (key.keyCode == 13) {
+                        fnMovePage(1);
+                    }
+                });
             });
 
             function fnGetList(){
-                $.ajax({
-                    url:"/cms/ground/ongoing/list",
-                    type :  "GET",
-                    data : $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#questList").replaceWith(fragment);
-                });
+                ajaxView("/cms/ground/ongoing/list","GET",$("form[name=boardFrm]").serialize(),"questList");
             }
 
             function fnMovePage(page){
                 $("input[name=page]").val(page);
                 fnGetList();
+            }
+
+            function fnQuest(type){
+
+                if(!$('input:checkbox[name="questKeys"]').is(":checked")){
+                    toastr.warning('Please select a check box');
+                    return;
+                }
+
+                if($('input:checkbox[name="questKeys"]:checked').length> 1){
+                    toastr.warning('You can only choose one.');
+                    return;
+                }
+
+                let questKey="";
+
+                $('input:checkbox[name="questKeys"]').each(function() {
+                    if(this.checked){//checked 처리된 항목의 값
+                        questKey = this.value;
+
+                    }
+                });
+
+                const title = $("#questTitle_"+questKey).text();
+
+                if(type =="P"){
+                    if(confirm("will [" + title + "] be Pend?")){
+                        $.ajax({
+                            url: "/cms/ground/pending",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('success');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }else if(type =="I"){
+                    invalidQuestKey = questKey;
+                    invalidQuestTitle = title;
+                    $("#modalGroundInvalid").iziModal('open');
+                }else if(type =="D"){
+                    if(confirm("will [" + title + "] be Draft?")){
+                        $.ajax({
+                            url: "/cms/ground/draft",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('success');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }else if(type =="S"){
+                    if(confirm("will Answers [" + title + "] be Registered?")){
+                        $.ajax({
+                            url: "/cms/ground/answer",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('Add Answers Complete!');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }else if(type =="A"){
+                    if(confirm("will [" + title + "] be Approve?")){
+                        $.ajax({
+                            url: "/cms/ground/approveMarket",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('Approve Complete!');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            $(document).on('click','.groundList',function(e){
+                detailQuestKey=$(this).attr('data-questKey');
+                $("#modalGroundDetailCMS").iziModal('open');
+            });
+
+            function fnSearch(){
+                fnMovePage(1);
             }
         </script>
     </th:block>

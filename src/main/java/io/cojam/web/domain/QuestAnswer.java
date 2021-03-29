@@ -10,6 +10,8 @@ public class QuestAnswer {
     private String questKey;
     private String questExample;
     private String answerTitle;
-
-
+    private Boolean selected;
+    private String totalAmount;
+    private String userCnt;
+    private String rowNum;
 }

@@ -55,7 +55,20 @@ public class Quest extends Common{
     private String categoryName;
     private String orderType;
     private String creatorFee;
+    private String totalCreatorFee;
+    private String cojamFee;
+    private String creatorPay;
     private String charityFee;
-    private String maximumPay;
-    private String minimumPay;
+    private String totalCharityFee;
+    private Long maximumPay;
+    private Long minimumPay;
+    private String statusType;
+    private String title;
+    private String description;
+    private Boolean isActive;
+    private String totalAmount;
+    private String answersStr;
+    private String dDay;
+    private Boolean finished;
+
 }

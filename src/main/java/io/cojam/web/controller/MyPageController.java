@@ -143,4 +143,42 @@ public class MyPageController {
         return "thymeleaf/page/myPage/index :: #groundList";
 
     }
+
+
+    @RequestMapping(value = "/voting" , method = RequestMethod.POST)
+    public String groundList(
+            Model model
+            , MyVoting myVoting
+            , @AuthenticationPrincipal Account account
+            , @RequestParam(defaultValue = "1") int page
+    )
+    {
+        // 총 게시물 수
+        myVoting.setMemberKey(account.getMemberKey());
+        int totalListCnt = questService.getMyVotingListCnt(myVoting);
+
+        // 생성인자로  총 게시물 수, 현재 페이지를 전달
+        Pagination pagination = new Pagination(totalListCnt, page,5,10);
+        // DB select start index
+        myVoting.setStartIndex(pagination.getStartIndex());
+        // 페이지 당 보여지는 게시글의 최대 개수
+        myVoting.setPageSize(pagination.getPageSize());
+        List<MyVoting> list = questService.getMyVotingList(myVoting);
+        model.addAttribute("myVotingList", list);
+        model.addAttribute("pagination", pagination);
+
+
+        return "thymeleaf/page/myPage/index :: #myVotingList";
+
+    }
+
+    @RequestMapping(value = "/quest/{questKey}" , method = RequestMethod.POST)
+    public String questDetail(@PathVariable String questKey,Model model) {
+        ResponseDataDTO response = new ResponseDataDTO();
+        Quest detail = questService.getQuestDetail(questKey);
+        model.addAttribute("detail",detail);
+        model.addAttribute("answerList", questService.getQuestAnswerList(questKey));
+
+        return "thymeleaf/fragment/popup :: #groundDetail";
+    }
 }

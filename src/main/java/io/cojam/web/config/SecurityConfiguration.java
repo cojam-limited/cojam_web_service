@@ -81,6 +81,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ,"/user/join/**"
                         ,"/user/home/**"
                         ,"/user/quest"
+                        ,"/user/quest/list"
+                        ,"/user/quest/seasonInfo"
                         ,"/user/service"
                         ,"/user/about/**"
                         ,"/user/notice/**"

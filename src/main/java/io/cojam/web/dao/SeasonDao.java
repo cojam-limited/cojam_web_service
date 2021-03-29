@@ -16,4 +16,6 @@ public interface SeasonDao {
     List<SeasonCategory> getSeasonCategoryList();
 
     List<Season> getSeasonList(Season season);
+
+    List<SeasonCategory> getSeasonCategoryCntList(String seasonKey);
 }

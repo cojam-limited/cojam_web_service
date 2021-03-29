@@ -25,4 +25,8 @@ public class SeasonService {
     public List<Season> getSeasonList(Season season){
         return seasonDao.getSeasonList(season);
     }
+
+    public List<SeasonCategory> getSeasonCategoryCntList(String seasonKey){
+        return seasonDao.getSeasonCategoryCntList(seasonKey);
+    }
 }

@@ -75,13 +75,7 @@
             });
 
             function fnGetList(){
-                $.ajax({
-                    url:"/cms/popup/list",
-                    type :  "POST",
-                    data : $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#popupList").replaceWith(fragment);
-                });
+                ajaxView("/cms/popup/list","POST",$("form[name=boardFrm]").serialize(),"popupList");
             }
 
             function fnMovePage(page){
