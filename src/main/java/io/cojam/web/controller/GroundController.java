@@ -1,18 +1,18 @@
 package io.cojam.web.controller;
 
 
+import io.cojam.web.account.Account;
 import io.cojam.web.constant.QuestCode;
-import io.cojam.web.domain.Pagination;
-import io.cojam.web.domain.Popup;
-import io.cojam.web.domain.Quest;
+import io.cojam.web.domain.*;
 import io.cojam.web.service.QuestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Controller
@@ -152,5 +152,131 @@ public class GroundController {
         model.addAttribute("pagination", pagination);
 
         return "thymeleaf/page/cms/ground/success :: #questList";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/draft" , method = RequestMethod.POST)
+    public ResponseDataDTO draft(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.draftMarket(questKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pending" , method = RequestMethod.POST)
+    public ResponseDataDTO pending(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.pendingMarket(questKey,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/invalid" , method = RequestMethod.POST)
+    public ResponseDataDTO invalid(
+            @NotNull @NotEmpty String questKey
+            , @NotNull @NotEmpty String description
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.invalidMarket(questKey,description,account);
+    }
+
+    @RequestMapping(value = "/quest/{questKey}" , method = RequestMethod.POST)
+    public String questDetail(@PathVariable String questKey,Model model) {
+        ResponseDataDTO response = new ResponseDataDTO();
+        Quest detail = questService.getQuestDetail(questKey);
+        model.addAttribute("detail",detail);
+        model.addAttribute("answerList", questService.getQuestAnswerList(questKey));
+
+        return "thymeleaf/fragment/popup :: #groundDetailCMS";
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/answer" , method = RequestMethod.POST)
+    public ResponseDataDTO answer(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.answerApprove(questKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/approveMarket" , method = RequestMethod.POST)
+    public ResponseDataDTO approve(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.approveMarket(questKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/hot" , method = RequestMethod.POST)
+    public ResponseDataDTO hot(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.hotMarket(questKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/finish" , method = RequestMethod.POST)
+    public ResponseDataDTO finish(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.finishMarket(questKey,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getAnswerList" , method = RequestMethod.POST)
+    public ResponseDataDTO getAnswerList(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        List<QuestAnswer> list = questService.getQuestAnswerList(questKey);
+        if(list==null || list.size() < 1){
+            response.setCheck(false);
+            response.setMessage("No answer data!.");
+        }else {
+            response.setCheck(true);
+            response.setMessage("No answer data!.");
+            response.setItem(list);
+        }
+        return response;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/getSuccessInfo" , method = RequestMethod.POST)
+    public ResponseDataDTO getSuccessInfo(
+            @NotNull @NotEmpty String selectedQuestKey
+            ,@NotNull @NotEmpty  String selectedAnswerKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.getSuccessInfo(selectedQuestKey,selectedAnswerKey);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/successMarket" , method = RequestMethod.POST)
+    public ResponseDataDTO successMarket(
+            @NotNull @NotEmpty String selectedQuestKey
+            ,@NotNull @NotEmpty  String selectedAnswerKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.successMarket(selectedQuestKey,selectedAnswerKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getAdjournInfo" , method = RequestMethod.POST)
+    public ResponseDataDTO getAdjournInfo(
+            @NotNull @NotEmpty String adjournQuestKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.getAdjournInfo(adjournQuestKey);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/adjournMarket" , method = RequestMethod.POST)
+    public ResponseDataDTO adjournMarket(
+            @NotNull @NotEmpty String adjournQuestKey
+            ,@NotNull @NotEmpty  String adjournDesc
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.adjournMarket(adjournQuestKey,adjournDesc,account);
     }
 }

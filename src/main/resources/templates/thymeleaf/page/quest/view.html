@@ -9,210 +9,85 @@
 
 
 <div layout:fragment="content">
-    <!-- 모달 - 퀘스트 등록 -->
-    <div class="modal-quest-add" id="modalQuestAdd">
-        <form name="addForm" method="post" action="">
-            <fieldset>
-                <legend>등록</legend>
-                <div class="mqa-area">
-                    <dl class="mqa-header">
-                        <dt>Create New Prediction</dt>
-                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
-                    </dl>
-                    <ul class="mqa-content2">
-                        <li><input name="name" type="text" class="w100p" placeholder="Please enter a title" /></li>
-                        <li>
-                            <select name="name" title="" class="w100p">
-                                <option value="" selected="selected">Please select a category</option>
-                                <option value="">Art & Culture</option>
-                                <option value="">Community</option>
-                                <option value="">Competition</option>
-                                <option value="">Crowd Solving</option>
-                                <option value="">Economy</option>
-                                <option value="">Science</option>
-                            </select>
-                        </li>
-                        <li><input name="name" type="text" id="schDate" class="w100p date-icon" placeholder="Please enter a date" /></li>
-                        <li>
-                            <div class="input-file">
-                                <label>
-                                    File Attach
-                                    <input type="file" onchange="javascript:document.getElementById('fileRoute').value=this.value">
-                                </label>
-                                <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="Attach an image">
-                            </div>
-                        </li>
-                        <li><input name="name" type="text" class="w100p" placeholder="Enter the sns url" /></li>
-                    </ul>
-                    <ol class="mqa-content1">
-                        <li>Select a Type</li>
-                        <li>
-                            <a href="#"><i class="uil uil-plus-circle"></i></a>
-                            <a href="#"><i class="uil uil-minus-circle"></i></a>
-                        </li>
-                    </ol>
-                    <ul class="mqa-content2">
-                        <li><input name="name" type="text" class="w100p" placeholder="" /></li>
-                        <li><input name="name" type="text" class="w100p" placeholder="" /></li>
-                    </ul>
-                    <p class="mqa-btn">
-                        <a href="#">Complete</a>
-                    </p>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-    <!-- 모달 - 퀘스트 등록 끝 -->
-
-
-    <!-- 모달 - 퀘스트 시즌 -->
-    <div class="modal-quest-season" id="modalQuestSeason">
-        <div class="mqs-area">
-            <dl class="mqs-header">
-                <dt>Create Season of COJAM Service!</dt>
-                <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
-            </dl>
-            <div class="mqs-date"><i class="uil uil-calendar-alt"></i> 2021.01.4 ~ 2021.12.31 (331)</div>
-            <ul class="mqs-content">
-                <li>
-                    <h3>ART</h3>
-                    <div>
-                        <div style="width:30%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Science</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Crowdsolving</h3>
-                    <div>
-                        <div style="width:60%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Competition</h3>
-                    <div>
-                        <div style="width:50%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Economy</h3>
-                    <div>
-                        <div style="width:3%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-                <li>
-                    <h3>Community</h3>
-                    <div>
-                        <div style="width:10%"></div>
-                        <p>1 / 100</p>
-                    </div>
-                </li>
-            </ul>
-            <div class="mqs-info">
-                <h2>Titel : Create Season of COJAM Service!</h2>
-                <h2>Description : Create Season of COJAM Service!</h2>
-                <div>
-                    COJAM Fee : <span>8%</span><br />
-                    Charity Fee : <span>2%</span><br />
-                    Creator Fee : <span>5%</span><br />
-                    Creator Pay : <span>0CT</span><br />
-                    Minimum Pay : <span>5,000CT</span><br />
-                    Maximum Pay : <span>300,000CT</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 모달 - 퀘스트 시즌 끝 -->
-
-
     <!-- 기본영역 (타이틀/네비/버튼) -->
     <dl class="title-section">
-        <dt>
-            <h2>Art & Culture</h2>
-            <h3><i class="uil uil-estate"></i> Home · Quest · <span>Art & Culture</span></h3>
-        </dt>
-        <dd>
-            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
-            <a href="#" data-izimodal-open="#modalQuestSeason" data-izimodal-transitionin="comingIn"><i class="uil uil-info-circle"></i> <span>Season Info</span></a>
-        </dd>
+
     </dl>
     <!-- 기본영역 끝 -->
-
-
-
     <div class="container">
-        <!-- 카타고리 영역 -->
-        <div class="category-section">
-            <dl>
-                <dt>
-                    <div class="swiper-wrapper">
-                        <a href="#" class="swiper-slide">All</a>
-                        <a href="#" class="swiper-slide">Hot Quest</a>
-                        <a href="#" class="swiper-slide active">Art & Culture</a>
-                        <a href="#" class="swiper-slide">Community</a>
-                        <a href="#" class="swiper-slide">Competition</a>
-                        <a href="#" class="swiper-slide">Crowd Solving</a>
-                        <a href="#" class="swiper-slide">Economy</a>
-                        <a href="#" class="swiper-slide">Science</a>
-                    </div>
-                </dt>
-                <dd>
-                    <a href="#"><i class="uil uil-history"></i><span>History</span></a>
-                </dd>
-            </dl>
-        </div>
-        <!-- 카타고리 영역 끝 -->
-
-
         <!-- 상세 -->
         <div class="quest-view">
             <div>
-                <h2><span>Confirmed</span> BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h2>
-                <p><iframe width="100%" height="650" src="https://www.youtube.com/embed/rOaPIhiVYQo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+                <h2>
+                    <span>Confirmed</span> <th:block th:text="${detail.questTitle}"></th:block>
+                </h2>
+                <p>
+                    <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">
+                        <iframe width="100%" height="650" th:src="'https://www.youtube.com/embed/'+${detail.snsId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </th:block>
+                    <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">
+                        <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                            <a th:href="${detail.snsUrl}" target="_blank">
+                                <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                            </a>
+                        </th:block>
+                        <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                            <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                        </th:block>
+                    </th:block>
+                </p>
             </div>
             <dl>
                 <dt>
-                    <h2><span>D-12</span> PM 11:59 (UTC+0)</h2>
-                    <p style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></p>
-
-                    <h3>Odds <span>1.7</span> X</h3>
-                    <h3>Win <span>1.6565735670772805</span> CT if right</h3>
+                    <h2><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(detail.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h2>
+                    <p th:style="'background:url(/user/media/image?id='+${detail.fileKey}+') center no-repeat; background-size:cover;'"></p>
+                    <h3 id="oddsText"></h3>
+                    <h3 id="winText"></h3>
                     <ul>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li class="active">
-                            <div>No</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
+
+                        <li th:each=" subItem , i : ${#strings.arraySplit(detail.answersStr,',')}"
+                            th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                            class="answerSelectList"
+                            th:attr="data-questAnswerKey=${answer[2]},data-answerTotal=${answer[1]}"
+                            th:classappend="${answer[3]=='true'}?'active':''"
+                        >
+                            <div th:text="${answer[0]}"></div>
+                            <p th:id="'answer_'+${detail.questKey}+'_'+${i.index}"></p>
+                            <script>
+                                /*<![CDATA[*/
+                                currentAnswerTotal = "[[${answer[1]}]]";
+
+                                totalAmount = "[[${detail.totalAmount}]]";
+                                otherTotalToken = totalAmount - currentAnswerTotal;
+                                answerId = "answer_[[${detail.questKey}]]_[[${i.index}]]";
+                                /*]]>*/
+                                result = calculateWinToken(parseFloat(toEther(1)), Number(currentAnswerTotal) + parseFloat(toEther(1)), otherTotalToken);
+                                rateString = isNaN(Number(result.rate).toFixed(2)) ? '-' : parseFloat(result.rate).toFixed(2);
+
+                                $('#'+answerId).text(rateString+'X');
+                            </script>
                         </li>
                     </ul>
                     <div>
-                        <form name="searchForm" method="post" action="">
-                            <fieldset>
-                                <legend>CT</legend>
-                                <p><input type="text" name="string" title="CT" value="" placeholder="CT Input" /></p>
-                                <div>
-                                    <a href="#">My Choice : 2</a>
-                                </div>
-                            </fieldset>
+                        <form name="bettingForm" method="post" action="">
+                            <input type="hidden" name="questKey" th:value="${detail.questKey}"/>
+                            <input type="hidden" name="questAnswerKey" value=""/>
+                            <input type="hidden" name="bettingCoin" value="1"/>
+                            <th:block th:if="${detail.finished}">
+
+                                    <div>
+                                        <a href="#">Market Confirmed</a>
+                                    </div>
+                            </th:block>
+                            <th:block th:unless="${detail.finished}">
+                                <fieldset>
+                                    <legend>CT</legend>
+                                    <p><input type="text" name="ctInputText" id="ctInputText" title="CT" value="1" placeholder="CT Input" /></p>
+                                    <div>
+                                        <a href="javascript:fnBetting();" id="choiceBtn">My Choice : 0</a>
+                                    </div>
+                                </fieldset>
+                            </th:block>
                         </form>
                     </div>
                 </dt>
@@ -224,153 +99,64 @@
                     </ul>
                     <div class="qv-chart">
                         <h2>Probability Chart</h2>
-                        <p><img src="../../assets/image/content/chart_test.png" alt="" title="" /></p>
+                        <p><canvas id="chart"></canvas></p>
                     </div>
                     <div class="qv-vol">
-                        <h2>Total 258,065 CT</h2>
-                        <ul>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>220,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>1,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>2,230,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>220,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>720,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>2,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>1,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>260,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>50,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>670,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#8950fc;">Yes</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
-                            <li>
-                                <div><i class="uil uil-circle"></i><span style="color:#ef168f;">No</span></div>
-                                <div><span>20,000</span> CT</div>
-                                <div>Jan 13, 3:12 PM</div>
-                            </li>
+                        <h2>Total <th:block th:text="${#numbers.formatInteger(detail.totalAmount,0,'COMMA')}"></th:block> CT</h2>
+                        <h2>
+                            <select name="selectAnswerList" title="" class="w100p">
+                                <option selected value="">ALL</option>
+                                <option th:each="subItem , i : ${#strings.arraySplit(detail.answersStr,',')}"
+                                        th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                                        th:text="${answer[0]}"
+                                        th:value="${answer[2]}"></option>
+                            </select>
+                        </h2>
+                        <ul id="bettingTotalList">
+                            <th:block th:if="${bettingList}!=null">
+                                <li th:each="item :${bettingList}">
+                                    <div><i class="uil uil-circle"></i><span th:class="'fontColor-'+${item.rowNum}" style="color:#8950fc;" th:text="${item.answerTitle}">Yes</span></div>
+                                    <div><span th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></span> CT</div>
+                                    <div th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd hh:mm')}">Jan 13, 3:12 PM</div>
+                                </li>
+                            </th:block>
                         </ul>
+                        <form name="bettingFrm" id="bettingFrm">
+                            <input type="hidden" name="questKey" th:value="${detail.questKey}"/>
+                            <input type="hidden" name="questAnswerKey" value=""/>
+                            <input type="hidden" name="prevQuestAnswerKey" value="A"/>
+                        </form>
                     </div>
                     <div class="qv-info">
                         <h2>Detail Information</h2>
                         <ul>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Category</h2>
-                                <div>Art & Culture</div>
+                                <div th:text="${detail.categoryName}"></div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Creator Fee</h2>
-                                <div>5%</div>
+                                <div th:text="${detail.creatorFee}+'%'"></div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Volume</h2>
-                                <div>258,065 CT</div>
+                                <div><th:block th:text="${#numbers.formatInteger(detail.totalAmount,0,'COMMA')}"></th:block> CT</div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Creator Salary</h2>
-                                <div>0CT</div>
+                                <div th:text="${detail.creatorPay}+' CT'"></div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Start Date</h2>
-                                <div>October 8 2020, PM 2:46 (UTC+0)</div>
+                                <div th:text="${#dates.format(detail.approveDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'"></div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Transaction</h2>
-                                <div>d793e4f34eaabca1a54c96857b34b927</div>
+                                <div th:text="${detail.approveTx}"></div>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>End Date</h2>
-                                <div>January 30 2021, PM 11:59 (UTC+0)</div>
+                                <div th:text="${#dates.format(detail.endDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'">January 30 2021, PM 11:59 (UTC+0)</div>
                             </li>
                         </ul>
                     </div>
@@ -378,22 +164,117 @@
             </dl>
         </div>
         <!-- 상세 끝 -->
-
-
-        <!-- 등록버튼 -->
-        <div class="add-btn">
-            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
-        </div>
-        <!-- 등록버튼 끝 -->
     </div>
+
     <th:block layout:fragment="script">
+        <script th:src="@{/assets/js/chart-js/Chart.bundle.js}"></script>
+        <script th:src="@{/assets/js/chart-js/chart.js}"></script>
+        <th:block th:if="${!detail.finished}">
+            <script>
+                let currentAnswerTotalDetail;
+                let otherTotalTokenDetail;
+                $(document).on('click','.answerSelectList',function (e){
+                    if($('input[name=bettingCoin]').val()==''){
+                        toastr.warning('Input CT.');
+                        return;
+                    }else {
+                        $('.answerSelectList').removeClass('active');
+                        $(this).addClass('active');
+                        const dataQuestAnswerKey = $(this).attr('data-questAnswerKey');
+                        $('input[name=questAnswerKey]').val(dataQuestAnswerKey);
+                        $('#choiceBtn').text("My Choice : 1");
+                        const contentTextInput = $('input[name=bettingCoin]').val();
+                        currentAnswerTotalDetail = Number($(this).attr('data-answerTotal'));
+                        otherTotalTokenDetail = Number(totalAmount) - Number($(this).attr('data-answerTotal'));
+                        setCtChangeText(contentTextInput);
+                    }
+                });
+                $(document).on('keyup','#ctInputText',function (e){
+                    $(this).val(addComma($(this).val().replace(/[^0-9]/g,"")));
+                    $('input[name=bettingCoin]').val(removeCommas($(this).val()));
+                    if($('input[name=questAnswerKey]').val()!=''){
+                        const contentTextInput = $('input[name=bettingCoin]').val();
+                        setCtChangeText(contentTextInput);
+                    }
+                });
+
+                function setCtChangeText(contentTextInput){
+                    const result = calculateWinToken(Number(contentTextInput), Number(currentAnswerTotalDetail) + Number(contentTextInput), otherTotalTokenDetail);
+                    const rateString = isNaN(Number(result.rate).toFixed(1)) ? '-' : Number(result.rate).toFixed(1);
+                    $('#oddsText').html('Odds <span>'+rateString+'</span> X');
+                    $('#winText').html('Win <span>'+Number(result.receiveToken)+'</span> CT if right');
+                }
+
+                function fnBetting(){
+                    if($('input[name=questAnswerKey]').val()==''){
+                        toastr.warning('select answer!.');
+                        return;
+                    }
+
+                    if($('input[name=bettingCoin]').val()==''){
+                        toastr.warning('Input CT.');
+                        return;
+                    }
+                    if(confirm('Would you like to bet?')){
+                        $.ajax({
+                            url:"/user/quest/betting",
+                            type :  "POST",
+                            data : $('form[name=bettingForm]').serialize(),
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success(response.message);
+                                    location.reload();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }
+
+                $(document).on('change','select[name=selectAnswerList]',function (e){
+                    $('input[name=questAnswerKey]').val($(this).val());
+                    fnGetBettingList();
+                });
+            </script>
+        </th:block>
+
         <script>
             $("body").addClass("bg-quest");
-            // 모달 - 퀘스트 - 시즌정보 //
-            $('#modalQuestAdd').iziModal({width : '500px'});
+            $(document).ready(function (e){
+                fnGetChart();
+            });
 
-            // 모달 - 퀘스트 - 시즌정보 //
-            $('#modalQuestSeason').iziModal({width : '500px'});
+            function fnGetBettingList(){
+                ajaxView("/user/quest/bettingTotalList","GET",$("form[name=bettingFrm]").serialize(),"bettingTotalList");
+            }
+
+            function fnGetChart(){
+                $.ajax({
+                    url:"/user/quest/bettingList",
+                    type :  "POST",
+                    data : {
+                        "questKey" : $('input[name=questKey]').val()
+                    },
+                    success : function(response){
+                        if(response.check){
+                            const bettings =response.item;
+                            fnDrawChart(bettings);
+                        }
+                    }
+                });
+            }
+
+
+            $(document).on('click','.qv-tab02',function (e){
+                const prevQuestAnswerKey = $('input[name=prevQuestAnswerKey]').val();
+                if(prevQuestAnswerKey == 'A'){
+                    fnGetBettingList();
+                    $('input[name=prevQuestAnswerKey]').val("");
+                }
+            });
+
+
         </script>
     </th:block>
 </div>

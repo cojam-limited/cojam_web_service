@@ -5,9 +5,7 @@ import io.cojam.web.domain.Wallet;
 import io.cojam.web.domain.wallet.SendTokenTransferRequest;
 import io.cojam.web.domain.wallet.Token;
 import io.cojam.web.domain.wallet.TransactionReceipt;
-import io.cojam.web.klaytn.dto.BalanceResponseDTO;
-import io.cojam.web.klaytn.dto.CreateUserWalletRequest;
-import io.cojam.web.klaytn.dto.WalletDataDTO;
+import io.cojam.web.klaytn.dto.*;
 import io.cojam.web.klaytn.exception.HenesisWalletException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -78,6 +76,24 @@ public class WalletApiService {
                     sendTokenTransferRequest,
                     TransactionReceipt.class
             ).getBody();
+        });
+    }
+
+    public TransactionReceipt contractCallMaster(String contractAddress, BigInteger value, Data data) {
+        return serviceTemplate(() -> {
+            ContractCallRequest contractCallRequest = ContractCallRequest.builder()
+                    .passphrase(sdkPassphrase)
+                    .contractAddress(contractAddress)
+                    .value(value)
+                    .data(data.getPayload())
+                    .build();
+            TransactionReceipt receipt = restTemplate.postForEntity(
+                    "/contract-call",
+                    contractCallRequest,
+                    TransactionReceipt.class
+            ).getBody();
+            receipt.setToAddress(contractAddress);
+            return receipt;
         });
     }
 

@@ -29,6 +29,12 @@
                             type :  "POST",
                             contentType : false,
                             processData : false,
+                            beforeSend : function(xhr)
+                            {
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+                            },
+                            complete: function () {
+                            },
                             success : function(response){
                                 if(response.check){
                                     $('#myToken').html("("+response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")

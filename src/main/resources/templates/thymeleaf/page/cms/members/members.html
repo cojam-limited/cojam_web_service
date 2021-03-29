@@ -82,13 +82,7 @@
             });
 
             function fnGetList(){
-                $.ajax({
-                    url:"/cms/members",
-                    type :  "POST",
-                    data : $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#memberList").replaceWith(fragment);
-                });
+                ajaxView("/cms/members","POST",$("form[name=boardFrm]").serialize(),"memberList");
             }
 
             function fnMovePage(page){

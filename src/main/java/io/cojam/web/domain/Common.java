@@ -12,4 +12,8 @@ public class Common {
     @JsonIgnore
     private int pageSize = 10;
     private String memberName;
+    @JsonIgnore
+    private String searchText;
+    @JsonIgnore
+    private String orderType;
 }

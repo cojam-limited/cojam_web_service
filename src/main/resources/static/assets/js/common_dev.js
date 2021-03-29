@@ -311,16 +311,92 @@ function fnLogOut() {
 	});
 }
 
+function FunLoadingBarStart() {
+	const backHeight = $(document).height(); //뒷 배경의 상하 폭
+	const backWidth = window.document.body.clientWidth; //뒷 배경의 좌우 폭
+	const backGroundCover = "<div id='back'></div>"; //뒷 배경을 감쌀 커버
+	let loadingBarImage = ''; //가운데 띄워 줄 이미지
+	loadingBarImage += "<div id='loadingBar'>";
+	loadingBarImage += " <img src='/admin/assets/image/loading.svg'/>"; //로딩 바 이미지
+	loadingBarImage += "</div>";
+	$('body').append(backGroundCover).append(loadingBarImage);
+	$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+	$('#back').show();
+	$('#loadingBar').show();
+}
+
+function FunLoadingBarEnd() {
+	$('#back, #loadingBar').hide();
+	$('#back, #loadingBar').remove();
+}
+
+function ajaxView(url,method,data,fragmentId){
+
+	$.ajax({
+		url: url,
+		type :  method,
+		data : data,
+		beforeSend : function(xhr)
+		{
+			xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+		},
+		complete: function () {
+		},
+		error : function(error){
+		}
+	}).done(function (fragment) {
+		$("#"+fragmentId).replaceWith(fragment);
+	});
+}
+
+
 $.ajaxSetup({
 	beforeSend : function(xhr)
 	{
 		xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+		FunLoadingBarStart();
+	},
+	complete: function () {
+		FunLoadingBarEnd();
 	},
 	error : function(error){
-		if(error.status =='403'){
-			location.reload();
+		if(error.status == '403'){
+			location.href = '/login';
 		}else{
 			toastr.error(error.status,error.statusText);
 		}
 	}
 });
+
+function calculateWinToken(token, myAnswerTotalToken, otherTotalToken) {
+	const currentRate = (token / myAnswerTotalToken);
+	const returnToken = otherTotalToken * currentRate;
+	const receiveToken = token + returnToken;
+	const rate = (receiveToken / token);
+
+
+	return {rate: rate, receiveToken: receiveToken};
+}
+
+
+function toEther(wei) {
+	return wei * 0.000000000000000001;
+}
+
+function toWei(ether) {
+	return ether * 1000000000000000000;
+}
+
+//천단위마다 콤마 생성
+function addComma(data) {
+	return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+//모든 콤마 제거 방법
+function removeCommas(data) {
+	if(!data || data.length == 0){
+		return "";
+	}else{
+		return data.split(",").join("");
+	}
+}

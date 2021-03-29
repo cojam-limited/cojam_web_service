@@ -1,9 +1,8 @@
 package io.cojam.web.controller;
 
 import io.cojam.web.account.Account;
-import io.cojam.web.domain.Board;
-import io.cojam.web.domain.Quest;
-import io.cojam.web.domain.ResponseDataDTO;
+import io.cojam.web.constant.QuestCode;
+import io.cojam.web.domain.*;
 import io.cojam.web.service.QuestService;
 import io.cojam.web.service.SeasonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/user/quest")
@@ -27,15 +28,58 @@ public class QuestController {
     QuestService questService;
 
     @GetMapping
-    public String questList(Model model, @AuthenticationPrincipal Account account) {
+    public String quest(Model model
+            , @AuthenticationPrincipal Account account) {
         model.addAttribute("seasonCategoryList",seasonService.getSeasonCategoryList());
         return "thymeleaf/page/quest/list";
     }
 
+    @RequestMapping(value = "/seasonInfo",method = RequestMethod.GET)
+    public String questList(Model model
+            , @AuthenticationPrincipal Account account) {
+
+        Season seasonInfo = seasonService.getSeasonInfo();
+        model.addAttribute("seasonInfo", seasonInfo);
+        if(seasonInfo!=null){
+            List<SeasonCategory> list = seasonService.getSeasonCategoryCntList(seasonInfo.getSeasonKey());
+            model.addAttribute("list",list);
+        }else {
+            model.addAttribute("list",null);
+        }
+
+
+        return "thymeleaf/fragment/popup :: #questSeaonCntInfo";
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public String questList(Model model
+            , @RequestParam(defaultValue = "1") int page
+            , Quest quest
+            , @AuthenticationPrincipal Account account) {
+        quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
+        if("HISTORY".equals(quest.getSeasonCategoryKey())){
+            quest.setQuestStatus(QuestCode.QUEST_STATUS_SUCCESS);
+            quest.setSeasonCategoryKey(null);
+        }
+        int totalListCnt = questService.getQuestListUserCnt(quest);
+        Pagination pagination = new Pagination(totalListCnt, page,5,15);
+        quest.setStartIndex(pagination.getStartIndex());
+        quest.setPageSize(pagination.getPageSize());
+
+        List<Quest> questList = questService.getQuestListUser(quest);
+
+        model.addAttribute("questList", questList);
+        model.addAttribute("pagination", pagination);
+        return "thymeleaf/page/quest/list :: #questList";
+    }
+
     @GetMapping
     @RequestMapping(value = "/view")
-    public String view(Model model, @AuthenticationPrincipal Account account) {
-        model.addAttribute("seasonCategoryList",seasonService.getSeasonCategoryList());
+    public String view(Model model, @AuthenticationPrincipal Account account,String idx) {
+        Quest quest = new Quest();
+        quest.setQuestKey(idx);
+        quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
+        model.addAttribute("detail", questService.getQuestDetailUser(quest));
         return "thymeleaf/page/quest/view";
     }
 
@@ -46,6 +90,36 @@ public class QuestController {
             , @AuthenticationPrincipal Account account
             , @RequestParam(value = "file",required = false) MultipartFile file) throws Exception {
         return questService.saveQuest(quest,file,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/betting" , method = RequestMethod.POST)
+    public ResponseDataDTO betting(
+            @Valid Betting betting
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.betting(betting,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/bettingList" , method = RequestMethod.POST)
+    public ResponseDataDTO bettingList(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+        response.setCheck(true);
+        Betting betting = new Betting();
+        betting.setQuestKey(questKey);
+        response.setItem(questService.getBettingList(betting));
+        return response;
+    }
+
+
+    @GetMapping
+    @RequestMapping(value = "/bettingTotalList")
+    public String bettingTotalList(Model model,Betting betting, @AuthenticationPrincipal Account account,String idx) {
+        model.addAttribute("bettingList", questService.getBettingList(betting));
+        return "thymeleaf/page/quest/view :: #bettingTotalList";
     }
 
 }

@@ -70,13 +70,7 @@
         });
 
         function fnGetList(){
-            $.ajax({
-                url:"/cms/qna/list",
-                type :  "POST",
-                data : $("form[name=boardFrm]").serialize(),
-            }).done(function (fragment) {
-                $("#qnaList").replaceWith(fragment);
-            });
+            ajaxView("/cms/qna/list","POST",$("form[name=boardFrm]").serialize(),"qnaList");
         }
 
         function fnMovePage(page){

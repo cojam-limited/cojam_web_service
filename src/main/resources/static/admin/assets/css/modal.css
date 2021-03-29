@@ -1,0 +1,36 @@
+/* 모달 - 마이페이지 - 상세 */
+.modal-mypage-view {width:100%; border-radius:10px; box-shadow:0 0 20px 0 rgba(0,0,0,0.2);}
+.modal-mypage-view .mmv-area {padding:30px;}
+.modal-mypage-view .mmv-area dl {display:flex; justify-content:space-between; align-items:center;}
+.modal-mypage-view .mmv-area dl dt {font-weight:700; font-size:20px; line-height:20px; color:#222;}
+.modal-mypage-view .mmv-area dl dd {font-size:30px; color:#222;}
+.modal-mypage-view .mmv-area ul {margin-top:15px;}
+.modal-mypage-view .mmv-area ul li {padding:5px 0;}
+.modal-mypage-view .mmv-area ul li span {display:inline-block; padding-bottom:5px; font-weight:600; color:#222;}
+.modal-mypage-view .mmv-area ul li input {height:40px;}
+.modal-mypage-view .mmv-area ul li select {height:42px;}
+.modal-mypage-view .mmv-area p {margin-top:10px;}
+.modal-mypage-view .mmv-area p a {display:inline-block; width:100%; padding:18px; text-align:center; font-weight:600; font-size:16px; line-height:16px; color:#fff; border-radius:4px; background:#8950fc; overflow:hidden;}
+.modal-mypage-view .mmv-area p a:hover {background:#222;}
+
+@media all and (max-width:479px) {
+    .modal-mypage-view {width:90%;}
+    .modal-mypage-view .mmv-area {padding:25px;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+
+}
+@media all and (min-width:768px) and (max-width:991px) {
+
+}
+@media all and (min-width:992px) and (max-width:1299px) {
+
+}
+@media all and (min-width:1300px) {
+
+}
+
+.mqs-info {margin-top:20px; padding:20px; border:#e5e5e5 1px solid; border-radius:10px; background:#f3f6f9;}
+.mqs-info h2 {font-weight:600; line-height:24px; color:#222;}
+.mqs-info div {margin-top:15px; padding-top:15px; border-top:#e5e5e5 1px solid;}
+.mqs-info div span {font-weight:600; color:#222;}

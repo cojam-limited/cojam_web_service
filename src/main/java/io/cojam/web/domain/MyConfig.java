@@ -15,4 +15,8 @@ public class MyConfig {
 
     @Value("${myConfig.hostUrl}")
     private String hostUrl;
+
+    @Value("${myConfig.klaytnScpe}")
+    private String klaytnScpe;
+
 }

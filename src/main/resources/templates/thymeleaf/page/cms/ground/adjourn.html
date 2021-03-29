@@ -4,8 +4,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="thymeleaf/layout/cms_default_layout">
 <th:block layout:fragment="content">
-    <div class="content">
-
+    <div class="content">Z
+        <th:block  th:replace="thymeleaf/fragment/popup :: modalGroundDetailCMS"></th:block>
         <div class="table-title">
             <h2><i class="uil uil-chat-info"></i> Adjourn Market </h2>
             <div>
@@ -13,15 +13,16 @@
             </div>
         </div>
 
-        <div class="table-option">
-            <div>
-                <input type="text" placeholder="검색어를 입력하세요."> <button><i class="uil uil-search"></i></button>
+        <form th:name="boardFrm" th:method="GET">
+            <input th:type="hidden" th:name="page" />
+            <input th:type="hidden" th:name="orderType" />
+            <input type="text" style="display: none"/>
+            <div class="table-option">
+                <div>
+                    <input type="text"name="searchText" id="searchText" placeholder="검색어를 입력하세요."> <button  type="button"  onclick="fnSearch();"><i class="uil uil-search"></i></button>
+                </div>
             </div>
-            <ul>
-                <li><i class="uil uil-file-plus-alt"></i></li>
-                <li><i class="uil uil-trash-alt"></i></li>
-            </ul>
-        </div>
+        </form>
 
         <div class="table-default" id="questList">
             <table>
@@ -34,8 +35,6 @@
                     <col width="15%"/>
                     <col width="6%"/>
                     <col width="6%"/>
-                    <col width="6%"/>
-                    <col width="6%"/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -45,25 +44,21 @@
                     <td>Title</td>
                     <td>End Date <span><i class="uil uil-align-center-v"></i></span></td>
                     <td>Total(minimum)</td>
-                    <td>Draft</td>
-                    <td>Answers</td>
                     <td>Pend <span><i class="uil uil-align-center-v"></i></span></td>
                     <td>hot <span><i class="uil uil-align-center-v"></i></span></td>
                 </tr>
                 </thead>
                 <tbody>
                 <th:block th:if="${questList} !=null">
-                    <tr th:each="item,i :${questList}">
+                    <tr th:each="item,i :${questList}" th:attr="data-questKey=${item.questKey}">
                         <td><input type="checkbox" name="questKeys" th:value="${item.questKey}" class="check"></td>
-                        <td th:text="${i.index}"></td>
+                        <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                         <td th:text="${item.categoryName}"></td>
                         <td>
-                            <h5 th:text="${item.questTitle}"></h5>
+                            <h5 th:id="'questTitle_'+${item.questKey}" th:text="${item.questTitle}" class="groundList" th:attr="data-questKey=${item.questKey}"></h5>
                         </td>
                         <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
-                        <td>0(5000)</td>
-                        <td>F</td>
-                        <td>F</td>
+                        <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
                         <td th:text="${item.pending}?'T':'F'"></td>
                         <td th:text="${item.hot}?'T':'F'">
                         </td>
@@ -73,26 +68,35 @@
             </table>
             <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
         </div> <!-- .table-content  -->
-    </div>
+
+    </div> <!-- .content  -->
     <th:block layout:fragment="script">
         <script>
             $(document).ready(function (){
                 fnGetList();
+                $("#searchText").keydown(function(key) {
+                    if (key.keyCode == 13) {
+                        fnMovePage(1);
+                    }
+                });
             });
 
             function fnGetList(){
-                $.ajax({
-                    url:"/cms/ground/adjourn/list",
-                    type :  "GET",
-                    data : $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#questList").replaceWith(fragment);
-                });
+                ajaxView("/cms/ground/adjourn/list","GET",$("form[name=boardFrm]").serialize(),"questList");
             }
 
             function fnMovePage(page){
                 $("input[name=page]").val(page);
                 fnGetList();
+            }
+
+            $(document).on('click','.groundList',function(e){
+                detailQuestKey=$(this).attr('data-questKey');
+                $("#modalGroundDetailCMS").iziModal('open');
+            });
+
+            function fnSearch(){
+                fnMovePage(1);
             }
         </script>
     </th:block>

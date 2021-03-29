@@ -15,16 +15,25 @@
     <!-- 기본영역 (타이틀/네비/버튼) -->
     <dl class="title-section">
         <dt>
-            <h2>Art & Culture</h2>
-            <h3><i class="uil uil-estate"></i> Home · Quest · <span>Art & Culture</span></h3>
+            <h2 id="questCtgrText01">ALL</h2>
+            <h3><i class="uil uil-estate"></i> Home · Quest · <span id="questCtgrText02">ALL</span></h3>
         </dt>
         <dd>
-            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+            <th:block sec:authorize="!isAuthenticated()">
+                <a href="/login"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+            </th:block>
             <a href="#" data-izimodal-open="#modalQuestSeason" data-izimodal-transitionin="comingIn"><i class="uil uil-info-circle"></i> <span>Season Info</span></a>
         </dd>
     </dl>
     <!-- 기본영역 끝 -->
-
+    <form th:name="boardFrm" th:method="POST">
+        <input th:type="hidden" th:name="seasonCategoryKey"/>
+        <input th:type="hidden" th:name="page" />
+        <input th:type="hidden" th:name="hot" />
+    </form>
 
 
     <div class="container">
@@ -32,219 +41,129 @@
         <div class="category-section">
             <dl>
                 <dt>
-                    <div class="swiper-wrapper">
-                        <a href="#" class="swiper-slide">All</a>
-                        <a href="#" class="swiper-slide">Hot Quest</a>
-                        <a th:if="${seasonCategoryList} != null"
+                    <div class="swiper-wrapper questCtgrList">
+                        <a href="#" class="swiper-slide active" data-ctgrKey="ALL">All</a>
+                        <a href="#" class="swiper-slide" data-ctgrKey="HOT">Hot Quest</a>
+                        <a href="#"
+                                th:if="${seasonCategoryList} != null"
                                 th:each="item : ${seasonCategoryList}"
                                 th:text="${item.categoryName}"
+                                th:attr="data-ctgrKey=${item.categoryKey}"
                             class="swiper-slide"
                         ></a>
                     </div>
                 </dt>
-                <dd>
-                    <a href="#"><i class="uil uil-history"></i><span>History</span></a>
+                <dd class="questCtgrList">
+                    <a href="#" data-ctgrKey="HISTORY"><i class="uil uil-history"></i><span>History</span></a>
                 </dd>
             </dl>
         </div>
         <!-- 카타고리 영역 끝 -->
-
-
         <!-- 리스트 끝 -->
         <div class="quest-list-columns">
-            <ul>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/3e/5e/5f/3e5e5f11828ff1116ea6800823b2510b.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
-                    <ul>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/38/cb/36/38cb36f10e0a2913a436893226a22319.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>Predict ! Who will win the match between Arsenal and Liverpool on September 28, 2020</h4>
-                    <ul>
-                        <li>
-                            <div>Arsenal</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Draws</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Livepool</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/65/f1/77/65f17733bb1ca10fd3a54745610a767a.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>How many goals will Heung-min Son(Tottenham) will score at Men's Soccer A matches with Mexico (15, November 2020) and Katar (17, November 2020)?</h4>
-                    <ul>
-                        <li>
-                            <div>One Goal</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Two Goals</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Three Goals or More</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Invalid (no goals)</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/17/81/41/1781415124ad3c138736bd8aa6bc583b.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
-                    <ul>
-                        <li>
-                            <div>Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/d5/21/9c/d5219cea07ccc4ffd82a123573cd3d6e.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
-                    <ul>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
-                <li onclick="location.href='/user/quest/view';">
-                    <h2>Total <span>258,025</span> CT</h2>
-                    <p>
-                        <span style="background:url('https://i.pinimg.com/564x/a3/ef/7d/a3ef7d3372f46d737c706ef549d496c6.jpg') center no-repeat; background-size:cover;"></span>
-                    </p>
-                    <h3><span>D-12</span> PM 11:59 (UTC+0)</h3>
-                    <h4>BTS reached #1 on the Billboard Chart with a song "Dynamite". Will BTS be able to win "The album of the year" at the Grammy Awards held on January 31, 2021?</h4>
-                    <ul>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                        <li>
-                            <div>Yes</div>
-                            <p>1.66X</p>
-                        </li>
-                    </ul>
-                </li>
+            <ul id="questList">
+                <th:block th:if="${questList}!=null">
+                    <li th:each="item : ${questList}"
+                        th:data-parameter1="${item.questKey}"
+                        th:data-parameter2="${item.finished}"
+                        th:onclick="fnMoveDetail(this.getAttribute('data-parameter1'),this.getAttribute('data-parameter2'));"
+                    >
+                        <h2>Total <span th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></span> CT</h2>
+                        <p>
+                            <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>
+                        </p>
+                        <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
+                        <h4 th:text="${item.questTitle}"></h4>
+                        <ul>
+                            <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,',')}"
+                                th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                            >
+                                <div th:text="${answer[0]}"></div>
+                                <p th:id="'answer_'+${item.questKey}+'_'+${i.index}"></p>
+                                <script>
+                                    /*<![CDATA[*/
+                                    currentAnswerTotal = "[[${answer[1]}]]";
+
+                                    totalAmount = "[[${item.totalAmount}]]";
+                                    otherTotalToken = totalAmount - currentAnswerTotal;
+                                    answerId = "answer_[[${item.questKey}]]_[[${i.index}]]";
+                                    /*]]>*/
+                                    result = calculateWinToken(parseFloat(toEther(1)), Number(currentAnswerTotal) + parseFloat(toEther(1)), otherTotalToken);
+                                    rateString = isNaN(Number(result.rate).toFixed(2)) ? '-' : Number(result.rate).toFixed(2);
+                                    $('#'+answerId).text(rateString+'X');
+                                </script>
+                            </li>
+                        </ul>
+                    </li>
+                </th:block>
             </ul>
         </div>
         <!-- 리스트 끝 -->
-
-
-        <!-- 페이지넘버링 -->
-        <div class="paging-list">
-            <a href="#"><i class="fas fa-caret-left"></i></a>
-            <a href="#">1</a>
-            <a href="#" class="active">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#"><i class="fas fa-caret-right"></i></a>
-        </div>
-        <!-- 페이지넘버링 끝 -->
+        <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
 
 
         <!-- 등록버튼 -->
         <div class="add-btn">
-            <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
+            <th:block sec:authorize="!isAuthenticated()">
+                <a href="/login" ><i class="uil uil-plus"></i></a>
+            </th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
+            </th:block>
         </div>
         <!-- 등록버튼 끝 -->
     </div>
     <th:block layout:fragment="script">
         <script>
             $("body").addClass("bg-quest");
-            // 모달 - 퀘스트 - 시즌정보 //
+
+            $(document).on('click','.questCtgrList > a',function (e){
+                const data = $(this).attr('data-ctgrKey');
+                $('.questCtgrList > a').removeClass('active');
+                $(this).addClass('active');
+                $('#questCtgrText01').text($(this).text());
+                $('#questCtgrText02').text($(this).text());
+                if(data == 'HOT'){
+                    $('input[name=page]').val(1);
+                    $('input[name=hot]').val(true);
+                    $('input[name=seasonCategoryKey]').val(null);
+                }else if(data == 'ALL'){
+                    $('input[name=page]').val(1);
+                    $('input[name=hot]').val(null);
+                    $('input[name=seasonCategoryKey]').val(null);
+                }else{
+                    $('input[name=page]').val(1);
+                    $('input[name=hot]').val(null);
+                    $('input[name=seasonCategoryKey]').val(data);
+                }
+                fnGetList();
+            });
+
+            $(document).ready(function (){
+                fnGetList();
+            });
+
+            function fnGetList(){
+                ajaxView("/user/quest/list","GET",$("form[name=boardFrm]").serialize(),"questList");
+            }
+
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+
+            function fnMoveDetail(questKey,finished){
+                if(finished==='true'){
+                    if($('input[name=seasonCategoryKey]').val()=='HISTORY'){
+                        window.location.href="/user/quest/view?idx="+questKey;
+                    }else{
+                        toastr.warning('Ground is Aleady Confirmed.');
+                    }
+
+                }else {
+                    window.location.href="/user/quest/view?idx="+questKey;
+                }
+            }
         </script>
     </th:block>
 </div>
