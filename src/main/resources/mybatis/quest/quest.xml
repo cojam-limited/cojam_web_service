@@ -22,11 +22,11 @@
     <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
         INSERT INTO TB_QUEST_ANSWER
         (
-            QUEST_ANSWER_KEY, QUEST_KEY, QUEST_EXAMPLE, ANSWER_TITLE
+             QUEST_KEY, QUEST_EXAMPLE, ANSWER_TITLE
         )
         VALUES
         (
-            #{questAnswerKey}, #{questKey}, #{questExample}, #{answerTitle}
+            #{questKey}, #{questExample}, #{answerTitle}
         )
     </insert>
 

@@ -23,6 +23,11 @@ public class WalletApiService {
     @Value("${app.sdk-enclave.masterWalletId")
     private String sdkMasterWalletId;
 
+
+
+
+
+
     @Qualifier("walletClient")
     @Autowired
     private RestTemplate restTemplate;
@@ -89,6 +94,26 @@ public class WalletApiService {
                     .build();
             TransactionReceipt receipt = restTemplate.postForEntity(
                     "/contract-call",
+                    contractCallRequest,
+                    TransactionReceipt.class
+            ).getBody();
+            receipt.setToAddress(contractAddress);
+            return receipt;
+        });
+    }
+
+    public TransactionReceipt contractCall(Wallet wallet, String contractAddress, BigInteger value, Data data) {
+        return serviceTemplate(() -> {
+            ContractCallRequest contractCallRequest = ContractCallRequest.builder()
+                    .passphrase(sdkPassphrase)
+                    .contractAddress(contractAddress)
+                    .value(value)
+                    .data(data.getPayload())
+                    .build();
+            TransactionReceipt receipt = restTemplate.postForEntity(
+                    String.format("/user-wallets/%s/contract-call",
+                            wallet.getWalletId()
+                    ),
                     contractCallRequest,
                     TransactionReceipt.class
             ).getBody();

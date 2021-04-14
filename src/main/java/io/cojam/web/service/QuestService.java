@@ -3,9 +3,12 @@ package io.cojam.web.service;
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.QuestCode;
 import io.cojam.web.constant.SequenceCode;
+import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.QuestDao;
 import io.cojam.web.domain.*;
 import io.cojam.web.domain.wallet.TransactionReceipt;
+import io.cojam.web.klaytn.dto.TransactionStatus;
+import io.cojam.web.klaytn.service.TransactionApiService;
 import io.cojam.web.service.contract.ContractApplicationService;
 import io.cojam.web.utils.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.web3j.utils.Convert;
 
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +61,9 @@ public class QuestService {
 
     @Autowired
     MyConfig myConfig;
+
+    @Autowired
+    TransactionApiService transactionApiService;
 
     public Integer getQuestListAdminCnt(Quest quest){
         return questDao.getQuestListAdminCnt(quest);
@@ -133,7 +142,7 @@ public class QuestService {
             answer.setQuestKey(quest.getQuestKey());
             for (String title:quest.getAnswers()
                  ) {
-                answer.setQuestAnswerKey(sequenceService.getSequence(SequenceCode.TB_QUEST_ANSWER));
+                //answer.setQuestAnswerKey(sequenceService.getSequence(SequenceCode.TB_QUEST_ANSWER));
                 answer.setAnswerTitle(title);
                 questDao.saveQuestAnswer(answer);
             }
@@ -222,9 +231,12 @@ public class QuestService {
                     * contract 호출
                     *
                     */
+                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger creator_pay = Convert.toWei(String.valueOf(season.getCreatorPay()), Convert.Unit.ETHER).toBigInteger();
 
-                    TransactionReceipt transactionReceipt= new TransactionReceipt();
-                    transactionReceipt.setTransactionId(String.format("draft_%s",detail.getQuestKey()));
+                    TransactionReceipt transactionReceipt = contractApplicationService.draftMarket(questKeyBigInteger,detail.getCreatorAddress(),detail.getQuestTitle(),creator_pay,new BigInteger(season.getCreatorFee()), new BigInteger(season.getCojamFee()), new BigInteger(season.getCharityFee()), new ArrayList<>());
+
+
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                         detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_DRAFT);
                         detail.setDraftTx(transactionReceipt.getTransactionId());
@@ -353,6 +365,13 @@ public class QuestService {
             /*
              * draft transactionId  status 확인
              */
+            TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getDraftTx());
+            if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                response.setCheck(false);
+
+                response.setMessage(String.format("Draft status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                return response;
+            }
 
 
             if(!StringUtils.isBlank(detail.getAnswersTx())){
@@ -364,9 +383,49 @@ public class QuestService {
             /*
              * AnswerApprove Contract 호출
              */
+            List<QuestAnswer> list = this.getQuestAnswerList(questKey);
+            if(list==null || list.size() < 1){
+                response.setCheck(false);
+                response.setMessage("No answer data!.");
+            }
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            transactionReceipt.setTransactionId(String.format("Answer_%s",detail.getQuestKey()));
+            List<BigInteger> bigIntegerList = new ArrayList<>();
+
+            for (QuestAnswer answer:list
+                 ) {
+                BigInteger answerKey = new BigInteger(answer.getQuestAnswerKey());
+                System.out.println(String.format("answerKey : s",answerKey));
+                bigIntegerList.add(new BigInteger(answer.getQuestAnswerKey()));
+            }
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            int maxCount = 15;
+            TransactionReceipt transactionReceipt = null;
+            if (bigIntegerList.size() > maxCount) {
+                int maxIndex = (int) Math.ceil(bigIntegerList.size() / maxCount);
+
+                for (int i = 0; i < maxIndex; i++) {
+                    List<BigInteger> bigIntegerList_copy = new ArrayList<>();
+
+                    if (i > maxIndex - 1) {
+                        for (int a = 0; a < maxCount; a++) {
+                            bigIntegerList_copy.add(bigIntegerList.get((i * maxCount) + a));
+                        }
+                    } else {
+                        for (int a = 0; a < bigIntegerList.size() % maxCount; a++) {
+                            bigIntegerList_copy.add(bigIntegerList.get((i * maxCount) + a));
+                        }
+                    }
+
+                    System.out.println("BigIntegerList Copy : {}" + bigIntegerList_copy);
+                    transactionReceipt = contractApplicationService.answer(questKeyBigInteger,bigIntegerList_copy);
+                }
+            } else {
+                transactionReceipt = contractApplicationService.answer(questKeyBigInteger,bigIntegerList);
+            }
+
+
+
+
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_ANSWER);
                 detail.setAnswersTx(transactionReceipt.getTransactionId());
@@ -413,6 +472,13 @@ public class QuestService {
             /*
              * answer transactionId  status 확인
              */
+            TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getAnswersTx());
+            if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                response.setCheck(false);
+
+                response.setMessage(String.format("Answers transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                return response;
+            }
 
 
             if(!StringUtils.isBlank(detail.getApproveTx())){
@@ -424,9 +490,9 @@ public class QuestService {
             /*
              * approveMarket Contract 호출
              */
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            TransactionReceipt transactionReceipt = contractApplicationService.approveMarket(questKeyBigInteger);
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            transactionReceipt.setTransactionId(String.format("Approve_%s",detail.getQuestKey()));
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_APPROVE);
                 detail.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
@@ -630,10 +696,27 @@ public class QuestService {
             betting.setMemberKey(account.getMemberKey());
             questDao.saveBetting(betting);
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            Timestamp timestamp = new Timestamp(System.nanoTime());
-            transactionReceipt.setTransactionId(String.format("betting_%s",timestamp.getTime()));
+            //Contract 호출
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
 
+            BigInteger questAnswerKeyBigInteger = new BigInteger(answer.getQuestAnswerKey().replace(SequenceCode.TB_QUEST_ANSWER,""));
+
+            TransactionReceipt resutApprove = contractApplicationService.approve(wallet,wallet.getWalletAddress(),Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger());
+            TransactionReceipt resutApproveMaster = contractApplicationService.approveMaster(Convert.toWei("5000000000", Convert.Unit.ETHER).toBigInteger());
+            System.out.println("resutApprove==>"+resutApprove.getTransactionId());
+            System.out.println("resutApproveMaster==>"+resutApproveMaster.getTransactionId());
+
+            if(contractApplicationService.availableBet(questKeyBigInteger,questAnswerKeyBigInteger,new BigInteger(betting.getBettingKey()),Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger())){
+                System.out.println("MARKET IS BET AVAILABLE");
+            }else {
+                System.out.println("NOT BET AVAILABLE");
+            }
+            //contractApplicationService.balanceOf(wallet.getWalletAddress());
+            //contractApplicationService.transfer(wallet,"0xd210b918A26d7dc444Edae3ed076B3797d31f710",Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger());
+            //contractApplicationService.transferFrom(wallet,wallet.getWalletAddress(),"0xd210b918A26d7dc444Edae3ed076B3797d31f710",Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger());
+
+            TransactionReceipt transactionReceipt = contractApplicationService.bet(wallet,questKeyBigInteger,questAnswerKeyBigInteger,new BigInteger(betting.getBettingKey()),Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger());
+            //TransactionReceipt transactionReceipt =null;
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 betting.setSpenderAddress(wallet.getWalletAddress());
                 betting.setTransactionId(transactionReceipt.getTransactionId());

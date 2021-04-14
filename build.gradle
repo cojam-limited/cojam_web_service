@@ -71,6 +71,7 @@ dependencies {
     implementation ('org.web3j:core:4.5.12') {
         exclude group: 'org.web3j', module: 'crypto:4.5.12'
     }
+
     //// ref: https://github.com/web3j/web3j/issues/1167
     //// https://github.com/web3j/web3j/commit/92ecdb7288df61faad106a95c6a545bf9734152c
     compile 'com.squareup.okhttp3:okhttp:4.3.1'
