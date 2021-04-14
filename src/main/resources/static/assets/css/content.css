@@ -520,8 +520,8 @@
 /* 퀘스트  /////////////////////////////////////////////////////////////////////////*/
 /* 리스트 - 컬럼형태 */
 .quest-list-columns {width:100%; overflow:hidden;}
-.quest-list-columns > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
-.quest-list-columns > ul > li {position:relative; width:32%; margin-bottom:20px; padding:20px; border:#e5e5e5 0.5px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1); cursor:pointer;}
+.quest-list-columns > ul {display:flex; align-items:center; flex-wrap:wrap;}
+.quest-list-columns > ul > li {position:relative; width:32%; margin:0 2% 20px 0; padding:20px; border:#e5e5e5 0.5px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1); cursor:pointer;}
 .quest-list-columns > ul > li > div {position:absolute; width:100.5%; height:100.5%; margin:-21px 0 0 -21px; border-radius:10px; background:rgba(0,0,0,0.7);}
 .quest-list-columns > ul > li > h2 {padding:5px 0; text-align:center; font-size:18px; line-height:18px; color:#999;}
 .quest-list-columns > ul > li > h2 span {font-weight:800; color:#222;}
@@ -536,7 +536,7 @@
 .quest-list-columns > ul > li > ul li div {margin-right:10px; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
 
 @media all and (max-width:479px) {
-  .quest-list-columns > ul > li {width:100%; margin-bottom:17px; padding:17px;}
+  .quest-list-columns > ul > li {width:100%; margin:0 0 17px 0; padding:17px;}
   .quest-list-columns > ul > li > div {width:102%; height:101%; margin:-20px 0 0 -20px; border-radius:15px;}
   .quest-list-columns > ul > li > h2 {padding:2px 0; font-size:17px; line-height:17px;}
   .quest-list-columns > ul > li > h4 {margin-top:15px; font-size:14px;}
@@ -544,7 +544,7 @@
   .quest-list-columns > ul > li > ul li {padding:10px 17px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
-  .quest-list-columns > ul > li {width:100%; margin-bottom:17px; padding:17px;}
+  .quest-list-columns > ul > li {width:100%; margin:0 0 17px 0; padding:17px;}
   .quest-list-columns > ul > li > div {width:101%; height:101%; margin:-20px 0 0 -20px; border-radius:15px;}
   .quest-list-columns > ul > li > h2 {padding:2px 0; font-size:17px; line-height:17px;}
   .quest-list-columns > ul > li > h4 {margin-top:15px; font-size:14px;}
@@ -553,13 +553,15 @@
 }
 @media all and (min-width:768px) and (max-width:991px) {
   .quest-list-columns > ul > li {width:49%;}
+  .quest-list-columns > ul > li:nth-child(2n) {margin:0 0 20px 0;}
   .quest-list-columns > ul > li > div {width:100.5%; height:100.3%; margin:-21px 0 0 -21px;}
 }
 @media all and (min-width:992px) and (max-width:1299px) {
+  .quest-list-columns > ul > li:nth-child(3n) {margin:0 0 20px 0;}
   .quest-list-columns > ul > li > div {width:100.5%; height:100.3%; margin:-21px 0 0 -21px;}
 }
 @media all and (min-width:1300px) {
-
+  .quest-list-columns > ul > li:nth-child(3n) {margin:0 0 20px 0;}
 }
 
 
