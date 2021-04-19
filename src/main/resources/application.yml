@@ -79,13 +79,17 @@ app:
     contracts:
       marketAddress: 0x3B319E5Ce59603fdFa3039b5991054E6d8191B4C
   sdk-enclave:
-    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
-    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
-    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
-    marketAddress: "0xd210b918A26d7dc444Edae3ed076B3797d31f710"
-    tokenAddress: "0xd6cdaB407f47AFaa8800aF5006061DB8DC92AAe7"
+    apiSecret: "iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs="
+    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA"
+    masterWalletId: "d24c99e81a62b7aaf85cfc1134e1c1ae"
+    marketAddress: "0x03aD3578F4eF3a2d414CB28aeBBb58F0716b4D62"
+    tokenAddress: "0xd6cdab407f47afaa8800af5006061db8dc92aae7"
     feeAddress: "0x6b35e1a72f97320945789b3e7c6a203de1c4f0d3"
     charityAddress: "0xe3469be62a72988a5462c413aef4d6efd59fff3d"
+    remainAddress: "0x4a1667cf934796067adbddf456c95ef91658b403"
+    recommendWalletId: "0c109712c239534be85bdeacc4ef1cd0"
+    recommendAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
+    recommendPassphrase: "!1wjdwogjs"
     passphrase: "!1wjdwogjs"
     url: http://localhost:3000
 #개발 환경
@@ -142,7 +146,7 @@ logging:
     io.cojam.web: debug
 myConfig:
   uploadPath: "/cojam_data/web_upload"
-  hostUrl: "http://cojamdev.hiblocks.io"
+  hostUrl: "http://dev.cojam.io"
   klaytnScpe: "https://baobab.scope.klaytn.com/"
 app:
   name: hiblocks-internal
@@ -155,14 +159,18 @@ app:
     contracts:
       marketAddress: 0x3B319E5Ce59603fdFa3039b5991054E6d8191B4C
   sdk-enclave:
-    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
-    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
-    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
-    passphrase: "!1wjdwogjs"
-    marketAddress: "0x231c046c0cB064B81a6B8b2618505f540dE75800"
-    tokenAddress: "0xd6cdaB407f47AFaa8800aF5006061DB8DC92AAe7"
+    apiSecret: "iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs="
+    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA"
+    masterWalletId: "d24c99e81a62b7aaf85cfc1134e1c1ae"
+    marketAddress: "0x03aD3578F4eF3a2d414CB28aeBBb58F0716b4D62"
+    tokenAddress: "0xd6cdab407f47afaa8800af5006061db8dc92aae7"
     feeAddress: "0x6b35e1a72f97320945789b3e7c6a203de1c4f0d3"
     charityAddress: "0xe3469be62a72988a5462c413aef4d6efd59fff3d"
+    remainAddress: "0x4a1667cf934796067adbddf456c95ef91658b403"
+    recommendWalletId: "0c109712c239534be85bdeacc4ef1cd0"
+    recommendAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
+    recommendPassphrase: "!1wjdwogjs"
+    passphrase: "!1wjdwogjs"
     url: http://localhost:3000
 #운영 환경
 ---
@@ -232,12 +240,16 @@ app:
     contracts:
       marketAddress: 0x3B319E5Ce59603fdFa3039b5991054E6d8191B4C
   sdk-enclave:
-    apiSecret: iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs=
-    accessToken: eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA
-    masterWalletId: d24c99e81a62b7aaf85cfc1134e1c1ae
-    marketAddress: "0x231c046c0cB064B81a6B8b2618505f540dE75800"
-    tokenAddress: "0xd6cdaB407f47AFaa8800aF5006061DB8DC92AAe7"
+    apiSecret: "iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs="
+    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA"
+    masterWalletId: "d24c99e81a62b7aaf85cfc1134e1c1ae"
+    marketAddress: "0x03aD3578F4eF3a2d414CB28aeBBb58F0716b4D62"
+    tokenAddress: "0xd6cdab407f47afaa8800af5006061db8dc92aae7"
     feeAddress: "0x6b35e1a72f97320945789b3e7c6a203de1c4f0d3"
     charityAddress: "0xe3469be62a72988a5462c413aef4d6efd59fff3d"
+    remainAddress: "0x4a1667cf934796067adbddf456c95ef91658b403"
+    recommendWalletId: "0c109712c239534be85bdeacc4ef1cd0"
+    recommendAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
+    recommendPassphrase: "!1wjdwogjs"
     passphrase: "!1wjdwogjs"
     url: http://localhost:3000

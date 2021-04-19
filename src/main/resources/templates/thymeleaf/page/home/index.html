@@ -223,31 +223,17 @@
         });
 
         function fnGetSeasonInfo(){
-            $.ajax({
-                url:"/user/home/seasonInfo",
-                type :  "POST",
-            }).done(function (fragment) {
-                $("#seasonInfo").replaceWith(fragment);
-                $('.main-season > div > ul > li > div > h2').countUp();
-            });
+            ajaxView("/user/home/seasonInfo","POST",null,"seasonInfo");
+
         }
 
         function fnGetNoticeList(){
-            $.ajax({
-                url:"/user/home/notice",
-                type :  "POST",
-            }).done(function (fragment) {
-                $("#noticeTop3").replaceWith(fragment);
-            });
+            ajaxView("/user/home/notice","POST",null,"noticeTop3");
+
         }
 
         function fnGetQuestionList(){
-            $.ajax({
-                url:"/user/home/question",
-                type :  "POST",
-            }).done(function (fragment) {
-                $("#questionList").replaceWith(fragment);
-            });
+            ajaxView("/user/home/question","POST",null,"questionList");
         }
 
         $(document).on('click','.qna_list > div',function (){

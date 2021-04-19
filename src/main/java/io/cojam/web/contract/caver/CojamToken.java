@@ -271,12 +271,11 @@ public class CojamToken extends SmartContract {
         return executeRemoteCallTransaction(function);
     }
 
-    public RemoteCall<KlayTransactionReceipt.TransactionReceipt> balanceOf(String owner) {
-        final Function function = new Function(
-                FUNC_BALANCEOF, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(owner)), 
-                Collections.<TypeReference<?>>emptyList());
-        return executeRemoteCallTransaction(function);
+    public RemoteCall<BigInteger> balanceOf(String account) {
+        final Function function = new Function(FUNC_BALANCEOF,
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(account)),
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<KlayTransactionReceipt.TransactionReceipt> burn(BigInteger amount) {

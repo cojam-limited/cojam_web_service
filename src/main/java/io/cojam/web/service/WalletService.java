@@ -1,12 +1,17 @@
 package io.cojam.web.service;
 
+import com.google.common.base.Ticker;
 import com.klaytn.caver.utils.Convert;
 import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.WalletDao;
+import io.cojam.web.domain.Member;
+import io.cojam.web.domain.MyConfig;
 import io.cojam.web.domain.ResponseDataDTO;
 import io.cojam.web.domain.Wallet;
 import io.cojam.web.domain.wallet.*;
+import io.cojam.web.klaytn.service.RecommendApiService;
 import io.cojam.web.klaytn.service.WalletApiService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,15 @@ public class WalletService {
 
     @Autowired
     TransactionService transactionService;
+
+    @Autowired
+    RecommendApiService recommendApiService;
+
+    @Autowired
+    MyConfig myConfig;
+
+    @Autowired
+    MemberService memberService;
 
     public int saveWallet(String memberKey){
         Wallet wallet =walletApiService.createUserWallet(memberKey);
@@ -55,7 +69,7 @@ public class WalletService {
             BigInteger balance = walletApiService.getBalance(wallet);
 
             if(wallet.getWalletAddress().equals(request.getTo())){
-                responseDataDTO.setMessage("TYou cannot send it to your own wallet.");
+                responseDataDTO.setMessage("You cannot send it to your own wallet.");
                 responseDataDTO.setCheck(false);
                 return responseDataDTO;
             }
@@ -63,6 +77,15 @@ public class WalletService {
             if(balance.compareTo(request.getAmount()) == -1){
                 responseDataDTO.setMessage("There is not enough balance.");
                 responseDataDTO.setCheck(false);
+                return responseDataDTO;
+            }
+
+            Member param = new Member();
+            param.setMemberKey(memberKey);
+            Member member = memberService.getMemberInfoForMemberKey(param);
+            if(member.getWalletLock()){
+                responseDataDTO.setCheck(false);
+                responseDataDTO.setMessage("Your Wallet is Lock!");
                 return responseDataDTO;
             }
 
@@ -88,9 +111,36 @@ public class WalletService {
         return responseDataDTO;
     }
 
+
     @Cacheable(value = "memberWalletInfo",key = "#memberKey",cacheManager = "userCacheManager")
     public Wallet getWalletInfo(String memberKey){
         return walletDao.getWalletInfo(memberKey);
     }
 
+
+    @Transactional
+    public Transaction sendRecommendToken(Wallet wallet,BigInteger amount,String transactionType) {
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Transaction transaction = null;
+        try {
+            TransactionReceipt receipt = recommendApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
+                    .assertThenReturn("sendToken", wallet.getMemberKey());
+            if(receipt ==null || StringUtils.isBlank(receipt.getTransactionId())){
+                return null;
+            }else {
+                //SAVE TRANSACTION
+                transaction = new Transaction();
+                transaction.setAmount(amount.toString());
+                transaction.setRecipientAddress(wallet.getWalletAddress());
+                transaction.setSpenderAddress(myConfig.getRecommendAddress());
+                transaction.setTransactionId(receipt.getTransactionId());
+                transaction.setTransactionType(transactionType);
+                transactionService.saveTransaction(transaction);
+                return transaction;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

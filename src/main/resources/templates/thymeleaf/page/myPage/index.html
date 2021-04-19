@@ -22,6 +22,7 @@
 
     <th:block  th:replace="thymeleaf/fragment/popup :: modalTransferDetail"></th:block>
 
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalRecommend"></th:block>
 
 
     <!-- 마이페이지 - 기본정보 -->
@@ -32,7 +33,14 @@
         </dt>
         <dd>
             <a href="#" class="btn-red">Click to be Reward!</a>
-            <a href="#" class="btn-purple" data-izimodal-open="#modalSendCT" data-izimodal-transitionin="comingIn">CT Send</a>
+            <th:block th:if="${!member.walletLock}">
+                <a href="#" class="btn-purple" data-izimodal-open="#modalSendCT" data-izimodal-transitionin="comingIn">CT Send</a>
+            </th:block>
+            <th:block th:if="${member.walletLock}">
+                <a href="javascript:alert('Your wallet is lock.');" class="btn-grey" >CT Send</a>
+            </th:block>
+
+            <a href="javascript:fnRecommendOpen();" class="btn-orange">Recommend User</a>
         </dd>
     </div>
     <!-- 마이페이지 - 기본정보 끝 -->
@@ -61,130 +69,139 @@
                     <li style="text-align:center;"><strong>Prediction Fee</strong></li>
                 </ul>
                 <th:block th:if="${myVotingList}!=null">
-                    <ul th:each="item : ${myVotingList}" th:data-detailQuestKey="${item.questKey}"
-                        onclick="fnSetGroundDetail(this.getAttribute('data-detailQuestKey'))">
+                    <ul th:each="item : ${myVotingList}">
                         <li><span>Category : </span><th:block th:text="${item.categoryName}"></th:block></li>
-                        <li><span>Title : </span><th:block th:text="${item.questTitle}"></th:block></li>
-                        <li>
-                            <span>Status Flow : </span>
-                            <ul>
-                                <th:block th:switch="${item.questStatus}">
-                                    <th:block th:case="ONGOING">
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </th:block>
-                                    <th:block th:case="INVALID">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </th:block>
-                                    <th:block th:case="APPROVE">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </th:block>
-                                    <th:block th:case="ADJOURN">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </th:block>
-                                    <th:block th:case="SUCCESS">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </th:block>
-                                </th:block>
-                            </ul>
+                        <li th:data-detailQuestKey="${item.questKey}"
+                            th:onclick="fnSetGroundDetail(this.getAttribute('data-detailQuestKey'))">
+                            <span>Title : </span><th:block th:text="${item.questTitle}"></th:block>
                         </li>
+                        <th:block th:switch="${item.questStatus}">
+                            <th:block th:case="ONGOING">
+                                <li>
+                                    <span>Status Flow : </span>
+                                    <ul>
+                                        <li th:class="ing">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
+                            <th:block th:case="INVALID">
+                                <li>
+                                    <p>Invalid</p>
+                                    <span>Status Flow : </span>
+                                    <ul>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="ing">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
+                            <th:block th:case="APPROVE">
+                                <li>
+                                    <span>Status Flow : </span>
+                                    <ul>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Invaild</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
+                            <th:block th:case="ADJOURN">
+                                <li>
+                                    <span>Status Flow : </span>
+                                    <ul>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Finish</h2>
+                                        </li>
+                                        <li th:class="ing"
+                                            th:data-detailBettingtKey="${item.bettingKey}"
+                                            th:onclick="fnSetSuccessBetting(this.getAttribute('data-detailBettingtKey'))">
+                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
+                            <th:block th:case="SUCCESS">
+                                <li>
+                                    <span>Status Flow : </span>
+                                    <ul>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li th:class="complete">
+                                            <span></span>
+                                            <h2>Finish</h2>
+                                        </li>
+                                        <li th:class="ing"
+                                            th:data-detailBettingtKey="${item.bettingKey}"
+                                            th:onclick="fnSetSuccessBetting(this.getAttribute('data-detailBettingtKey'))">
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
+                        </th:block>
                         <li><span>My Answer : </span><th:block th:text="${item.answerTitle}"></th:block> (<th:block th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></th:block> CT)</li>
-                        <li><span>Multiply : </span>0.85</li>
-                        <li><span>Prediction Fee : </span>8,500 CT</li>
+                        <li>
+                            <span>Multiply : </span><th:block th:text="${item.magnification}"></th:block>
+                        </li>
+                        <li><span>Prediction Fee : </span><th:block th:text="${item.magnificationCoin} % 1 == 0?${#numbers.formatInteger(item.magnificationCoin,0,'COMMA')}:${#numbers.formatDecimal(item.magnificationCoin, 0, 'COMMA', 2, 'POINT')}"></th:block> CT</li>
                     </ul>
                 </th:block>
                 <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
@@ -432,6 +449,31 @@
         $(document).on('click','#myWalletAddress',function (e){
 
         });
+
+        function fnSetSuccessBetting(key){
+            if(confirm('Would you like to receive compensation now?')){
+                $.ajax({
+                    url: "/user/quest/successBetting",
+                    type: "POST",
+                    data : {
+                        "bettingKey" : key
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                            fnGetList();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+
+        }
+
+        function fnRecommendOpen(){
+            $("#modalRecommend").iziModal('open');
+        }
     </script>
     <th:block layout:fragment="script">
     </th:block>

@@ -118,6 +118,7 @@ public class WalletApiService {
                     TransactionReceipt.class
             ).getBody();
             receipt.setToAddress(contractAddress);
+
             return receipt;
         });
     }

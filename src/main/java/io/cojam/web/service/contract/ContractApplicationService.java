@@ -51,6 +51,9 @@ public class ContractApplicationService {
     @Value("${app.sdk-enclave.charityAddress}")
     private String charityAddress;
 
+    @Value("${app.sdk-enclave.remainAddress}")
+    private String remainAddress;
+
 
     public TransactionReceipt draftMarket(BigInteger marketKey, String creator, String title, BigInteger creatorFee, BigInteger creatorPercentage, BigInteger cojamPercentage, BigInteger charityPercentage, List<BigInteger> answerKeys) {
         // contract 호출
@@ -91,6 +94,7 @@ public class ContractApplicationService {
         Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
         this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
         String payload = this.cojamMarket.bet(marketKey, answerKey, bettingKey, tokens).encodeFunctionCall();
+
         return walletApiService.contractCall(wallet,marketAddress, BigInteger.ZERO, new Data(payload));
     }
 
@@ -163,10 +167,10 @@ public class ContractApplicationService {
 
     public TransactionReceipt balanceOf(String owner) throws Exception {
 
-        String dummyWalletKey = "0x4ceb8996d1d70447ad2e81507ef76effbd4334c7e07ec9734ab3213cfbabd1280x000xeb1cea2b416c468b171a333ed86a14821a86edec";
+        String dummyWalletKey = "0x6f993629f0d3836153141053f314286d555b4ac21f14057004c7e900413aa1a30x000x02c3d28f9d2618f03f8a499774ac28332471ae6a";
 
         this.cojamTokenCaver = io.cojam.web.contract.caver.CojamToken.load(tokenAddress,Caver.build(Caver.BAOBAB_URL),KlayWalletUtils.loadCredentials(dummyWalletKey),ChainId.BAOBAB_TESTNET,new com.klaytn.caver.tx.gas.DefaultGasProvider());
-        KlayTransactionReceipt.TransactionReceipt result =this.cojamTokenCaver.balanceOf(owner).send();
+        BigInteger result =this.cojamTokenCaver.balanceOf(owner).send();
         System.out.println("result=>"+result.toString());
         return null;
     }
@@ -174,14 +178,74 @@ public class ContractApplicationService {
     public void initMaster() {
         Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
         this.cojamMarket = cojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
-        String payload1 = cojamMarket.setAccount("cojamFeeAccount", feeAddress).encodeFunctionCall();
-        String payload2 = cojamMarket.setAccount("charityFeeAccount", charityAddress).encodeFunctionCall();
-
+        setAccount("cojamFeeAccount");
+        setAccount("charityFeeAccount");
+        setAccount("remainAccount");
         cojamMarket.setContractAddress(marketAddress);
-        TransactionReceipt feeAccount = walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload1));
-        TransactionReceipt charityFeeAccount = walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload2));
+    }
 
-        System.out.println("feeAccount=>"+feeAccount.getTransactionId());
-        System.out.println("charityFeeAccount=>"+charityFeeAccount.getTransactionId());
+    public TransactionReceipt setAccount(String key){
+        String address = "";
+        if("cojamFeeAccount".equals(key)){
+            address = feeAddress;
+        }else if("charityFeeAccount".equals(key)){
+            address = charityAddress;
+        } else if("remainAccount".equals(key)){
+            address = remainAddress;
+        }
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = cojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload1 = cojamMarket.setAccount(key,address).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload1));
+    }
+
+    public TransactionReceipt finishMarket(BigInteger marketKey) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.finishMarket(marketKey).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+
+    public TransactionReceipt successMarket(BigInteger marketKey,BigInteger selectedAnswerKey) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.successMarket(marketKey,selectedAnswerKey).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+    public TransactionReceipt adjournMarket(BigInteger marketKey) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.adjournMarket(marketKey).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+    public TransactionReceipt retrieveMarket(BigInteger marketKey) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.retrieveTokens(marketKey).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+    public TransactionReceipt receiveToken(Wallet wallet,BigInteger marketKey,BigInteger bettingKey) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.receiveToken(marketKey,bettingKey).encodeFunctionCall();
+        return walletApiService.contractCall(wallet,marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+    public TransactionReceipt lockWallet(List<String> addressList) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.lock(addressList).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+    public TransactionReceipt unLockWallet(List<String> addressList) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamMarket.unlock(addressList).encodeFunctionCall();
+        return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
     }
 }

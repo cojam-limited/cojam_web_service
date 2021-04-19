@@ -19,4 +19,14 @@ public class MyConfig {
     @Value("${myConfig.klaytnScpe}")
     private String klaytnScpe;
 
+    @Value("${app.sdk-enclave.marketAddress}")
+    private String marketAddress;
+
+    @Value("${app.sdk-enclave.tokenAddress}")
+    private String tokenAddress;
+
+    @Value("${app.sdk-enclave.recommendAddress}")
+    private String recommendAddress;
+
+
 }

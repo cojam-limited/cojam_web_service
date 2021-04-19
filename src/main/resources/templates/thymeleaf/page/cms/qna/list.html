@@ -25,6 +25,7 @@
         <div class="table-default" id="qnaList">
             <table>
                 <colgroup>
+                    <col width="5%"/>
                     <col width="15%"/>
                     <col width="*"/>
                     <col width="7%"/>
@@ -33,17 +34,18 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <td>번호</td>
-                    <td>제목</td>
-                    <td>사용 여부</td>
-                    <td>작성자</td>
-                    <td>기능</td>
+                    <td>No.</td>
+                    <td>Order No.</td>
+                    <td>Title</td>
+                    <td>use YN</td>
+                    <td>Regist user</td>
+                    <td>Function</td>
                 </tr>
                 </thead>
                 <tbody>
                 <th:block th:if="${qnaList} !=null">
-                    <tr th:each="item : ${qnaList}">
-
+                    <tr th:each="item,i : ${qnaList}">
+                        <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                         <td th:text="${item.orderNumber}"></td>
                         <td th:onclick="'window.location.href = \'' + @{/cms/qna/view(idx=${item.questionKey})} + '\''">
                             <h5 th:text="${item.question}"></h5>

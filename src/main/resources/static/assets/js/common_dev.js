@@ -320,7 +320,7 @@ function FunLoadingBarStart() {
 	loadingBarImage += " <img src='/admin/assets/image/loading.svg'/>"; //로딩 바 이미지
 	loadingBarImage += "</div>";
 	$('body').append(backGroundCover).append(loadingBarImage);
-	$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+	$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3','z-index': '999999' });
 	$('#back').show();
 	$('#loadingBar').show();
 }
@@ -346,27 +346,12 @@ function ajaxView(url,method,data,fragmentId){
 		}
 	}).done(function (fragment) {
 		$("#"+fragmentId).replaceWith(fragment);
+		if(fragmentId=='seasonInfo'){
+			$('.main-season > div > ul > li > div > h2').countUp();
+		}
 	});
 }
 
-
-$.ajaxSetup({
-	beforeSend : function(xhr)
-	{
-		xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
-		FunLoadingBarStart();
-	},
-	complete: function () {
-		FunLoadingBarEnd();
-	},
-	error : function(error){
-		if(error.status == '403'){
-			location.href = '/login';
-		}else{
-			toastr.error(error.status,error.statusText);
-		}
-	}
-});
 
 function calculateWinToken(token, myAnswerTotalToken, otherTotalToken) {
 	const currentRate = (token / myAnswerTotalToken);

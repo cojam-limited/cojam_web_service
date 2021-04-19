@@ -68,6 +68,9 @@
                         th:data-parameter2="${item.finished}"
                         th:onclick="fnMoveDetail(this.getAttribute('data-parameter1'),this.getAttribute('data-parameter2'));"
                     >
+                        <th:block th:if="${item.completed}">
+                            <div>&nbsp;</div>
+                        </th:block>
                         <h2>Total <span th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></span> CT</h2>
                         <p>
                             <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>

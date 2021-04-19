@@ -279,4 +279,21 @@ public class GroundController {
             , @AuthenticationPrincipal Account account) throws Exception {
         return questService.adjournMarket(adjournQuestKey,adjournDesc,account);
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/retrieve" , method = RequestMethod.POST)
+    public ResponseDataDTO retrieveMarket(
+            @NotNull @NotEmpty String retrieveQuestKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.retrieveMarket(retrieveQuestKey,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/adjourn/retrieve" , method = RequestMethod.POST)
+    public ResponseDataDTO adjournRetrieveMarket(
+            @NotNull @NotEmpty String retrieveQuestKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.adjournRetrieveMarket(retrieveQuestKey,account);
+    }
 }

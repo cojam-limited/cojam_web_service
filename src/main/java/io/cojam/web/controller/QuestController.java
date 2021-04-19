@@ -88,14 +88,6 @@ public class QuestController {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
         model.addAttribute("detail", questService.getQuestDetailUser(quest));
 
-        BigInteger questKeyBigInteger = new BigInteger(idx.replace(SequenceCode.TB_QUEST,""));
-
-        try {
-            contractApplicationService.getMarketInfo(questKeyBigInteger);
-            contractApplicationService.initMaster();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         return "thymeleaf/page/quest/view";
     }
 
@@ -136,6 +128,16 @@ public class QuestController {
     public String bettingTotalList(Model model,Betting betting, @AuthenticationPrincipal Account account,String idx) {
         model.addAttribute("bettingList", questService.getBettingList(betting));
         return "thymeleaf/page/quest/view :: #bettingTotalList";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/successBetting" , method = RequestMethod.POST)
+    public ResponseDataDTO successBetting(
+            @Valid String bettingKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        Betting betting = new Betting();
+        betting.setBettingKey(bettingKey);
+        return questService.successBetting(betting,account);
     }
 
 }

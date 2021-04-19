@@ -56,8 +56,8 @@
                         </td>
                         <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
                         <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
-                        <td th:text="${item.pending}?'T':'F'"></td>
-                        <td th:text="${item.hot}?'T':'F'">
+                        <td><p th:text="${item.pending}?'T':'F'" th:classappend="${item.pending}?'true':'false'"></p></td>
+                        <td><p th:text="${item.hot}?'T':'F'" th:classappend="${item.hot}?'true':'false'"></p></td>
                         </td>
                     </tr>
                 </th:block>

@@ -1376,4 +1376,105 @@
     <th:block layout:fragment="script">
     </th:block>
 </th:block>
+<th:block  th:fragment="modalRecommend">
+    <!-- 모달 - SEND CT -->
+    <div class="modal-send-ct" id="modalRecommend" style="display:none;">
+        <form name="recommendForm" method="post" action="">
+            <fieldset>
+                <legend>Recommend User</legend>
+                <div class="msc-area">
+                    <dl>
+                        <dt>Recommend User</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <span id="recommendArea">
+                    </span>
+                    <span id="recommendArea2">
+                    </span>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- 모달 - SEND CT 끝 -->
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function(){
+                $("#modalRecommend").iziModal({
+                    width : '500px',
+                    transitionin : 'comingIn',
+                    onOpening: function(modal){
+                        modal.startLoading();
+                        $.post('/user/mypage/checkRecommend', function(data) {
+                            if(data.check){
+                                const item = data.item;
+                                if(item.check){
+                                    let html="";
+                                    html+='<div id="recommendArea2">';
+                                    html+='<ul>';
+                                    html+='<li>Recommend User : <b>'+item.recommend.memberId+'</b></li>';
+                                    html+='</ul>';
+                                    html+='<p>';
+                                    html+='<a href="javascript:$(\'#modalRecommend\').iziModal(\'close\');">Close</a>';
+                                    html+='</p>';
+                                    html+='</div>';
+                                    $("#recommendArea").replaceWith(html);
+                                }else{
+                                    let html="";
+                                    html+='<div id="recommendArea2">';
+                                    html+='<ul>';
+                                    html+='<li><input name="recommendMemberId" type="text" class="w100p" placeholder="Enter recommend user id." /></li>';
+                                    html+='</ul>';
+                                    html+='<p>';
+                                    html+='<a href="javascript:fnRecommendUser();">Recommend</a>';
+                                    html+='</p>';
+                                    html+='</div>';
+                                    $("#recommendArea").replaceWith(html);
+                                }
+                                modal.stopLoading();
+                            }else{
+                                toastr.error(data.message);
+                                $("#modalRecommend").iziModal('close');
+                            }
+                        }).fail(function(response) {
+                            $("#modalRecommend").iziModal('close');
+                        });
+                    }
+                });
+            });
+
+            function fnRecommendUser(){
+
+                if($("input[name=recommendMemberId]").val()==""){
+                    toastr.warning('Please enter user id.');
+                    return;
+                }
+
+                if(confirm("Would you '"+$("input[name=recommendMemberId]").val()+"' recommend?")){
+                    $.ajax({
+                        url: "/user/mypage/recommend",
+                        type: "POST",
+                        data : $("form[name=recommendForm]").serialize(),
+                        success : function(response){
+                            if (response.check) {
+                                console.debug('response',response);
+                                toastr.success('success');
+                                let html="";
+                                html += '<ul>';
+                                html += '<li>Recommend User : <b>' + response.item.memberId + '</b></li>';
+                                html += '</ul>'
+                                html += '<p>';
+                                html += '<a href="javascript:$(\'#modalRecommend\').iziModal(\'close\');">Close</a>';
+                                html += '</p>';
+                                $("#recommendArea2").replaceWith(html);
+                            } else {
+                                toastr.error(response.message);
+
+                            }
+                        }
+                    });
+                }
+            }
+        </script>
+    </th:block>
+</th:block>
 </html>

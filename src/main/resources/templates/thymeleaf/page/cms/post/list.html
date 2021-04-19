@@ -41,6 +41,7 @@
         <div class="table-default" id="boardList">
             <table>
                 <colgroup>
+                    <col width="4%"/>
                     <col width="15%"/>
                     <col width="7%"/>
                     <col width="*"/>
@@ -49,17 +50,18 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <td>카테고리</td>
-                    <td>대표사진</td>
-                    <td>제목</td>
-                    <td>작성자</td>
-                    <td>기능</td>
+                    <td>No.</td>
+                    <td>Category Name</td>
+                    <td>Image</td>
+                    <td>Title</td>
+                    <td>Regist user</td>
+                    <td>Function</td>
                 </tr>
                 </thead>
                 <tbody>
                     <th:block th:if="${boardList} !=null">
-                        <tr th:each="item : ${boardList}">
-
+                        <tr th:each="item,i : ${boardList}">
+                            <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                             <td th:text="${item.categoryName}"></td>
                             <td th:onclick="'window.location.href = \'' + @{/cms/post/view(idx=${item.boardKey})} + '\''">
                                 <p><img th:src="@{/user/media/image(id=${item.boardFile})}" alt="" title="" /></p>
