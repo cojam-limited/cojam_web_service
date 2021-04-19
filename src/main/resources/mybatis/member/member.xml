@@ -100,6 +100,8 @@
             ,M.MEMBER_EMAIL
             ,M.MEMBER_ROLE
             ,M.CREATED_DATE_TIME
+            ,M.WALLET_LOCK
+            ,M.LOCK_TRANSACTION_ID
             ,W.WALLET_ADDRESS
         FROM TB_MEMBER M , TB_WALLET W
         WHERE M.MEMBER_KEY = W.MEMBER_KEY
@@ -143,6 +145,8 @@
             ,M.MEMBER_EMAIL
             ,M.MEMBER_ROLE
             ,M.CREATED_DATE_TIME
+            ,M.WALLET_LOCK
+            ,M.LOCK_TRANSACTION_ID
             ,W.WALLET_ADDRESS
         FROM TB_MEMBER M , TB_WALLET W
         WHERE M.MEMBER_KEY = W.MEMBER_KEY
@@ -175,7 +179,65 @@
             , MEMBER_NAME
             , MEMBER_EMAIL
             , MEMBER_PASS
+            , WALLET_LOCK
+            , LOCK_TRANSACTION_ID
         FROM TB_MEMBER
         WHERE MEMBER_KEY = #{memberKey}
     </select>
+
+    <insert id="saveRecommend" parameterType="io.cojam.web.domain.Recommend">
+        INSERT INTO TB_RECOMMEND
+        (
+            MEMBER_KEY, RECOMMEND_KEY, M_TRANSACTION_ID, R_TRANSACTION_ID
+        )
+        VALUES
+        (
+            #{memberKey}, #{recommendKey}, #{mTransactionId}, #{rTransactionId}
+        )
+    </insert>
+
+    <update id="updateRecommend" parameterType="io.cojam.web.domain.Recommend">
+        UPDATE	TB_RECOMMEND
+        <set>
+            <if test='recommendKey != null and !recommendKey.equals("")'>RECOMMEND_KEY = #{recommendKey},</if>
+            <if test='mTransactionId != null and !mTransactionId.equals("")'>M_TRANSACTION_ID = #{mTransactionId},</if>
+            <if test='rTransactionId != null and !rTransactionId.equals("")'>R_TRANSACTION_ID = #{rTransactionId},</if>
+        </set>
+        ,UPDATE_DATE_TIME = now()
+        WHERE	MEMBER_KEY = #{memberKey}
+    </update>
+
+    <select id="getRecommendCount" parameterType="string" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_RECOMMEND
+        WHERE	MEMBER_KEY = #{memberKey}
+    </select>
+
+    <select id="getMyRecommendInfo" parameterType="string" resultType="io.cojam.web.domain.Member">
+        SELECT
+           M.MEMBER_KEY
+            ,M.MEMBER_ID
+            ,M.MEMBER_NAME
+        FROM TB_RECOMMEND R
+        JOIN TB_MEMBER M
+        ON R.RECOMMEND_KEY = M.MEMBER_KEY
+        WHERE R.MEMBER_KEY = #{memberKey}
+    </select>
+
+    <update id="updateMemberLock" parameterType="hashMap">
+        UPDATE	TB_MEMBER
+        SET WALLET_LOCK = #{walletLock}
+        ,LOCK_TRANSACTION_ID = #{lockTransactionId}
+        ,UPDATED_DATE_TIME = now()
+        WHERE MEMBER_KEY IN
+        <choose>
+            <when test="memberList.size != 0">
+                <foreach collection="memberList" item="item" index="index" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </when>
+        </choose>
+    </update>
+
 </mapper>

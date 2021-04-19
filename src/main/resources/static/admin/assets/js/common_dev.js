@@ -30,7 +30,7 @@ function FunLoadingBarStart() {
 	loadingBarImage += " <img src='/admin/assets/image/loading.svg'/>"; //로딩 바 이미지
 	loadingBarImage += "</div>";
 	$('body').append(backGroundCover).append(loadingBarImage);
-	$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+	$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' ,'z-index': '999999'});
 	$('#back').show();
 	$('#loadingBar').show();
 }

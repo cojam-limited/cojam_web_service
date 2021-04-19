@@ -13,6 +13,7 @@ public class TransactionReceipt {
     private String transactionId;
     private String toAddress;
 
+
     public static TransactionReceipt ofEmpty() {
         return new TransactionReceipt(null, null);
     }

@@ -3,9 +3,12 @@ package io.cojam.web.service;
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.QuestCode;
 import io.cojam.web.constant.SequenceCode;
+import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.QuestDao;
 import io.cojam.web.domain.*;
 import io.cojam.web.domain.wallet.TransactionReceipt;
+import io.cojam.web.klaytn.dto.TransactionStatus;
+import io.cojam.web.klaytn.service.TransactionApiService;
 import io.cojam.web.service.contract.ContractApplicationService;
 import io.cojam.web.utils.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.web3j.utils.Convert;
 
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -55,6 +58,11 @@ public class QuestService {
 
     @Autowired
     MyConfig myConfig;
+
+    @Autowired
+    TransactionApiService transactionApiService;
+
+
 
     public Integer getQuestListAdminCnt(Quest quest){
         return questDao.getQuestListAdminCnt(quest);
@@ -133,7 +141,7 @@ public class QuestService {
             answer.setQuestKey(quest.getQuestKey());
             for (String title:quest.getAnswers()
                  ) {
-                answer.setQuestAnswerKey(sequenceService.getSequence(SequenceCode.TB_QUEST_ANSWER));
+                //answer.setQuestAnswerKey(sequenceService.getSequence(SequenceCode.TB_QUEST_ANSWER));
                 answer.setAnswerTitle(title);
                 questDao.saveQuestAnswer(answer);
             }
@@ -222,9 +230,12 @@ public class QuestService {
                     * contract 호출
                     *
                     */
+                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger creator_pay = Convert.toWei(String.valueOf(season.getCreatorPay()), Convert.Unit.ETHER).toBigInteger();
 
-                    TransactionReceipt transactionReceipt= new TransactionReceipt();
-                    transactionReceipt.setTransactionId(String.format("draft_%s",detail.getQuestKey()));
+                    TransactionReceipt transactionReceipt = contractApplicationService.draftMarket(questKeyBigInteger,detail.getCreatorAddress(),detail.getQuestTitle(),creator_pay,new BigInteger(season.getCreatorFee()), new BigInteger(season.getCojamFee()), new BigInteger(season.getCharityFee()), new ArrayList<>());
+
+
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                         detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_DRAFT);
                         detail.setDraftTx(transactionReceipt.getTransactionId());
@@ -353,6 +364,13 @@ public class QuestService {
             /*
              * draft transactionId  status 확인
              */
+            TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getDraftTx());
+            if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                response.setCheck(false);
+
+                response.setMessage(String.format("Draft status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                return response;
+            }
 
 
             if(!StringUtils.isBlank(detail.getAnswersTx())){
@@ -364,9 +382,49 @@ public class QuestService {
             /*
              * AnswerApprove Contract 호출
              */
+            List<QuestAnswer> list = this.getQuestAnswerList(questKey);
+            if(list==null || list.size() < 1){
+                response.setCheck(false);
+                response.setMessage("No answer data!.");
+            }
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            transactionReceipt.setTransactionId(String.format("Answer_%s",detail.getQuestKey()));
+            List<BigInteger> bigIntegerList = new ArrayList<>();
+
+            for (QuestAnswer answer:list
+                 ) {
+                BigInteger answerKey = new BigInteger(answer.getQuestAnswerKey());
+                System.out.println(String.format("answerKey : s",answerKey));
+                bigIntegerList.add(new BigInteger(answer.getQuestAnswerKey()));
+            }
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            int maxCount = 15;
+            TransactionReceipt transactionReceipt = null;
+            if (bigIntegerList.size() > maxCount) {
+                int maxIndex = (int) Math.ceil(bigIntegerList.size() / maxCount);
+
+                for (int i = 0; i < maxIndex; i++) {
+                    List<BigInteger> bigIntegerList_copy = new ArrayList<>();
+
+                    if (i > maxIndex - 1) {
+                        for (int a = 0; a < maxCount; a++) {
+                            bigIntegerList_copy.add(bigIntegerList.get((i * maxCount) + a));
+                        }
+                    } else {
+                        for (int a = 0; a < bigIntegerList.size() % maxCount; a++) {
+                            bigIntegerList_copy.add(bigIntegerList.get((i * maxCount) + a));
+                        }
+                    }
+
+                    System.out.println("BigIntegerList Copy : {}" + bigIntegerList_copy);
+                    transactionReceipt = contractApplicationService.answer(questKeyBigInteger,bigIntegerList_copy);
+                }
+            } else {
+                transactionReceipt = contractApplicationService.answer(questKeyBigInteger,bigIntegerList);
+            }
+
+
+
+
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_ANSWER);
                 detail.setAnswersTx(transactionReceipt.getTransactionId());
@@ -413,6 +471,13 @@ public class QuestService {
             /*
              * answer transactionId  status 확인
              */
+            TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getAnswersTx());
+            if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                response.setCheck(false);
+
+                response.setMessage(String.format("Answers transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                return response;
+            }
 
 
             if(!StringUtils.isBlank(detail.getApproveTx())){
@@ -424,9 +489,9 @@ public class QuestService {
             /*
              * approveMarket Contract 호출
              */
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            TransactionReceipt transactionReceipt = contractApplicationService.approveMarket(questKeyBigInteger);
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            transactionReceipt.setTransactionId(String.format("Approve_%s",detail.getQuestKey()));
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_APPROVE);
                 detail.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
@@ -534,9 +599,9 @@ public class QuestService {
             /*
              * finishMarket Contract 호출
              */
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            TransactionReceipt transactionReceipt = contractApplicationService.finishMarket(questKeyBigInteger);
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            transactionReceipt.setTransactionId(String.format("Finish_%s",detail.getQuestKey()));
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_FINISH);
                 detail.setCompleted(true);
@@ -603,6 +668,15 @@ public class QuestService {
                 return response;
             }
 
+            Member param = new Member();
+            param.setMemberKey(account.getMemberKey());
+            Member member = memberService.getMemberInfoForMemberKey(param);
+            if(member.getWalletLock()){
+                response.setCheck(false);
+                response.setMessage("Your Wallet is Lock!");
+                return response;
+            }
+
             String ballance = walletService.getWalletBalance(account.getMemberKey());
 
             if(Integer.parseInt(ballance)<Integer.parseInt(betting.getBettingCoin())){
@@ -630,9 +704,16 @@ public class QuestService {
             betting.setMemberKey(account.getMemberKey());
             questDao.saveBetting(betting);
 
-            TransactionReceipt transactionReceipt= new TransactionReceipt();
-            Timestamp timestamp = new Timestamp(System.nanoTime());
-            transactionReceipt.setTransactionId(String.format("betting_%s",timestamp.getTime()));
+            //Contract 호출
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+
+            BigInteger questAnswerKeyBigInteger = new BigInteger(answer.getQuestAnswerKey().replace(SequenceCode.TB_QUEST_ANSWER,""));
+            BigInteger amount = Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger();
+            System.out.println(amount);
+            TransactionReceipt resultApprove = contractApplicationService.approve(wallet,myConfig.getMarketAddress(),amount);
+
+
+            TransactionReceipt transactionReceipt = contractApplicationService.bet(wallet,questKeyBigInteger,questAnswerKeyBigInteger,new BigInteger(betting.getBettingKey()),amount);
 
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                 betting.setSpenderAddress(wallet.getWalletAddress());
@@ -641,6 +722,96 @@ public class QuestService {
                 answer.setTotalAmount("0");
                 questDao.updateQuestAnswer(answer);
                 questDao.updateQuestTotalAmount(detail);
+            }else{
+                throw new Exception("Betting fail");
+            }
+
+        }else {
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+
+    @Transactional
+    public ResponseDataDTO successBetting(Betting betting,Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+        if(StringUtils.isBlank(betting.getBettingKey())){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        Betting bettingDetail = questDao.getBettingDetail(betting);
+        if(bettingDetail == null){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        betting = bettingDetail;
+
+        Quest detail = questDao.getQuestDetail(betting.getQuestKey());
+        if(detail != null){
+            QuestAnswer aParam = new QuestAnswer();
+            aParam.setQuestAnswerKey(betting.getQuestAnswerKey());
+            QuestAnswer answer = questDao.getQuestAnswerDetail(aParam);
+            if(answer == null){
+                response.setCheck(false);
+                response.setMessage("No data.");
+                return response;
+            }
+
+            Wallet wallet = walletService.getWalletInfo(account.getMemberKey());
+            if(wallet == null){
+                response.setCheck(false);
+                response.setMessage("No data.");
+                return response;
+            }
+
+            if(!detail.getQuestStatus().equals(QuestCode.QUEST_STATUS_SUCCESS) && !detail.getQuestStatus().equals(QuestCode.QUEST_STATUS_ADJOURN)){
+                response.setCheck(false);
+                response.setMessage("Market is not finished.");
+                return response;
+            }
+
+            TransactionStatus transactionStatus;
+            String status;
+
+            if(!StringUtils.isBlank(betting.getReceiveAddress())){
+                response.setCheck(false);
+                response.setMessage("success betting!");
+                return response;
+            }
+
+            if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
+                transactionStatus = transactionApiService.getTransactionStatusById(detail.getAdjournTx());
+                status = transactionStatus.getStatus();
+            } else if (QuestCode.QUEST_STATUS_TYPE_SUCCESS.equals(detail.getQuestStatus())) {
+                transactionStatus = transactionApiService.getTransactionStatusById(detail.getSuccessTx());
+                status = transactionStatus.getStatus();
+            } else {
+                status = "";
+            }
+
+            if (!WalletCode.TRANSACTION_STATUS_CONFIRM.equals(status)) {
+                response.setCheck(false);
+                response.setMessage(String.format("transaction status is %s",StringUtils.isBlank(status)?"null":status));
+                return response;
+            }
+
+            //Contract 호출
+            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+
+            TransactionReceipt transactionReceipt = contractApplicationService.receiveToken(wallet,questKeyBigInteger,new BigInteger(betting.getBettingKey()));
+
+            if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
+                betting.setReceiveAddress(transactionReceipt.getTransactionId());
+                betting.setBettingStatus(QuestCode.BETTING_STATUS_SUCCESS);
+                questDao.updateBetting(betting);
             }else{
                 throw new Exception("Betting fail");
             }
@@ -818,10 +989,18 @@ public class QuestService {
                         response.setMessage("Market is not Finished!");
                     }else{
                         //finish status confirm 확인
+                        TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getFinishTx());
+                        if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                            response.setCheck(false);
+                            response.setMessage(String.format("Finish transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                            return response;
+                        }
                         //cnotract successMarket 호출
-                        TransactionReceipt transactionReceipt= new TransactionReceipt();
-                        transactionReceipt.setTransactionId(String.format("SUCCESS_%s",detail.getQuestKey()));
-                        if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
+                        BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+
+                        BigInteger questAnswerKeyBigInteger = new BigInteger(selectedAnswerKey.replace(SequenceCode.TB_QUEST_ANSWER,""));
+                        TransactionReceipt transactionReceipt= contractApplicationService.successMarket(questKeyBigInteger,questAnswerKeyBigInteger);
+                        if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null && !StringUtils.isBlank(transactionReceipt.getTransactionId())){
                             detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_SUCCESS);
                             detail.setQuestStatus(QuestCode.QUEST_STATUS_SUCCESS);
                             detail.setSuccessTx(transactionReceipt.getTransactionId());
@@ -886,11 +1065,25 @@ public class QuestService {
                 if (detail.getCompleted() == null || !detail.getCompleted()) {
                     response.setCheck(false);
                     response.setMessage("Market is not Finished!");
+                    return response;
                 }else{
                     //finish status confirm 확인
+                    TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getFinishTx());
+                    if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                        response.setCheck(false);
+                        response.setMessage(String.format("Finish transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                        return response;
+                    }
+
+                    if(!StringUtils.isBlank(detail.getAdjournTx())){
+                        response.setCheck(false);
+                        response.setMessage("It is already adjourn.");
+                        return response;
+                    }
+
                     //cnotract adjournMarket 호출
-                    TransactionReceipt transactionReceipt= new TransactionReceipt();
-                    transactionReceipt.setTransactionId(String.format("ADJOURN_%s",detail.getQuestKey()));
+                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    TransactionReceipt transactionReceipt= contractApplicationService.adjournMarket(questKeyBigInteger);
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                         detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_ADJOURN);
                         detail.setQuestStatus(QuestCode.QUEST_STATUS_ADJOURN);
@@ -920,6 +1113,173 @@ public class QuestService {
                         response.setCheck(false);
                     }
 
+                }
+
+
+            }else {
+                response.setCheck(false);
+                response.setMessage("Season is Null!");
+            }
+
+        }else{
+            response.setCheck(false);
+            response.setMessage("Parameter is wrong!");
+        }
+
+
+
+
+        return response;
+    }
+
+
+    @Transactional
+    public ResponseDataDTO retrieveMarket(String retrieveQuestKey,Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        if (!StringUtils.isBlank(retrieveQuestKey)) {
+            Quest detail = questDao.getQuestDetail(retrieveQuestKey);
+            if (detail != null) {
+                if (detail.getCompleted() == null || !detail.getCompleted()) {
+                    response.setCheck(false);
+                    response.setMessage("Market is not Finished!");
+                    return response;
+                }else{
+                    if (!StringUtils.isBlank(detail.getRetrieveTx())) {
+                        response.setCheck(false);
+                        response.setMessage("Market is already retrieve!");
+                        return response;
+                    }
+
+                    if (StringUtils.isBlank(detail.getSuccessTx())) {
+                        response.setCheck(false);
+                        response.setMessage("Market is not Success!");
+                        return response;
+                    }
+
+                    Calendar getToday = Calendar.getInstance();
+                    getToday.setTime(new Date()); //금일 날짜
+
+                    Date date = detail.getSuccessDateTime();
+                    Calendar cmpDate = Calendar.getInstance();
+                    cmpDate.setTime(date); //특정 일자
+
+                    long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+                    long diffDays = diffSec / (24*60*60); //일자수 차이
+
+
+                    System.out.println(diffDays + "일 차이");
+                    if(diffDays <= 180){
+                        response.setCheck(false);
+                        response.setMessage("Market can be retrieved later 180 days from success!");
+                        return response;
+                    }
+
+                    //success status confirm 확인
+                    TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getSuccessTx());
+
+                    if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                        response.setCheck(false);
+                        response.setMessage(String.format("Success transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                        return response;
+                    }
+                    //cnotract retrieveMarket 호출
+                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    contractApplicationService.setAccount("remainAccount");
+                    TransactionReceipt transactionReceipt= contractApplicationService.retrieveMarket(questKeyBigInteger);
+                    if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
+                        detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_RETRIEVE);
+                        detail.setRetrieveTx(transactionReceipt.getTransactionId());
+                        detail.setUpdateMemberKey(account.getMemberKey());
+                        questDao.updateQuestStatus(detail);
+                        response.setCheck(true);
+                    }else{
+                        response.setMessage("Retrieve is Fail!");
+                        response.setCheck(false);
+                    }
+                }
+
+
+            }else {
+                response.setCheck(false);
+                response.setMessage("Season is Null!");
+            }
+
+        }else{
+            response.setCheck(false);
+            response.setMessage("Parameter is wrong!");
+        }
+
+
+
+
+        return response;
+    }
+
+    @Transactional
+    public ResponseDataDTO adjournRetrieveMarket(String retrieveQuestKey,Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        if (!StringUtils.isBlank(retrieveQuestKey)) {
+            Quest detail = questDao.getQuestDetail(retrieveQuestKey);
+            if (detail != null) {
+                if (detail.getCompleted() == null || !detail.getCompleted()) {
+                    response.setCheck(false);
+                    response.setMessage("Market is not Finished!");
+                    return response;
+                }else{
+                    if (!StringUtils.isBlank(detail.getRetrieveTx())) {
+                        response.setCheck(false);
+                        response.setMessage("Market is already retrieve!");
+                        return response;
+                    }
+
+                    if (StringUtils.isBlank(detail.getAdjournTx())) {
+                        response.setCheck(false);
+                        response.setMessage("Market is not Adjourn!");
+                        return response;
+                    }
+
+                    Calendar getToday = Calendar.getInstance();
+                    getToday.setTime(new Date()); //금일 날짜
+
+                    Date date = detail.getAdjournDateTime();
+                    Calendar cmpDate = Calendar.getInstance();
+                    cmpDate.setTime(date); //특정 일자
+
+                    long diffSec = (getToday.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+                    long diffDays = diffSec / (24*60*60); //일자수 차이
+
+
+                    System.out.println(diffDays + "일 차이");
+                    if(diffDays <= 180){
+                        response.setCheck(false);
+                        response.setMessage("Market can be retrieved later 180 days from adjourn!");
+                        return response;
+                    }
+
+                    //success status confirm 확인
+                    TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(detail.getAdjournTx());
+
+                    if(transactionStatus ==null || !WalletCode.TRANSACTION_STATUS_CONFIRM.equals(transactionStatus.getStatus())){
+                        response.setCheck(false);
+                        response.setMessage(String.format("Adjourn transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
+                        return response;
+                    }
+                    //cnotract retrieveMarket 호출
+                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    contractApplicationService.setAccount("remainAccount");
+                    TransactionReceipt transactionReceipt= contractApplicationService.retrieveMarket(questKeyBigInteger);
+                    if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
+                        detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_RETRIEVE);
+                        detail.setRetrieveTx(transactionReceipt.getTransactionId());
+                        detail.setUpdateMemberKey(account.getMemberKey());
+                        questDao.updateQuestStatus(detail);
+                        response.setCheck(true);
+                    }else{
+                        response.setMessage("Retrieve is Fail!");
+                        response.setCheck(false);
+                    }
                 }
 
 

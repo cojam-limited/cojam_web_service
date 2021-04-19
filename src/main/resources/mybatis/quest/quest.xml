@@ -22,11 +22,11 @@
     <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
         INSERT INTO TB_QUEST_ANSWER
         (
-            QUEST_ANSWER_KEY, QUEST_KEY, QUEST_EXAMPLE, ANSWER_TITLE
+             QUEST_KEY, QUEST_EXAMPLE, ANSWER_TITLE
         )
         VALUES
         (
-            #{questAnswerKey}, #{questKey}, #{questExample}, #{answerTitle}
+            #{questKey}, #{questExample}, #{answerTitle}
         )
     </insert>
 
@@ -273,6 +273,11 @@
                     ,ADJOURN_TX = #{adjournTx}
                     ,QUEST_DESC = #{questDesc}
                 </when>
+                <when test='statusType.equals("RETRIEVE")'>
+                    ,RETRIEVE_DATE_TIME = now()
+                    ,RETRIEVE_TX = #{retrieveTx}
+                </when>
+
             </choose>
         </if>
         WHERE QUEST_KEY = #{questKey}
@@ -494,6 +499,13 @@
         WHERE BETTING_KEY = #{bettingKey}
     </update>
 
+    <update id="updateBettingSuccess" parameterType="io.cojam.web.domain.Betting">
+        UPDATE TB_QUEST_BETTING
+        SET BETTING_STATUS = #{bettingStatus}
+        ,RECEIVE_ADDRESS = #{receiveAddress}
+        WHERE BETTING_KEY = #{bettingKey}
+    </update>
+
 
     <update id="updateQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
         UPDATE TB_QUEST_ANSWER
@@ -558,12 +570,20 @@
             , B.MEMBER_KEY
             , B.CREATED_DATE_TIME
             , A.ANSWER_TITLE
-            , A.TOTAL_AMOUNT
+            , A.TOTAL_AMOUNT  AS ANSWER_TOTAL_AMOUNT
             , Q.QUEST_STATUS
             , Q.QUEST_TITLE
             , Q.SEASON_CATEGORY_KEY
             , Q.TOTAL_AMOUNT
             , C.CATEGORY_NAME
+            ,truncate((Q.TOTAL_AMOUNT
+                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
+                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT,2) AS magnification
+            ,truncate(((Q.TOTAL_AMOUNT
+                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
+                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
         FROM TB_QUEST_BETTING B
         JOIN TB_QUEST_ANSWER A
         ON B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY
@@ -571,6 +591,8 @@
         ON B.QUEST_KEY = Q.QUEST_KEY
         JOIN TB_SEASON_CATEGORY C
         ON Q.SEASON_CATEGORY_KEY = C.CATEGORY_KEY
+        JOIN TB_SEASON S
+        ON Q.SEASON_KEY = S.SEASON_KEY
         WHERE B.MEMBER_KEY = #{memberKey}
         ORDER BY B.BETTING_KEY DESC
         LIMIT #{startIndex}, #{pageSize}
@@ -582,5 +604,25 @@
         FROM TB_QUEST_BETTING B
         WHERE B.MEMBER_KEY = #{memberKey}
 
+    </select>
+
+
+    <select id="getBettingDetail" parameterType="io.cojam.web.domain.Betting" resultType="io.cojam.web.domain.Betting">
+        SELECT
+            B.BETTING_COIN,
+            B.BETTING_KEY,
+            B.SPENDER_ADDRESS,
+            B.TRANSACTION_ID,
+            B.BETTING_STATUS,
+            B.QUEST_KEY,
+            B.QUEST_ANSWER_KEY,
+            B.MEMBER_KEY,
+            B.RECEIVE_ADDRESS,
+            B.CREATED_DATE_TIME,
+            A.ANSWER_TITLE
+        FROM TB_QUEST_BETTING B
+        JOIN TB_QUEST_ANSWER A
+        ON B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY
+        WHERE B.BETTING_KEY = #{bettingKey}
     </select>
 </mapper>

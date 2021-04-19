@@ -3,10 +3,12 @@ package io.cojam.web.dao;
 import io.cojam.web.domain.AccountDto;
 import io.cojam.web.domain.LoginDto;
 import io.cojam.web.domain.Member;
+import io.cojam.web.domain.Recommend;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Mapper
@@ -41,4 +43,16 @@ public interface MemberDao {
     int updateMemberRole(Member member);
 
     Member getMemberInfoForMemberKey(Member member);
+
+    int saveRecommend(Recommend recommend);
+
+    int updateRecommend(Recommend recommend);
+
+    Integer getRecommendCount(String memberKey);
+
+    Member getMyRecommendInfo(String memberKey);
+
+    int updateMemberLock(Map<String ,Object> paramMap);
+
+
 }

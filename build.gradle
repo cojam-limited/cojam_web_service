@@ -68,9 +68,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // web3
-    implementation ('org.web3j:core:4.5.12') {
-        exclude group: 'org.web3j', module: 'crypto:4.5.12'
+    implementation ('org.web3j:core:4.8.4') {
+        exclude group: 'org.web3j', module: 'crypto:4.8.4'
     }
+
     //// ref: https://github.com/web3j/web3j/issues/1167
     //// https://github.com/web3j/web3j/commit/92ecdb7288df61faad106a95c6a545bf9734152c
     compile 'com.squareup.okhttp3:okhttp:4.3.1'
@@ -78,7 +79,7 @@ dependencies {
 
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
-    implementation 'com.klaytn.caver:core:1.0.2'
+    implementation 'com.klaytn.caver:core:1.4.0'
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'

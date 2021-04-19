@@ -3,16 +3,27 @@ package io.cojam.web.service;
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.SequenceCode;
+import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.MemberDao;
 import io.cojam.web.domain.*;
+import io.cojam.web.domain.wallet.Transaction;
+import io.cojam.web.domain.wallet.TransactionReceipt;
 import io.cojam.web.encoder.PasswordEncoding;
 import io.cojam.web.encoder.SHA256Util;
+import io.cojam.web.klaytn.service.RecommendApiService;
+import io.cojam.web.service.contract.ContractApplicationService;
 import io.cojam.web.utils.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.web3j.utils.Convert;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -34,6 +45,9 @@ public class MemberService {
 
     @Autowired
     MyConfig myConfig;
+
+    @Autowired
+    ContractApplicationService contractApplicationService;
 
 
     @Transactional
@@ -253,5 +267,188 @@ public class MemberService {
         responseDataDTO.setCheck(true);
         responseDataDTO.setMessage("success.");
         return responseDataDTO;
+    }
+
+    @Transactional
+    public ResponseDataDTO memberWalletLock(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        List<String> addressList = new ArrayList<>();
+        List<String> memberList = new ArrayList<>();
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+             ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            Member detail = memberDao.getMemberInfoForMemberKey(member);
+            if(detail == null){
+                responseDataDTO.setCheck(false);
+                responseDataDTO.setMessage(String.format("'%s' is no users.",memberKey));
+                return responseDataDTO;
+            }
+
+            if(detail.getWalletLock()){
+                responseDataDTO.setCheck(false);
+                responseDataDTO.setMessage(String.format("'%s' wallet is already locked.",detail.getMemberId()));
+                return responseDataDTO;
+            }
+            Wallet wallet = walletService.getWalletInfo(memberKey);
+            if(wallet!=null && !StringUtils.isBlank(wallet.getWalletAddress())){
+                addressList.add(wallet.getWalletAddress());
+                memberList.add(memberKey);
+            }
+        }
+
+        if(addressList.size() > 0 && addressList.size() == memberList.size() ){
+            TransactionReceipt transactionReceipt = contractApplicationService.lockWallet(addressList);
+            if(transactionReceipt!=null && !StringUtils.isBlank(transactionReceipt.getTransactionId())){
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("lockTransactionId",transactionReceipt.getTransactionId());
+                paramMap.put("walletLock",true);
+                paramMap.put("memberList",memberList);
+                memberDao.updateMemberLock(paramMap);
+            }
+        }
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
+
+
+    @Transactional
+    public ResponseDataDTO memberWalletUnLock(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        List<String> addressList = new ArrayList<>();
+        List<String> memberList = new ArrayList<>();
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            Member detail = memberDao.getMemberInfoForMemberKey(member);
+            if(detail == null){
+                responseDataDTO.setCheck(false);
+                responseDataDTO.setMessage(String.format("'%s' is no users.",memberKey));
+                return responseDataDTO;
+            }
+
+            if(!detail.getWalletLock()){
+                responseDataDTO.setCheck(false);
+                responseDataDTO.setMessage(String.format("'%s' wallet is already unlocked.",detail.getMemberId()));
+                return responseDataDTO;
+            }
+            Wallet wallet = walletService.getWalletInfo(memberKey);
+            if(wallet!=null && !StringUtils.isBlank(wallet.getWalletAddress())){
+                addressList.add(wallet.getWalletAddress());
+                memberList.add(memberKey);
+            }
+        }
+
+        if(addressList.size() > 0 && addressList.size() == memberList.size() ){
+            TransactionReceipt transactionReceipt = contractApplicationService.lockWallet(addressList);
+            if(transactionReceipt!=null && !StringUtils.isBlank(transactionReceipt.getTransactionId())){
+                Map<String,Object> paramMap = new HashMap<>();
+                paramMap.put("lockTransactionId",transactionReceipt.getTransactionId());
+                paramMap.put("walletLock",false);
+                paramMap.put("memberList",memberList);
+                memberDao.updateMemberLock(paramMap);
+            }
+        }
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
+
+
+
+    @Transactional
+    public ResponseDataDTO recommendMember(String recommendMemberId,Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+        int checkCount = memberDao.getRecommendCount(account.getMemberKey());
+        if(checkCount > 0){
+            response.setCheck(false);
+            response.setMessage("You already have referral information.");
+            return response;
+        }else{
+            Member param = new Member();
+            param.setMemberId(recommendMemberId);
+            Member detail = memberDao.getMemberInfo(param);
+            if(detail==null){
+                response.setCheck(false);
+                response.setMessage("This user does not exist.");
+                return response;
+            }
+            if(detail.getMemberKey().equals(account.getMemberKey())){
+                response.setCheck(false);
+                response.setMessage("You cannot recommend yourself.");
+                return response;
+            }
+
+            Recommend recommend = new Recommend();
+            recommend.setMemberKey(account.getMemberKey());
+            recommend.setRecommendKey(detail.getMemberKey());
+            memberDao.saveRecommend(recommend);
+
+            //토큰 전송
+            Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
+            Wallet rWallet = walletService.getWalletInfo(detail.getMemberKey());
+
+            if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
+                BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_M_AMOUNT, Convert.Unit.ETHER).toBigInteger();
+                Transaction transaction =walletService.sendRecommendToken(mWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_M);
+                if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
+                    recommend.setMTransactionId(transaction.getTransactionId());
+                    memberDao.updateRecommend(recommend);
+                }
+            }
+
+            if(rWallet!= null && !StringUtils.isBlank(rWallet.getWalletAddress())){
+                BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_R_AMOUNT, Convert.Unit.ETHER).toBigInteger();
+                Transaction transaction =walletService.sendRecommendToken(rWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_R);
+                if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
+                    recommend.setRTransactionId(transaction.getTransactionId());
+                    memberDao.updateRecommend(recommend);
+                }
+            }
+
+            response.setCheck(true);
+            response.setItem(detail);
+            response.setMessage("success");
+        }
+
+        return response;
+
+    }
+
+
+    public ResponseDataDTO checkRecommendMember(Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+
+        int checkCount = memberDao.getRecommendCount(account.getMemberKey());
+
+        if(checkCount > 0){
+            responseMap.put("check",true);
+            responseMap.put("recommend",memberDao.getMyRecommendInfo(account.getMemberKey()));
+        }else{
+            responseMap.put("check",false);
+
+        }
+        responseDataDTO.setItem(responseMap);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success");
+        return responseDataDTO;
+
     }
 }

@@ -30,5 +30,10 @@ public class Member extends Common{
     private String memberRole;
     private String walletAddress;
 
+    private Boolean walletLock;
+    private String lockTransactionId;
+
+
+
 
 }

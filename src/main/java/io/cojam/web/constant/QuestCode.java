@@ -18,6 +18,7 @@ public class QuestCode {
     public static final String QUEST_STATUS_TYPE_FINISH = "FINISH";
     public static final String QUEST_STATUS_TYPE_SUCCESS = "SUCCESS";
     public static final String QUEST_STATUS_TYPE_ADJOURN = "ADJOURN";
+    public static final String QUEST_STATUS_TYPE_RETRIEVE = "RETRIEVE";
 
     public static final String BETTING_STATUS_ONGOING = "ONGOING";
     public static final String BETTING_STATUS_SUCCESS = "SUCCESS";

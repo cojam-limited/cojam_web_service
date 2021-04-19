@@ -47,7 +47,7 @@
                 <tbody>
                 <th:block th:if="${popupList} !=null">
                     <tr th:each="item,i :${popupList}">
-                        <td th:text="${i.index}"></td>
+                        <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                         <td th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''">
                             <h5 th:text="${item.popupTitle}"></h5>
                         </td>

@@ -48,6 +48,9 @@ public class RestTemplateConfig {
     @Value("${app.sdk-enclave.masterWalletId}")
     private String sdkMasterWalletId;
 
+    @Value("${app.sdk-enclave.recommendWalletId}")
+    private String recommendWalletId;
+
     @Bean
     public RestTemplate defaultRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
@@ -61,6 +64,18 @@ public class RestTemplateConfig {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
         restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(
                 String.format("%s/api/v2/klay/wallets/%s", sdkEnclaveUrl, sdkMasterWalletId)));
+        restTemplate.setInterceptors(
+                Collections.singletonList(new HeaderInterceptor())
+        );
+        return restTemplate;
+    }
+
+    @Bean
+    @Qualifier("recommendWalletClient")
+    public RestTemplate recommendWalletRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+        restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(
+                String.format("%s/api/v2/klay/wallets/%s", sdkEnclaveUrl, recommendWalletId)));
         restTemplate.setInterceptors(
                 Collections.singletonList(new HeaderInterceptor())
         );

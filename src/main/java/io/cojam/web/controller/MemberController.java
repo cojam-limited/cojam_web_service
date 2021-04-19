@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +161,27 @@ public class MemberController {
         member.setMemberRole(memberRole);
         member.setMemberKey(memberKey);
         return memberService.changeMemberAuth(member,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/member/lockWallet", method= RequestMethod.POST)
+    public ResponseDataDTO lockWallet(
+            @Valid MemberLock memberLock
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.memberWalletLock(memberLock.getMemberKeys(),account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/member/unLockWallet", method= RequestMethod.POST)
+    public ResponseDataDTO unLockWallet(
+            @Valid MemberLock memberLock
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.memberWalletUnLock(memberLock.getMemberKeys(),account);
     }
 
 }

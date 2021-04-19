@@ -24,5 +24,8 @@ public class MyVoting extends Common{
     private String seasonCategoryKey;
     private String questTotalAmount;
     private String categoryName;
+    private String magnification;
+    private String magnificationCoin;
+
 
 }

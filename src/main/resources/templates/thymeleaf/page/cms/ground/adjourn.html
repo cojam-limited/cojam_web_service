@@ -9,7 +9,7 @@
         <div class="table-title">
             <h2><i class="uil uil-chat-info"></i> Adjourn Market </h2>
             <div>
-                <a href="#">Retreive</a>
+                <a href="javascript:fnQuest('R');">Retreive</a>
             </div>
         </div>
 
@@ -59,9 +59,8 @@
                         </td>
                         <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
                         <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
-                        <td th:text="${item.pending}?'T':'F'"></td>
-                        <td th:text="${item.hot}?'T':'F'">
-                        </td>
+                        <td><p th:text="${item.pending}?'T':'F'" th:classappend="${item.pending}?'true':'false'"></p></td>
+                        <td><p th:text="${item.hot}?'T':'F'" th:classappend="${item.hot}?'true':'false'"></p></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -97,6 +96,51 @@
 
             function fnSearch(){
                 fnMovePage(1);
+            }
+
+            function fnQuest(type){
+
+                if(!$('input:checkbox[name="questKeys"]').is(":checked")){
+                    toastr.warning('Please select a check box');
+                    return;
+                }
+
+                if($('input:checkbox[name="questKeys"]:checked').length> 1){
+                    toastr.warning('You can only choose one.');
+                    return;
+                }
+
+                let questKey="";
+
+                $('input:checkbox[name="questKeys"]').each(function() {
+                    if(this.checked){//checked 처리된 항목의 값
+                        questKey = this.value;
+
+                    }
+                });
+
+                const title = $("#questTitle_"+questKey).text();
+
+
+                if(type =="R"){
+                    if(confirm("will [" + title + "] be Retrieve?")){
+                        $.ajax({
+                            url: "/cms/ground/adjourn/retrieve",
+                            type: "POST",
+                            data : {
+                                "retrieveQuestKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('success');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }
             }
         </script>
     </th:block>

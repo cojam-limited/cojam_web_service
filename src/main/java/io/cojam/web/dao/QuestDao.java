@@ -50,4 +50,8 @@ public interface QuestDao {
     List<MyVoting> getMyVotingList(MyVoting myVoting);
 
     Integer getMyVotingListCnt(MyVoting myVoting);
+
+    Betting getBettingDetail(Betting betting);
+
+    int updateBettingSuccess(Betting betting);
 }

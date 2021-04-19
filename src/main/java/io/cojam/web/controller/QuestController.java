@@ -2,19 +2,23 @@ package io.cojam.web.controller;
 
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.QuestCode;
+import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.domain.*;
 import io.cojam.web.service.QuestService;
 import io.cojam.web.service.SeasonService;
+import io.cojam.web.service.contract.ContractApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.web3j.utils.Convert;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.List;
 
 @Controller
@@ -26,6 +30,9 @@ public class QuestController {
 
     @Autowired
     QuestService questService;
+
+    @Autowired
+    ContractApplicationService contractApplicationService;
 
     @GetMapping
     public String quest(Model model
@@ -80,6 +87,7 @@ public class QuestController {
         quest.setQuestKey(idx);
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
         model.addAttribute("detail", questService.getQuestDetailUser(quest));
+
         return "thymeleaf/page/quest/view";
     }
 
@@ -120,6 +128,16 @@ public class QuestController {
     public String bettingTotalList(Model model,Betting betting, @AuthenticationPrincipal Account account,String idx) {
         model.addAttribute("bettingList", questService.getBettingList(betting));
         return "thymeleaf/page/quest/view :: #bettingTotalList";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/successBetting" , method = RequestMethod.POST)
+    public ResponseDataDTO successBetting(
+            @Valid String bettingKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        Betting betting = new Betting();
+        betting.setBettingKey(bettingKey);
+        return questService.successBetting(betting,account);
     }
 
 }

@@ -48,7 +48,42 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+
+        $.ajaxSetup({
+            beforeSend : function(xhr)
+            {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+                FunLoadingBarStart();
+            },
+            complete: function () {
+                FunLoadingBarEnd();
+            },
+            error : function(error){
+                if(error.status == '403'){
+                    location.href = '/login';
+                }else{
+                    toastr.error(error.status,error.statusText);
+                }
+            }
+        });
     </script>
+    <style>
+        #back{
+            position: absolute;
+            z-index: 100;
+            background-color: #000000;
+            display:none;
+            left:0;
+            top:0;
+        }
+        #loadingBar{
+            position:absolute;
+            left:50%;
+            top: 40%;
+            display:none;
+            z-index:999999;
+        }
+    </style>
 </head>
 
 <body>

@@ -181,4 +181,26 @@ public class MyPageController {
 
         return "thymeleaf/fragment/popup :: #groundDetail";
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/checkRecommend", method= RequestMethod.POST)
+    public ResponseDataDTO checkRecommend(
+            @AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+
+        return memberService.checkRecommendMember(account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/recommend", method= RequestMethod.POST)
+    public ResponseDataDTO recommend(
+            @NotEmpty @NotNull String recommendMemberId
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+
+        return memberService.recommendMember(recommendMemberId,account);
+    }
 }

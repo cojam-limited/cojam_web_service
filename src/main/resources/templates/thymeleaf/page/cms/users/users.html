@@ -9,9 +9,8 @@
         <div class="table-title">
             <h2><i class="uil uil-user"></i> Service Users </h2>
             <div>
-                <a href="#">Approve</a>
-                <a href="#">Lockup</a>
-                <a href="#">Unlock</a>
+                <a href="javascript:fnLockWallet();">Lockup</a>
+                <a href="javascript:fnUnLockWallet();">Unlock</a>
             </div>
         </div>
         <form th:name="boardFrm" th:method="GET" action="/cms/users">
@@ -50,10 +49,12 @@
                 </tr>
                 </thead>
                 <tbody>
+                <form name="memberForm" id="memberForm">
                 <th:block th:if="${memberList} !=null">
-                    <tr th:each="item : ${memberList}">
+
+                    <tr th:each="item,i : ${memberList}">
                         <td><input type="checkbox" name="memberKeys" th:value="${item.memberKey}" class="check"></td>
-                        <td>1</td>
+                        <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
                         <td>
                             <select name="memberRole">
                                 <option
@@ -69,9 +70,10 @@
                         <td th:text="${item.memberId}"></td>
                         <td th:text="${item.memberEmail}"></td>
                         <td th:text="${item.walletAddress}"></td>
-                        <td>F</td>
+                        <td><p th:text="${item.walletLock}?'T':'F'" th:classappend="${item.walletLock}?'true':'false'"></p></td>
                     </tr>
                 </th:block>
+                </form>
                 </tbody>
             </table>
 
@@ -140,6 +142,77 @@
 
             function fnSearch(){
                 fnMovePage(1);
+            }
+
+            function fnLockWallet(){
+                if(!$('input:checkbox[name="memberKeys"]').is(":checked")){
+                    toastr.warning('Please select a check box');
+                    return;
+                }
+
+                const lists = [];
+                $("input[name='memberKeys']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+                    lists.push($(this).val());
+                });
+
+
+                const result = confirm("Would you like to change the state to 'Lock'?");
+                if (result) {
+                    $.ajax({
+                        url: "/cms/member/lockWallet",
+                        type: "POST",
+                        data: {
+                            'memberKeys':lists
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error : function(error){
+                            toastr.error(error.status,error.statusText);
+                        }
+                    });
+                }
+            }
+
+
+            function fnUnLockWallet(){
+                if(!$('input:checkbox[name="memberKeys"]').is(":checked")){
+                    toastr.warning('Please select a check box');
+                    return;
+                }
+
+                const lists = [];
+                $("input[name='memberKeys']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+                    lists.push($(this).val());
+                });
+
+
+                const result = confirm("Would you like to change the state to 'Lock'?");
+                if (result) {
+                    $.ajax({
+                        url: "/cms/member/unLockWallet",
+                        type: "POST",
+                        data: {
+                            'memberKeys':lists
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error : function(error){
+                            toastr.error(error.status,error.statusText);
+                        }
+                    });
+                }
             }
         </script>
     </th:block>
