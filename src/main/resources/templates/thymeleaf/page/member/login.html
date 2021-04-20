@@ -77,6 +77,10 @@
                     },
                     success : function(response){
                         if(response.code == "200"){
+                            const url = response.item.url;
+                            if(url.indexOf('127.0.0.1')> -1){
+                                window.location ='/user/home';
+                            }
                             window.location = response.item.url;
                         } else {
                             toastr.error(response.message);
