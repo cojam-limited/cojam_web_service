@@ -103,4 +103,9 @@
             UPDATE_DATE_TIME = now()
         WHERE	POPUP_KEY = #{popupKey}
     </update>
+
+    <delete id="deletePopupInfo" parameterType="io.cojam.web.domain.Popup" >
+        DELETE FROM	TB_POPUP
+        WHERE	POPUP_KEY = #{popupKey}
+    </delete>
 </mapper>

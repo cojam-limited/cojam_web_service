@@ -56,8 +56,8 @@
                         <td th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd')}"></td>
                         <td>
                             <ul>
-                                <li><a th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
-                                <li><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
+                                <li><a th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''"><abbr TITLE="modify"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
+                                <li><a th:href="'javascript:fnDeletePopup(\''+${item.popupKey}+'\')'"><abbr TITLE="delete"><i class="uil uil-trash-alt"></i></abbr></a></li>
                             </ul>
                         </td>
                     </tr>
@@ -82,6 +82,29 @@
                 $("input[name=page]").val(page);
                 fnGetList();
             }
+
+            function fnDeletePopup(popupKey){
+
+
+                if(confirm("Delete this popup?")){
+                    $.ajax({
+                        url: "/cms/popup/delete",
+                        type: "POST",
+                        data : {
+                            "popupKey" : popupKey
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        }
+                    });
+                }
+            }
+
         </script>
     </th:block>
 </th:block>

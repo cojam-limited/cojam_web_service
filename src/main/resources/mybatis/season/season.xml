@@ -93,4 +93,104 @@
         ON C.CATEGORY_KEY = S.SEASON_CATEGORY_KEY
         ORDER BY C.ORDER_NUMBER
     </select>
+
+    <insert id="saveSeason" parameterType="io.cojam.web.domain.SeasonInput">
+        INSERT INTO
+        TB_SEASON
+        (
+            SEASON_KEY, ALPHA_DTTM, CHARITY_FEE, COJAM_FEE, CREATED_DTTM
+            , CREATOR_FEE, CREATOR_PAY, DESCRIPTION, IS_ACTIVE, MINIMUM_PAY
+            , OMEGA_DTTM, TITLE, MAXIMUM_PAY, TRANSFER_PAY
+        )
+        VALUES
+        (
+            #{seasonKey}, #{alphaDttm}, #{charityFee}, #{cojamFee}, now()
+            , #{creatorFee}, #{creatorPay}, #{description}, #{isActive}, #{minimumPay}
+            , #{omegaDttm}, #{title}, #{maximumPay}, #{transferPay}
+        )
+    </insert>
+
+    <update id="updateSeason" parameterType="io.cojam.web.domain.SeasonInput">
+        UPDATE	TB_SEASON
+        <set>
+            <if test='alphaDttm != null and !alphaDttm.equals("")'>ALPHA_DTTM = #{alphaDttm},</if>
+            <if test='charityFee != null and !charityFee.equals("")'>CHARITY_FEE = #{charityFee},</if>
+            <if test='cojamFee != null and !cojamFee.equals("")'>COJAM_FEE = #{cojamFee},</if>
+            <if test='creatorFee != null and !creatorFee.equals("")'>CREATOR_FEE = #{creatorFee},</if>
+            <if test='creatorPay != null and !creatorPay.equals("")'>CREATOR_PAY = #{creatorPay},</if>
+            <if test='description != null and !description.equals("")'>DESCRIPTION = #{description},</if>
+            <if test='isActive != null and !isActive.equals("")'>IS_ACTIVE = #{isActive},</if>
+            <if test='minimumPay != null and !minimumPay.equals("")'>MINIMUM_PAY = #{minimumPay},</if>
+            <if test='omegaDttm != null and !omegaDttm.equals("")'>OMEGA_DTTM = #{omegaDttm},</if>
+            <if test='title != null and !title.equals("")'>TITLE = #{title},</if>
+            <if test='maximumPay != null and !maximumPay.equals("")'>MAXIMUM_PAY = #{maximumPay},</if>
+            <if test='transferPay != null and !transferPay.equals("")'>TRANSFER_PAY = #{transferPay},</if>
+        </set>
+        WHERE	SEASON_KEY = #{seasonKey}
+    </update>
+
+
+    <select id="getSeasonDetail" parameterType="String" resultType="io.cojam.web.domain.Season">
+        SELECT
+            SEASON_KEY,
+            ALPHA_DTTM,
+            DATEDIFF(omega_dttm,now()) D_DAY,
+            CHARITY_FEE,
+            COJAM_FEE,
+            CREATED_DTTM,
+            CREATOR_FEE,
+            CREATOR_PAY,
+            DESCRIPTION,
+            IS_ACTIVE,
+            MINIMUM_PAY,
+            OMEGA_DTTM,
+            TITLE,
+            MAXIMUM_PAY,
+            TRANSFER_PAY
+        FROM	TB_SEASON
+        WHERE	SEASON_KEY = #{seasonKey}
+    </select>
+
+    <insert id="saveSeasonCategoryMapping" parameterType="io.cojam.web.domain.SeasonCategory">
+        INSERT INTO TB_SEASON_CATEGORY_MAPPING
+        (
+            SEASON_KEY, CATEGORY_KEY, LIMITATION, CREATE_MEMBER_KEY, CREATE_DATE_TIME, UPDATE_MEMBER_KEY, UPDATE_DATE_TIME
+        )
+        VALUES
+        (
+            #{seasonKey}, #{categoryKey}, #{limitation}, #{createMemberKey}, now(), #{updateMemberKey}, now()
+        )
+    </insert>
+
+    <update id="updateSeasonCategoryMapping" parameterType="io.cojam.web.domain.SeasonCategory">
+        UPDATE TB_SEASON_CATEGORY_MAPPING
+        SET LIMITATION = #{limitation}
+        , UPDATE_MEMBER_KEY = #{updateMemberKey}
+        , UPDATE_DATE_TIME = now()
+        WHERE SEASON_KEY = #{seasonKey}
+        AND CATEGORY_KEY = #{categoryKey}
+    </update>
+
+    <select id="getSeasonCategoryMapping" parameterType="io.cojam.web.domain.SeasonCategory" resultType="io.cojam.web.domain.SeasonCategory">
+        SELECT
+            SEASON_KEY
+            , CATEGORY_KEY
+            , LIMITATION
+        FROM TB_SEASON_CATEGORY_MAPPING
+        WHERE SEASON_KEY = #{seasonKey}
+        AND CATEGORY_KEY = #{categoryKey}
+    </select>
+
+
+    <select id="getSeasonCategoryMappingList" parameterType="String" resultType="io.cojam.web.domain.SeasonCategory">
+        SELECT
+            C.CATEGORY_KEY
+            ,C.CATEGORY_NAME
+            ,IFNULL(M.LIMITATION,'100') AS LIMITATION
+        FROM TB_SEASON_CATEGORY C
+        LEFT OUTER JOIN TB_SEASON_CATEGORY_MAPPING M
+        ON C.CATEGORY_KEY = M.CATEGORY_KEY
+        AND M.SEASON_KEY = #{seasonKey}
+        ORDER BY C.ORDER_NUMBER
+    </select>
 </mapper>

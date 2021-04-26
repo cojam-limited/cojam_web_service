@@ -8,4 +8,5 @@ public class SequenceCode {
     public static final String TB_QUESTION = "QNA";
     public static final String TB_QUEST = "QT";
     public static final String TB_QUEST_ANSWER = "QA";
+    public static final String TB_SEASON = "SN";
 }
