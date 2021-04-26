@@ -39,7 +39,9 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         responseDataDTO.setStatus(ResponseDataStatus.SUCCESS);
 
         String prevPage = request.getSession().getAttribute("prevPage")==null || request.getSession().getAttribute("prevPage").toString().equals("/") ?"/user/home":request.getSession().getAttribute("prevPage").toString();	//이전 페이지 가져오기
-
+        if(prevPage.contains("/login")){
+            prevPage = "/user/home";
+        }
         Map<String, String> items = new HashMap<String,String>();
         items.put("url", prevPage);	// 이전 페이지 저장
         responseDataDTO.setItem(items);

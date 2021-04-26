@@ -196,12 +196,14 @@ public class MultipartFileSender {
         // For all content types, see: http://www.w3schools.com/media/media_mimeref.asp
         // To add new content types, add new mime-mapping entry in web.xml.
         if (contentType == null) {
-            contentType = "application/octet-stream";
+            contentType = "video/mp4";
         } else if (!contentType.startsWith("image")) {
             // Else, expect for images, determine content disposition. If content type is supported by
             // the browser, then set to inline, else attachment which will pop a 'save as' dialogue.
             String accept = request.getHeader("Accept");
             disposition = accept != null && HttpUtils.accepts(accept, contentType) ? "inline" : "attachment";
+        }else{
+            contentType = "video/mp4";
         }
         logger.debug("Content-Type : {}", contentType);
         // Initialize response.
