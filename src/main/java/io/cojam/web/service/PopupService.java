@@ -5,6 +5,7 @@ import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.dao.PopupDao;
 import io.cojam.web.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,6 +69,7 @@ public class PopupService {
         if(detail==null){
             responseDataDTO.setCheck(false);
             responseDataDTO.setMessage("no data.");
+            return responseDataDTO;
         }
 
 
@@ -95,4 +97,27 @@ public class PopupService {
         return responseDataDTO;
     }
 
+
+    @Transactional
+    public ResponseDataDTO deletePopup(String popupKey,Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        Popup popup = new Popup();
+        popup.setPopupKey(popupKey);
+        Popup detail = popupDao.getPopupInfo(popup);
+        if(detail==null){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("no data.");
+        }
+
+
+        fileService.deleteFileInfo(detail.getPopupFileKey());
+
+        popupDao.deletePopupInfo(popup);
+
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success");
+        responseDataDTO.setItem(popup.getPopupKey());
+        return responseDataDTO;
+    }
 }

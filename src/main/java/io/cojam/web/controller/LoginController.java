@@ -1,6 +1,5 @@
 package io.cojam.web.controller;
 
-import io.cojam.web.domain.LoginDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -9,8 +8,6 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.crypto.Cipher;
 import javax.servlet.http.HttpServletRequest;
@@ -41,40 +38,6 @@ public class LoginController {
         }
         return "thymeleaf/page/member/login";
     }
-
-    @RequestMapping(value = "/auth")
-    @ResponseBody
-    public RedirectView loginProc(LoginDto loginDto, HttpServletRequest request, RedirectAttributes redirectAttrs){
-        String message = "";
-        RedirectView redirectView = new RedirectView();
-        HttpSession session = request.getSession();
-        PrivateKey privateKey = (PrivateKey) session.getAttribute(LoginController.RSA_WEB_KEY);
-
-        // 복호화
-        try {
-            loginDto.setUserId(decryptRsa(privateKey, loginDto.getUserId()));
-            loginDto.setUserPass(decryptRsa(privateKey, loginDto.getUserPass()));
-            System.out.println("1211111");
-            // 로그인 처리
-            /*
-
-             ...
-
-             */
-            message="success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            message="fail";
-        } finally {
-            session.removeAttribute(LoginController.RSA_WEB_KEY);
-            redirectAttrs.addFlashAttribute("userId", loginDto.getUserIdText());
-            redirectAttrs.addFlashAttribute("message", message);
-        }
-
-        redirectView.setUrl("/user/login");
-        return redirectView;
-    }
-
 
     /**
      * 복호화

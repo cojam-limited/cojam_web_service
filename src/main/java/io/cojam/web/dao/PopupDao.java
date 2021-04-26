@@ -52,5 +52,7 @@ public interface PopupDao {
      */
     int updatePopupInfo(Popup popup);
 
+    int deletePopupInfo(Popup popup);
+
 
 }

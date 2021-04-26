@@ -16,7 +16,7 @@
             >
                 <div class="season-list-option">
                     <label for="season-use1"><input type="radio" name="use" value="use1" id="season-use1" th:checked="${item.isActive}">사용여부</label>
-                    <a th:href="@{/cms/season/view}" >Edit</a>
+                    <a th:href="@{/cms/season/view(idx=${item.seasonKey})}"  >Edit</a>
                 </div>
                 <div class="season-list">
                     <table>
@@ -71,7 +71,7 @@
                 </div>
             </th:block>
             <div class="season-add-btn">
-                <a th:href="@{/cms/season/regiter}">Add Season</a>
+                <a th:href="@{/cms/season/register}">Add Season</a>
             </div>
         </div> <!--.season-list-wrap -->
 

@@ -9,8 +9,7 @@
         <div class="table-title">
             <h2><i class="uil uil-file-redo-alt"></i>  Season > Add season</h2>
         </div>
-
-        <form action="">
+        <form name="seasonFrm" id="seasonFrm" method="post">
             <fielset>
                 <div class="season-form-wrap">
                     <h2>Detail of Season</h2>
@@ -22,42 +21,42 @@
                         <tr>
                             <th>Title</th>
                             <td>
-                                <input type="text" placeholder="제목을 입력해주세요.">
+                                <input type="text" name="title" placeholder="제목을 입력해주세요.">
                             </td>
                         </tr>
                         <tr>
                             <th>Description</th>
                             <td>
-                                <input type="text" placeholder="자세한 설명을 입력해주세요.">
+                                <input type="text" name="description" placeholder="자세한 설명을 입력해주세요.">
                             </td>
                         </tr>
                         <tr>
                             <th>Minimum Amount</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="minimumPay" value="0"></td>
                         </tr>
                         <tr>
                             <th>Maximum Amount</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="maximumPay" value="0"></td>
                         </tr>
                         <tr>
                             <th>COJAM Fee</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="cojamFee" value="0"></td>
                         </tr>
                         <tr>
                             <th>Creator Fee</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="creatorFee" value="0"></td>
                         </tr>
                         <tr>
                             <th>Creator Salary</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="creatorPay" value="0"></td>
                         </tr>
                         <tr>
                             <th>Transfer Minimum Pay</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="transferPay" value="0"></td>
                         </tr>
                         <tr>
                             <th>Charity Fee</th>
-                            <td><input type="number" value="0"></td>
+                            <td><input type="number" name="charityFee" value="0"></td>
                         </tr>
                         <tr>
                             <th>Category Limitaion</th>
@@ -66,40 +65,22 @@
                                     <colgroup>
                                         <col width="200px"/>
                                     </colgroup>
-                                    <tr>
-                                        <th>art</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>science</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>crowdsolving</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>competition</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>economy</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>community</th>
-                                        <td><input type="number" value="0"></td>
-                                    </tr>
+                                    <th:block th:if="${ctgrList}!=null">
+                                        <tr th:each="item : ${ctgrList}">
+                                            <th th:text="${item.categoryName}"></th>
+                                            <td><input th:name="${item.categoryKey}" type="number" value="100"></td>
+                                        </tr>
+                                    </th:block>
                                 </table>
                             </td>
                         </tr>
                         <tr>
                             <th>Alpha Date</th>
-                            <td><input name="name" type="text" class="date-icon" placeholder="Please enter a date" /></td>
+                            <td><input name="alphaDttm" type="text" class="date-icon" placeholder="Please enter a date" /></td>
                         </tr>
                         <tr>
                             <th>Omega Date</th>
-                            <td><input name="name" type="text" class="date-icon" placeholder="Please enter a date" /></td>
+                            <td><input name="omegaDttm" type="text" class="date-icon" placeholder="Please enter a date" /></td>
                         </tr>
                         </tbody>
                     </table>
@@ -107,11 +88,38 @@
             </fielset>
         </form>
         <div class="form-button">
-            <a href="#">취소</a>
-            <a href="#" style="background-color:#8950fc; color: #fff;">저장</a>
+            <a href="/cms/season">Cancel</a>
+            <a href="javascript:fnSaveSeason()" style="background-color:#8950fc; color: #fff;">Save</a>
         </div>
-
-
     </div> <!--.content -->
+    <script>
+        $(document).ready(function (){
+            $(".date-icon").datetimepicker({
+                dateFormat:'yy-mm-dd',
+                // timepicker 설정
+                timeFormat:'hh:mm:ss',
+                //controlType:'select',
+                //oneLine:true,
+            });
+        });
+
+        function fnSaveSeason(){
+            if(confirm("Do you want save season?")){
+                $.ajax({
+                    url: "/cms/season/save",
+                    type: "POST",
+                    data : $("form[name=seasonFrm]").serialize(),
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
 </th:block>
 </html>

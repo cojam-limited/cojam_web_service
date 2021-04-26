@@ -80,4 +80,13 @@ public class PopUpController {
             , @NotEmpty @NotNull @RequestParam(value = "file",required = false) MultipartFile file) {
         return popupService.updatePopup(popup,file,account);
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/popup/delete" , method = RequestMethod.POST)
+    public ResponseDataDTO delete(
+            @NotNull @NotEmpty String popupKey
+            ,@AuthenticationPrincipal Account account) {
+        return popupService.deletePopup(popupKey,account);
+    }
 }

@@ -63,7 +63,38 @@
     </div>
     <!-- 퀘스트 - 카타고리 끝 -->
 
-
+    <!-- 공지사항 -->
+    <div class="main-notice" th:disabled="${boardList} == null">
+        <div>
+            <h2>Notice & News</h2>
+            <h3>Sharing News, Issues, Histories of COJAM!</h3>
+            <ul id="noticeTop3">
+                <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
+                    th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                >
+                    <p>
+                        <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                    </p>
+                    <div>
+                        <dl>
+                            <dt>
+                                <i class="uil uil-calendar-alt"></i>&nbsp;
+                                <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
+                            </dt>
+                            <dd>
+                                <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                            <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                            </dd>
+                        </dl>
+                        <h2 th:text="${item.boardTitle}"></h2>
+                    </div>
+                </li>
+            </ul>
+            <div><a th:href="@{/user/notice}">More</a></div>
+        </div>
+    </div>
+    <!-- 공지사항 끝 -->
+    <br/><br/>
     <!-- 시즌 -->
     <div class="main-season" th:disabled="${seasonInfo} == null" id="seasonInfo">
         <div>
@@ -98,40 +129,6 @@
         </div>
     </div>
     <!-- 시즌 끝 -->
-
-
-    <!-- 공지사항 -->
-    <div class="main-notice" th:disabled="${boardList} == null">
-        <div>
-            <h2>Notice & News</h2>
-            <h3>Sharing News, Issues, Histories of COJAM!</h3>
-            <ul id="noticeTop3">
-                <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
-                    th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
-                >
-                    <p>
-                        <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
-                    </p>
-                    <div>
-                        <dl>
-                            <dt>
-                                <i class="uil uil-calendar-alt"></i>&nbsp;
-                                <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
-                            </dt>
-                            <dd>
-                                <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
-                            <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
-                            </dd>
-                        </dl>
-                        <h2 th:text="${item.boardTitle}"></h2>
-                    </div>
-                </li>
-            </ul>
-            <div><a th:href="@{/user/notice}">More</a></div>
-        </div>
-    </div>
-    <!-- 공지사항 끝 -->
-
 
     <!-- 서비스 -->
     <div class="main-service">
@@ -206,7 +203,7 @@
                         <dt><i class="xi-comment-o"></i></dt>
                         <dd>
                             <h2>The answer is.</h2>
-                            <div th:text="${item.answer}"></div>
+                            <div th:utext="${item.answer}"></div>
                         </dd>
                     </dl>
                 </div>

@@ -113,6 +113,43 @@
 
             function fnSavePopup(){
 
+                if($("input[name=popupTitle]").val() == ""){
+                    toastr.error('Please enter your popup title.');
+                    return false;
+                }
+
+                if($("input[name=popupLink]").val() == ""){
+                    toastr.error('Please enter your popup link.');
+                    return false;
+                }
+
+
+                const imgFile = $('#imgSelector').val();
+                const fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf)$/;
+                const maxSize = 10 * 1024 * 1024;
+                let fileSize;
+
+                if($('#imgSelector').val() == "") {
+                    toastr.error('Please select a file.');
+                    return;
+                }
+
+
+
+                if($('#imgSelector').val() != ""){
+                    if(imgFile != "" && imgFile != null) {
+                        fileSize = document.getElementById("imgSelector").files[0].size;
+                        if(!imgFile.match(fileForm)) {
+                            toastr.error("Only image files can be selected.");
+                            return;
+                        } else if(fileSize > maxSize) {
+                            toastr.error("Attachment size is limited to 10MB.");
+                            return;
+                        }
+                    }
+                }
+
+
 
                 const form = $('#popupForm')[0];
                 const data = new FormData(form);
