@@ -51,7 +51,7 @@
                             th:attr="data-questAnswerKey=${answer[2]},data-answerTotal=${answer[1]}"
                             th:classappend="${answer[3]=='true'}?'active':''"
                         >
-                            <div th:text="${answer[0]}"></div>
+                            <div th:text="' '+${i.count}+'. '+${answer[0]}"></div>
                             <p th:id="'answer_'+${detail.questKey}+'_'+${i.index}"></p>
                             <script>
                                 /*<![CDATA[*/
@@ -182,7 +182,8 @@
                         $(this).addClass('active');
                         const dataQuestAnswerKey = $(this).attr('data-questAnswerKey');
                         $('input[name=questAnswerKey]').val(dataQuestAnswerKey);
-                        $('#choiceBtn').text("My Choice : 1");
+                        console.debug($(this).find("div"));
+                        $('#choiceBtn').text("My Choice : "+$(this).find("div").text());
                         const contentTextInput = $('input[name=bettingCoin]').val();
                         currentAnswerTotalDetail = Number($(this).attr('data-answerTotal'));
                         otherTotalTokenDetail = Number(totalAmount) - Number($(this).attr('data-answerTotal'));
