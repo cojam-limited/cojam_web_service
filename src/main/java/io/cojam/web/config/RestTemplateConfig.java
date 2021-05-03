@@ -82,6 +82,7 @@ public class RestTemplateConfig {
         return restTemplate;
     }
 
+
     @Bean
     @Qualifier("transactionClient")
     public RestTemplate transactionClient() {

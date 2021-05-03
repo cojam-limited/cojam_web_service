@@ -461,7 +461,7 @@
                     success : function(response){
                         if(response.check){
                             toastr.success('success');
-                            fnGetList();
+                            fnMovePage(1);
                         } else {
                             toastr.error(response.message);
                         }

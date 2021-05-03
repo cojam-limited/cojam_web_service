@@ -15,6 +15,7 @@
             <h2><i class="uil uil-file-redo-alt"></i>  Season > Add season</h2>
         </div>
         <form name="seasonFrm" id="seasonFrm" method="post">
+            <input type="hidden" name="seasonKey" th:value="${detail.seasonKey}">
             <fielset>
                 <div class="season-form-wrap">
                     <h2>Detail of Season</h2>
@@ -81,11 +82,11 @@
                         </tr>
                         <tr>
                             <th>Alpha Date</th>
-                            <td><input name="alphaDttm" type="text" class="date-icon" th:value="${detail.alphaDttm}" placeholder="Please enter a date" /></td>
+                            <td><input name="alphaDttm" type="text" class="date-icon" th:value="${#dates.format(detail.alphaDttm,'yyyy-MM-dd hh:mm:ss')}" placeholder="Please enter a date" /></td>
                         </tr>
                         <tr>
                             <th>Omega Date</th>
-                            <td><input name="omegaDttm" type="text" class="date-icon" th:value="${detail.omegaDttm}" placeholder="Please enter a date" /></td>
+                            <td><input name="omegaDttm" type="text" class="date-icon" th:value="${#dates.format(detail.omegaDttm,'yyyy-MM-dd hh:mm:ss')}" placeholder="Please enter a date" /></td>
                         </tr>
                         </tbody>
                     </table>
