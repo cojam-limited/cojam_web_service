@@ -362,7 +362,7 @@
         JOIN (
             SELECT
             A.QUEST_KEY
-            ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'%',TOTAL_AMOUNT,'%',QUEST_ANSWER_KEY) SEPARATOR ',') AS ANSWERS_STR
+            ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'%',TOTAL_AMOUNT,'%',QUEST_ANSWER_KEY) SEPARATOR '^#') AS ANSWERS_STR
             FROM TB_QUEST_ANSWER A
             GROUP BY A.QUEST_KEY
         ) A
@@ -454,7 +454,7 @@
             SELECT
             A.QUEST_KEY
         ,GROUP_CONCAT(CONCAT(ANSWER_TITLE, '%', TOTAL_AMOUNT, '%', QUEST_ANSWER_KEY, '%',
-        IF(SELECTED, 'true', 'false')) SEPARATOR ',') AS ANSWERS_STR
+        IF(SELECTED, 'true', 'false')) SEPARATOR '^#') AS ANSWERS_STR
             FROM TB_QUEST_ANSWER A
             GROUP BY A.QUEST_KEY
         ) A

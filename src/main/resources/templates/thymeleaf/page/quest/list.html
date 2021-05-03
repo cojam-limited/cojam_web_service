@@ -78,7 +78,7 @@
                         <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
                         <h4 th:text="${item.questTitle}"></h4>
                         <ul>
-                            <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,',')}"
+                            <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
                                 th:with="answer=${#strings.arraySplit(subItem,'%')}"
                             >
                                 <div th:text="${answer[0]}"></div>
@@ -86,7 +86,6 @@
                                 <script>
                                     /*<![CDATA[*/
                                     currentAnswerTotal = "[[${answer[1]}]]";
-
                                     totalAmount = "[[${item.totalAmount}]]";
                                     otherTotalToken = totalAmount - currentAnswerTotal;
                                     answerId = "answer_[[${item.questKey}]]_[[${i.index}]]";
