@@ -27,7 +27,7 @@
                     <div>
                         <p><img th:src="@{/user/media/image(id=${detail.boardFile})}" width="100%" alt="" title="" /></p>
                         <br /><br />
-                        <div th:utext="${detail.boardContext}">
+                        <div th:utext="*{#strings.replace(detail.boardContext, T(System).getProperty('line.separator'), '&lt;br /&gt;')}">
                         </div>
                     </div>
                 </dt>
