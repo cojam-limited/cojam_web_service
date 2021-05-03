@@ -101,7 +101,7 @@ public class MemberService {
         memberDao.saveMemberInfo(member);
 
         //지갑 생성
-        walletService.saveWallet(member.getMemberKey());
+        walletService.saveWallet(member.getMemberKey(),member.getMemberId());
 
 
         responseDataDTO.setCheck(true);

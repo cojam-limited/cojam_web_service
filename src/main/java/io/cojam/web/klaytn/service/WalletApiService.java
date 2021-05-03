@@ -34,7 +34,7 @@ public class WalletApiService {
 
 
 
-    public Wallet createUserWallet(String memberId) {
+    public Wallet createUserWallet(String memberKey,String memberId) {
         return serviceTemplate(() -> {
             WalletDataDTO walletData = restTemplate.postForEntity(
                     "/user-wallets",
@@ -46,7 +46,7 @@ public class WalletApiService {
             return Wallet.builder()
                     .walletAddress(walletData.getAddress())
                     .walletId(walletData.getId())
-                    .memberKey(memberId)
+                    .memberKey(memberKey)
                     .walletName(walletData.getName())
                     .transactionId(walletData.getTransactionId())
                     .build();
@@ -78,6 +78,22 @@ public class WalletApiService {
                     .build();
             return restTemplate.postForEntity(
                     String.format("/user-wallets/%s/transfer", wallet.getWalletId()),
+                    sendTokenTransferRequest,
+                    TransactionReceipt.class
+            ).getBody();
+        });
+    }
+
+    public TransactionReceipt sendMasterWalletTokenTransferTransaction(String to, BigInteger amount, String ticker) {
+        return serviceTemplate(() -> {
+            SendTokenTransferRequest sendTokenTransferRequest = SendTokenTransferRequest.builder()
+                    .passphrase(sdkPassphrase)
+                    .to(to)
+                    .amount(amount)
+                    .ticker(ticker)
+                    .build();
+            return restTemplate.postForEntity(
+                    "/transfer",
                     sendTokenTransferRequest,
                     TransactionReceipt.class
             ).getBody();

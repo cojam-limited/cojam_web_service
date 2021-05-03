@@ -8,9 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import io.cojam.web.account.Account;
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.ResponseDataStatus;
 import io.cojam.web.domain.ResponseDataDTO;
+import io.cojam.web.service.JoinRewardService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
+    JoinRewardService joinRewardService;
     /**
      * 로그인이 성공하고나서 로직
      */
@@ -37,6 +42,9 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         responseDataDTO.setCode(ResponseDataCode.SUCCESS);
         responseDataDTO.setStatus(ResponseDataStatus.SUCCESS);
+        Account account = (Account) authentication.getPrincipal();
+
+        joinRewardService.joinRewardMember(account.getMemberKey());
 
         String prevPage = request.getSession().getAttribute("prevPage")==null || request.getSession().getAttribute("prevPage").toString().equals("/") ?"/user/home":request.getSession().getAttribute("prevPage").toString();	//이전 페이지 가져오기
         if(prevPage.contains("/login")){
