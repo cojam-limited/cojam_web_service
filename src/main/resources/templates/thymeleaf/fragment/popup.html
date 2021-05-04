@@ -258,7 +258,7 @@
         <div th:id="'mainPop'+${popup.popupKey}" class="main-popup" th:style="'top:'+${popup.positionX}+'px; left:'+${popup.positionY}+'px;display:none;'" >
             <div>
                 <a href="#">
-                    <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" th:width="${popup.sizeX}+'px'" th:height="${popup.sizeY}+'px'"/>
+                    <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" />
                 </a>
             </div>
             <dl>
