@@ -257,7 +257,7 @@
         <!-- 레이어팝업 -->
         <div th:id="'mainPop'+${popup.popupKey}" class="main-popup" th:style="'top:'+${popup.positionX}+'px; left:'+${popup.positionY}+'px;display:none;'" >
             <div>
-                <a href="#">
+                <a th:href="@{${popup.popupLink}}" target="_blank">
                     <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" />
                 </a>
             </div>
