@@ -81,13 +81,7 @@
 
 
             function fnGetList(){
-                $.ajax({
-                    url:"/user/notice/list",
-                    type :  "POST",
-                    data : $("form[name=boardFrm]").serialize(),
-                }).done(function (fragment) {
-                    $("#boardList").replaceWith(fragment);
-                });
+                ajaxView("/user/notice/list","POST",$("form[name=boardFrm]").serialize(),"boardList");
             }
 
             function fnMovePage(page){
