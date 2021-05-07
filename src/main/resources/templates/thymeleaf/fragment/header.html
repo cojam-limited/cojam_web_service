@@ -38,6 +38,13 @@
                             success : function(response){
                                 if(response.check){
                                     $('#myToken').html("("+response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
+                                    if($('#myWalletBalance').length > 0){
+                                        $('#myWalletBalance').html(response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                    }
+                                    if($('#mobileMyToken').length > 0){
+                                        $('#mobileMyToken').html(response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                    }
+
                                 } else {
                                     toastr.error(response.message);
                                 }
@@ -70,6 +77,7 @@
                 <a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title=""/></a>
             </dt>
             <dd sec:authorize="isAuthenticated()">
+                <a href="javascript:$('#mobileMyTokenView').show();"><i class="uil uil-wallet"></i></a>
                 <a href="/user/mypage"><i class="uil uil-user-circle"></i></a>
                 <a th:onclick="|javascript:fnLogOut()|"><i class="uil uil-sign-out-alt"></i></a>
             </dd>
@@ -78,6 +86,10 @@
                 <a href="/login"><i class="uil uil-sign-in-alt"></i></a>
             </dd>
         </dl>
+        <ul sec:authorize="isAuthenticated()" id="mobileMyTokenView">
+            <li><i class="uil uil-coins"></i> <span id="mobileMyToken"></span></li>
+            <li onclick="$('#mobileMyTokenView').hide();"><i class="uil uil-times-circle"></i></li>
+        </ul>
     </div>
     <!-- 모바일 - 상단영역 끝 -->
 
