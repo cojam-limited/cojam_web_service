@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Controller
 public class WalletController {
@@ -38,10 +40,12 @@ public class WalletController {
     @ResponseBody
     @RequestMapping(value = "/user/wallet/transfer", method= RequestMethod.POST)
     public ResponseDataDTO transfer(@AuthenticationPrincipal Account account
-            ,@Valid TokenSendRequest request
+            ,@NotNull(message = "amount 필드가 존재해야 합니다.") String amount
+            ,@NotNull(message = "to 필드가 존재해야 합니다.") @NotEmpty(message = "to 값이 존재해야 합니다.") String to
             , HttpServletResponse response) throws Exception {
-        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
-        request.setAmount(Convert.toPeb(request.getAmount().toString(), Convert.Unit.KLAY).toBigInteger());
+        TokenSendRequest request = new TokenSendRequest();
+        request.setAmount(Convert.toPeb(amount, Convert.Unit.KLAY).toBigInteger());
+        request.setTo(to);
         return walletService.sendToken(account.getMemberKey(),request);
     }
 }
