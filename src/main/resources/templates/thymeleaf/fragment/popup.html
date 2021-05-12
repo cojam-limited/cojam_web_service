@@ -404,6 +404,12 @@
                     toastr.warning('Please enter amount');
                     return;
                 }
+
+                if(!$.isNumeric( $("input[name=amount]").val() )){
+                    toastr.warning('Please enter amount');
+                    return;
+                }
+
                 if(confirm("Do you really want to send?")){
                     $.ajax({
                         url: "/user/wallet/transfer",

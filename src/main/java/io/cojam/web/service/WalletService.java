@@ -54,7 +54,7 @@ public class WalletService {
         if(wallet!=null){
             BigInteger balance = walletApiService.getBalance(wallet);
             amount =balance.toString();
-            amount = Convert.fromPeb(amount, Convert.Unit.KLAY).toBigInteger().toString();
+            amount = Convert.fromPeb(amount, Convert.Unit.KLAY).toString();
 
         }
 

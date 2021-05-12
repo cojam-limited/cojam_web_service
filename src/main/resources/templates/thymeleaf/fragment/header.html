@@ -37,12 +37,13 @@
                             },
                             success : function(response){
                                 if(response.check){
-                                    $('#myToken').html("("+response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
+                                    let amount = parseFloat(response.item);
+                                    $('#myToken').html("("+amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
                                     if($('#myWalletBalance').length > 0){
-                                        $('#myWalletBalance').html(response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                        $('#myWalletBalance').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
                                     }
                                     if($('#mobileMyToken').length > 0){
-                                        $('#mobileMyToken').html(response.item.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                        $('#mobileMyToken').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
                                     }
 
                                 } else {
