@@ -679,7 +679,7 @@ public class QuestService {
 
             String ballance = walletService.getWalletBalance(account.getMemberKey());
 
-            if(Integer.parseInt(ballance)<Integer.parseInt(betting.getBettingCoin())){
+            if(Float.parseFloat(ballance)<Float.parseFloat(betting.getBettingCoin())){
                 response.setCheck(false);
                 response.setMessage("Not enough 'CT' Charge it, please!");
                 return response;
