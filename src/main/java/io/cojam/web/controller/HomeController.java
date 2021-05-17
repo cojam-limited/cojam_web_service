@@ -4,10 +4,7 @@ package io.cojam.web.controller;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.cojam.web.domain.Popup;
 import io.cojam.web.domain.Season;
-import io.cojam.web.service.BoardService;
-import io.cojam.web.service.PopupService;
-import io.cojam.web.service.QuestionService;
-import io.cojam.web.service.SeasonService;
+import io.cojam.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.parameters.P;
@@ -30,6 +27,9 @@ public class HomeController {
 
     @Autowired
     PopupService popupService;
+
+    @Autowired
+    QuestService questService;
 
     @RequestMapping(value = "/user/home" , method = RequestMethod.GET)
     public String home(Model model) {
@@ -64,5 +64,12 @@ public class HomeController {
     public String homeCms(Model model) {
 
         return "thymeleaf/page/cms/home/index";
+    }
+
+    @RequestMapping(value = "/user/home/questInfo",method = RequestMethod.POST)
+    public String questInfo(Model model) {
+
+        model.addAttribute("questMainList",questService.getHomeQuestList(null));
+        return "thymeleaf/page/home/index :: #questMainList";
     }
 }

@@ -29,7 +29,7 @@
     <div class="mypage-info">
         <dt>
             <div><i class="uil uil-envelope-check"></i> Email : <span th:text="${member.memberEmail}"></span></div>
-            <div><i class="uil uil-wallet"></i> Wallet address : <span id="myWalletAddress" th:text="${wallet.walletAddress}"></span></div>
+            <div><i class="uil uil-wallet"></i> Wallet address : <span onclick="clipBoard('myWalletAddress')" id="myWalletAddress" th:text="${wallet.walletAddress}"></span></div>
             <div><i class="uil uil-wallet"></i> Wallet balance : <span id="myWalletBalance"></span></div>
         </dt>
         <dd>
@@ -474,6 +474,16 @@
 
         function fnRecommendOpen(){
             $("#modalRecommend").iziModal('open');
+        }
+
+        function clipBoard(elementId) {
+            var aux = document.createElement("input");
+            aux.setAttribute("value", document.getElementById(elementId).innerHTML);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            toastr.success("Copied wallet address.");
         }
     </script>
     <th:block layout:fragment="script">

@@ -1373,4 +1373,8 @@ public class QuestService {
     public Integer getMyVotingListCnt(MyVoting myVoting){
         return questDao.getMyVotingListCnt(myVoting);
     }
+
+    public List<Question> getHomeQuestList(Question question){
+        return questDao.getHomeQuestList(question);
+    }
 }
