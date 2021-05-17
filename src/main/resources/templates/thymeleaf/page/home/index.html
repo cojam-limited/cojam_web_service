@@ -22,46 +22,68 @@
         </div>
     </div>
     <!-- 비주얼영역 끝 -->
-    <!-- 퀘스트 - 카타고리 -->
-    <div class="main-quest">
+    <!-- 퀘스트 -->
+    <div class="main-notice" style="background: #F2F5FB;" th:disabled="${boardList} == null">
         <div>
-            <h2>Ongoing Vote 6</h2>
+            <h2>Popular vote</h2>
             <h3>Convergence Platform of Knowledge based on Prediction</h3>
-            <ul>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon01.svg" width="90" alt="" title="" /> </p>
-                    <h2>Art & Culture</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon02.svg" width="90" alt="" title="" /> </p>
-                    <h2>Community</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon03.svg" width="90" alt="" title="" /></p>
-                    <h2>Competition</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon04.svg" width="90" alt="" title="" /></p>
-                    <h2>Crowd Solving</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon05.svg" width="90" alt="" title="" /></p>
-                    <h2>Economy</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-                <li>
-                    <p><img src="/assets/image/content/main_quest_icon06.svg" width="90" alt="" title="" /></p>
-                    <h2>Sience</h2>
-                    <h3>Add your opinion to the new daily predictive Ground and you get COJAM Point(CP)!</h3>
-                </li>
-            </ul>
+            <div class="quest-list-columns">
+                <ul id="questMainList">
+                    <th:block th:if="${questMainList}!=null">
+                        <li th:each="item : ${questMainList}"
+                            th:data-parameter1="${item.questKey}"
+                            th:data-parameter2="${item.finished}"
+                            th:onclick="'window.location.href = \'' + @{/user/quest/view(idx=${item.questKey})} + '\''"
+                        >
+                            <th:block th:if="${item.completed}">
+                                <div>&nbsp;</div>
+                            </th:block>
+                            <h2>Total <span th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></span> CT</h2>
+                            <p>
+                                <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>
+                            </p>
+                            <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
+                            <h4 th:text="${item.questTitle}"></h4>
+                            <ul>
+                                <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
+                                    th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                                >
+                                    <div th:text="${answer[0]}"></div>
+                                    <p th:id="'answer_'+${item.questKey}+'_'+${i.index}"></p>
+                                    <h2 th:id="'answerPercent_'+${item.questKey}+'_'+${i.index}"></h2>
+                                    <script>
+                                        /*<![CDATA[*/
+                                        currentAnswerTotal = "[[${answer[1]}]]";
+                                        totalAmount = "[[${item.totalAmount}]]";
+                                        otherTotalToken = totalAmount - currentAnswerTotal;
+                                        answerId = "answer_[[${item.questKey}]]_[[${i.index}]]";
+                                        answerPercentId = "answerPercent_[[${item.questKey}]]_[[${i.index}]]";
+                                        /*]]>*/
+                                        var x = currentAnswerTotal;
+                                        var y = totalAmount;
+                                        result = x / y * 100;
+
+                                        percent = Number(result);
+
+                                        rateString = isNaN(Number(result).toFixed(2)) ? '0%' : Number(result).toFixed(2)+'% ('+currentAnswerTotal+' CT)';
+
+                                        $('#'+answerId).text(rateString);
+                                        if(totalAmount!=0){
+                                            $('#'+answerPercentId).html('<div style="width:'+percent+'%;"></div>')
+                                        }
+                                    </script>
+                                </li>
+                            </ul>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+            <div><a th:href="@{/user/quest}">More</a></div>
+            <br/>
+            <br/>
         </div>
     </div>
-    <!-- 퀘스트 - 카타고리 끝 -->
+    <!-- 공지사항 끝 -->
 
     <!-- 공지사항 -->
     <div class="main-notice" th:disabled="${boardList} == null">
@@ -142,8 +164,8 @@
                         <p>
                             <span><img src="/assets/image/content/main_service_icon01.svg" alt="" title="" /></span>
                         </p>
-                        <h2>AWS Cloud</h2>
-                        <h3>Our Service based on AWS Cloud Service for Security and Stability.</h3>
+                        <h2>Google Cloud Platform</h2>
+                        <h3>Our Service based on Google Cloud Platformfor Security and Stability.</h3>
                     </div>
                     <div>
                         <p>
@@ -163,7 +185,7 @@
                         <p>
                             <span><img src="/assets/image/content/main_service_icon04.svg" alt="" title="" /></span>
                         </p>
-                        <h2>Mobile Application</h2>
+                        <h2>Mobile Web</h2>
                         <h3>Any Where! Any Time! You can enjoy with Mobile.</h3>
                     </div>
                     <div>
@@ -178,7 +200,7 @@
                             <span><img src="/assets/image/content/main_service_icon06.svg" alt="" title="" /></span>
                         </p>
                         <h2>Realtime Service</h2>
-                        <h3>If you have any questions about the service, please feel free to contact us.</h3>
+                        <h3>All our prediction contents are fully run by Smart Contracts.</h3>
                     </div>
                 </dd>
             </dl>
@@ -214,6 +236,7 @@
     <!-- 질문답변 끝 -->
     <script th:inline="javascript">
         $(document).ready(function (){
+            fnGetQuestList();
             fnGetSeasonInfo();
             fnGetNoticeList();
             fnGetQuestionList();
@@ -231,6 +254,10 @@
 
         function fnGetQuestionList(){
             ajaxView("/user/home/question","POST",null,"questionList");
+        }
+
+        function fnGetQuestList(){
+            ajaxView("/user/home/questInfo","POST",null,"questMainList");
         }
 
         $(document).on('click','.qna_list > div',function (){

@@ -37,10 +37,18 @@
                     </th:block>
                 </p>
             </div>
+            <style>
+                .quest-view-total > h2 {margin:10px; padding:5px 0; text-align:center; font-size:18px; line-height:18px; }
+                .quest-view-total > h2 > span {font-weight:800; color:#222;}
+            </style>
             <dl>
                 <dt>
-                    <h2><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(detail.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h2>
+                    <div class="quest-view-total">
+                        <h2>Total <span th:text="${#numbers.formatInteger(detail.totalAmount,0,'COMMA')}"></span> CT</h2>
+                    </div>
                     <p th:style="'background:url(/user/media/image?id='+${detail.fileKey}+') center no-repeat; background-size:cover;'"></p>
+                    <br/>
+                    <h2><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(detail.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h2>
                     <h3 id="oddsText"></h3>
                     <h3 id="winText"></h3>
                     <ul>
@@ -53,6 +61,7 @@
                         >
                             <div th:text="' '+${i.count}+'. '+${answer[0]}"></div>
                             <p th:id="'answer_'+${detail.questKey}+'_'+${i.index}"></p>
+                            <h2 th:id="'answerPercent_'+${detail.questKey}+'_'+${i.index}"></h2>
                             <script>
                                 /*<![CDATA[*/
                                 currentAnswerTotal = "[[${answer[1]}]]";
@@ -60,11 +69,20 @@
                                 totalAmount = "[[${detail.totalAmount}]]";
                                 otherTotalToken = totalAmount - currentAnswerTotal;
                                 answerId = "answer_[[${detail.questKey}]]_[[${i.index}]]";
+                                answerPercentId = "answerPercent_[[${detail.questKey}]]_[[${i.index}]]";
                                 /*]]>*/
-                                result = calculateWinToken(parseFloat(toEther(1)), Number(currentAnswerTotal) + parseFloat(toEther(1)), otherTotalToken);
-                                rateString = isNaN(Number(result.rate).toFixed(2)) ? '-' : parseFloat(result.rate).toFixed(2);
 
-                                $('#'+answerId).text(rateString+'X');
+                                var x = currentAnswerTotal;
+                                var y = totalAmount;
+                                resultPercent = x / y * 100;
+                                percent = Number(resultPercent);
+                                //result = calculateWinToken(parseFloat(toEther(1)), Number(currentAnswerTotal) + parseFloat(toEther(1)), otherTotalToken);
+                                //rateString = isNaN(Number(result.rate).toFixed(2)) ? '-' : parseFloat(result.rate).toFixed(2);
+                                rateString = isNaN(Number(resultPercent).toFixed(2)) ? '0%' : Number(resultPercent).toFixed(2)+'% ('+currentAnswerTotal+' CT)';
+                                $('#'+answerId).text(rateString);
+                                if(totalAmount!=0){
+                                    $('#'+answerPercentId).html('<div style="width:'+percent+'%;"></div>')
+                                }
                             </script>
                         </li>
                     </ul>
@@ -216,7 +234,7 @@
                         toastr.warning('Input CT.');
                         return;
                     }
-                    if(confirm('Would you like to bet?')){
+                    if(confirm('Would you like to vote?')){
                         $.ajax({
                             url:"/user/quest/betting",
                             type :  "POST",
@@ -260,6 +278,7 @@
                     success : function(response){
                         if(response.check){
                             const bettings =response.item;
+                            console.debug(bettings);
                             fnDrawChart(bettings);
                         }
                     }

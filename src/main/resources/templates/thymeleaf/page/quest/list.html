@@ -83,16 +83,25 @@
                             >
                                 <div th:text="${answer[0]}"></div>
                                 <p th:id="'answer_'+${item.questKey}+'_'+${i.index}"></p>
+                                <h2 th:id="'answerPercent_'+${item.questKey}+'_'+${i.index}"></h2>
                                 <script>
                                     /*<![CDATA[*/
                                     currentAnswerTotal = "[[${answer[1]}]]";
                                     totalAmount = "[[${item.totalAmount}]]";
                                     otherTotalToken = totalAmount - currentAnswerTotal;
                                     answerId = "answer_[[${item.questKey}]]_[[${i.index}]]";
+                                    answerPercentId = "answerPercent_[[${item.questKey}]]_[[${i.index}]]";
+                                    var x = currentAnswerTotal;
+                                    var y = totalAmount;
+                                    result = x / y * 100;
+                                    percent = Number(result);
                                     /*]]>*/
-                                    result = calculateWinToken(parseFloat(toEther(1)), Number(currentAnswerTotal) + parseFloat(toEther(1)), otherTotalToken);
-                                    rateString = isNaN(Number(result.rate).toFixed(2)) ? '-' : Number(result.rate).toFixed(2);
-                                    $('#'+answerId).text(rateString+'X');
+                                    rateString = isNaN(Number(result).toFixed(2)) ? '0%' : Number(result).toFixed(2)+'% ('+currentAnswerTotal+' CT)';
+
+                                    $('#'+answerId).text(rateString);
+                                    if(totalAmount!=0){
+                                        $('#'+answerPercentId).html('<div style="width:'+percent+'%;"></div>')
+                                    }
                                 </script>
                             </li>
                         </ul>
