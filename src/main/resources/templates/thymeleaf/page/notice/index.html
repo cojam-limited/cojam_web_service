@@ -47,16 +47,10 @@
                         </p>
                         <div>
                             <dl>
-                                <dt th:id="'dateStr_'+${item.boardKey}">
+                                <dt>
                                     <i class="uil uil-calendar-alt"></i>&nbsp;
+                                    <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
                                 </dt>
-                                <script>
-                                    /*<![CDATA[*/
-                                    dateStrId = "dateStr_[[${item.boardKey}]]";
-                                    $("#"+dateStrId).append('&nbsp;'+changeUtcToLocal("[[${item.createDateTime}]]",'yyyy.MM.DD hh.mm(Z)'));
-                                    /*]]>*/
-                                </script>
-
                                 <dd>
                                     <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
                                 <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
