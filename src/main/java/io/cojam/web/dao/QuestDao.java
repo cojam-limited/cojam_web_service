@@ -38,6 +38,8 @@ public interface QuestDao {
 
     List<Betting> getBettingList(Betting betting);
 
+    List<Betting> getBettingChartList(Betting betting);
+
     int updateBetting(Betting betting);
 
     int updateQuestAnswer(QuestAnswer answer);

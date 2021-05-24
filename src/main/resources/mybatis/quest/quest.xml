@@ -13,7 +13,7 @@
         )
         VALUES
         (
-            #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endDateTime}, #{questTitle},
+            #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endUtcDateTime}, #{questTitle},
             #{completed}, #{creatorAddress}, #{questDesc}, #{hot}, #{pending},
             #{questStatus}, #{memberKey}, #{seasonKey}, #{answersTx}, #{snsUrl},
             #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}
@@ -693,5 +693,18 @@
         AND FINISH_TX IS NULL
         ORDER BY Q.TOTAL_AMOUNT DESC ,Q.CREATE_DATE_TIME DESC
         LIMIT 0, 6
+    </select>
+
+
+    <select id="getBettingChartList" parameterType="io.cojam.web.domain.Betting" resultType="io.cojam.web.domain.Betting">
+        SELECT
+            QUEST_ANSWER_KEY
+            ,ANSWER_TITLE
+            ,A.TOTAL_AMOUNT
+            ,A.TOTAL_AMOUNT / Q.TOTAL_AMOUNT * 100 AS BETTING_AVG
+        FROM TB_QUEST_ANSWER A , TB_QUEST Q
+        WHERE A.QUEST_KEY = Q.QUEST_KEY
+        AND A.QUEST_KEY = #{questKey}
+        ORDER BY QUEST_ANSWER_KEY
     </select>
 </mapper>

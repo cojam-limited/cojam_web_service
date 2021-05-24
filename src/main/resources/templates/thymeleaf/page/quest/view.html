@@ -48,7 +48,13 @@
                     </div>
                     <p th:style="'background:url(/user/media/image?id='+${detail.fileKey}+') center no-repeat; background-size:cover;'"></p>
                     <br/>
-                    <h2><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(detail.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h2>
+                    <h2 id="questEndDateText"><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span></h2>
+                    <script>
+                        /*<![CDATA[*/
+                        $("#questEndDateText").append('&nbsp;'+changeUtcToLocal("[[${detail.endDateTime}]]",'YY-MM-DD hh:mm(Z)'));
+                        /*]]>*/
+
+                    </script>
                     <h3 id="oddsText"></h3>
                     <h3 id="winText"></h3>
                     <ul>
@@ -135,7 +141,7 @@
                                 <li th:each="item :${bettingList}">
                                     <div><i class="uil uil-circle"></i><span th:class="'fontColor-'+${item.rowNum}" style="color:#8950fc;" th:text="${item.answerTitle}">Yes</span></div>
                                     <div><span th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></span> CT</div>
-                                    <div th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd hh:mm')}">Jan 13, 3:12 PM</div>
+                                    <div th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd hh:mm')}"></div>
                                 </li>
                             </th:block>
                         </ul>
@@ -166,7 +172,13 @@
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Start Date</h2>
-                                <div th:text="${#dates.format(detail.approveDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'"></div>
+                                <div id="seasonStartDateText"></div>
+                                <script>
+                                    /*<![CDATA[*/
+                                    $("#seasonStartDateText").html('&nbsp;'+changeUtcToLocal("[[${detail.approveDateTime}]]",'MM DD YYYY , hh:mm (Z)'));
+                                    /*]]>*/
+
+                                </script>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Transaction</h2>
@@ -174,7 +186,13 @@
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>End Date</h2>
-                                <div th:text="${#dates.format(detail.endDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'">January 30 2021, PM 11:59 (UTC+0)</div>
+                                <div id="seasonEndDateText"></div>
+                                <script>
+                                    /*<![CDATA[*/
+                                    $("#seasonEndDateText").html('&nbsp;'+changeUtcToLocal("[[${detail.endDateTime}]]",'MM DD YYYY , hh:mm (Z)'));
+                                    /*]]>*/
+
+                                </script>
                             </li>
                         </ul>
                     </div>

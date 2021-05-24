@@ -15,8 +15,8 @@
                 <legend>로그인</legend>
                 <h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
                 <div>
-                    <a href="/user/login" class="active">Sing In</a>
-                    <a href="/user/join">Sing up</a>
+                    <a href="/user/login" class="active">Sign In</a>
+                    <a href="/user/join">Sign up</a>
                 </div>
                 <ul>
                     <li>
@@ -42,7 +42,7 @@
     </div>
     <!-- index.html 고유 스크립트 추가 -->
     <th:block layout:fragment="script">
-
+        <script th:src="@{/assets/js/jquery.cookie.js}"></script>
         <script>
             $(document).ready(function() {
                 $("input").keydown(function(key) {
@@ -84,7 +84,12 @@
                             }
                             window.location = response.item.url;
                         } else {
-                            toastr.error(response.message);
+                            if(response.code == "998"){
+                                $.cookie("a4", response.item, {expires : 1});
+                                location.href ='/user/join/completed';
+                            }else {
+                                toastr.error(response.message);
+                            }
                         }
                     }
                 });

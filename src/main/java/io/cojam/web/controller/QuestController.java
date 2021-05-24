@@ -118,7 +118,7 @@ public class QuestController {
         response.setCheck(true);
         Betting betting = new Betting();
         betting.setQuestKey(questKey);
-        response.setItem(questService.getBettingList(betting));
+        response.setItem(questService.getBettingChartList(betting));
         return response;
     }
 

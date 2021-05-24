@@ -35,6 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         account.setMemberAddress(memberInfo.getMemberAddress());
         account.setMemberPhoneNumber(memberInfo.getMemberPhoneNumber());
         account.setMemberRole(memberInfo.getMemberRole());
+        account.setCertification(memberInfo.getCertification());
         return new UserAccount(account);
     }
 

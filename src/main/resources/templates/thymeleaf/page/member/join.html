@@ -13,11 +13,11 @@
     <div>
         <form name="joinForm" method="post" action="#">
             <fieldset>
-                <legend>Sing up</legend>
+                <legend>Sign up</legend>
                 <h2><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></h2>
                 <div>
-                    <a href="/login">Sing In</a>
-                    <a href="/user/join" class="active">Sing up</a>
+                    <a href="/login">Sign In</a>
+                    <a href="/user/join" class="active">Sign up</a>
                 </div>
                 <ul>
                     <li>
@@ -92,6 +92,7 @@
     </div>
 </div>
 <th:block layout:fragment="script">
+    <script th:src="@{/assets/js/jquery.cookie.js}"></script>
     <script>
         $(document).on("click",'#AgreeAllChk',function(e){
             if($(this).is(":checked")){
@@ -163,6 +164,7 @@
                 data : $('form[name=joinForm]').serialize(),
                 success : function(response){
                     if(response.check){
+                        $.cookie("a4", response.item, {expires : 1});
                         location.href ='/user/join/completed';
                     } else {
                         toastr.error(response.message);

@@ -20,4 +20,5 @@ public class Account implements Serializable {
     private String memberPhoneNumber;
     private String memberPassword;
     private String memberRole;
+    private Boolean certification;
 }
