@@ -12,7 +12,8 @@ mybatis:
     map-underscore-to-camel-case: true
 server:
   port: 8090
-
+myConfig:
+  joinParameterKey: 'AEa#&9$+VV.HNUTz'
 #local 환경
 ---
 spring:

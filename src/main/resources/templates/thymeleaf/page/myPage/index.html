@@ -374,7 +374,13 @@
                         <li th:id="'spenderAddress'+${item.transactionKey}"><span>Spender Address : </span><th:block th:text="${item.spenderAddress}"></th:block><th:block th:if="${item.spenderAddress == wallet.walletAddress}">(<th:block th:text="${member.memberId}"></th:block>)</th:block><th:block th:unless="${item.spenderAddress == wallet.walletAddress}"><th:block th:if="${item.memberId}!=null" th:text="'('+${item.memberId}+')'"></th:block></th:block></li>
                         <li th:id="'recipientAddress'+${item.transactionKey}"><span>Recipient Address : </span><th:block th:text="${item.recipientAddress}"></th:block><th:block th:if="${item.recipientAddress == wallet.walletAddress}">(<th:block th:text="${member.memberId}"></th:block>)</th:block><th:block th:unless="${item.recipientAddress == wallet.walletAddress}"><th:block th:if="${item.memberId}!=null" th:text="'('+${item.memberId}+')'"></th:block></th:block></li>
                         <li th:id="'amount'+${item.transactionKey}"><span>CT Amount : </span><th:block th:if="${item.spenderAddress==wallet.walletAddress}">-</th:block><th:block th:text="${#numbers.formatDecimal(item.amount,0,'COMMA',2,'POINT')}"></th:block> CT</li>
-                        <li th:id="'createDateTimeStr'+${item.transactionKey}"><span>Created DTTM : </span><th:block th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd(HH:mm)')}"></th:block></li>
+                        <li th:id="'createDateTimeStr'+${item.transactionKey}"><span>Created DTTM : </span></li>
+                        <script>
+                            /*<![CDATA[*/
+                            createDateTimeStrId = "createDateTimeStr[[${item.transactionKey}]]"
+                            $("#"+createDateTimeStrId).append('&nbsp;'+changeUtcToLocal("[[${item.createdDateTime}]]",'yyyy.MM.DD(HH:mm)(Z)'));
+                            /*]]>*/
+                        </script>
                         <input type="hidden" th:id="'transactionId'+${item.transactionKey}" th:value="${item.transactionId}"/>
                     </ul>
                 </th:block>

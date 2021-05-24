@@ -12,14 +12,21 @@ import io.cojam.web.encoder.PasswordEncoding;
 import io.cojam.web.encoder.SHA256Util;
 import io.cojam.web.klaytn.service.RecommendApiService;
 import io.cojam.web.service.contract.ContractApplicationService;
+import io.cojam.web.utils.AES256Util;
 import io.cojam.web.utils.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.web3j.utils.Convert;
+import sun.security.krb5.internal.crypto.Aes256;
+import sun.security.krb5.internal.crypto.Aes256Sha2;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,8 +107,40 @@ public class MemberService {
         //멤버 정보 저장
         memberDao.saveMemberInfo(member);
 
+
+        try {
+            AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
+            responseDataDTO.setItem(aes256Util.encrypt(member.getMemberKey()));
+            //회원 가입 인증 이메일 전송
+            //fpNumber 생성
+            String fpNumber = CommonUtils.getAuthCode(13);
+
+            member.setFpNumber(fpNumber);
+
+            String parameter = String.format("%s**%s**%s",member.getMemberKey(),member.getMemberEmail(),fpNumber);
+
+            //parameter 암호화
+            parameter = aes256Util.encrypt(parameter);
+
+
+
+            //이메일 전송
+            Mail mail = new Mail();
+            String message = "Join Confirm (Link) : ";
+            message+=myConfig.getHostUrl()+"/user/join/confirm?";
+            message+="a7="+parameter;
+            mail.setAddress(member.getMemberEmail());
+            mail.setMessage(message);
+            mail.setTitle("Link of Join confirm.");
+            mailService.mailSend(mail);
+            memberDao.saveMemberJoinCertification(member);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         //지갑 생성
-        walletService.saveWallet(member.getMemberKey(),member.getMemberId());
+        //walletService.saveWallet(member.getMemberKey(),member.getMemberId());
 
 
         responseDataDTO.setCheck(true);
@@ -450,5 +489,121 @@ public class MemberService {
         responseDataDTO.setMessage("success");
         return responseDataDTO;
 
+    }
+
+    @Transactional
+    public ResponseDataDTO joinConfirmMember(String memberKey,String memberEmail,String fpNumber){
+
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+        Member member = new Member();
+        member.setMemberKey(memberKey);
+        member.setMemberEmail(memberEmail);
+        member.setFpNumber(fpNumber);
+        Member detail =memberDao.getMemberInfoForMemberKey(member);
+        if(detail == null || detail.getCertification()){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        Member memberCertification = memberDao.getMemberJoinCertification(member);
+        if(memberCertification == null
+                || !memberEmail.equals(memberCertification.getMemberEmail())
+                || !fpNumber.equals(memberCertification.getFpNumber())
+        ){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        ZonedDateTime utcDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
+
+
+        // ZonedDateTime => Timestamp 변환
+        Timestamp nowTimestamp = Timestamp.valueOf(utcDateTime.toLocalDateTime());
+
+        long lifetime = nowTimestamp.getTime() - memberCertification.getCreatedDateTime().getTime();
+        long seconds = lifetime / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if(hours > 6){
+            response.setMessage("Your authentication information has expired.");
+            response.setCheck(false);
+            return response;
+        }
+
+        memberDao.removeMemberJoinCertification(member);
+        memberDao.updateMemberJoinCertification(member);
+
+        Wallet wallet = walletService.getWalletInfo(memberKey);
+
+        if(wallet == null){
+            walletService.saveWallet(detail.getMemberKey(),detail.getMemberId());
+        }
+
+        response.setItem(responseMap);
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+
+    @Transactional
+    public ResponseDataDTO resendEMail(String memberKey){
+
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+        Member member = new Member();
+        member.setMemberKey(memberKey);
+        Member detail =memberDao.getMemberInfoForMemberKey(member);
+        if(detail == null || detail.getCertification()){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        if(detail.getCertification()){
+            response.setMessage("Email verification is complete.");
+            response.setCheck(false);
+            return response;
+        }
+
+        try {
+            AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
+            //회원 가입 인증 이메일 전송
+            //fpNumber 생성
+            String fpNumber = CommonUtils.getAuthCode(13);
+
+            detail.setFpNumber(fpNumber);
+
+            String parameter = String.format("%s**%s**%s",detail.getMemberKey(),detail.getMemberEmail(),fpNumber);
+
+            //parameter 암호화
+            parameter = aes256Util.encrypt(parameter);
+
+
+
+            //이메일 전송
+            Mail mail = new Mail();
+            String message = "Join Confirm (Link) : ";
+            message+=myConfig.getHostUrl()+"/user/join/confirm?";
+            message+="a7="+parameter;
+            mail.setAddress(detail.getMemberEmail());
+            mail.setMessage(message);
+            mail.setTitle("Link of Join confirm.");
+            mailService.mailSend(mail);
+            memberDao.saveMemberJoinCertification(detail);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        response.setItem(responseMap);
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
     }
 }

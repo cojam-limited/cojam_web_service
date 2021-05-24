@@ -23,7 +23,12 @@
             <dl>
                 <dt>
                     <h2><span th:text="'['+${detail.categoryName}+']'"></span> <th:block th:text="${detail.boardTitle}"></th:block></h2>
-                    <h3><i class="uil uil-calendar-alt"></i> <th:block th:text="${#dates.format(detail.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block></h3>
+                    <h3 id="noticeCreateDateTimeText"><i class="uil uil-calendar-alt"></i> </h3>
+                    <script>
+                        /*<![CDATA[*/
+                        $("#noticeCreateDateTimeText").append('&nbsp;'+changeUtcToLocal("[[${detail.createDateTime}]]",'yyyy.MM.DD hh.mm(Z)'));
+                        /*]]>*/
+                    </script>
                     <div>
                         <p><img th:src="@{/user/media/image(id=${detail.boardFile})}" width="100%" alt="" title="" /></p>
                         <br /><br />

@@ -27,5 +27,5 @@ public class Betting {
     private String answerTitle;
     private int rowNum;
     private Timestamp createdDateTime;
-
+    private String bettingAvg;
 }

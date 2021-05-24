@@ -28,5 +28,8 @@ public class MyConfig {
     @Value("${app.sdk-enclave.recommendAddress}")
     private String recommendAddress;
 
+    @Value("${myConfig.joinParameterKey}")
+    private String joinParameterKey;
+
 
 }

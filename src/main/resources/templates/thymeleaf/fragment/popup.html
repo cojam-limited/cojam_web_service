@@ -4,6 +4,7 @@
 <th:block  th:fragment="modalQuestAdd(${seasonCategoryList})">
     <div th:class="modal-quest-add" th:id="modalQuestAdd" style="display: none;">
         <form name="questForm" id="questForm" method="post" action="">
+            <input type="hidden" name="endUtcDateTime" id="endUtcDateTime" value="">
             <fieldset>
                 <legend>등록</legend>
                 <div class="mqa-area">
@@ -21,7 +22,7 @@
                                         th:value="${item.categoryKey}" th:text="${item.categoryName}"></option>
                             </select>
                         </li>
-                        <li><input name="endDateTime" type="text" id="endDateTime" class="w100p" placeholder="Please enter a date" /></li>
+                        <li><input name="endDateTime" type="text" id="endDateTime" class="w100p" placeholder="Please enter a date" value="1111111"/></li>
                         <li>
                             <div class="input-file">
                                 <label>
@@ -64,13 +65,23 @@
             $('#modalQuestAdd').iziModal({width : '500px'});
             // 날짜 - 퀘스트 등록 //
             $("#endDateTime").datetimepicker({
-                dateFormat:'yy-mm-dd',
                 // timepicker 설정
-                timeFormat:'hh:mm:ss',
+
+
                 //controlType:'select',
                 //oneLine:true,
+                dateFormat:'yy-mm-dd',
+                changeMonth:true,
+                changeYear:true,
+                showMonthAfterYear:true,
+
+                // timepicker 설정
+                timeFormat:'HH:mm:00',
+                minDate:0
             });
-            $('#endDateTime').val($.datepicker.formatDate('yy-mm-dd 12:00:00', new Date()));
+            //$('#endDateTime').datetimepicker('setTime', new Date());
+
+
         });
 
         $(document).on('click','.mqa-content1 > li > a',function (e){
@@ -153,7 +164,11 @@
                 }
             }
 
-
+            if($('#endDateTime').val() == ""){
+                toastr.error('Please select end datetime.');
+                return;
+            }
+            $('#endUtcDateTime').val(changeLocalToUtc($('#endDateTime').val(),'YYYY-MM-DD HH:mm:ss'));
 
             if(confirm("Would you like to register?")){
                 const form = $('#questForm')[0];
@@ -184,7 +199,7 @@
             $('#isFile').val('');
             $('input[name=snsUrl]').val('');
             $('#fileRoute').val('');
-            $('#endDateTime').val($.datepicker.formatDate('yy-mm-dd HH', new Date()));
+            $('#endDateTime').datetimepicker('setTime', new Date());
             const liChild = document.createElement('li');
             const inputChild = document.createElement('input');
 

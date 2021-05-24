@@ -13,4 +13,5 @@ public class AccountDto{
     private String memberPhoneNumber;
     private String memberPassword;
     private String memberRole;
+    private Boolean certification;
 }
