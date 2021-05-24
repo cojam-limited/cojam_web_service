@@ -56,7 +56,7 @@ public class MemberController {
 
     @RequestMapping(value = "/user/join/joinConfirm", method= RequestMethod.GET)
     public String joinConfirm() {
-        return "thymeleaf/page/member/joinCompleted";
+        return "thymeleaf/page/member/joinConfirm";
     }
 
     @RequestMapping(value = "/user/join/confirm", method= RequestMethod.GET)

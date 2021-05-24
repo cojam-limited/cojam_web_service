@@ -75,14 +75,7 @@
                         <p>
                             <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>
                         </p>
-                        <h3 th:id="'dateStr_'+${item.questKey}"><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp</h3>
-                        <script>
-                            /*<![CDATA[*/
-                            dateStrId = "dateStr_[[${item.questKey}]]";
-                            $("#"+dateStrId).append('&nbsp;'+changeUtcToLocal("[[${item.endDateTime}]]",'YY-MM-DD hh:mm(Z)'));
-                            /*]]>*/
-                        </script>
-
+                        <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
                         <h4 th:text="${item.questTitle}"></h4>
                         <ul>
                             <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
