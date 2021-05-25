@@ -1,9 +1,6 @@
 package io.cojam.web.dao;
 
-import io.cojam.web.domain.Betting;
-import io.cojam.web.domain.MyVoting;
-import io.cojam.web.domain.Quest;
-import io.cojam.web.domain.QuestAnswer;
+import io.cojam.web.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +38,8 @@ public interface QuestDao {
 
     List<Betting> getBettingList(Betting betting);
 
+    List<Betting> getBettingChartList(Betting betting);
+
     int updateBetting(Betting betting);
 
     int updateQuestAnswer(QuestAnswer answer);
@@ -54,4 +53,6 @@ public interface QuestDao {
     Betting getBettingDetail(Betting betting);
 
     int updateBettingSuccess(Betting betting);
+
+    List<Question> getHomeQuestList(Question question);
 }

@@ -94,6 +94,10 @@ public class QuestService {
             responseDataDTO.setMessage("You do not have a wallet.");
             return responseDataDTO;
         }
+
+
+
+
         quest.setCreatorAddress(wallet.getWalletAddress());
         quest.setMemberKey(account.getMemberKey());
         //퀘스크  시퀀스 채번
@@ -134,6 +138,7 @@ public class QuestService {
         quest.setCompleted(false);
         quest.setHot(false);
         quest.setPending(false);
+        //quest.setEndDateTime(Timestamp.valueOf(quest.getEndUtcDateTime()));
         quest.setQuestStatus(QuestCode.QUEST_STATUS_ONGOING);
         questDao.saveQuest(quest);
         if(quest.getAnswers() != null){
@@ -847,6 +852,10 @@ public class QuestService {
         return questDao.getBettingList(betting);
     }
 
+    public List<Betting> getBettingChartList(Betting betting){
+        return questDao.getBettingChartList(betting);
+    }
+
     public ResponseDataDTO getSuccessInfo(String selectedQuestKey,String selectedAnswerKey) throws Exception {
         ResponseDataDTO response = new ResponseDataDTO();
 
@@ -1372,5 +1381,9 @@ public class QuestService {
 
     public Integer getMyVotingListCnt(MyVoting myVoting){
         return questDao.getMyVotingListCnt(myVoting);
+    }
+
+    public List<Question> getHomeQuestList(Question question){
+        return questDao.getHomeQuestList(question);
     }
 }

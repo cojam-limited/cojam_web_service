@@ -9,12 +9,44 @@
 <div layout:fragment="content" class="join-complete-area">
     <div>
         <p><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></p>
-        <h2>Membership registration is complete.<br />Welcome to the Cojam.</h2>
-        <h3><img src="/assets/image/content/member_join_complete.png" alt="" title="" /></h3>
+        <h2 style="font-size: 16px;">
+            We have sent you an e-mail.<br/>
+            Please check your e-mail and complete the verification.<br/>
+            It cannot be used unless it is authenticated.<br/><br/>
+            If you have not received the e-mail, please click the Resend button.
+        </h2>
+        <h3><img src="/assets/image/content/member_pwsearch_complete.png" alt="" title="" /></h3>
         <div>
             <a href="/user/home">Main</a>
-            <a href="/login">Login</a>
+            <a href="javascript:fnResendEmail()">Resend</a>
         </div>
     </div>
+    <script th:src="@{/assets/js/jquery.cookie.js}"></script>
+    <script>
+
+        function fnResendEmail() {
+            const a4 = $.cookie("a4");
+            if(a4==""){
+                toastr.warning('No resend E-mail.');
+                return;
+            }
+
+
+            $.ajax({
+                url:"/user/join/resend",
+                type :  "POST",
+                dataType : "json",
+                data : {"a4": a4},
+                success : function(response){
+                    if(response.check){
+                        toastr.success('Email sending is complete.');
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+
+        }
+    </script>
 </div>
 </html>

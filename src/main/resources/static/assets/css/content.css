@@ -183,14 +183,14 @@
 .main-popup dl dd {float:right; cursor:pointer;}
 
 @media all and (max-width:479px) {
-.main-popup {top:120px !important; left:50% !important; width:300px; margin-left:-150px;}
-.main-popup > div {width:300px;}
-.main-popup > div img {width:100%;}
+  .main-popup {top:120px !important; left:50% !important; width:300px; margin-left:-150px;}
+  .main-popup > div {width:300px;}
+  .main-popup > div img {width:100%;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
-.main-popup {top:120px !important; left:50% !important; width:400px; margin-left:-200px;}
-.main-popup > div {width:400px;}
-.main-popup > div img {width:100%;}
+  .main-popup {top:120px !important; left:50% !important; width:400px; margin-left:-200px;}
+  .main-popup > div {width:400px;}
+  .main-popup > div img {width:100%;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
 

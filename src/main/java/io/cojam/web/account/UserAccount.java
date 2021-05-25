@@ -15,7 +15,6 @@ public class UserAccount extends User {
 
         super(account.getMemberId(), account.getMemberPassword(),
                 getAuthorities(account));
-        //account.setMemberPassword(null);
         this.account = account;
     }
 

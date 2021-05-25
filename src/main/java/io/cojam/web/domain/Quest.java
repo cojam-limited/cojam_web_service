@@ -23,6 +23,8 @@ public class Quest extends Common{
     @NotEmpty @NotNull
     private Timestamp endDateTime;
     @NotEmpty @NotNull
+    private String endUtcDateTime;
+    @NotEmpty @NotNull
     private String questTitle;
     private Boolean completed;
     private String creatorAddress;

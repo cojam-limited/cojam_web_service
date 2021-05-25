@@ -1,68 +1,7 @@
 function fnDrawChart(bettings){
-    let i;
-    const answers = [];
 
-    const resultJSON = {};
-    for (i = 0; i < bettings.length; i++) {
-
-        const obj = bettings[i]; //배팅 기록
-        let key = getDateString(new Date(obj.createdDateTime)); //배팅한 날짜
-        const dateArray = key.split("-");
-
-        key = dateArray[1] + "-" + dateArray[2];
-
-        if (!resultJSON[key]) {
-            resultJSON[key] = {};
-        }
-
-        var answer = obj.answerTitle;
-        answers.push(answer);
-
-        if (typeof resultJSON[key][answer] == 'undefined')
-            resultJSON[key][answer] = 1;
-        else
-            resultJSON[key][answer]++;
-
-    }
-    //
-    //베팅된 보기 전체 갯수
-    const numberOfAnswers = {};
-    answers.forEach(function (i) {
-        numberOfAnswers[i] = (numberOfAnswers[i] || 0) + 1;
-    });
-
-    //배팅 날짜
-    const monthDateArray = [];
-
-    for (const k in resultJSON) {
-        monthDateArray.push(k);
-    }
-
-    monthDateArray.sort();
 
     //배팅 보기 퍼센트 계산 및
-    const answerValues = [];
-
-    $.each(resultJSON, function (key, value) {
-        let totalCount = 0;
-
-        $.each(value, function (skey, svalue) {
-            totalCount += Number(svalue);
-
-            if (answerValues.indexOf(skey) == -1) {
-                answerValues.push(skey);
-            }
-        });
-
-        $.each(value, function (skey, svalue) {
-            value[skey + "-p"] = (Number(svalue) / totalCount) * 100;
-        });
-    });
-
-    answerValues.sort();
-    if (answerValues[0] == "No") {
-        answerValues.reverse();
-    }
 
     //차트 데이터 삽입
     const colors = ["#007bff", "#6610f2", "#e83e8c", "#fd7e14", "#ffc107"
@@ -70,41 +9,51 @@ function fnDrawChart(bettings){
         , "#868e96", "#28a745", "#17a2b8", "#ffc107", "#dc3545"
         , "#f8f9fa", "#343a40"];
     const datasets = [];
-    for (i in answerValues) {
 
-        const data = [];
-        for (const j in monthDateArray) {
+    const labelsAvg = [];
 
-            if (resultJSON[monthDateArray[j]][answerValues[i] + "-p"]) {
-                data.push(resultJSON[monthDateArray[j]][answerValues[i] + "-p"]);
-            } else {
-                data.push(0);
-            }
-        }
+    const labelsAvgData = [];
+
+    const borderColorArr = [];
+
+    const pointBackgroundColorArr = [];
+
+    let chartCount = 0;
+
+    bettings.forEach(element => {
+        labelsAvg.push(element.answerTitle);
+
 
         datasets.push(
             {
-                label: answerValues[i],
-                backgroundColor: "rgba(255,255,255,0)",
+                label: [element.answerTitle],
+                backgroundColor: colors[chartCount],
                 borderWidth: 3,
-                borderColor: colors[i],
-                pointBackgroundColor: colors[i],
-                pointBorderColor: colors[i],
+                borderColor: colors[chartCount],
+                pointBackgroundColor: colors[chartCount],
+                pointBorderColor: colors[chartCount],
                 pointBorderWidth: 1,
                 pointRadius: 3,
                 pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: colors[i],
-                data: data
+                pointHoverBorderColor: colors[chartCount],
+                data: [element.bettingAvg]
             }
         );
-    }
+        chartCount++;
+    })
+
+
+
+
+
+
 
     //line
     const ctxL = document.getElementById("chart").getContext('2d');
     const myLineChart = new Chart(ctxL, {
-        type: 'line',
+        type: 'bar',
         data: {
-            labels: monthDateArray,
+            //labels: labelsAvg,
             datasets: datasets
         },
         options: {

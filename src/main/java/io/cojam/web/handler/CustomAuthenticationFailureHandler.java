@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.ResponseDataStatus;
+import io.cojam.web.domain.MyConfig;
 import io.cojam.web.domain.ResponseDataDTO;
+import io.cojam.web.utils.AES256Util;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -22,16 +26,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 
+    @Autowired
+    MyConfig myConfig;
+
+    @SneakyThrows
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
         ObjectMapper mapper = new ObjectMapper();	//JSON 변경용
-
+        request.getParameter("memberId");
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
-        responseDataDTO.setCode(ResponseDataCode.ERROR);
-        responseDataDTO.setStatus(ResponseDataStatus.ERROR);
-        responseDataDTO.setMessage("ID or password do not match.");
+        if(exception.getMessage().contains("not Certification")){
+            String memberKey = exception.getMessage().split("TT")[1];
+            memberKey = new AES256Util(myConfig.getJoinParameterKey()).encrypt(memberKey);
+            responseDataDTO.setItem(memberKey);
+            responseDataDTO.setCode(ResponseDataCode.NOT_CERTIFICATION);
+            responseDataDTO.setStatus(ResponseDataStatus.ERROR);
+            responseDataDTO.setMessage("No Certification E-mail.");
+
+        }else{
+            responseDataDTO.setCode(ResponseDataCode.ERROR);
+            responseDataDTO.setStatus(ResponseDataStatus.ERROR);
+            responseDataDTO.setMessage("ID or password do not match.");
+        }
+
+
 
 
         response.setCharacterEncoding("UTF-8");

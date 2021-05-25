@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -32,6 +33,8 @@ public class Member extends Common{
 
     private Boolean walletLock;
     private String lockTransactionId;
+    private Boolean certification;
+    private Timestamp createdDateTime;
 
 
 

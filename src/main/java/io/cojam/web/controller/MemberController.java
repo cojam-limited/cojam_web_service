@@ -3,8 +3,10 @@ package io.cojam.web.controller;
 import io.cojam.web.account.Account;
 import io.cojam.web.domain.*;
 import io.cojam.web.service.MemberService;
+import io.cojam.web.utils.AES256Util;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,9 @@ public class MemberController {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    MyConfig myConfig;
 
     @RequestMapping(value = "/user/join", method= RequestMethod.GET)
     public String joinPage() {
@@ -43,9 +49,44 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/user/join/completed", method= RequestMethod.GET)
-    public String joinCompleted() {
+    public String joinCompleted(String a4,Model model) {
+        model.addAttribute("a4",a4);
         return "thymeleaf/page/member/joinCompleted";
     }
+
+    @RequestMapping(value = "/user/join/joinConfirm", method= RequestMethod.GET)
+    public String joinConfirm() {
+        return "thymeleaf/page/member/joinConfirm";
+    }
+
+    @RequestMapping(value = "/user/join/confirm", method= RequestMethod.GET)
+    @ResponseBody
+    public String joinConfirm(@NotNull @NotEmpty @Length(min = 10) String a7) throws Exception {
+
+        AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
+        a7 = aes256Util.decrypt(a7);
+        String memberKey = a7.split("[*][*]")[0];
+        String memberEmail = a7.split("[*][*]")[1];
+        String fpNumber = a7.split("[*][*]")[2];
+        ResponseDataDTO result = memberService.joinConfirmMember(memberKey,memberEmail,fpNumber);
+
+        if(result.getCheck()){
+            return "<script>alert('" + result.getMessage() + "'); location.replace('/user/join/joinConfirm');</script> ";
+        }else{
+            return "<script>alert('" + result.getMessage() + "'); location.replace('/user/home');</script> ";
+        }
+    }
+
+    @RequestMapping(value = "/user/join/resend", method= RequestMethod.POST)
+    @ResponseBody
+    public ResponseDataDTO resendEmail(@NotNull @NotEmpty @Length(min = 10) String a4) throws Exception {
+
+        AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
+        a4 = aes256Util.decrypt(a4);
+        return memberService.resendEMail(a4);
+    }
+
+
 
     @RequestMapping(value = "/user/idFind", method= RequestMethod.GET)
     public String idSearch() {

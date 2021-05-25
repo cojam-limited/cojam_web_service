@@ -1,7 +1,7 @@
 # 기본 환경 선택
 spring:
   profiles:
-    active: local # 기본 환경 선택
+    active: dev # 기본 환경 선택
   servlet:
     multipart:
       max-file-size: 50MB
@@ -12,7 +12,8 @@ mybatis:
     map-underscore-to-camel-case: true
 server:
   port: 8090
-
+myConfig:
+  joinParameterKey: 'AEa#&9$+VV.HNUTz'
 #local 환경
 ---
 spring:

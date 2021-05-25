@@ -10,6 +10,7 @@
             ,MEMBER_NAME
             ,MEMBER_ROLE
             ,MEMBER_PASS AS member_password
+            ,CERTIFICATION
         FROM TB_MEMBER
         WHERE MEMBER_ID = #{userId}
     </select>
@@ -181,6 +182,7 @@
             , MEMBER_PASS
             , WALLET_LOCK
             , LOCK_TRANSACTION_ID
+            , CERTIFICATION
         FROM TB_MEMBER
         WHERE MEMBER_KEY = #{memberKey}
     </select>
@@ -240,4 +242,38 @@
         </choose>
     </update>
 
+
+    <insert id="saveMemberJoinCertification" parameterType="io.cojam.web.domain.Member">
+       INSERT INTO
+            TB_JOIN_CERTIFICATION (MEMBER_EMAIL,MEMBER_KEY, FP_NUMBER)
+       VALUES
+            (#{memberEmail},#{memberKey},#{fpNumber})
+       ON DUPLICATE KEY UPDATE
+           FP_NUMBER = #{fpNumber}
+           ,MEMBER_EMAIL = #{memberEmail}
+           ,CREATED_DATE_TIME = now()
+    </insert>
+
+
+    <select id="getMemberJoinCertification" parameterType="io.cojam.web.domain.Member" resultType="io.cojam.web.domain.Member">
+       SELECT
+            MEMBER_EMAIL
+            ,MEMBER_KEY
+            ,FP_NUMBER
+            ,CREATED_DATE_TIME
+       FROM TB_JOIN_CERTIFICATION
+       WHERE MEMBER_KEY = #{memberKey}
+    </select>
+
+    <delete id="removeMemberJoinCertification" parameterType="io.cojam.web.domain.Member">
+       DELETE FROM TB_JOIN_CERTIFICATION
+       WHERE MEMBER_KEY = #{memberKey}
+    </delete>
+
+    <update id="updateMemberJoinCertification" parameterType="io.cojam.web.domain.Member">
+        UPDATE TB_MEMBER
+        SET CERTIFICATION = true
+        WHERE MEMBER_KEY = #{memberKey}
+        AND CERTIFICATION = false
+    </update>
 </mapper>

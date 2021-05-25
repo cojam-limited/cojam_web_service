@@ -54,5 +54,12 @@ public interface MemberDao {
 
     int updateMemberLock(Map<String ,Object> paramMap);
 
+    int saveMemberJoinCertification(Member member);
+
+    Member getMemberJoinCertification(Member member);
+
+    int removeMemberJoinCertification(Member member);
+
+    int updateMemberJoinCertification(Member member);
 
 }
