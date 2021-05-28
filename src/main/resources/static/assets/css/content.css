@@ -522,7 +522,7 @@
 .quest-list-columns {width:100%; overflow:hidden;}
 .quest-list-columns > ul {display:flex; align-items:center; flex-wrap:wrap;}
 .quest-list-columns > ul > li {position:relative; width:32%; margin:0 2% 20px 0; padding:20px; border:#e5e5e5 0.5px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1); cursor:pointer;}
-.quest-list-columns > ul > li > div {position:absolute; width:100.5%; height:100.5%; margin:-21px 0 0 -21px; border-radius:10px; background:rgba(0,0,0,0.7);}
+.quest-list-columns > ul > li > div {display:flex; justify-content:center; align-items:center; position:absolute; width:100.5%; height:100.5%; margin:-21px 0 0 -21px; font-weight:700; font-size:18px; line-height:24px; color:#fff; border-radius:10px; background:rgba(0,0,0,0.7);}
 .quest-list-columns > ul > li > h2 {padding:5px 0; text-align:center; font-size:18px; line-height:18px; color:#999;}
 .quest-list-columns > ul > li > h2 span {font-weight:800; color:#222;}
 .quest-list-columns > ul > li > p {height:220px; margin-top:20px; border-radius:5px; background:#000; overflow:hidden;}
@@ -910,29 +910,29 @@
   .mypage-info {width:100%; padding:20px;}
   .mypage-info dt {font-size:15px; line-height:22px;}
   .mypage-info dt span {display:block; word-break:break-all;}
-  .mypage-info dd {display:flex; justify-content:space-between; width:100%; padding-bottom:0; padding-top:15px;}
-  .mypage-info dd a {width:49%;}
+  .mypage-info dd {display:flex; justify-content:space-between; flex-wrap:wrap; width:100%; padding-bottom:0; padding-top:15px;}
+  .mypage-info dd a {width:100%; margin-bottom:5px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
   .mypage-info {width:100%; padding:20px;}
   .mypage-info dt {font-size:15px; line-height:22px;}
   .mypage-info dt span {display:block; word-break:break-all;}
   .mypage-info dd {display:flex; justify-content:space-between; width:100%; padding-bottom:0; padding-top:15px;}
-  .mypage-info dd a {width:49%;}
+  .mypage-info dd a {width:33%;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
   .mypage-info {width:750px; padding:30px;}
   .mypage-info dt {font-size:18px; line-height:26px;}
   .mypage-info dt span {display:block; word-break:break-all;}
   .mypage-info dd {display:flex; justify-content:space-between; width:100%; padding-bottom:0; padding-top:25px;}
-  .mypage-info dd a {width:49%;}
+  .mypage-info dd a {width:33%;}
 }
 @media all and (min-width:992px) and (max-width:1199px) {
   .mypage-info {width:1024px; padding:30px;}
   .mypage-info dt {font-size:18px; line-height:26px;}
   .mypage-info dt span {display:block; word-break:break-all;}
   .mypage-info dd {display:flex; justify-content:space-between; width:100%; padding-bottom:0; padding-top:25px;}
-  .mypage-info dd a {width:49%;}
+  .mypage-info dd a {width:33%;}
 }
 @media all and (min-width:1200px) {
 
@@ -977,7 +977,7 @@
 .mypage-content > div > div {margin-top:35px;}
 .mypage-content > div.mc-votings {display:block;}
 
-.mc-votings > div > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; width:100%; padding:15px 0; border-bottom:#e9e9e9 1px solid; overflow:hidden;}
+.mc-votings > div > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; position:relative; width:100%; padding:15px 0; border-bottom:#e9e9e9 1px solid; overflow:hidden;}
 .mc-votings > div > ul > li {position:relative; padding:0 15px; text-align:center; font-size:12px; text-overflow:ellipsis; white-space:nowrap; border-left:#e9e9e9 1px solid; overflow:hidden;}
 .mc-votings > div > ul > li:nth-child(1) {width:10%; border-left:none;}
 .mc-votings > div > ul > li:nth-child(2) {width:30%; border-right:#e9e9e9 1px solid;}
@@ -985,6 +985,7 @@
 .mc-votings > div > ul > li:nth-child(4) {width:14%; text-align:right;}
 .mc-votings > div > ul > li:nth-child(5) {width:10%; text-align:right;}
 .mc-votings > div > ul > li:nth-child(6) {width:12%; text-align:right;}
+.mc-votings > div > ul > li:nth-child(7) {display:none;}
 .mc-votings > div > ul > li > strong {text-align:center; font-weight:600; color:#222;}
 .mc-votings > div > ul > li > span {display:none; font-weight:600; color:#222;}
 .mc-votings > div > ul > li > ul {display:flex; justify-content:space-between; align-items:center;}
@@ -994,16 +995,17 @@
 .mc-votings > div > ul > li > ul li.ing h2 {color:#ef168f;}
 .mc-votings > div > ul > li > ul li.complete span {background:#8950fc;}
 .mc-votings > div > ul > li > ul li.complete h2 {color:#8950fc;}
-.mc-votings > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:10px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
+.mc-votings > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
 
 .mc-votings > div > ul > li > ol {display:flex; justify-content:space-between; align-items:center; border:#e5e5e5 1px solid; border-radius:5px; overflow:hidden;}
+.mc-votings > div > ul > li > ol.fourstep li {width:25%;}
 .mc-votings > div > ul > li > ol li {width:20%; padding:8px 0; text-align:center; border-left:#e5e5e5 1px solid;}
 .mc-votings > div > ul > li > ol li:nth-child(1) {border-left:none;}
 .mc-votings > div > ul > li > ol li h2 {font-size:9px; line-height:9px;}
 .mc-votings > div > ul > li > ol li.complete {background:#8950fc;}
 .mc-votings > div > ul > li > ol li.complete h2 {color:#fff;}
 
-.mc-grounds > div > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; width:100%; padding:15px 0; border-bottom:#e9e9e9 1px solid; overflow:hidden;}
+.mc-grounds > div > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; position:relative; width:100%; padding:15px 0; border-bottom:#e9e9e9 1px solid; overflow:hidden;}
 .mc-grounds > div > ul > li {position:relative; padding:0 15px; text-align:center; font-size:12px; text-overflow:ellipsis; white-space:nowrap; border-left:#e9e9e9 1px solid; overflow:hidden;}
 .mc-grounds > div > ul > li:nth-child(1) {width:10%; border-left:none;}
 .mc-grounds > div > ul > li:nth-child(2) {width:25%; border-right:#e9e9e9 1px solid;}
@@ -1011,6 +1013,7 @@
 .mc-grounds > div > ul > li:nth-child(4) {width:13%; text-align:right;}
 .mc-grounds > div > ul > li:nth-child(5) {width:14%; text-align:right;}
 .mc-grounds > div > ul > li:nth-child(6) {width:13%; text-align:right;}
+.mc-grounds > div > ul > li:nth-child(7) {display:none;}
 .mc-grounds > div > ul > li > strong {text-align:center; font-weight:600; color:#222;}
 .mc-grounds > div > ul > li > span {display:none; font-weight:600; color:#222;}
 .mc-grounds > div > ul > li > ul {display:flex; justify-content:space-between; align-items:center;}
@@ -1020,7 +1023,14 @@
 .mc-grounds > div > ul > li > ul li.ing h2 {color:#ef168f;}
 .mc-grounds > div > ul > li > ul li.complete span {background:#8950fc;}
 .mc-grounds > div > ul > li > ul li.complete h2 {color:#8950fc;}
-.mc-grounds > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:10px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
+.mc-grounds > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
+.mc-grounds > div > ul > li > ol {display:flex; justify-content:space-between; align-items:center; border:#e5e5e5 1px solid; border-radius:5px; overflow:hidden;}
+.mc-grounds > div > ul > li > ol.fourstep li {width:25%;}
+.mc-grounds > div > ul > li > ol li {width:20%; padding:8px 0; text-align:center; border-left:#e5e5e5 1px solid;}
+.mc-grounds > div > ul > li > ol li:nth-child(1) {border-left:none;}
+.mc-grounds > div > ul > li > ol li h2 {font-size:9px; line-height:9px;}
+.mc-grounds > div > ul > li > ol li.complete {background:#8950fc;}
+.mc-grounds > div > ul > li > ol li.complete h2 {color:#fff;}
 
 .mc-transfer > div > ul {display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; width:100%; padding:15px 0; border-bottom:#e9e9e9 1px solid; overflow:hidden;}
 .mc-transfer > div > ul > li {padding:0 15px; text-align:center; font-size:12px; text-overflow:ellipsis; white-space:nowrap; border-left:#e9e9e9 1px solid; overflow:hidden;}
@@ -1049,6 +1059,8 @@
   .mc-votings > div > ul > li > ul {margin-top:8px;}
   .mc-votings > div > ul > li > p {padding-top:25px; text-align:center;}
 
+  .mc-votings > div > ul > li.pending {display:flex; justify-content:center; align-items:center; position:absolute; width:100%; height:100%; margin-left:-15px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7); z-index:99;}
+
   .mc-grounds > div > ul {margin-bottom:15px; padding:15px; border:#e9e9e9 1px solid; border-radius:10px; overflow:hidden;}
   .mc-grounds > div > ul:first-child {display:none;}
   .mc-grounds > div > ul > li {padding:4px 0;}
@@ -1061,6 +1073,8 @@
   .mc-grounds > div > ul > li:nth-child(6) {width:100%; text-align:left; border-left:none;}
   .mc-grounds > div > ul > li > ul {margin-top:8px;}
   .mc-grounds > div > ul > li > p {padding-top:25px; text-align:center;}
+
+  .mc-grounds > div > ul > li.pending {display:flex; justify-content:center; align-items:center; position:absolute; width:100%; height:100%; margin-left:-15px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7); z-index:99;}
 
   .mc-transfer > div > ul {margin-bottom:15px; padding:15px; border:#e9e9e9 1px solid; border-radius:10px; overflow:hidden;}
   .mc-transfer > div > ul:first-child {display:none;}
@@ -1090,6 +1104,7 @@
   .mc-votings > div > ul > li:nth-child(6) {width:100%; text-align:left; border-left:none;}
   .mc-votings > div > ul > li > ul {margin-top:8px;}
   .mc-votings > div > ul > li > p {padding-top:25px; text-align:center;}
+  .mc-votings > div > ul > li.pending {display:flex; justify-content:center; align-items:center; position:absolute; width:100%; height:100%; margin-left:-15px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7); z-index:999;}
 
   .mc-grounds > div > ul {margin-bottom:15px; padding:15px; border:#e9e9e9 1px solid; border-radius:10px; overflow:hidden;}
   .mc-grounds > div > ul:first-child {display:none;}
@@ -1103,6 +1118,7 @@
   .mc-grounds > div > ul > li:nth-child(6) {width:100%; text-align:left; border-left:none;}
   .mc-grounds > div > ul > li > ul {margin-top:8px;}
   .mc-grounds > div > ul > li > p {padding-top:25px; text-align:center;}
+  .mc-grounds > div > ul > li.pending {display:flex; justify-content:center; align-items:center; position:absolute; width:100%; height:100%; margin-left:-15px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7); z-index:999;}
 
   .mc-transfer > div > ul {margin-bottom:15px; padding:15px; border:#e9e9e9 1px solid; border-radius:10px; overflow:hidden;}
   .mc-transfer > div > ul:first-child {display:none;}

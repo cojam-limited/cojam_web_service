@@ -12,6 +12,8 @@
 
         <div class="popup-form-wrap">
             <form name="popupForm" id="popupForm" method="POST" action="">
+                <input type="hidden" name="startUtcDateTime" id="startUtcDateTime" value="">
+                <input type="hidden" name="endUtcDateTime" id="endUtcDateTime" value="">
                 <fieldset>
                     <div>
                         <table class="popup-form">
@@ -25,9 +27,9 @@
                                 <th><span>*</span> 게시기간</th>
                                 <td colspan="3">
                                     <ul>
-                                        <li><input name="startDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                        <li><input name="startDateTime" id="startDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
                                         <li>~</li>
-                                        <li><input name="endDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
+                                        <li><input name="endDateTime" id="endDateTime" type="text" class="date-icon" placeholder="Please enter a date" /></li>
                                     </ul>
                                 </td>
 
@@ -89,10 +91,12 @@
             $(document).ready(function (){
                 $(".date-icon").datetimepicker({
                     dateFormat:'yy-mm-dd',
+                    changeMonth:true,
+                    changeYear:true,
+                    showMonthAfterYear:true,
+
                     // timepicker 설정
-                    timeFormat:'hh',
-                    //controlType:'select',
-                    //oneLine:true,
+                    timeFormat:'HH:00:00'
                 });
                 $('.date-icon').val($.datepicker.formatDate('yy-mm-dd', new Date())+' 00');
             });
@@ -149,7 +153,18 @@
                     }
                 }
 
+                if($('#startDateTime').val() == ""){
+                    toastr.error('Please select start datetime.');
+                    return;
+                }
 
+                if($('#endDateTime').val() == ""){
+                    toastr.error('Please select end datetime.');
+                    return;
+                }
+
+                $('#startUtcDateTime').val(changeLocalToUtc($('#startDateTime').val(),'YYYY-MM-DD HH:mm:ss'));
+                $('#endUtcDateTime').val(changeLocalToUtc($('#endDateTime').val(),'YYYY-MM-DD HH:mm:ss'));
 
                 const form = $('#popupForm')[0];
                 const data = new FormData(form);

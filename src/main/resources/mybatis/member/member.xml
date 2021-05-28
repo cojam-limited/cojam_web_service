@@ -35,6 +35,7 @@
             , MEMBER_NAME
             , MEMBER_EMAIL
             , MEMBER_PASS
+            , CERTIFICATION
         FROM TB_MEMBER
         WHERE MEMBER_ID = #{memberId}
     </select>
@@ -46,6 +47,7 @@
             , MEMBER_NAME
             , MEMBER_EMAIL
             , MEMBER_PASS
+            , CERTIFICATION
         FROM TB_MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}
     </select>
@@ -56,6 +58,7 @@
             MEMBER_KEY
             , MEMBER_ID
             , MEMBER_NAME
+            , CERTIFICATION
         FROM TB_MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}
         AND MEMBER_NAME = #{memberName}
@@ -102,6 +105,7 @@
             ,M.MEMBER_ROLE
             ,M.CREATED_DATE_TIME
             ,M.WALLET_LOCK
+            ,M.CERTIFICATION
             ,M.LOCK_TRANSACTION_ID
             ,W.WALLET_ADDRESS
         FROM TB_MEMBER M , TB_WALLET W
@@ -148,6 +152,7 @@
             ,M.CREATED_DATE_TIME
             ,M.WALLET_LOCK
             ,M.LOCK_TRANSACTION_ID
+            ,M.CERTIFICATION
             ,W.WALLET_ADDRESS
         FROM TB_MEMBER M , TB_WALLET W
         WHERE M.MEMBER_KEY = W.MEMBER_KEY

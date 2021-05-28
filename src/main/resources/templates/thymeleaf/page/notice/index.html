@@ -49,7 +49,14 @@
                             <dl>
                                 <dt>
                                     <i class="uil uil-calendar-alt"></i>&nbsp;
-                                    <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
+                                    <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
+                                    <script>
+                                        /*<![CDATA[*/
+                                        noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
+                                        noticeCreateDateTime = "[[${item.createDateTime}]]";
+                                        $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
+                                        /*]]>*/
+                                    </script>
                                 </dt>
                                 <dd>
                                     <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>

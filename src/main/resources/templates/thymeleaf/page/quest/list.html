@@ -9,7 +9,7 @@
 
 
 <div layout:fragment="content">
-    <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestAdd(${seasonCategoryList})"></th:block>
+    <th:block  sec:authorize="hasAnyAuthority('ADMIN','VIP')" th:replace="thymeleaf/fragment/popup :: modalQuestAdd(${seasonCategoryList})"></th:block>
 
     <th:block  th:replace="thymeleaf/fragment/popup :: modalQuestSeason"></th:block>
     <!-- 기본영역 (타이틀/네비/버튼) -->
@@ -23,7 +23,12 @@
                 <a href="/login"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
             </th:block>
             <th:block sec:authorize="isAuthenticated()">
-                <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+                <th:block sec:authorize="hasAnyAuthority('ADMIN','VIP')">
+                    <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+                </th:block>
+                <th:block sec:authorize="hasAnyAuthority('USER')">
+                    <a href="javascript:toastr.warning('You do not have permission.');"><i class="uil uil-plus-circle"></i> <span>Create New Prediction</span></a>
+                </th:block>
             </th:block>
             <a href="#" data-izimodal-open="#modalQuestSeason" data-izimodal-transitionin="comingIn"><i class="uil uil-info-circle"></i> <span>Season Info</span></a>
         </dd>
@@ -63,19 +68,26 @@
         <div class="quest-list-columns">
             <ul id="questList">
                 <th:block th:if="${questList}!=null">
-                    <li th:each="item : ${questList}"
+                    <li th:each="item,i : ${questList}"
                         th:data-parameter1="${item.questKey}"
                         th:data-parameter2="${item.finished}"
                         th:onclick="fnMoveDetail(this.getAttribute('data-parameter1'),this.getAttribute('data-parameter2'));"
                     >
-                        <th:block th:if="${item.completed}">
-                            <div>&nbsp;</div>
+                        <th:block th:if="${item.completed} or ${item.dDay} > 0">
+                            <div>CLOSED</div>
                         </th:block>
                         <h2>Total <span th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></span> CT</h2>
                         <p>
                             <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>
                         </p>
-                        <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
+                        <h3 th:id="'endDate_'+${i.index}"><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;</h3>
+                        <script>
+                            /*<![CDATA[*/
+                            questEndDateTimeId = "endDate_[[${i.index}]]";
+                            questEndDateTime = "[[${item.endDateTime}]]";
+                            $('#'+questEndDateTimeId).append(changeUtcToLocal(questEndDateTime,'YYYY-MM-DD HH:mm'))
+                            /*]]>*/
+                        </script>
                         <h4 th:text="${item.questTitle}"></h4>
                         <ul>
                             <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
@@ -119,7 +131,9 @@
                 <a href="/login" ><i class="uil uil-plus"></i></a>
             </th:block>
             <th:block sec:authorize="isAuthenticated()">
-                <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
+                <th:block sec:authorize="hasAnyAuthority('ADMIN','VIP')">
+                    <a href="#" data-izimodal-open="#modalQuestAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus"></i></a>
+                </th:block>
             </th:block>
         </div>
         <!-- 등록버튼 끝 -->

@@ -24,12 +24,15 @@
 
     <th:block  th:replace="thymeleaf/fragment/popup :: modalRecommend"></th:block>
 
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalReward"></th:block>
+
+    <th:block  th:replace="thymeleaf/fragment/popup :: modalNoReward"></th:block>
 
     <!-- 마이페이지 - 기본정보 -->
     <div class="mypage-info">
         <dt>
             <div><i class="uil uil-envelope-check"></i> Email : <span th:text="${member.memberEmail}"></span></div>
-            <div><i class="uil uil-wallet"></i> Wallet address : <span onclick="clipBoard('myWalletAddress')" id="myWalletAddress" th:text="${wallet.walletAddress}"></span></div>
+            <div><i class="uil uil-wallet"></i> Wallet address : <span id="myWalletAddress" th:text="${wallet.walletAddress}"></span><i class="uil uil-copy" onclick="clipBoard('myWalletAddress')"></i></div>
             <div><i class="uil uil-wallet"></i> Wallet balance : <span id="myWalletBalance"></span></div>
         </dt>
         <dd>
@@ -40,8 +43,7 @@
             <th:block th:if="${member.walletLock}">
                 <a href="javascript:alert('Your wallet is lock.');" class="btn-grey" >CT Send</a>
             </th:block>
-
-            <!--<a href="javascript:fnRecommendOpen();" class="btn-orange">Recommend User</a>-->
+            <a href="javascript:fnRecommendOpen();" class="btn-blue">Recommend User</a>
         </dd>
     </div>
     <!-- 마이페이지 - 기본정보 끝 -->
@@ -62,7 +64,7 @@
             <h2><span>Votings</span></h2>
             <div id="myVotingList">
                 <ul>
-                    <li><strong>Category</strong></li>
+                    <li><strong>Reward</strong></li>
                     <li><strong>Title</strong></li>
                     <li><strong>Status Flow</strong></li>
                     <li style="text-align:center;"><strong>My Answer</strong></li>
@@ -70,8 +72,38 @@
                     <li style="text-align:center;"><strong>Prediction Fee</strong></li>
                 </ul>
                 <th:block th:if="${myVotingList}!=null">
-                    <ul th:each="item : ${myVotingList}">
-                        <li><span>Category : </span><th:block th:text="${item.categoryName}"></th:block></li>
+                    <ul th:each="item : ${myVotingList}" >
+                        <li>
+                            <span>Category : </span>
+                            <th:block th:if="${item.answerSelected}">
+                                <span
+                                        th:data-detailBettingtKey="${item.bettingKey}"
+                                        th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                      style="cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #ef168f;"
+                                >
+                                </span>
+                            </th:block>
+                            <th:block th:unless="${item.answerSelected}">
+                                <th:block th:if="${item.questStatus == 'SUCCESS' || item.questStatus == 'ADJOURN'}">
+                                    <th:block th:if="${item.questStatus == 'SUCCESS'}">
+                                        <span th:data-detailBettingtKey="${item.bettingKey}"
+                                              th:onclick="fnNoReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                              style="cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #999999;"
+                                        ></span>
+                                    </th:block>
+                                    <th:block th:unless="${item.questStatus == 'SUCCESS'}">
+                                        <span th:data-detailBettingtKey="${item.bettingKey}"
+                                              th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                              style="cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #999999;"
+                                        ></span>
+                                    </th:block>
+
+                                </th:block>
+                                <th:block th:unless="${item.questStatus == 'SUCCESS' || item.questStatus == 'ADJOURN'}">
+                                    <span style="cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%;border:1px solid;"></span>
+                                </th:block>
+                            </th:block>
+                        </li>
                         <li th:data-detailQuestKey="${item.questKey}"
                             th:onclick="fnSetGroundDetail(this.getAttribute('data-detailQuestKey'))">
                             <span>Title : </span><th:block th:text="${item.questTitle}"></th:block>
@@ -79,122 +111,156 @@
                         <th:block th:switch="${item.questStatus}">
                             <th:block th:case="ONGOING">
                                 <li>
+                                    <th:block th:if="${item.pending}">
+                                        <p>Pending</p>
+                                    </th:block>
                                     <span>Status Flow : </span>
-                                    <ul>
-                                        <li th:class="ing">
-                                            <span></span>
+                                    <ol>
+                                        <li th:class="complete">
                                             <h2>Ongoing</h2>
                                         </li>
                                         <li>
-                                            <span></span>
                                             <h2>Invaild</h2>
                                         </li>
                                         <li>
-                                            <span></span>
                                             <h2>Approve</h2>
                                         </li>
                                         <li>
-                                            <span></span>
+                                            <h2>Adjourn</h2>
+                                        </li>
+                                        <li>
                                             <h2>Success</h2>
                                         </li>
-                                    </ul>
+                                    </ol>
                                 </li>
                             </th:block>
                             <th:block th:case="INVALID">
                                 <li>
                                     <p>Invalid</p>
                                     <span>Status Flow : </span>
-                                    <ul>
-                                        <li th:class="complete">
-                                            <span></span>
+                                    <ol>
+                                        <li class="complete">
                                             <h2>Ongoing</h2>
                                         </li>
-                                        <li th:class="ing">
-                                            <span></span>
+                                        <li class="complete">
                                             <h2>Invaild</h2>
                                         </li>
                                         <li>
-                                            <span></span>
                                             <h2>Approve</h2>
                                         </li>
                                         <li>
-                                            <span></span>
+                                            <h2>Finish</h2>
+                                        </li>
+                                        <li>
                                             <h2>Success</h2>
                                         </li>
-                                    </ul>
+                                    </ol>
                                 </li>
                             </th:block>
                             <th:block th:case="APPROVE">
-                                <li>
+
+                                <li th:if="${item.completed}">
+                                    <th:block th:if="${item.pending}">
+                                        <p>Pending</p>
+                                    </th:block>
                                     <span>Status Flow : </span>
-                                    <ul>
-                                        <li th:class="complete">
-                                            <span></span>
+                                    <ol class="fourstep">
+                                        <li class="complete">
                                             <h2>Ongoing</h2>
                                         </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
+                                        <li class="complete">
                                             <h2>Approve</h2>
+                                        </li>
+                                        <li class="complete">
+                                            <h2>Finish</h2>
                                         </li>
                                         <li>
                                             <span></span>
                                             <h2>Success</h2>
                                         </li>
-                                    </ul>
+                                    </ol>
+                                </li>
+                                <li th:unless="${item.completed}">
+                                    <th:block th:if="${item.pending}">
+                                        <p>Pending</p>
+                                    </th:block>
+                                    <span>Status Flow : </span>
+                                    <ol class="fourstep">
+                                        <li class="complete">
+                                            <h2>Ongoing</h2>
+                                        </li>
+                                        <li class="complete">
+                                            <h2>Approve</h2>
+                                        </li>
+                                        <li>
+                                            <h2>Finish</h2>
+                                        </li>
+                                        <li>
+                                            <span></span>
+                                            <h2>Success</h2>
+                                        </li>
+                                    </ol>
                                 </li>
                             </th:block>
                             <th:block th:case="ADJOURN">
                                 <li>
+                                    <th:block th:if="${item.pending}">
+                                        <p>Pending</p>
+                                    </th:block>
                                     <span>Status Flow : </span>
-                                    <ul>
-                                        <li th:class="complete">
-                                            <span></span>
+                                    <ol class="fourstep">
+                                        <li class="complete">
                                             <h2>Ongoing</h2>
                                         </li>
-                                        <li th:class="complete">
-                                            <span></span>
+                                        <li class="complete">
                                             <h2>Approve</h2>
                                         </li>
-                                        <li th:class="complete">
-                                            <span></span>
+                                        <li class="complete">
                                             <h2>Finish</h2>
                                         </li>
-                                        <li th:class="ing"
-                                            th:data-detailBettingtKey="${item.bettingKey}"
-                                            th:onclick="fnSetSuccessBetting(this.getAttribute('data-detailBettingtKey'))">
-                                            <span></span>
+                                        <li class="complete"
+                                            style="background: #ef168f;"
+                                            >
                                             <h2>Adjourn</h2>
                                         </li>
-                                    </ul>
+                                    </ol>
                                 </li>
                             </th:block>
                             <th:block th:case="SUCCESS">
                                 <li>
+                                    <th:block th:if="${item.pending}">
+                                        <p>Pending</p>
+                                    </th:block>
                                     <span>Status Flow : </span>
-                                    <ul>
-                                        <li th:class="complete">
-                                            <span></span>
+                                    <ol class="fourstep">
+                                        <li class="complete">
                                             <h2>Ongoing</h2>
                                         </li>
-                                        <li th:class="complete">
-                                            <span></span>
+                                        <li class="complete">
                                             <h2>Approve</h2>
                                         </li>
-                                        <li th:class="complete">
-                                            <span></span>
+
+                                        <li class="complete">
                                             <h2>Finish</h2>
                                         </li>
-                                        <li th:class="ing"
-                                            th:data-detailBettingtKey="${item.bettingKey}"
-                                            th:onclick="fnSetSuccessBetting(this.getAttribute('data-detailBettingtKey'))">
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
-                                    </ul>
+                                        <th:block th:if="${item.answerSelected}">
+                                            <li class="complete"
+                                                style="background: #ef168f;"
+                                                >
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </th:block>
+                                        <th:block th:unless="${item.answerSelected}">
+                                            <li class="complete"
+                                                style="background: #ef168f;"
+                                                >
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </th:block>
+
+                                    </ol>
                                 </li>
                             </th:block>
                         </th:block>
@@ -234,124 +300,141 @@
                         </li>
                         <li>
                             <span>Status Flow : </span>
-                            <ul>
+                            <th:block th:if="${item.pending}">
+                                <p>Pending</p>
+                            </th:block>
+                            <th:block th:if="${item.questStatus}=='INVALID'">
+                                <p>Invalid</p>
+                            </th:block>
+                            <th:block th:if="${item.questStatus}=='ADJOURN'">
+                                <p>Adjourn</p>
+                            </th:block>
+
                                 <th:block th:switch="${item.questStatus}">
                                     <th:block th:case="ONGOING">
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
+                                        <ol>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Ongoing</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Invaild</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Approve</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Finish</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </ol>
                                     </th:block>
                                     <th:block th:case="INVALID">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
+                                        <ol>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Ongoing</h2>
+                                            </li>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Invaild</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Approve</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Finish</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </ol>
                                     </th:block>
                                     <th:block th:case="APPROVE">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
+                                        <ol class="fourstep">
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Ongoing</h2>
+                                            </li>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Approve</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Finish</h2>
+                                            </li>
+                                            <li>
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </ol>
                                     </th:block>
                                     <th:block th:case="ADJOURN">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li th:class="ing">
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li>
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
+                                        <ol class="fourstep">
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Ongoing</h2>
+                                            </li>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Approve</h2>
+                                            </li>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Finish</h2>
+                                            </li>
+                                            <li class="complete" style="background: #ef168f;">
+                                                <span></span>
+                                                <h2>Adjourn</h2>
+                                            </li>
+                                        </ol>
                                     </th:block>
                                     <th:block th:case="SUCCESS">
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Ongoing</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Invaild</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Approve</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Adjourn</h2>
-                                        </li>
-                                        <li th:class="complete">
-                                            <span></span>
-                                            <h2>Success</h2>
-                                        </li>
+                                        <ol class="fourstep">
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Ongoing</h2>
+                                            </li>
+
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Approve</h2>
+                                            </li>
+                                            <li class="complete">
+                                                <span></span>
+                                                <h2>Finish</h2>
+                                            </li>
+                                            <li class="complete" style="background: #ef168f;">
+                                                <span></span>
+                                                <h2>Success</h2>
+                                            </li>
+                                        </ol>
                                     </th:block>
                                 </th:block>
-                            </ul>
                         </li>
                         <li><span>Total  : </span><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block> CT</li>
                         <li><span>Total Creator Fee : </span><th:block th:text="${item.totalCreatorFee} % 1 == 0? ${#numbers.formatInteger(item.totalCreatorFee,0,'COMMA')} :${#numbers.formatDecimal(item.totalCreatorFee, 0, 'COMMA', 2, 'POINT')}"></th:block> CT (<th:block th:text="${item.creatorFee}"></th:block>%)</li>
                         <li><span>Donation Fee : </span><th:block th:text="${item.totalCharityFee} % 1 == 0? ${#numbers.formatInteger(item.totalCharityFee,0,'COMMA')} :${#numbers.formatDecimal(item.totalCharityFee, 0, 'COMMA', 2, 'POINT')}"></th:block> CT (<th:block th:text="${item.charityFee}"></th:block>%)</li>
+                        <th:block th:if="${item.pending}">
+                            <li class="pending">Pending</li>
+                        </th:block>
+                        <th:block th:if="${item.questStatus}=='INVALID'">
+                            <li class="pending">Invalid</li>
+                        </th:block>
+                        <th:block th:if="${item.questStatus}=='ADJOURN'">
+                            <li class="pending">Adjourn</li>
+                        </th:block>
+
                     </ul>
                 </th:block>
                 <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
@@ -367,14 +450,24 @@
                     <li><strong>Created DTTM</strong></li>
                 </ul>
                 <th:block th:if="${transactionList} !=null">
-                    <ul th:each="item : ${transactionList}"
+                    <ul th:each="item,i : ${transactionList}"
                         th:data-transactionKey="${item.transactionKey}"
                         onclick="fnSetTransactionKey(this.getAttribute('data-transactionKey'))"
                          >
                         <li th:id="'spenderAddress'+${item.transactionKey}"><span>Spender Address : </span><th:block th:text="${item.spenderAddress}"></th:block><th:block th:if="${item.spenderAddress == wallet.walletAddress}">(<th:block th:text="${member.memberId}"></th:block>)</th:block><th:block th:unless="${item.spenderAddress == wallet.walletAddress}"><th:block th:if="${item.memberId}!=null" th:text="'('+${item.memberId}+')'"></th:block></th:block></li>
                         <li th:id="'recipientAddress'+${item.transactionKey}"><span>Recipient Address : </span><th:block th:text="${item.recipientAddress}"></th:block><th:block th:if="${item.recipientAddress == wallet.walletAddress}">(<th:block th:text="${member.memberId}"></th:block>)</th:block><th:block th:unless="${item.recipientAddress == wallet.walletAddress}"><th:block th:if="${item.memberId}!=null" th:text="'('+${item.memberId}+')'"></th:block></th:block></li>
                         <li th:id="'amount'+${item.transactionKey}"><span>CT Amount : </span><th:block th:if="${item.spenderAddress==wallet.walletAddress}">-</th:block><th:block th:text="${#numbers.formatDecimal(item.amount,0,'COMMA',2,'POINT')}"></th:block> CT</li>
-                        <li th:id="'createDateTimeStr'+${item.transactionKey}"><span>Created DTTM : </span><th:block th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd(HH:mm)')}"></th:block></li>
+                        <li th:id="'createDateTimeStr'+${item.transactionKey}">
+                            <span>Created DTTM : </span>
+                            <h2 th:id="'sendCtDateTimeId_'+${i.index}"></h2>
+                            <script>
+                                /*<![CDATA[*/
+                                sendCtDateTimeId = "sendCtDateTimeId_[[${i.index}]]";
+                                sendCtDateTime = "[[${item.createdDateTime}]]";
+                                $('#'+sendCtDateTimeId).append(changeUtcToLocal(sendCtDateTime,'YYYY.MM.DD (HH:mm)'));
+                                /*]]>*/
+                            </script>
+                        </li>
                         <input type="hidden" th:id="'transactionId'+${item.transactionKey}" th:value="${item.transactionId}"/>
                     </ul>
                 </th:block>
@@ -401,7 +494,7 @@
             recipientAddress = $('#recipientAddress'+key).text().replace('Recipient Address : ','');
             transactionId = $('#transactionId'+key).val();
             ctAmount = $('#amount'+key).text().replace('CT Amount : ','');
-            createDateTimeStr = $('#createDateTimeStr'+key).text().replace('Created DTTM : ','');
+            createDateTimeStr = $('#createDateTimeStr'+key).find("h2").text().replace('Created DTTM : ','');
             $("#modalMypageTransfer").iziModal('open');
         }
 
@@ -484,6 +577,16 @@
             document.execCommand("copy");
             document.body.removeChild(aux);
             toastr.success("Copied wallet address.");
+        }
+
+        function fnReward(type,key){
+            betKey = key;
+            $("#modalReward").iziModal('open');
+        }
+
+        function fnNoReward(type,key){
+            betKeyNo = key;
+            $("#modalNoReward").iziModal('open');
         }
     </script>
     <th:block layout:fragment="script">

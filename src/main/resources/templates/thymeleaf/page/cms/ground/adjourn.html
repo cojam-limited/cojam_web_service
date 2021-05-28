@@ -57,7 +57,14 @@
                         <td>
                             <h5 th:id="'questTitle_'+${item.questKey}" th:text="${item.questTitle}" class="groundList" th:attr="data-questKey=${item.questKey}"></h5>
                         </td>
-                        <td th:text="${#dates.format(item.endDateTime,'yyyy.MM.dd hh:mm')}"></td>
+                        <td th:id="'joindate_'+${i.index}"></td>
+                        <script>
+                            /*<![CDATA[*/
+                            userJoinCreatedDateTimeId = "joindate_[[${i.index}]]";
+                            userJoinCreatedDateTime = "[[${item.endDateTime}]]";
+                            $('#'+userJoinCreatedDateTimeId).html(changeUtcToLocal(userJoinCreatedDateTime,'YYYY-MM-DD HH:mm'))
+                            /*]]>*/
+                        </script>
                         <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
                         <td><p th:text="${item.pending}?'T':'F'" th:classappend="${item.pending}?'true':'false'"></p></td>
                         <td><p th:text="${item.hot}?'T':'F'" th:classappend="${item.hot}?'true':'false'"></p></td>

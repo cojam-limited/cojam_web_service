@@ -24,6 +24,12 @@
                         </li>
                         <li><input name="endDateTime" type="text" id="endDateTime" class="w100p" placeholder="Please enter a date" value="1111111"/></li>
                         <li>
+                            <select name="questType" title="" class="w100p">
+                                <option value="I" selected>Image</option>
+                                <option value="S">SNS url</option>
+                            </select>
+                        </li>
+                        <li id="imageTypeArea1">
                             <div class="input-file">
                                 <label>
                                     File Attach
@@ -32,7 +38,13 @@
                                 <input type="text" readonly="readonly" title="File Route" id="fileRoute" placeholder="Attach an image">
                             </div>
                         </li>
-                        <li><input name="snsUrl" type="text" class="w100p" placeholder="Enter the sns url" /></li>
+                        <li id="imageTypeArea2">
+                            <input name="imageLink" type="text" class="w100p" placeholder="Enter the image link" />
+                        </li>
+                        <li id="snsTypeArea" style="display: none">
+                            <input name="snsUrl" type="text" class="w100p" placeholder="Enter the sns url" />
+                        </li>
+
                     </ul>
                     <ol class="mqa-content1">
                         <li>Select a Type</li>
@@ -84,6 +96,22 @@
 
         });
 
+        $(document).on('change','select[name=questType]',function (e){
+            if($(this).val()=="I"){
+                $('input[name=snsUrl]').val('');
+                $("#snsTypeArea").hide();
+                $("#imageTypeArea1").show();
+                $("#imageTypeArea2").show();
+            } else if($(this).val()=="S"){
+                $('#isFile').val('');
+                $('#fileRoute').val('');
+                $('input[name=imageLink]').val('');
+                $("#snsTypeArea").show();
+                $("#imageTypeArea1").hide();
+                $("#imageTypeArea2").hide();
+            }
+
+        });
         $(document).on('click','.mqa-content1 > li > a',function (e){
 
             if($(this).find('.uil-plus-circle').length > 0){
@@ -196,8 +224,10 @@
         function fnQuestRegisterInit(){
             $('input[name=questTitle]').val('');
             $('select[name=seasonCategoryKey]').val('');
+            $('select[name=questType]').val('I');
             $('#isFile').val('');
             $('input[name=snsUrl]').val('');
+            $('input[name=imageLink]').val('');
             $('#fileRoute').val('');
             $('#endDateTime').datetimepicker('setTime', new Date());
             const liChild = document.createElement('li');
@@ -1112,7 +1142,7 @@
                             let serverTotalToken = parseFloat(res.market_total_ct);
                             let serverResult = {};
                             for (let key in res.transfer_gospel) {
-                                const _key = key.toUpperCase();
+                                const _key = key;
                                 if (serverResult[_key] === undefined) {
                                     serverResult[_key] = 0;
                                 }
@@ -1494,6 +1524,171 @@
                         }
                     });
                 }
+            }
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalReward">
+    <!-- 모달 - SEND CT -->
+    <div class="modal-send-ct" id="modalReward" style="display:none;">
+        <form name="modalReward" method="post" action="">
+            <fieldset>
+                <legend>Reward</legend>
+                <div class="msc-area" id="rewardAreaS" style="display: none;">
+                    <dl>
+                        <dt>&nbsp;</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li style="text-align: center;font-size: xx-large;font-weight: bold;">
+                            <span id="rewardAreaCT"></span>
+                        </li>
+                        <li style="text-align: center;margin: 30px;">
+                            <img src="/assets/image/content/coin.png" alt="" width="100%">
+                        </li>
+                        <li style="text-align: center;">
+                            <!--<span>Rewarded at 2021-03-23 11:22</span>-->
+                        </li>
+                    </ul>
+                    <p style="text-align: center;">
+                        <a href="javascript:fnBettingDetail()" style="background: gray;width: 40%;">Detail</a>
+                        <a href="javascript:fnSetSuccessBettingPop();" style="width: 40%;">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            let betKey = '';
+            let betQuestKey='';
+            $(document).ready(function(){
+                $("#modalReward").iziModal({
+                    width : '500px',
+                    transitionin : 'comingIn',
+                    onOpening: function(modal){
+                        $('rewardAreaS').hide();
+                        $.post('/user/quest/rewardInfo?bettingKey='+betKey, function(data) {
+                            if(data.check){
+                                const item = data.item;
+                                betQuestKey =item.betQuestKey;
+                                $('#rewardAreaCT').html(item.rewardCoin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                modal.stopLoading();
+                                $('#rewardAreaS').show();
+                            }else{
+                                toastr.error(data.message);
+                                $("#modalReward").iziModal('close');
+                            }
+                        }).fail(function(response) {
+                            $("#modalReward").iziModal('close');
+                        });
+                    }
+                });
+            });
+
+            function fnSetSuccessBettingPop(){
+                $.ajax({
+                    url: "/user/quest/successBetting",
+                    type: "POST",
+                    data : {
+                        "bettingKey" : betKey
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                            fnMovePage(1);
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+
+            function fnBettingDetail(){
+                $("#modalReward").iziModal('close');
+                fnSetGroundDetail(betQuestKey);
+            }
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalNoReward">
+    <!-- 모달 - SEND CT -->
+    <div class="modal-send-ct" id="modalNoReward" style="display:none;">
+        <form name="modalReward" method="post" action="">
+            <fieldset>
+                <legend>Reward</legend>
+                <div class="msc-area" id="rewardAreaA" style="display: none;">
+                    <dl>
+                        <dt>&nbsp;</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li style="text-align: center;font-size: xx-large;font-weight: bold;">
+                            <span>Try another prediction</span>
+                        </li>
+                    </ul>
+                    <br/><br/>
+                    <ul id="popAnswerList">
+                    </ul>
+                    <p style="text-align: center;">
+                        <a href="javascript:fnBettingDetailNo()" style="background: gray;width: 40%;">Detail</a>
+                        <a href="javascript:$('#modalNoReward').iziModal('close');" style="width: 40%;">Confirm</a>
+                    </p>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            let betKeyNo = '';
+            let betQuestKeyNo ='';
+            $(document).ready(function(){
+                $("#modalNoReward").iziModal({
+                    width : '500px',
+                    transitionin : 'comingIn',
+                    onOpening: function(modal){
+                        $('#rewardAreaA').hide();
+                        $('#popAnswerList').html('');
+                        $.post('/user/quest/noRewardInfo?bettingKey='+betKeyNo, function(data) {
+                            if(data.check){
+                                const item = data.item;
+                                betQuestKeyNo =item.betQuestKey;
+                                const answerList = item.answerList;
+                                let count = 0;
+                                answerList.forEach(element => {
+                                    let html = '';
+                                    count++;
+                                    html +='<li style="text-align: center;">';
+                                    html +='<span>'+count+'. '+element.answerTitle;
+                                    if(element.selected){
+                                        html +='(correct)'
+                                    }
+
+                                    if(element.myAnswer){
+                                        html +='(your)'
+                                    }
+
+                                    html +='</span>';
+                                    html +='</li>';
+                                    $('#popAnswerList').append(html);
+                                })
+                                modal.stopLoading();
+                                $('#rewardAreaA').show();
+                            }else{
+                                toastr.error(data.message);
+                                $("#modalNoReward").iziModal('close');
+                            }
+                        }).fail(function(response) {
+                            $("#modalNoReward").iziModal('close');
+                        });
+                    }
+                });
+            });
+
+
+            function fnBettingDetailNo(){
+                $("#modalNoReward").iziModal('close');
+                fnSetGroundDetail(betQuestKeyNo);
             }
         </script>
     </th:block>

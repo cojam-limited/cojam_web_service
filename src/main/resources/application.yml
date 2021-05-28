@@ -1,7 +1,7 @@
 # 기본 환경 선택
 spring:
   profiles:
-    active: dev # 기본 환경 선택
+    active: local # 기본 환경 선택
   servlet:
     multipart:
       max-file-size: 50MB
@@ -29,7 +29,7 @@ spring:
     redis:
       flush-mode: on_save
   datasource:
-    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://34.64.79.129:3306/cojamDB?useUnicode=true&useSSL=false&serverTimezone=UTC&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
     username: cojam
     password: '@2cojam'
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -78,12 +78,12 @@ app:
         timeout: 60
   klaytn:
     contracts:
-      marketAddress: 0x3B319E5Ce59603fdFa3039b5991054E6d8191B4C
+      marketAddress: 0xb74d4E4b3a89137057DD886a34A6541D1986a916
   sdk-enclave:
     apiSecret: "iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs="
-    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA"
+    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYyMjA4NDkyMywiZXhwIjozMTY5ODIwODQ5MjN9.e3vwbds3pZKgw_cK9whmZ0y73JDcDyiCJZ_OH7MiSyKG2sOb0Whb-dpTrSGpEe3L3m8d83Lr5wE5heN1dGXdoQ"
     masterWalletId: "d24c99e81a62b7aaf85cfc1134e1c1ae"
-    marketAddress: "0x03aD3578F4eF3a2d414CB28aeBBb58F0716b4D62"
+    marketAddress: "0xb74d4E4b3a89137057DD886a34A6541D1986a916"
     tokenAddress: "0xd6cdab407f47afaa8800af5006061db8dc92aae7"
     feeAddress: "0x6b35e1a72f97320945789b3e7c6a203de1c4f0d3"
     charityAddress: "0xe3469be62a72988a5462c413aef4d6efd59fff3d"
@@ -109,7 +109,7 @@ spring:
     redis:
       flush-mode: on_save
   datasource:
-    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://34.64.180.205:3306/cojamDB?useUnicode=true&serverTimezone=UTC&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
     username: cojam
     password: '@2cojam'
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -161,7 +161,7 @@ app:
       marketAddress: 0x3B319E5Ce59603fdFa3039b5991054E6d8191B4C
   sdk-enclave:
     apiSecret: "iXh3eCTk9ehUZgpus4U7ZL0itORivfHnDGeRjy4oGUs="
-    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYxNTE3Mzc3MCwiZXhwIjoxNjQ2NzA5NzcwfQ.fGD59vLfRR9aZqzbUBlYBwkKikahXP_lY3FRqEiXolE3YGxBLkd8I39yh2GcdSn8YlqbOIb-oA6HAxJtzPmZhA"
+    accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6ImNvamFtX2xpbWl0ZWRAbmF2ZXIuY29tIiwiaWQiOiI2Nzg0ZDM1YzU2ZDBiNDc2Y2I0MGU4NDhiNGQzODdhZCIsInR5cGUiOiJMT05HIiwibG9uZ1R5cGUiOnRydWUsImlzcyI6ImhlbmVzaXMtd2FsbGV0LWlkZW50aXR5LXByb2QtdGVzdG5ldCIsImlhdCI6MTYyMjA4NDkyMywiZXhwIjozMTY5ODIwODQ5MjN9.e3vwbds3pZKgw_cK9whmZ0y73JDcDyiCJZ_OH7MiSyKG2sOb0Whb-dpTrSGpEe3L3m8d83Lr5wE5heN1dGXdoQ"
     masterWalletId: "d24c99e81a62b7aaf85cfc1134e1c1ae"
     marketAddress: "0x03aD3578F4eF3a2d414CB28aeBBb58F0716b4D62"
     tokenAddress: "0xd6cdab407f47afaa8800af5006061db8dc92aae7"
@@ -188,7 +188,7 @@ spring:
     redis:
       flush-mode: on_save
   datasource:
-    url: jdbc:mysql://34.64.121.212:3306/cojamDB?useUnicode=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://34.64.121.212:3306/cojamDB?useUnicode=true&useSSL=false&serverTimezone=UTC&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
     username: cojam
     password: '@2cojam'
     driver-class-name: com.mysql.cj.jdbc.Driver

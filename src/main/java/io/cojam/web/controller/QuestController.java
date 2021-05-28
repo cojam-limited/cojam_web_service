@@ -6,6 +6,7 @@ import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.domain.*;
 import io.cojam.web.service.QuestService;
 import io.cojam.web.service.SeasonService;
+import io.cojam.web.service.SequenceService;
 import io.cojam.web.service.contract.ContractApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +34,9 @@ public class QuestController {
 
     @Autowired
     ContractApplicationService contractApplicationService;
+
+    @Autowired
+    SequenceService sequenceService;
 
     @GetMapping
     public String quest(Model model
@@ -87,6 +91,11 @@ public class QuestController {
         quest.setQuestKey(idx);
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
         model.addAttribute("detail", questService.getQuestDetailUser(quest));
+        try {
+            contractApplicationService.getMarketInfo(sequenceService.changeSequenceStringToBigInteger(idx,SequenceCode.TB_QUEST));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return "thymeleaf/page/quest/view";
     }
@@ -97,6 +106,7 @@ public class QuestController {
             Quest quest
             , @AuthenticationPrincipal Account account
             , @RequestParam(value = "file",required = false) MultipartFile file) throws Exception {
+        contractApplicationService.initMaster();
         return questService.saveQuest(quest,file,account);
     }
 
@@ -137,7 +147,31 @@ public class QuestController {
             , @AuthenticationPrincipal Account account) throws Exception {
         Betting betting = new Betting();
         betting.setBettingKey(bettingKey);
+        betting.setMemberKey(account.getMemberKey());
         return questService.successBetting(betting,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/rewardInfo" , method = RequestMethod.POST)
+    public ResponseDataDTO rewardInfo(
+            @NotEmpty @NotNull String bettingKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        Betting betting = new Betting();
+        betting.setBettingKey(bettingKey);
+        betting.setMemberKey(account.getMemberKey());
+        return questService.rewardInfo(betting,account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/noRewardInfo" , method = RequestMethod.POST)
+    public ResponseDataDTO noRewardInfo(
+            @NotEmpty @NotNull String bettingKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        Betting betting = new Betting();
+        betting.setBettingKey(bettingKey);
+        betting.setMemberKey(account.getMemberKey());
+        return questService.noRewardInfo(betting,account);
     }
 
 }

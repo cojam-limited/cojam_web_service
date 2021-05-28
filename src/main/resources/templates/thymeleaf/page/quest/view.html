@@ -32,7 +32,15 @@
                             </a>
                         </th:block>
                         <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
-                            <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                            <th:block th:if="${detail.imageLink} !=null and ${detail.imageLink} !=''">
+                                <a th:href="${detail.imageLink}" target="_blank">
+                                    <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                </a>
+                            </th:block>
+                            <th:block th:unless="${detail.imageLink} !=null and ${detail.imageLink} !=''">
+                                <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                            </th:block>
+
                         </th:block>
                     </th:block>
                 </p>
@@ -48,7 +56,13 @@
                     </div>
                     <p th:style="'background:url(/user/media/image?id='+${detail.fileKey}+') center no-repeat; background-size:cover;'"></p>
                     <br/>
-                    <h2><span th:text="${detail.dDay} < 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(detail.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h2>
+                    <h2 id="questEndDateTimeId"><span th:text="${detail.dDay} <= 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;</h2>
+                    <script>
+                        /*<![CDATA[*/
+                        questEndDateTime = "[[${detail.endDateTime}]]";
+                        $('#questEndDateTimeId').append(changeUtcToLocal(questEndDateTime,'YYYY.MM.DD HH:mm'))
+                        /*]]>*/
+                    </script>
                     <h3 id="oddsText"></h3>
                     <h3 id="winText"></h3>
                     <ul>
@@ -132,10 +146,17 @@
                         </h2>
                         <ul id="bettingTotalList">
                             <th:block th:if="${bettingList}!=null">
-                                <li th:each="item :${bettingList}">
+                                <li th:each="item,i :${bettingList}">
                                     <div><i class="uil uil-circle"></i><span th:class="'fontColor-'+${item.rowNum}" style="color:#8950fc;" th:text="${item.answerTitle}">Yes</span></div>
                                     <div><span th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></span> CT</div>
-                                    <div th:text="${#dates.format(item.createdDateTime,'yyyy.MM.dd hh:mm')}">Jan 13, 3:12 PM</div>
+                                    <div th:id="'betDateTimeId_'+${i.index}"></div>
+                                    <script>
+                                        /*<![CDATA[*/
+                                        betDateTimeId = "betDateTimeId_[[${i.index}]]";
+                                        betDateTime = "[[${item.createdDateTime}]]";
+                                        $('#'+betDateTimeId).html(changeUtcToLocal(betDateTime,'YYYY.MM.DD HH:mm'))
+                                        /*]]>*/
+                                    </script>
                                 </li>
                             </th:block>
                         </ul>
@@ -166,7 +187,12 @@
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Start Date</h2>
-                                <div th:text="${#dates.format(detail.approveDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'"></div>
+                                <div id="questStartDateTimeId"></div>
+                                <script>
+                                    /*<![CDATA[*/
+                                    $('#questStartDateTimeId').html(changeUtcToLocal("[[${detail.approveDateTime}]]",'MM DD YYYY , HH:mm'))
+                                    /*]]>*/
+                                </script>
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>Transaction</h2>
@@ -174,7 +200,12 @@
                             </li>
                             <li>
                                 <h2><i class="uil uil-angle-right"></i>End Date</h2>
-                                <div th:text="${#dates.format(detail.endDateTime,'MM dd yyyy , hh:mm')}+' (UTC+0)'">January 30 2021, PM 11:59 (UTC+0)</div>
+                                <div id="questEndDateTimeId2"></div>
+                                <script>
+                                    /*<![CDATA[*/
+                                    $('#questEndDateTimeId2').html(changeUtcToLocal("[[${detail.endDateTime}]]",'MM DD YYYY , HH:mm'))
+                                    /*]]>*/
+                                </script>
                             </li>
                         </ul>
                     </div>

@@ -34,7 +34,9 @@
                     <col width="12%"/>
                     <col width="18%"/>
                     <col width="*"/>
+                    <col width="18%"/>
                     <col width="6%"/>
+                    <col width="10%"/>
                 </colgroup>
                 <thead>
                 <tr>
@@ -45,7 +47,9 @@
                     <td>ID</td>
                     <td>E-mail</td>
                     <td>Wallet Address</td>
+                    <td>Join Date</td>
                     <td>Lock</td>
+                    <td>Email verification</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -70,7 +74,17 @@
                         <td th:text="${item.memberId}"></td>
                         <td th:text="${item.memberEmail}"></td>
                         <td th:text="${item.walletAddress}"></td>
+                        <td th:id="'joindate_'+${i.index}"></td>
+                        <script>
+                            /*<![CDATA[*/
+                            userJoinCreatedDateTimeId = "joindate_[[${i.index}]]";
+                            userJoinCreatedDateTime = "[[${item.createdDateTime}]]";
+                            $('#'+userJoinCreatedDateTimeId).html(changeUtcToLocal(userJoinCreatedDateTime,'YYYY-MM-DD HH:mm'))
+                            /*]]>*/
+
+                        </script>
                         <td><p th:text="${item.walletLock}?'T':'F'" th:classappend="${item.walletLock}?'true':'false'"></p></td>
+                        <td><p th:text="${item.certification}?'T':'F'" th:classappend="${item.certification}?'true':'false'"></p></td>
                     </tr>
                 </th:block>
                 </form>

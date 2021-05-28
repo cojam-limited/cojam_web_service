@@ -28,4 +28,5 @@ public class Betting {
     private int rowNum;
     private Timestamp createdDateTime;
     private String bettingAvg;
+    private String receiveAmount;
 }

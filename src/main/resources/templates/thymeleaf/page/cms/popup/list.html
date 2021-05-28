@@ -52,8 +52,23 @@
                             <h5 th:text="${item.popupTitle}"></h5>
                         </td>
                         <td th:text="${item.actived}"></td>
-                        <td th:text="${item.startDateTime}+' ~ '+${item.endDateTime}"></td>
-                        <td th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd')}"></td>
+                        <td th:id="'popStartDateTimeId_'+${i.index}"></td>
+                        <script>
+                            /*<![CDATA[*/
+                            popStartDateTimeId = "popStartDateTimeId_[[${i.index}]]";
+                            popStartDateTime = "[[${item.startDateTime}]]";
+                            popEndDateTime = "[[${item.endDateTime}]]";
+                            $('#'+popStartDateTimeId).html(changeUtcToLocal(popStartDateTime,'YYYY-MM-DD HH')+' ~ '+changeUtcToLocal(popEndDateTime,'YYYY-MM-DD HH'))
+                            /*]]>*/
+                        </script>
+                        <td th:id="'popCreateDateTimeId_'+${i.index}"></td>
+                        <script>
+                            /*<![CDATA[*/
+                            popCreateDateTimeId = "popCreateDateTimeId_[[${i.index}]]";
+                            popCreateDateTime = "[[${item.createDateTime}]]";
+                            $('#'+popCreateDateTimeId).html(changeUtcToLocal(popCreateDateTime,'YYYY-MM-DD HH:mm'));
+                            /*]]>*/
+                        </script>
                         <td>
                             <ul>
                                 <li><a th:onclick="'window.location.href = \'' + @{/cms/popup/view(idx=${item.popupKey})} + '\''"><abbr TITLE="modify"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
