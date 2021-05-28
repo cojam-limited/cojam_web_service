@@ -389,6 +389,7 @@ function removeCommas(data) {
 function changeUtcToLocal(utcDate,type){
 	let localTime = moment.utc(utcDate).toDate();
 	localTime = moment(localTime).format(type);
+
 	return localTime
 }
 
@@ -396,5 +397,6 @@ function changeUtcToLocal(utcDate,type){
 function changeLocalToUtc(localTime,type){
 	let utcTime = moment(localTime).toDate();
 	utcTime = moment(utcTime).utc().format(type);
+
 	return utcTime
 }

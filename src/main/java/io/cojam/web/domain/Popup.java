@@ -15,10 +15,12 @@ public class Popup extends Common{
     @NotNull @NotEmpty
     private String popupTitle;
     private Boolean actived;
+    private Timestamp startDateTime;
+    private Timestamp endDateTime;
     @NotNull @NotEmpty
-    private String startDateTime;
+    private String startUtcDateTime;
     @NotNull @NotEmpty
-    private String endDateTime;
+    private String endUtcDateTime;
     private String positionX;
     private String positionY;
     private String sizeX;

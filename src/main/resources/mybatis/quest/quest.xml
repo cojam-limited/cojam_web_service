@@ -9,14 +9,14 @@
             QUEST_KEY, SEASON_CATEGORY_KEY, START_DATE_TIME, END_DATE_TIME, QUEST_TITLE,
             COMPLETED, CREATOR_ADDRESS, QUEST_DESC, HOT, PENDING,
             QUEST_STATUS, MEMBER_KEY, SEASON_KEY, ANSWERS_TX, SNS_URL,
-            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE
+            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE, IMAGE_LINK
         )
         VALUES
         (
-            #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endUtcDateTime}, #{questTitle},
+            #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endDateTime}, #{questTitle},
             #{completed}, #{creatorAddress}, #{questDesc}, #{hot}, #{pending},
             #{questStatus}, #{memberKey}, #{seasonKey}, #{answersTx}, #{snsUrl},
-            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}
+            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}, #{imageLink}
         )
     </insert>
     <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
@@ -84,6 +84,7 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
+            Q.IMAGE_LINK,
             C.CATEGORY_NAME,
             S.minimum_pay
         FROM	TB_QUEST Q
@@ -147,6 +148,7 @@
             Q.CREATE_DATE_TIME,
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
+            Q.IMAGE_LINK,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -218,7 +220,9 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
+            Q.IMAGE_LINK,
             C.CATEGORY_NAME,
+            IF(now() > Q.END_DATE_TIME,true,false) AS MARKET_CLOSED,
             S.*
         FROM	TB_QUEST Q
         JOIN TB_SEASON S
@@ -346,6 +350,7 @@
             Q.CREATE_DATE_TIME,
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
+            Q.IMAGE_LINK,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -436,6 +441,7 @@
             Q.CREATE_DATE_TIME,
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
+            Q.IMAGE_LINK,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -444,6 +450,7 @@
             S.minimum_pay,
             Q.TOTAL_AMOUNT,
             A.ANSWERS_STR,
+            IF(now() > Q.END_DATE_TIME,true,false) AS MARKET_CLOSED,
             IF(DATEDIFF(now(), Q.END_DATE_TIME) > 0 OR FINISH_TX != '' OR FINISH_TX IS NOT NULL, TRUE, FALSE OR COMPLETED) AS FINISHED
         FROM	TB_QUEST Q
         JOIN TB_SEASON S
@@ -503,6 +510,7 @@
         UPDATE TB_QUEST_BETTING
         SET BETTING_STATUS = #{bettingStatus}
         ,RECEIVE_ADDRESS = #{receiveAddress}
+        ,RECEIVE_AMOUNT = #{receiveAmount}
         WHERE BETTING_KEY = #{bettingKey}
     </update>
 
@@ -576,6 +584,8 @@
             , Q.SEASON_CATEGORY_KEY
             , Q.TOTAL_AMOUNT
             , C.CATEGORY_NAME
+            , Q.COMPLETED
+            , Q.PENDING
             ,truncate((Q.TOTAL_AMOUNT
                   - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
                   - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
@@ -584,6 +594,7 @@
                   - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
                   - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
                   - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
+            , IF(B.QUEST_KEY = A.QUEST_KEY AND B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY AND A.SELECTED , TRUE, FALSE)  AS ANSWER_SELECTED
         FROM TB_QUEST_BETTING B
         JOIN TB_QUEST_ANSWER A
         ON B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY
@@ -624,6 +635,9 @@
         JOIN TB_QUEST_ANSWER A
         ON B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY
         WHERE B.BETTING_KEY = #{bettingKey}
+        <if test='memberKey != null and !memberKey.equals("")'>
+            AND B.MEMBER_KEY = #{memberKey}
+        </if>
     </select>
 
 
@@ -706,5 +720,16 @@
         WHERE A.QUEST_KEY = Q.QUEST_KEY
         AND A.QUEST_KEY = #{questKey}
         ORDER BY QUEST_ANSWER_KEY
+    </select>
+
+    <select id="getMyBettingAnswerList" parameterType="io.cojam.web.domain.QuestAnswer" resultType="io.cojam.web.domain.QuestAnswer">
+        SELECT
+            A.QUEST_ANSWER_KEY
+            ,A.ANSWER_TITLE
+            ,SELECTED
+            ,IF(A.QUEST_ANSWER_KEY = #{questAnswerKey},true,false) AS MY_ANSWER
+        FROM TB_QUEST_ANSWER A
+        WHERE A.QUEST_KEY = #{questKey}
+        ORDER BY A.QUEST_ANSWER_KEY
     </select>
 </mapper>

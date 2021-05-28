@@ -30,7 +30,7 @@
             <div class="quest-list-columns">
                 <ul id="questMainList">
                     <th:block th:if="${questMainList}!=null">
-                        <li th:each="item : ${questMainList}"
+                        <li th:each="item,i : ${questMainList}"
                             th:data-parameter1="${item.questKey}"
                             th:data-parameter2="${item.finished}"
                             th:onclick="'window.location.href = \'' + @{/user/quest/view(idx=${item.questKey})} + '\''"
@@ -42,7 +42,14 @@
                             <p>
                                 <span th:style="'background:url(/user/media/image?id='+${item.fileKey}+') center no-repeat; background-size:cover;'"></span>
                             </p>
-                            <h3><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;<th:block th:text="${#dates.format(item.endDateTime,'MM/dd HH:mm')}"></th:block>&nbsp;(UTC+0)</h3>
+                            <h3 th:id="'endDate_'+${i.index}"><span th:text="${item.dDay} < 0?'D'+${item.dDay}:'+'+${item.dDay}"></span>&nbsp;</h3>
+                            <script>
+                                /*<![CDATA[*/
+                                questEndDateTimeId = "endDate_[[${i.index}]]";
+                                questEndDateTime = "[[${item.endDateTime}]]";
+                                $('#'+questEndDateTimeId).append(changeUtcToLocal(questEndDateTime,'YYYY-MM-DD HH:mm'))
+                                /*]]>*/
+                            </script>
                             <h4 th:text="${item.questTitle}"></h4>
                             <ul>
                                 <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
@@ -101,7 +108,15 @@
                         <dl>
                             <dt>
                                 <i class="uil uil-calendar-alt"></i>&nbsp;
-                                <th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>
+                                <!--<th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>-->
+                                <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
+                                <script>
+                                    /*<![CDATA[*/
+                                    noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
+                                    noticeCreateDateTime = "[[${item.createDateTime}]]";
+                                    $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
+                                    /*]]>*/
+                                </script>
                             </dt>
                             <dd>
                                 <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>

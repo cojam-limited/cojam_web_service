@@ -26,6 +26,8 @@ public class MyVoting extends Common{
     private String categoryName;
     private String magnification;
     private String magnificationCoin;
-
+    private Boolean answerSelected;
+    private Boolean completed;
+    private Boolean pending;
 
 }

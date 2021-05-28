@@ -71,7 +71,7 @@ public class MemberController {
         ResponseDataDTO result = memberService.joinConfirmMember(memberKey,memberEmail,fpNumber);
 
         if(result.getCheck()){
-            return "<script>alert('" + result.getMessage() + "'); location.replace('/user/join/joinConfirm');</script> ";
+            return "<script>alert('Email verification is complete.'); location.replace('/user/join/joinConfirm');</script> ";
         }else{
             return "<script>alert('" + result.getMessage() + "'); location.replace('/user/home');</script> ";
         }

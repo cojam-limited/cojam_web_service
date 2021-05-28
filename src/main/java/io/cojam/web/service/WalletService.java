@@ -118,7 +118,7 @@ public class WalletService {
             transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_TRANSFER);
             transactionService.saveTransaction(transaction);
             responseDataDTO.setMessage("success");
-            responseDataDTO.setItem(new TransferDTO(receipt.getTransactionId()));
+            responseDataDTO.setItem(receipt.getTransactionId());
             responseDataDTO.setCheck(true);
         }catch (Exception e){
             e.printStackTrace();

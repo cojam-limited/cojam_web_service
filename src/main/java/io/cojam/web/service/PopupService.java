@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -36,6 +37,9 @@ public class PopupService {
         if(fileInfo!= null && fileInfo.getFileKey()!=null){
             popup.setPopupFileKey(fileInfo.getFileKey());
         }
+
+        popup.setStartDateTime(Timestamp.valueOf(popup.getStartUtcDateTime()));
+        popup.setEndDateTime(Timestamp.valueOf(popup.getEndUtcDateTime()));
 
         popupDao.savePopupInfo(popup);
         responseDataDTO.setCheck(true);
@@ -82,6 +86,10 @@ public class PopupService {
                 isFileDel=true;
             }
         }
+
+        popup.setStartDateTime(Timestamp.valueOf(popup.getStartUtcDateTime()));
+        popup.setEndDateTime(Timestamp.valueOf(popup.getEndUtcDateTime()));
+
         popupDao.updatePopupInfo(popup);
 
 
@@ -90,7 +98,7 @@ public class PopupService {
             fileService.deleteFileInfo(detail.getPopupFileKey());
         }
 
-        popupDao.updatePopupInfo(popup);
+        //popupDao.updatePopupInfo(popup);
         responseDataDTO.setCheck(true);
         responseDataDTO.setMessage("success");
         responseDataDTO.setItem(popup.getPopupKey());

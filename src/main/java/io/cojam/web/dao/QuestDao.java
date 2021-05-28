@@ -55,4 +55,6 @@ public interface QuestDao {
     int updateBettingSuccess(Betting betting);
 
     List<Question> getHomeQuestList(Question question);
+
+    List<QuestAnswer> getMyBettingAnswerList(QuestAnswer answer);
 }

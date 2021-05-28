@@ -6,6 +6,7 @@ import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.QuestDao;
 import io.cojam.web.domain.*;
+import io.cojam.web.domain.wallet.Transaction;
 import io.cojam.web.domain.wallet.TransactionReceipt;
 import io.cojam.web.klaytn.dto.TransactionStatus;
 import io.cojam.web.klaytn.service.TransactionApiService;
@@ -61,6 +62,9 @@ public class QuestService {
 
     @Autowired
     TransactionApiService transactionApiService;
+
+    @Autowired
+    TransactionService transactionService;
 
 
 
@@ -138,7 +142,7 @@ public class QuestService {
         quest.setCompleted(false);
         quest.setHot(false);
         quest.setPending(false);
-        //quest.setEndDateTime(Timestamp.valueOf(quest.getEndUtcDateTime()));
+        quest.setEndDateTime(Timestamp.valueOf(quest.getEndUtcDateTime()));
         quest.setQuestStatus(QuestCode.QUEST_STATUS_ONGOING);
         questDao.saveQuest(quest);
         if(quest.getAnswers() != null){
@@ -235,7 +239,7 @@ public class QuestService {
                     * contract 호출
                     *
                     */
-                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
                     BigInteger creator_pay = Convert.toWei(String.valueOf(season.getCreatorPay()), Convert.Unit.ETHER).toBigInteger();
 
                     TransactionReceipt transactionReceipt = contractApplicationService.draftMarket(questKeyBigInteger,detail.getCreatorAddress(),detail.getQuestTitle(),creator_pay,new BigInteger(season.getCreatorFee()), new BigInteger(season.getCojamFee()), new BigInteger(season.getCharityFee()), new ArrayList<>());
@@ -401,7 +405,8 @@ public class QuestService {
                 System.out.println(String.format("answerKey : s",answerKey));
                 bigIntegerList.add(new BigInteger(answer.getQuestAnswerKey()));
             }
-            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+
             int maxCount = 15;
             TransactionReceipt transactionReceipt = null;
             if (bigIntegerList.size() > maxCount) {
@@ -494,7 +499,7 @@ public class QuestService {
             /*
              * approveMarket Contract 호출
              */
-            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
             TransactionReceipt transactionReceipt = contractApplicationService.approveMarket(questKeyBigInteger);
 
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
@@ -604,7 +609,7 @@ public class QuestService {
             /*
              * finishMarket Contract 호출
              */
-            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
             TransactionReceipt transactionReceipt = contractApplicationService.finishMarket(questKeyBigInteger);
 
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
@@ -639,6 +644,13 @@ public class QuestService {
 
         Quest detail = questDao.getQuestDetail(betting.getQuestKey());
         if(detail != null){
+
+            if(detail.getMarketClosed()){
+                response.setCheck(false);
+                response.setMessage("Closed quest.");
+                return response;
+            }
+
             QuestAnswer aParam = new QuestAnswer();
             aParam.setQuestAnswerKey(betting.getQuestAnswerKey());
             QuestAnswer answer = questDao.getQuestAnswerDetail(aParam);
@@ -710,11 +722,14 @@ public class QuestService {
             questDao.saveBetting(betting);
 
             //Contract 호출
-            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
 
-            BigInteger questAnswerKeyBigInteger = new BigInteger(answer.getQuestAnswerKey().replace(SequenceCode.TB_QUEST_ANSWER,""));
+
+            BigInteger questAnswerKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(answer.getQuestAnswerKey(),SequenceCode.TB_QUEST_ANSWER);
+
+
             BigInteger amount = Convert.toWei(String.valueOf(betting.getBettingCoin()), Convert.Unit.ETHER).toBigInteger();
-            System.out.println(amount);
+
             TransactionReceipt resultApprove = contractApplicationService.approve(wallet,myConfig.getMarketAddress(),amount);
 
 
@@ -727,6 +742,14 @@ public class QuestService {
                 answer.setTotalAmount("0");
                 questDao.updateQuestAnswer(answer);
                 questDao.updateQuestTotalAmount(detail);
+                //SAVE TRANSACTION
+                Transaction transaction = new Transaction();
+                transaction.setAmount(amount+"");
+                transaction.setRecipientAddress(transactionReceipt.getToAddress());
+                transaction.setSpenderAddress(wallet.getWalletAddress());
+                transaction.setTransactionId(transactionReceipt.getTransactionId());
+                transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_BETTION_SEND);
+                transactionService.saveTransaction(transaction);
             }else{
                 throw new Exception("Betting fail");
             }
@@ -770,6 +793,15 @@ public class QuestService {
                 return response;
             }
 
+            if (QuestCode.QUEST_STATUS_TYPE_SUCCESS.equals(detail.getQuestStatus())) {
+                if(!answer.getSelected()){
+                    response.setCheck(false);
+                    response.setMessage("No selected answer.");
+                    return response;
+                }
+            }
+
+
             Wallet wallet = walletService.getWalletInfo(account.getMemberKey());
             if(wallet == null){
                 response.setCheck(false);
@@ -786,11 +818,7 @@ public class QuestService {
             TransactionStatus transactionStatus;
             String status;
 
-            if(!StringUtils.isBlank(betting.getReceiveAddress())){
-                response.setCheck(false);
-                response.setMessage("success betting!");
-                return response;
-            }
+
 
             if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
                 transactionStatus = transactionApiService.getTransactionStatusById(detail.getAdjournTx());
@@ -808,15 +836,64 @@ public class QuestService {
                 return response;
             }
 
+            if(!StringUtils.isBlank(betting.getReceiveAddress())){
+                TransactionStatus bettingStatus = transactionApiService.getTransactionStatusById(betting.getReceiveAddress());
+                String bStatus = bettingStatus.getStatus();
+                if (WalletCode.TRANSACTION_STATUS_CONFIRM.equals(bStatus)) {
+                    response.setCheck(false);
+                    response.setMessage("success betting!");
+                    return response;
+                }else if(WalletCode.TRANSACTION_STATUS_REQUESTED.equals(bStatus) || WalletCode.TRANSACTION_STATUS_PENDING.equals(bStatus)){
+                    response.setCheck(false);
+                    response.setMessage("Reward is in progress.");
+                    return response;
+                }
+            }
+
             //Contract 호출
-            BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+            BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+
+
 
             TransactionReceipt transactionReceipt = contractApplicationService.receiveToken(wallet,questKeyBigInteger,new BigInteger(betting.getBettingKey()));
 
             if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
+                double r_coin = 0;
+                if (QuestCode.QUEST_STATUS_TYPE_SUCCESS.equals(detail.getQuestStatus())) {
+                    // 1. Get Total CT
+                    float market_total_ct = Float.parseFloat(detail.getTotalAmount());
+                    // 2. Get Answer Total CT
+                    float answer_total_ct = Float.parseFloat(answer.getTotalAmount());
+
+                    // 3. Get Fee
+                    double cojam_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCojamFee()) / 100);
+                    double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
+                    double charity_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCharityFee()) / 100);
+                    double real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
+                    double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
+
+
+                    float b_coin = Long.parseLong(betting.getBettingCoin());
+                    r_coin = Math.floor(b_coin * magnification / 100);
+                }else if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
+                    r_coin = Long.parseLong(betting.getBettingCoin());
+                }
+
+
                 betting.setReceiveAddress(transactionReceipt.getTransactionId());
                 betting.setBettingStatus(QuestCode.BETTING_STATUS_SUCCESS);
-                questDao.updateBetting(betting);
+                betting.setReceiveAmount(String.valueOf(r_coin));
+                questDao.updateBettingSuccess(betting);
+
+                //SAVE TRANSACTION
+                Transaction transaction = new Transaction();
+                transaction.setAmount(Convert.toWei(String.valueOf(r_coin), Convert.Unit.ETHER).toString());
+                transaction.setRecipientAddress(wallet.getWalletAddress());
+                transaction.setSpenderAddress(myConfig.getMarketAddress());
+                transaction.setTransactionId(transactionReceipt.getTransactionId());
+                transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_BETTION_RECEIVE);
+                transactionService.saveTransaction(transaction);
+
             }else{
                 throw new Exception("Betting fail");
             }
@@ -827,6 +904,135 @@ public class QuestService {
             return response;
         }
 
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+    @Transactional
+    public ResponseDataDTO rewardInfo(Betting betting,Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+        if(StringUtils.isBlank(betting.getBettingKey())){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        Betting bettingDetail = questDao.getBettingDetail(betting);
+        if(bettingDetail == null){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        betting = bettingDetail;
+
+        Quest detail = questDao.getQuestDetail(betting.getQuestKey());
+        if(detail != null){
+            QuestAnswer aParam = new QuestAnswer();
+            aParam.setQuestAnswerKey(betting.getQuestAnswerKey());
+            QuestAnswer answer = questDao.getQuestAnswerDetail(aParam);
+            if(answer == null){
+                response.setCheck(false);
+                response.setMessage("No data.");
+                return response;
+            }
+
+
+            if(!detail.getQuestStatus().equals(QuestCode.QUEST_STATUS_SUCCESS) && !detail.getQuestStatus().equals(QuestCode.QUEST_STATUS_ADJOURN)){
+                response.setCheck(false);
+                response.setMessage("Market is not finished.");
+                return response;
+            }
+
+
+            double r_coin = 0;
+            if (QuestCode.QUEST_STATUS_TYPE_SUCCESS.equals(detail.getQuestStatus())) {
+                // 1. Get Total CT
+                float market_total_ct = Float.parseFloat(detail.getTotalAmount());
+                // 2. Get Answer Total CT
+                float answer_total_ct = Float.parseFloat(answer.getTotalAmount());
+
+                // 3. Get Fee
+                double cojam_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCojamFee()) / 100);
+                double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
+                double charity_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCharityFee()) / 100);
+                double real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
+                double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
+
+
+                float b_coin = Long.parseLong(betting.getBettingCoin());
+                r_coin = Math.floor(b_coin * magnification / 100);
+                responseMap.put("type","S");
+
+            }else if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
+                r_coin = Long.parseLong(betting.getBettingCoin());
+                responseMap.put("type","A");
+            }
+            responseMap.put("betQuestKey",detail.getQuestKey());
+            responseMap.put("rewardCoin",r_coin);
+
+
+
+        }else {
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        response.setItem(responseMap);
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+
+    @Transactional
+    public ResponseDataDTO noRewardInfo(Betting betting,Account account) throws Exception {
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+        if(StringUtils.isBlank(betting.getBettingKey())){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        Betting bettingDetail = questDao.getBettingDetail(betting);
+        if(bettingDetail == null){
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        betting = bettingDetail;
+
+        Quest detail = questDao.getQuestDetail(betting.getQuestKey());
+        if(detail != null){
+            QuestAnswer aParam = new QuestAnswer();
+            aParam.setQuestAnswerKey(betting.getQuestAnswerKey());
+            QuestAnswer answer = questDao.getQuestAnswerDetail(aParam);
+            if(answer == null){
+                response.setCheck(false);
+                response.setMessage("No data.");
+                return response;
+            }
+
+
+            if(!detail.getQuestStatus().equals(QuestCode.QUEST_STATUS_SUCCESS)){
+                response.setCheck(false);
+                response.setMessage("Market is not finished.");
+                return response;
+            }
+
+
+
+            responseMap.put("betQuestKey",detail.getQuestKey());
+            responseMap.put("answerList",questDao.getMyBettingAnswerList(answer));
+
+
+
+        }else {
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+        response.setItem(responseMap);
         response.setCheck(true);
         response.setMessage("success");
         return response;
@@ -887,7 +1093,7 @@ public class QuestService {
                     json.put("real_total_ct", real_total_ct);
                     json.put("answer_total_ct", answer_total_ct);
                     json.put("market_total_ct", market_total_ct);
-                    json.put("COJAM_CHARITY_ADDRESS", "COJAM_CHARITY_ADDRESS");
+                    json.put("COJAM_CHARITY_ADDRESS", myConfig.getCharityAddress());
 
                     // 5. Get Scale of Betting
                     double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
@@ -1005,9 +1211,9 @@ public class QuestService {
                             return response;
                         }
                         //cnotract successMarket 호출
-                        BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                        BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+                        BigInteger questAnswerKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(selectedAnswerKey,SequenceCode.TB_QUEST_ANSWER);
 
-                        BigInteger questAnswerKeyBigInteger = new BigInteger(selectedAnswerKey.replace(SequenceCode.TB_QUEST_ANSWER,""));
                         TransactionReceipt transactionReceipt= contractApplicationService.successMarket(questKeyBigInteger,questAnswerKeyBigInteger);
                         if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null && !StringUtils.isBlank(transactionReceipt.getTransactionId())){
                             detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_SUCCESS);
@@ -1017,6 +1223,23 @@ public class QuestService {
                             questDao.updateQuestStatus(detail);
                             selectedAnswer.setSelected(true);
                             questDao.updateQuestAnswer(selectedAnswer);
+
+                            // 1. Get Total CT
+                            float market_total_ct = Float.parseFloat(detail.getTotalAmount());
+
+                            // 3. Get Fee
+                            double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
+
+                            //SAVE TRANSACTION
+                            Transaction transaction = new Transaction();
+                            transaction.setAmount(Convert.toWei(String.valueOf(creator_ct), Convert.Unit.ETHER).toString());
+                            transaction.setRecipientAddress(detail.getCreatorAddress());
+                            transaction.setSpenderAddress(myConfig.getMarketAddress());
+                            transaction.setTransactionId(transactionReceipt.getTransactionId());
+                            transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_CREATOR_FEE);
+                            transactionService.saveTransaction(transaction);
+
+
                             response.setCheck(true);
                             Member member = new Member();
                             member.setMemberKey(detail.getMemberKey());
@@ -1091,7 +1314,9 @@ public class QuestService {
                     }
 
                     //cnotract adjournMarket 호출
-                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+
+
                     TransactionReceipt transactionReceipt= contractApplicationService.adjournMarket(questKeyBigInteger);
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
                         detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_ADJOURN);
@@ -1193,7 +1418,9 @@ public class QuestService {
                         return response;
                     }
                     //cnotract retrieveMarket 호출
-                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+
+
                     contractApplicationService.setAccount("remainAccount");
                     TransactionReceipt transactionReceipt= contractApplicationService.retrieveMarket(questKeyBigInteger);
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){
@@ -1276,7 +1503,8 @@ public class QuestService {
                         return response;
                     }
                     //cnotract retrieveMarket 호출
-                    BigInteger questKeyBigInteger = new BigInteger(detail.getQuestKey().replace(SequenceCode.TB_QUEST,""));
+                    BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
+
                     contractApplicationService.setAccount("remainAccount");
                     TransactionReceipt transactionReceipt= contractApplicationService.retrieveMarket(questKeyBigInteger);
                     if(transactionReceipt!=null && transactionReceipt.getTransactionId() !=null){

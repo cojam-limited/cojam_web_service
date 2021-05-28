@@ -14,4 +14,5 @@ public class QuestAnswer {
     private String totalAmount;
     private String userCnt;
     private String rowNum;
+    private Boolean myAnswer;
 }

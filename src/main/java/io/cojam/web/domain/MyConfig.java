@@ -28,8 +28,14 @@ public class MyConfig {
     @Value("${app.sdk-enclave.recommendAddress}")
     private String recommendAddress;
 
+    @Value("${app.sdk-enclave.charityAddress}")
+    private String charityAddress;
+
+
     @Value("${myConfig.joinParameterKey}")
     private String joinParameterKey;
 
+    @Value("${spring.profiles.active}")
+    private String profile;
 
 }
