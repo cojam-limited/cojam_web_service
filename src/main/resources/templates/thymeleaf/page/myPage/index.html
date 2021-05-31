@@ -11,7 +11,7 @@
 <div layout:fragment="content">
     <!-- 타이틀영역 -->
     <div class="title-area">
-        My Prediction
+        MYPAGE
     </div>
     <!-- 타이틀영역 끝 -->
     <th:block  th:replace="thymeleaf/fragment/popup :: modalSendCt"></th:block>
@@ -36,7 +36,7 @@
             <div><i class="uil uil-wallet"></i> Wallet balance : <span id="myWalletBalance"></span></div>
         </dt>
         <dd>
-            <a href="#" class="btn-red">Click to be Reward!</a>
+            <a href="javascript:alert('Coming Soon.')" class="btn-red">KLAY swap</a>
             <th:block th:if="${!member.walletLock}">
                 <a href="#" class="btn-purple" data-izimodal-open="#modalSendCT" data-izimodal-transitionin="comingIn">CT Send</a>
             </th:block>
@@ -74,7 +74,7 @@
                 <th:block th:if="${myVotingList}!=null">
                     <ul th:each="item : ${myVotingList}" >
                         <li>
-                            <span>Category : </span>
+                            <span>Reward : </span>
                             <th:block th:if="${item.answerSelected}">
                                 <span
                                         th:data-detailBettingtKey="${item.bettingKey}"

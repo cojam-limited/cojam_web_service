@@ -647,7 +647,7 @@ public class QuestService {
 
             if(detail.getMarketClosed()){
                 response.setCheck(false);
-                response.setMessage("Closed quest.");
+                response.setMessage("Voting is closed.");
                 return response;
             }
 

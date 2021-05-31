@@ -12,7 +12,7 @@
                 <div>
                     <a href="/user/home">Home</a>
                     <a href="/user/quest">Quest</a>
-                    <a href="/user/service">Service</a>
+                    <a href="/user/community">Community</a>
                     <a href="/user/about">About</a>
                     <a href="/user/notice">Notice</a>
                 </div>
@@ -108,10 +108,10 @@
                 <p><i class="uil uil-file-question-alt"></i></p>
                 <div>Quest</div>
             </li>
-            <li onclick="location.href='/user/service';"
-                th:classappend="${#strings.contains(currentPage, '/user/service')}?'active':''">
+            <li onclick="location.href='/user/community';"
+                th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
                 <p><i class="uil uil-book"></i></p>
-                <div>Service</div>
+                <div>Community</div>
             </li>
             <li onclick="location.href='/user/about';"
                 th:classappend="${#strings.contains(currentPage, '/user/about')}?'active':''">

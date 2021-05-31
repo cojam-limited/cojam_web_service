@@ -45,12 +45,7 @@ public class HomeController {
         return "thymeleaf/page/home/index :: #noticeTop3";
     }
 
-    @RequestMapping(value = "/user/home/question",method = RequestMethod.POST)
-    @Cacheable(value = "question" ,cacheManager = "userCacheManager")
-    public String question(Model model) {
-        model.addAttribute("questionList",questionService.getHomeQuestionList());
-        return "thymeleaf/page/home/index :: #questionList";
-    }
+
 
     @RequestMapping(value = "/user/home/seasonInfo",method = RequestMethod.POST)
     @Cacheable(value = "seasonInfo" ,cacheManager = "userCacheManager")
