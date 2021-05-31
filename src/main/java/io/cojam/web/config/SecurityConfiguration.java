@@ -83,7 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ,"/user/quest"
                         ,"/user/quest/list"
                         ,"/user/quest/seasonInfo"
-                        ,"/user/service"
+                        ,"/user/community/**"
                         ,"/user/about/**"
                         ,"/user/notice/**"
                         ,"/user/idFind/**"

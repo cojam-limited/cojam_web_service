@@ -56,11 +56,11 @@
                     </div>
                     <p th:style="'background:url(/user/media/image?id='+${detail.fileKey}+') center no-repeat; background-size:cover;'"></p>
                     <br/>
-                    <h2 id="questEndDateTimeId"><span th:text="${detail.dDay} <= 0?'D'+${detail.dDay}:'+'+${detail.dDay}"></span>&nbsp;</h2>
+                    <h2 id="questEndDateTimeId"><span>Voting Ends</span>&nbsp;</h2>
                     <script>
                         /*<![CDATA[*/
                         questEndDateTime = "[[${detail.endDateTime}]]";
-                        $('#questEndDateTimeId').append(changeUtcToLocal(questEndDateTime,'YYYY.MM.DD HH:mm'))
+                        $('#questEndDateTimeId').append(changeUtcToLocal(questEndDateTime,'YYYY.MM.DD HH:mm(UTCZ)'))
                         /*]]>*/
                     </script>
                     <h3 id="oddsText"></h3>

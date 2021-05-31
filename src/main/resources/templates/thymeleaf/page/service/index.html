@@ -9,50 +9,38 @@
 
 
 <div layout:fragment="content">
-    <script>
-        //alert("coming soon.")
-        //window.location='/user/home';
-    </script>
+
     <!-- 타이틀영역 -->
     <div class="title-area">
-        Cojam Service
+        Community
     </div>
     <!-- 타이틀영역 끝 -->
-
+    <div class="main-qna" th:disabled="${questionList} == null">
+        <div>
+            <h2>Q&A</h2>
+            <h3>If you have any other questions, please feel free to ask us!</h3>
+            <div class="qna_list" id="questionList">
+                <div th:each="item : ${questionList}">
+                    <ul>
+                        <li><i class="xi-help-o"></i></li>
+                        <li th:text="${item.question}"></li>
+                        <li><i class="xi-plus"></i></li>
+                    </ul>
+                    <dl>
+                        <dt><i class="xi-comment-o"></i></dt>
+                        <dd>
+                            <h2>The answer is.</h2>
+                            <div th:utext="${item.answer}"></div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-top-round">
         <!-- 서비스 -->
         <div class="service-content1">
-            <h2>Whitepapers</h2>
-            <p>Click your country to download the white paper for each country.</p>
-            <ul class="sc1-top">
-                <li>
-                    <p><img src="../../assets/image/content/service_icn04.png" alt=""></p>
-                    <h3>COJAM<br>WHTIEPAPERS</h3>
-                    <p onclick="window.open('/assets/pdf/COJAM WP_v2.0.pdf');"><img src="../../assets/image/content/service_icn09.png" alt=""> KOR DOWNLOAD <i class="uil uil-import"></i></p>
-                </li>
-                <li>
-                    <p><img src="../../assets/image/content/service_icn04.png" alt=""></p>
-                    <h3>COJAM<br>WHTIEPAPERS</h3>
-                    <p onclick="window.open('/assets/pdf/COJAM WP_v2.0_EN.pdf');"><img src="../../assets/image/content/service_icn06.png" alt="">	ENG DOWNLOAD <i class="uil uil-import"></i></p>
-                </li>
-                <li>
-                    <p><img src="../../assets/image/content/service_icn04.png" alt=""></p>
-                    <h3>COJAM<br>WHTIEPAPERS</h3>
-                    <p onclick="window.open('/assets/pdf/COJAM WP_v2.0_TH.pdf');"><img src="../../assets/image/content/service_icn11.png" alt=""> THAI DOWNLOAD <i class="uil uil-import"></i></p>
-                </li>
-            </ul>
-            <ul class="sc1-bottom">
-                <li>
-                    <p><img src="../../assets/image/content/service_icn04.png" alt=""></p>
-                    <h3>COJAM<br>WHTIEPAPERS</h3>
-                    <p onclick="window.open('/assets/pdf/COJAM WP_v2.0_CN.pdf');"><img src="../../assets/image/content/service_icn08.png" alt=""> CHN DOWNLOAD <i class="uil uil-import"></i></p>
-                </li>
-                <li>
-                    <p><img src="../../assets/image/content/service_icn04.png" alt=""></p>
-                    <h3>COJAM<br>WHTIEPAPERS</h3>
-                    <p onclick="window.open('/assets/pdf/COJAM WP_v2.0_JP.pdf');"><img src="../../assets/image/content/service_icn10.png" alt=""> JPN DOWNLOAD <i class="uil uil-import"></i></p>
-                </li>
-            </ul>
+            <!-- 질문답변 -->
         </div>
         <div class="service-content2" style="display: none">
             <h2>How to use Prediction Ground COJAM</h2>
@@ -121,7 +109,7 @@
                     </div>
                     <div>
                         <h3> Results and Calculation </h3>
-                        <p>When the results are released reporters who induced the correct answer and participants who answered the correct answer will be reward.</p>
+                        <p>When the results are released reporters who induced the correct answer and participants who answered the correct answer will be rewarded.</p>
                     </div>
                 </li>
             </ul>
@@ -159,6 +147,26 @@
     <th:block layout:fragment="script">
         <script>
             $("body").addClass("bg-service");
+            $(document).ready(function (){
+                fnGetQuestionList();
+            });
+
+            function fnGetQuestionList(){
+                ajaxView("/user/community/question","POST",null,"questionList");
+            }
+
+            $(document).on('click','.qna_list > div',function (){
+                const index = $('.qna_list > div').index(this);
+                if($('.qna_list > div').eq(index).find('.xi-plus') && $('.qna_list > div').eq(index).find('.xi-plus').length > 0){
+                    $('.qna_list > div > dl').eq(index).slideDown(300, 'easeOutQuad');
+                    $('.qna_list > div > ul').eq(index).css({ background : '#fff3f3' });
+                    $('.qna_list > div').eq(index).find('.xi-plus').removeClass('xi-plus').addClass('xi-minus')
+                }else {
+                    $('.qna_list > div > dl').eq(index).slideUp(300, 'easeOutQuad');
+                    $('.qna_list > div > ul').eq(index).css({ background : '#fff' });
+                    $('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
+                }
+            });
         </script>
     </th:block>
 </div>
