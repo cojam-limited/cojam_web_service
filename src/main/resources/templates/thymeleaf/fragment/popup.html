@@ -370,7 +370,8 @@
                         Creator Fee : <span th:text="${#numbers.formatInteger(seasonInfo.creatorFee,0,'COMMA')}+'%'"></span><br />
                         Creator Pay : <span th:text="${#numbers.formatInteger(seasonInfo.creatorPay,0,'COMMA')}+'CT'"></span><br />
                         Minimum Pay : <span th:text="${#numbers.formatInteger(seasonInfo.minimumPay,0,'COMMA')}+'CT'"></span><br />
-                        Maximum Pay : <span th:text="${#numbers.formatInteger(seasonInfo.maximumPay,0,'COMMA')}+'CT'"></span>
+                        Maximum Pay : <span th:text="${#numbers.formatInteger(seasonInfo.maximumPay,0,'COMMA')}+'CT'"></span><br />
+                        Minimum Transfer : <span th:text="${#numbers.formatInteger(seasonInfo.transferPay,0,'COMMA')}+'CT'"></span>
                     </div>
                 </div>
             </th:block>
@@ -1544,7 +1545,7 @@
                             <span id="rewardAreaCT"></span>
                         </li>
                         <li style="text-align: center;margin: 30px;">
-                            <img src="/assets/image/content/coin.png" alt="" width="100%">
+                            <img id="rewardTypeImg" src="" alt="" width="100%">
                         </li>
                         <li style="text-align: center;">
                             <!--<span>Rewarded at 2021-03-23 11:22</span>-->
@@ -1562,6 +1563,7 @@
         <script>
             let betKey = '';
             let betQuestKey='';
+            let rewardType='';
             $(document).ready(function(){
                 $("#modalReward").iziModal({
                     width : '500px',
@@ -1573,8 +1575,14 @@
                                 const item = data.item;
                                 betQuestKey =item.betQuestKey;
                                 $('#rewardAreaCT').html(item.rewardCoin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
-                                modal.stopLoading();
+
+                                if(rewardType =='S'){
+                                    $('#rewardTypeImg').attr('src','/assets/image/content/coin.png');
+                                }else {
+                                    $('#rewardTypeImg').attr('src','/assets/image/content/adjourn.png')
+                                }
                                 $('#rewardAreaS').show();
+                                modal.stopLoading();
                             }else{
                                 toastr.error(data.message);
                                 $("#modalReward").iziModal('close');
@@ -1664,7 +1672,7 @@
                                     }
 
                                     if(!element.selected){
-                                        html +='(your)'
+                                        html +='(your Answer)'
                                     }
 
                                     html +='</span>';

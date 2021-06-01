@@ -170,6 +170,14 @@ public class GroundController {
         return questService.pendingMarket(questKey,account);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/unpending" , method = RequestMethod.POST)
+    public ResponseDataDTO unPending(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.unPendingMarket(questKey,account);
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/invalid" , method = RequestMethod.POST)

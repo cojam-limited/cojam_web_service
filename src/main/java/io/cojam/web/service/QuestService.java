@@ -304,6 +304,35 @@ public class QuestService {
     }
 
     @Transactional
+    public ResponseDataDTO unPendingMarket(String questKey,Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        Quest detail = questDao.getQuestDetail(questKey);
+
+        if(detail != null){
+            if(!detail.getPending()){
+                response.setCheck(false);
+                response.setMessage("It is already unpended.");
+                return response;
+            }else{
+                detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_UNPEND);
+                detail.setUpdateMemberKey(account.getMemberKey());
+                questDao.updateQuestStatus(detail);
+                response.setCheck(true);
+                response.setMessage("success");
+            }
+        }else {
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+    @Transactional
     public ResponseDataDTO invalidMarket(String questKey,String description,Account account){
         ResponseDataDTO response = new ResponseDataDTO();
 
@@ -330,6 +359,15 @@ public class QuestService {
                     Mail mail = new Mail();
                     String message = String.format("[%s] is invalid. <br>",detail.getQuestTitle());
                     message +=String.format("Look for another chance! %s",description);
+                    message +="\n";
+                    message += "COJAM LIMITED";
+                    message +="\n";
+                    message += "E-Mail : ask@cojam.io";
+                    message +="\n";
+                    message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+                    message +="\n";
+                    message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+                    message +="\n";
                     mail.setMessage(message);
                     mail.setTitle("Your Market is Invalid");
                     try {
@@ -519,6 +557,15 @@ public class QuestService {
                     String message = String.format("[%s] is approved. <br>",detail.getQuestTitle());
                     message += "Congratulations! <br>";
                     message +=String.format("Approve Transaction Address <a href ='%s'>%s</a>",myConfig.getKlaytnScpe()+"/account/"+detail.getApproveTx(),detail.getApproveTx());
+                    message +="\n";
+                    message += "COJAM LIMITED";
+                    message +="\n";
+                    message += "E-Mail : ask@cojam.io";
+                    message +="\n";
+                    message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+                    message +="\n";
+                    message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+                    message +="\n";
                     mail.setMessage(message);
                     mail.setTitle("Your Market is Approved!");
                     try {
@@ -698,7 +745,7 @@ public class QuestService {
 
             if(Float.parseFloat(ballance)<Float.parseFloat(betting.getBettingCoin())){
                 response.setCheck(false);
-                response.setMessage("Not enough 'CT' Charge it, please!");
+                response.setMessage("Please check your balance.");
                 return response;
             }
 
@@ -708,12 +755,12 @@ public class QuestService {
 
             if (bettingCoin < l_minimum) {
                 response.setCheck(false);
-                response.setMessage("You have to pay more CT than the minimum number of Voting. (Minimum : " + l_minimum + "CT)");
+                response.setMessage("You have to vote more CT than the minimum number of voting. (Minimum : " + l_minimum + "CT)");
                 return response;
             }
             if (bettingCoin > l_maximum) {
                 response.setCheck(false);
-                response.setMessage("You have to pay less CT than the maximum number of Voting. (Maximum : " + l_maximum + "CT)");
+                response.setMessage("You have to vote more CT than the maximum number of voting. (Minimum : " + l_maximum + "CT)");
                 return response;
             }
 
@@ -1251,6 +1298,15 @@ public class QuestService {
                                 message +="Congratulations! <br>";
                                 message +=String.format("Selected Answer is [%s] <br>",selectedAnswer.getAnswerTitle());
                                 message +=String.format("Success Transaction Address <a href ='%s'>%s</a>",myConfig.getKlaytnScpe()+"/account/"+detail.getSuccessTx(),detail.getSuccessTx());
+                                message +="\n";
+                                message += "COJAM LIMITED";
+                                message +="\n";
+                                message += "E-Mail : ask@cojam.io";
+                                message +="\n";
+                                message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+                                message +="\n";
+                                message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+                                message +="\n";
                                 mail.setMessage(message);
                                 mail.setTitle("Your Market is Success!");
                                 try {
@@ -1334,6 +1390,15 @@ public class QuestService {
                             Mail mail = new Mail();
                             String message = String.format("[%s] is adjourn!. <br>",detail.getQuestTitle());
                             message +="Look for another chance! <br>"+adjournDesc;
+                            message +="\n";
+                            message += "COJAM LIMITED";
+                            message +="\n";
+                            message += "E-Mail : ask@cojam.io";
+                            message +="\n";
+                            message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+                            message +="\n";
+                            message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+                            message +="\n";
                             mail.setMessage(message);
                             mail.setTitle("Your Market is Adjourn!");
                             try {

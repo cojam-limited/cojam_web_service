@@ -246,6 +246,9 @@
                 <when test='statusType.equals("P")'>
                     ,PENDING = true
                 </when>
+                <when test='statusType.equals("UP")'>
+                    ,PENDING = false
+                </when>
                 <when test='statusType.equals("I")'>
                     ,QUEST_STATUS = #{questStatus}
                     ,QUEST_DESC = #{questDesc}

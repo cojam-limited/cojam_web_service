@@ -790,10 +790,10 @@
 .notice-tab a.active {color:#fff; background:#8950fc; box-shadow:inset 0 0 5px rgba(0,0,0,0.4);}
 
 @media all and (max-width:479px) {
-  .notice-tab a {margin:0 3px; padding:11px 35px; font-size:13px; line-height:13px;}
+  .notice-tab a {margin:0 3px; padding:11px 21px; font-size:13px; line-height:13px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
-  .notice-tab a {margin:0 3px; padding:11px 35px; font-size:13px; line-height:13px;}
+  .notice-tab a {margin:0 3px; padding:11px 21px; font-size:13px; line-height:13px;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
 
@@ -995,7 +995,7 @@
 .mc-votings > div > ul > li > ul li.ing h2 {color:#ef168f;}
 .mc-votings > div > ul > li > ul li.complete span {background:#8950fc;}
 .mc-votings > div > ul > li > ul li.complete h2 {color:#8950fc;}
-.mc-votings > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
+.mc-votings > div > ul > li > p {position:absolute; width:90%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
 
 .mc-votings > div > ul > li > ol {display:flex; justify-content:space-between; align-items:center; border:#e5e5e5 1px solid; border-radius:5px; overflow:hidden;}
 .mc-votings > div > ul > li > ol.fourstep li {width:25%;}
@@ -1023,7 +1023,7 @@
 .mc-grounds > div > ul > li > ul li.ing h2 {color:#ef168f;}
 .mc-grounds > div > ul > li > ul li.complete span {background:#8950fc;}
 .mc-grounds > div > ul > li > ul li.complete h2 {color:#8950fc;}
-.mc-grounds > div > ul > li > p {position:absolute; width:100%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
+.mc-grounds > div > ul > li > p {position:absolute; width:90%; height:100%; padding-top:3px; font-weight:700; font-size:14px; color:#fff; background:rgba(0,0,0,0.7);}
 .mc-grounds > div > ul > li > ol {display:flex; justify-content:space-between; align-items:center; border:#e5e5e5 1px solid; border-radius:5px; overflow:hidden;}
 .mc-grounds > div > ul > li > ol.fourstep li {width:25%;}
 .mc-grounds > div > ul > li > ol li {width:20%; padding:8px 0; text-align:center; border-left:#e5e5e5 1px solid;}

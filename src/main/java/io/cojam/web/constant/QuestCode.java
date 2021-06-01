@@ -11,6 +11,7 @@ public class QuestCode {
 
     public static final String QUEST_STATUS_TYPE_DRAFT = "D";
     public static final String QUEST_STATUS_TYPE_PEND = "P";
+    public static final String QUEST_STATUS_TYPE_UNPEND = "UP";
     public static final String QUEST_STATUS_TYPE_INVALID = "I";
     public static final String QUEST_STATUS_TYPE_ANSWER = "A";
     public static final String QUEST_STATUS_TYPE_APPROVE = "AP";

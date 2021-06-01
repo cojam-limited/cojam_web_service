@@ -92,7 +92,7 @@ public class WalletService {
             }
 
             if(balance.compareTo(request.getAmount()) == -1){
-                responseDataDTO.setMessage("There is not enough balance.");
+                responseDataDTO.setMessage("Please check your balance.");
                 responseDataDTO.setCheck(false);
                 return responseDataDTO;
             }
