@@ -21,7 +21,7 @@
                 <!-- 로그인 했을때 -->
                 <h2>
                     <i class="uil uil-user-circle"></i>
-                    <th:block sec:authentication="principal.memberName"></th:block>
+                    <th:block sec:authentication="principal.memberId"></th:block>
                     <span id="myToken"></span>
                     <script>
                         $.ajax({
@@ -90,6 +90,7 @@
             </dd>
         </dl>
         <ul sec:authorize="isAuthenticated()" id="mobileMyTokenView">
+            <li><i class="uil uil-user-circle"></i> <th:block sec:authentication="principal.memberId"></th:block></li>
             <li><i class="uil uil-coins"></i> <span id="mobileMyToken"></span></li>
             <li onclick="$('#mobileMyTokenView').hide();"><i class="uil uil-times-circle"></i></li>
         </ul>
