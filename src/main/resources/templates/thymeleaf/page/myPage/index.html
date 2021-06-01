@@ -84,7 +84,7 @@
                             <th:block th:if="${item.answerSelected}">
                                 <span
                                         th:data-detailBettingtKey="${item.bettingKey}"
-                                        th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                        th:onclick="fnReward('S',this.getAttribute('data-detailBettingtKey'))"
                                       style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #ef168f;"
                                 >
                                 </span>
@@ -100,7 +100,7 @@
                                     <th:block th:unless="${item.questStatus == 'SUCCESS'}">
                                         <span th:data-detailBettingtKey="${item.bettingKey}"
                                               th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
-                                              style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #999999;"
+                                              style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #08298A;"
                                         ></span>
                                     </th:block>
 
@@ -225,7 +225,7 @@
                                             <h2>Finish</h2>
                                         </li>
                                         <li class="complete"
-                                            style="background: #ef168f;"
+                                            style="background: #08298A;"
                                             >
                                             <h2>Adjourn</h2>
                                         </li>
@@ -598,7 +598,9 @@
         }
 
         function fnReward(type,key){
+
             betKey = key;
+            rewardType = type;
             $("#modalReward").iziModal('open');
         }
 

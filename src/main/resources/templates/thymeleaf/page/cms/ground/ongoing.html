@@ -11,6 +11,7 @@
             <h2><i class="uil uil-chat-info"></i>  Ongoing Market </h2>
             <div>
                 <a href="javascript:fnQuest('P')">Pend</a>
+                <a href="javascript:fnQuest('UP')">Unpend</a>
                 <a href="javascript:fnQuest('I')">Invalid</a>
                 <a href="javascript:fnQuest('D')">Draft</a>
                 <a href="javascript:fnQuest('S')">Answer</a>
@@ -132,6 +133,24 @@
                     if(confirm("will [" + title + "] be Pend?")){
                         $.ajax({
                             url: "/cms/ground/pending",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('success');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }if(type =="UP"){
+                    if(confirm("will [" + title + "] be Unpend?")){
+                        $.ajax({
+                            url: "/cms/ground/unpending",
                             type: "POST",
                             data : {
                                 "questKey" : questKey

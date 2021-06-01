@@ -126,9 +126,27 @@ public class MemberService {
 
             //이메일 전송
             Mail mail = new Mail();
-            String message = "Join Confirm (Link) : ";
-            message+=myConfig.getHostUrl()+"/user/join/confirm?";
-            message+="a7="+parameter;
+            String message = "";
+            message +="Hi there,";
+            message +="\n";
+            message +="Thank you for joining COJAM!";
+            message +="\n";
+            message +="In this email you will find a link that, when clicked, will bring you back to a confirmation page.";
+            message +="\n";
+            message +="Once you've confirmed your email, you can start using COJAM.";
+            message +="\n";
+            message += "Join Confirm (Link) : ";
+            message +=myConfig.getHostUrl()+"/user/join/confirm?";
+            message +="a7="+parameter;
+            message +="\n";
+            message += "COJAM LIMITED";
+            message +="\n";
+            message += "E-Mail : ask@cojam.io";
+            message +="\n";
+            message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+            message +="\n";
+            message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+            message +="\n";
             mail.setAddress(member.getMemberEmail());
             mail.setMessage(message);
             mail.setTitle("Link of Join confirm.");
@@ -189,11 +207,21 @@ public class MemberService {
         memberDao.saveMemberPassReset(detail);
         //이메일 전송
         Mail mail = new Mail();
+
         String message = "Change Password (Link) : ";
         message+=myConfig.getHostUrl()+"/user/pass/change?";
         message+="fpNumber="+detail.getFpNumber()+"&";
         message+="memberKey="+detail.getMemberKey()+"&";
         message+="memberId="+detail.getMemberId();
+        message +="\n";
+        message += "COJAM LIMITED";
+        message +="\n";
+        message += "E-Mail : ask@cojam.io";
+        message +="\n";
+        message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+        message +="\n";
+        message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+        message +="\n";
         mail.setAddress(detail.getMemberEmail());
         mail.setMessage(message);
         mail.setTitle("Link of Password Management.");
@@ -587,9 +615,27 @@ public class MemberService {
 
             //이메일 전송
             Mail mail = new Mail();
-            String message = "Join Confirm (Link) : ";
+            String message = "";
+            message +="Hi there,";
+            message +="\n";
+            message +="Thank you for joining COJAM!";
+            message +="\n";
+            message +="In this email you will find a link that, when clicked, will bring you back to a confirmation page.";
+            message +="\n";
+            message +="Once you've confirmed your email, you can start using COJAM.";
+            message +="\n";
+            message += "Join Confirm (Link) : ";
             message+=myConfig.getHostUrl()+"/user/join/confirm?";
             message+="a7="+parameter;
+            message +="\n";
+            message += "COJAM LIMITED";
+            message +="\n";
+            message += "E-Mail : ask@cojam.io";
+            message +="\n";
+            message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
+            message +="\n";
+            message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
+            message +="\n";
             mail.setAddress(detail.getMemberEmail());
             mail.setMessage(message);
             mail.setTitle("Link of Join confirm.");
