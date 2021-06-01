@@ -15,6 +15,7 @@
             <div>
                 <a href="javascript:fnQuest('H')">Hot</a>
                 <a href="javascript:fnQuest('P')">Pend</a>
+                <a href="javascript:fnQuest('UP')">Unpend</a>
                 <a href="javascript:fnQuest('F')">Finish</a>
                 <a href="javascript:fnQuest('ADJ')">Adjourn</a>
                 <a href="javascript:fnQuest('SUC')">Success</a>
@@ -160,6 +161,24 @@
                     if(confirm("will [" + title + "] be Pend?")){
                         $.ajax({
                             url: "/cms/ground/pending",
+                            type: "POST",
+                            data : {
+                                "questKey" : questKey
+                            },
+                            success : function(response){
+                                if(response.check){
+                                    toastr.success('success');
+                                    fnGetList();
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                }else if(type =="UP"){
+                    if(confirm("will [" + title + "] be Unpend?")){
+                        $.ajax({
+                            url: "/cms/ground/unpending",
                             type: "POST",
                             data : {
                                 "questKey" : questKey
