@@ -53,8 +53,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo
-    password: '!1wjdwogjs'
+    username: 'support@cojam.io'
+    password: '!1Rkflwjdwogjs'
     properties:
       mail:
         smtp:
@@ -134,8 +134,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo
-    password: '!1wjdwogjs'
+    username: 'support@cojam.io'
+    password: '!1Rkflwjdwogjs'
     properties:
       mail:
         smtp:
@@ -216,8 +216,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: choojameschoo
-    password: '!1wjdwogjs'
+    username: 'support@cojam.io'
+    password: '!1Rkflwjdwogjs'
     properties:
       mail:
         smtp:
@@ -251,7 +251,7 @@ app:
     tokenAddress: "0x7f223b1607171b81ebd68d22f1ca79157fd4a44b"
     feeAddress: "0x24a0f37edb290010e4b15597d17581e439505606"
     charityAddress: "0x946de569a7d041b56c98306b3c06d8dfd04e78ae"
-    remainAddress: "0x281650e1270265dde07ae465d179eb560132eafa"
+    remainAddress: "0x24a0f37edb290010e4b15597d17581e439505606"
     recommendWalletId: "7ec48453b5ae0b72122870c18e3577b8"
     recommendAddress: "0xfb193104052446709612d410a030227da96d08b2"
     recommendPassphrase: "Cojam2029@"
