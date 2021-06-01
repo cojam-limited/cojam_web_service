@@ -190,7 +190,7 @@ spring:
     redis:
       flush-mode: on_save
   datasource:
-    url: jdbc:mysql://34.64.121.212:3306/cojamDB?useUnicode=true&useSSL=false&serverTimezone=UTC&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://10.42.80.2:3306/cojamDB?useUnicode=true&useSSL=false&serverTimezone=UTC&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowMultiQueries=true
     username: cojam
     password: '@2cojam'
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -227,7 +227,7 @@ spring:
 logging:
   level:
     root: info
-    io.cojam.web: debug
+    io.cojam.web: error
 myConfig:
   uploadPath: "/cojam_data/upload"
   hostUrl: "https://www.cojam.io"
