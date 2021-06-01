@@ -12,4 +12,8 @@ public interface JoinRewardHistoryDao {
 
     int saveJoinRewardHistory(JoinRewardHistory joinRewardHistory);
 
+    Integer getLoginRewardInfo(String memberKey);
+
+    int saveLoginRewardHistory(JoinRewardHistory joinRewardHistory);
+
 }

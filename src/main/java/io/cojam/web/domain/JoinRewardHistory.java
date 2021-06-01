@@ -9,4 +9,6 @@ public class JoinRewardHistory {
     private String rewardHistoryKey;
     private String memberKey;
     private String transactionId;
+    private String rewardAmount;
+
 }

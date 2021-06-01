@@ -23,4 +23,5 @@ public class Transaction extends Common {
     private String status;
     private String memberId;
     private Timestamp createdDateTime;
+    private String walletName;
 }

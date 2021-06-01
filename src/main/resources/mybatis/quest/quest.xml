@@ -727,9 +727,17 @@
             A.QUEST_ANSWER_KEY
             ,A.ANSWER_TITLE
             ,SELECTED
-            ,IF(A.QUEST_ANSWER_KEY = #{questAnswerKey},true,false) AS MY_ANSWER
         FROM TB_QUEST_ANSWER A
         WHERE A.QUEST_KEY = #{questKey}
-        ORDER BY A.QUEST_ANSWER_KEY
+        AND SELECTED = true
+        UNION
+        SELECT
+            A.QUEST_ANSWER_KEY
+            ,A.ANSWER_TITLE
+            ,SELECTED
+        FROM TB_QUEST_ANSWER A
+        WHERE A.QUEST_KEY = #{questKey}
+        AND A.QUEST_ANSWER_KEY = #{questAnswerKey}
+        ORDER BY SELECTED
     </select>
 </mapper>

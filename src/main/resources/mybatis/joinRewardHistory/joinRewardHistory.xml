@@ -13,11 +13,31 @@
     <insert id="saveJoinRewardHistory" parameterType="io.cojam.web.domain.JoinRewardHistory">
         INSERT INTO TB_JOIN_REWARD_HISTORY
         (
-            MEMBER_KEY, TRANSACTION_ID
+            MEMBER_KEY, TRANSACTION_ID, REWARD_AMOUNT
         )
         VALUES
         (
-            #{memberKey}, #{transactionId}
+            #{memberKey}, #{transactionId}, #{rewardAmount}
+        )
+    </insert>
+
+
+    <select id="getLoginRewardInfo" parameterType="String" resultType="integer">
+        SELECT
+            COUNT(*)  CNT
+        FROM TB_LOGIN_REWARD_HISTORY
+        WHERE MEMBER_KEY = #{memberKey}
+        AND LOGIN_DATE = DATE_FORMAT(NOW(),'%Y-%m-%d')
+    </select>
+
+    <insert id="saveLoginRewardHistory" parameterType="io.cojam.web.domain.JoinRewardHistory">
+        INSERT INTO TB_LOGIN_REWARD_HISTORY
+        (
+            MEMBER_KEY, LOGIN_DATE, REWARD_AMOUNT, TRANSACTION_ID, CREATE_DATE_TIME
+        )
+        VALUES
+        (
+            #{memberKey}, DATE_FORMAT(NOW(),'%Y-%m-%d'), #{rewardAmount}, #{transactionId}, now()
         )
     </insert>
 

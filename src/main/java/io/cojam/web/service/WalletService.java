@@ -167,7 +167,7 @@ public class WalletService {
         Transaction transaction = null;
         BigInteger amount = org.web3j.utils.Convert.toWei(WalletCode.JOIN_REWARD_AMOUNT, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
         try {
-            TransactionReceipt receipt = walletApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
+            TransactionReceipt receipt = recommendApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
                     .assertThenReturn("sendToken", wallet.getMemberKey());
             if(receipt ==null || StringUtils.isBlank(receipt.getTransactionId())){
                 return null;
@@ -179,6 +179,34 @@ public class WalletService {
                 transaction.setSpenderAddress(myConfig.getRecommendAddress());
                 transaction.setTransactionId(receipt.getTransactionId());
                 transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_JOIN_REWARD);
+                transactionService.saveTransaction(transaction);
+                return transaction;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @Transactional
+    public Transaction sendLoginRewardToken(Wallet wallet) {
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Transaction transaction = null;
+        BigInteger amount = org.web3j.utils.Convert.toWei(WalletCode.LOGIN_REWARD_AMOUNT, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
+        try {
+            TransactionReceipt receipt = recommendApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
+                    .assertThenReturn("sendToken", wallet.getMemberKey());
+            if(receipt ==null || StringUtils.isBlank(receipt.getTransactionId())){
+                return null;
+            }else {
+                //SAVE TRANSACTION
+                transaction = new Transaction();
+                transaction.setAmount(amount.toString());
+                transaction.setRecipientAddress(wallet.getWalletAddress());
+                transaction.setSpenderAddress(myConfig.getRecommendAddress());
+                transaction.setTransactionId(receipt.getTransactionId());
+                transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_LOGIN_REWARD);
                 transactionService.saveTransaction(transaction);
                 return transaction;
             }
