@@ -45,6 +45,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Account account = (Account) authentication.getPrincipal();
 
         joinRewardService.joinRewardMember(account.getMemberKey());
+        joinRewardService.loginRewardMember(account.getMemberKey());
 
         String prevPage = request.getSession().getAttribute("prevPage")==null || request.getSession().getAttribute("prevPage").toString().equals("/") ?"/user/home":request.getSession().getAttribute("prevPage").toString();	//이전 페이지 가져오기
         if(prevPage.contains("/login")){

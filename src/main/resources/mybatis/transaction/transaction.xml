@@ -30,6 +30,7 @@
                   , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
                        T.RECIPIENT_ADDRESS)        AS address
                   , TMW.MEMBER_ID
+                  ,IFNULL(M.WALLET_NAME,'') AS WALLET_NAME
              FROM TB_TRANSACTION T
                       LEFT OUTER JOIN (
                  SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
@@ -37,6 +38,8 @@
                     , TB_WALLET w2
                  WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
              ) TMW ON TMW.WALLET_ADDRESS = T.RECIPIENT_ADDRESS
+             LEFT OUTER JOIN TB_MASTER_WALLET M
+             ON M.ADDRESS = T.RECIPIENT_ADDRESS
              WHERE T.SPENDER_ADDRESS = #{address}
              UNION ALL
              SELECT T.amount / 1000000000000000000 as amount
@@ -51,6 +54,7 @@
                   , IF(T.SPENDER_ADDRESS != #{address}, T.SPENDER_ADDRESS,
                        T.RECIPIENT_ADDRESS)        AS address
                   , TMW.MEMBER_ID
+                  ,IFNULL(M.WALLET_NAME,'') AS WALLET_NAME
              FROM TB_TRANSACTION T
                       LEFT OUTER JOIN (
                  SELECT TM.MEMBER_ID, w2.WALLET_ADDRESS
@@ -58,6 +62,8 @@
                     , TB_WALLET w2
                  WHERE TM.MEMBER_KEY = w2.MEMBER_KEY
              ) TMW ON TMW.WALLET_ADDRESS = T.SPENDER_ADDRESS
+             LEFT OUTER JOIN TB_MASTER_WALLET M
+             ON M.ADDRESS = T.SPENDER_ADDRESS
              WHERE T.RECIPIENT_ADDRESS = #{address}
          ) T
         ORDER BY T.CREATED_DATE_TIME DESC

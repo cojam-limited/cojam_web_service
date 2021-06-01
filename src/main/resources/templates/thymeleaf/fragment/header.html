@@ -41,6 +41,8 @@
                                     $('#myToken').html("("+amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
                                     if($('#myWalletBalance').length > 0){
                                         $('#myWalletBalance').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                        fnGetCoingeckoPrice('krw',amount);
+                                        fnGetCoingeckoPrice('usd',amount);
                                     }
                                     if($('#mobileMyToken').length > 0){
                                         $('#mobileMyToken').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")

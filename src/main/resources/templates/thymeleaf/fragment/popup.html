@@ -617,8 +617,8 @@
                                     <span>Answer List</span>
                                     <br/>
                                     <th:block th:each="answer : ${answerList}">
-                                        <input name="name" type="text" style="width: 80%;" placeholder="" th:value="${answer.answerTitle}"/>
-                                        <input name="name" type="text" style="width: 10%;" placeholder="" th:value="${#numbers.formatInteger(answer.totalAmount,0,'COMMA')}"/>
+                                        <input name="name" type="text" style="width: 50%;" placeholder="" th:value="${answer.answerTitle}"/>
+                                              <input name="name" type="text" style="width: 40%;" placeholder="" th:value="${#numbers.formatInteger(answer.totalAmount,0,'COMMA')}+'CT'"/>
                                         <th:block th:if="${answer.selected}" th:with="seletedAnswer =AAAA"></th:block>
                                     </th:block>
                                 </li>
@@ -1623,11 +1623,10 @@
                         <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
                     </dl>
                     <ul>
-                        <li style="text-align: center;font-size: xx-large;font-weight: bold;">
+                        <li style="text-align: center;font-size: x-large;font-weight: bold;">
                             <span>Try another prediction</span>
                         </li>
                     </ul>
-                    <br/><br/>
                     <ul id="popAnswerList">
                     </ul>
                     <p style="text-align: center;">
@@ -1661,10 +1660,10 @@
                                     html +='<li style="text-align: center;">';
                                     html +='<span>'+count+'. '+element.answerTitle;
                                     if(element.selected){
-                                        html +='(correct)'
+                                        html +='(Correct Answer)'
                                     }
 
-                                    if(element.myAnswer){
+                                    if(!element.selected){
                                         html +='(your)'
                                     }
 
@@ -1690,6 +1689,32 @@
                 $("#modalNoReward").iziModal('close');
                 fnSetGroundDetail(betQuestKeyNo);
             }
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalCtNotice">
+    <!-- 모달 - SEND CT -->
+    <div class="modal-send-ct" id="modalCtNotice" style="display:none;">
+            <fieldset>
+                <legend>Reward</legend>
+                <div class="msc-area">
+                    <dl>
+                        <dt>&nbsp;</dt>
+                        <dd><i class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
+                    </dl>
+                    <ul>
+                        <li style="text-align: center;">
+                            <img src="/assets/image/common/ct_notice.png" alt="" width="100%">
+                        </li>
+                    </ul>
+                </div>
+            </fieldset>
+    </div>
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function (){
+                $('#modalCtNotice').iziModal({width : '600px'});
+            });
         </script>
     </th:block>
 </th:block>

@@ -35,7 +35,7 @@ public class JoinRewardService {
     @Transactional
     public ResponseDataDTO joinRewardMember(String memberKey){
         ResponseDataDTO response = new ResponseDataDTO();
-        Integer checkCount = this.getJoinRewardInfo(memberKey);
+        Integer checkCount = joinRewardHistoryDao.getJoinRewardInfo(memberKey);
         if(checkCount > 0){
             response.setCheck(false);
             response.setMessage("You already have referral information.");
@@ -53,8 +53,44 @@ public class JoinRewardService {
                 if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
                     JoinRewardHistory joinRewardHistory = new JoinRewardHistory();
                     joinRewardHistory.setMemberKey(memberKey);
+                    joinRewardHistory.setRewardAmount(WalletCode.JOIN_REWARD_AMOUNT);
                     joinRewardHistory.setTransactionId(transaction.getTransactionId());
                     joinRewardHistoryDao.saveJoinRewardHistory(joinRewardHistory);
+                }
+            }
+            response.setCheck(true);
+            response.setMessage("success");
+        }
+
+        return response;
+
+    }
+
+
+    @Transactional
+    public ResponseDataDTO loginRewardMember(String memberKey){
+        ResponseDataDTO response = new ResponseDataDTO();
+        Integer checkCount = joinRewardHistoryDao.getLoginRewardInfo(memberKey);
+        if(checkCount > 0){
+            response.setCheck(false);
+            response.setMessage("You already have referral information.");
+            return response;
+        }else{
+
+
+            //토큰 전송
+            Wallet wallet = walletService.getWalletInfo(memberKey);
+
+
+            if(wallet!= null){
+
+                Transaction transaction =walletService.sendLoginRewardToken(wallet);
+                if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
+                    JoinRewardHistory joinRewardHistory = new JoinRewardHistory();
+                    joinRewardHistory.setMemberKey(memberKey);
+                    joinRewardHistory.setRewardAmount(WalletCode.LOGIN_REWARD_AMOUNT);
+                    joinRewardHistory.setTransactionId(transaction.getTransactionId());
+                    joinRewardHistoryDao.saveLoginRewardHistory(joinRewardHistory);
                 }
             }
             response.setCheck(true);

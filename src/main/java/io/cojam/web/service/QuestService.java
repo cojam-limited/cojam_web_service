@@ -841,7 +841,7 @@ public class QuestService {
                 String bStatus = bettingStatus.getStatus();
                 if (WalletCode.TRANSACTION_STATUS_CONFIRM.equals(bStatus)) {
                     response.setCheck(false);
-                    response.setMessage("success betting!");
+                    response.setMessage("You've already been rewarded!");
                     return response;
                 }else if(WalletCode.TRANSACTION_STATUS_REQUESTED.equals(bStatus) || WalletCode.TRANSACTION_STATUS_PENDING.equals(bStatus)){
                     response.setCheck(false);
