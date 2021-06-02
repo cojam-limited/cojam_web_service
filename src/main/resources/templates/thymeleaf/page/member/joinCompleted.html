@@ -15,31 +15,69 @@
             It cannot be used unless it is authenticated.<br/><br/>
             If you have not received the e-mail, please click the Resend button.
         </h2>
+        <h2 style="font-size: 16px;">
+            <ul>
+                <li>
+                    E-mail Code : <input type="text" name="emailCode" title="CODE" maxlength="35" class="id-icn" placeholder="Input email code." value=""/>
+                </li>
+            </ul>
+        </h2>
         <h3><img src="/assets/image/content/member_pwsearch_complete.png" alt="" title="" /></h3>
         <div>
-            <a href="/user/home">Main</a>
+            <a href="javascript:fnConfirmEmail()">Confirm</a>
             <a href="javascript:fnResendEmail()">Resend</a>
         </div>
     </div>
-    <script th:src="@{/assets/js/jquery.cookie.js}"></script>
+    <input type="hidden" name="a4" id="a4" value="">
     <script>
 
-        function fnResendEmail() {
-            const a4 = $.cookie("a4");
-            if(a4==""){
-                toastr.warning('No resend E-mail.');
+        /*<![CDATA[*/
+        const a4 = "[[${a4}]]";
+        /*]]>*/
+        $('#a4').val(a4);
+
+        function fnConfirmEmail() {
+            if($("input[name=emailCode]").val()==''){
+                toastr.warning('Ipnut email code.');
                 return;
             }
 
 
             $.ajax({
+                url:"/user/join/confirmNew",
+                type :  "POST",
+                dataType : "json",
+                data : {
+                    "a7": $('#a4').val(),
+                    emailCode: $("input[name=emailCode]").val()
+                },
+                success : function(response){
+                    if(response.check){
+                        toastr.success('Email verification is complete.');
+                        setInterval(function(){
+                            location.replace('/login');
+                        },1500);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+
+        function fnResendEmail() {
+            if(a4==""){
+                toastr.warning('No resend E-mail.');
+                return;
+            }
+            $.ajax({
                 url:"/user/join/resend",
                 type :  "POST",
                 dataType : "json",
-                data : {"a4": a4},
+                data : {"a4": $('#a4').val()},
                 success : function(response){
                     if(response.check){
                         toastr.success('Email sending is complete.');
+                        $('#a4').val(response.item.parameter);
                     } else {
                         toastr.error(response.message);
                     }

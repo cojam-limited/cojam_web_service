@@ -59,11 +59,11 @@
                         </td>
                         <td th:id="'joindate_'+${i.index}"></td>
                         <script>
-                            /*<![CDATA[*/
+                            `/*<![CDATA[*/
                             userJoinCreatedDateTimeId = "joindate_[[${i.index}]]";
                             userJoinCreatedDateTime = "[[${item.endDateTime}]]";
                             $('#'+userJoinCreatedDateTimeId).html(changeUtcToLocal(userJoinCreatedDateTime,'YYYY-MM-DD HH:mm'))
-                            /*]]>*/
+                            /*]]>*/`
                         </script>
                         <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
                         <td><p th:text="${item.pending}?'T':'F'" th:classappend="${item.pending}?'true':'false'"></p></td>
