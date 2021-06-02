@@ -85,7 +85,6 @@
                             window.location = response.item.url;
                         } else {
                             if(response.code == "998"){
-                                alert(response.item);
                                 location.href ='/user/join/completed?a4='+response.item;
                             }else {
                                 toastr.error(response.message);
