@@ -136,8 +136,8 @@ public class MemberService {
             message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
 
             message += "<div>Join Confirm Code : ";
-            message += fpNumber;
-            message +="</div>";
+            message += "<b>"+fpNumber+"</b>";
+            message += "</div>";
             message += "<div>COJAM LIMITED</div>";
             message += "<div>E-Mail : ask@cojam.io</div>";
 
@@ -690,7 +690,7 @@ public class MemberService {
             message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
 
             message += "<div>Join Confirm Code : ";
-            message += fpNumber;
+            message += "<b>"+fpNumber+"</b>";
             message +="</div>";
             message += "<div>COJAM LIMITED</div>";
             message += "<div>E-Mail : ask@cojam.io</div>";

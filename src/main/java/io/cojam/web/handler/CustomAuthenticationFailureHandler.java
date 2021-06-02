@@ -47,8 +47,14 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             Member param = new Member();
             param.setMemberKey(memberKey);
             Member memberCertification = memberDao.getMemberJoinCertification(param);
-            String parameter = String.format("%s**%s**%s",memberCertification.getMemberKey(),memberCertification.getMemberEmail(),memberCertification.getFpNumber());
+            String parameter;
+            if(memberCertification == null){
+                parameter = String.format("%s**%s**%s", memberKey, "A", "A");
+            }else{
+                parameter = String.format("%s**%s**%s", memberCertification.getMemberKey(), memberCertification.getMemberEmail(), memberCertification.getFpNumber());
+            }
             responseDataDTO.setItem(new AES256Util(myConfig.getJoinParameterKey()).encrypt(parameter));
+
             responseDataDTO.setCode(ResponseDataCode.NOT_CERTIFICATION);
             responseDataDTO.setStatus(ResponseDataStatus.ERROR);
             responseDataDTO.setMessage("No Certification E-mail.");
