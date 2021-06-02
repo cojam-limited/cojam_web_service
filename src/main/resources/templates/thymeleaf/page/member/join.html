@@ -164,8 +164,7 @@
                 data : $('form[name=joinForm]').serialize(),
                 success : function(response){
                     if(response.check){
-                        $.cookie("a4", response.item, {expires : 1});
-                        location.href ='/user/join/completed';
+                        location.href ='/user/join/completed?a4='+response.item;
                     } else {
                         toastr.error(response.message);
                     }

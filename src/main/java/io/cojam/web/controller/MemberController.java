@@ -77,13 +77,27 @@ public class MemberController {
         }
     }
 
+
+    @RequestMapping(value = "/user/join/confirmNew", method= RequestMethod.POST)
+    @ResponseBody
+    public ResponseDataDTO joinConfirmNew(@NotNull @NotEmpty @Length(min = 10) String a7,@NotNull @NotEmpty String emailCode) throws Exception {
+
+        AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
+        a7 = aes256Util.decrypt(a7);
+        String memberKey = a7.split("[*][*]")[0];
+        String memberEmail = a7.split("[*][*]")[1];
+        String fpNumber = a7.split("[*][*]")[2];
+        return memberService.joinConfirmMemberNew(memberKey,memberEmail,fpNumber,emailCode);
+    }
+
     @RequestMapping(value = "/user/join/resend", method= RequestMethod.POST)
     @ResponseBody
     public ResponseDataDTO resendEmail(@NotNull @NotEmpty @Length(min = 10) String a4) throws Exception {
 
         AES256Util aes256Util = new AES256Util(myConfig.getJoinParameterKey());
         a4 = aes256Util.decrypt(a4);
-        return memberService.resendEMail(a4);
+        String memberKey = a4.split("[*][*]")[0];
+        return memberService.resendEMail(memberKey);
     }
 
 
