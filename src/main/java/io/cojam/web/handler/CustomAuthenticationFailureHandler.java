@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.ResponseDataStatus;
+import io.cojam.web.dao.MemberDao;
+import io.cojam.web.domain.Member;
 import io.cojam.web.domain.MyConfig;
 import io.cojam.web.domain.ResponseDataDTO;
 import io.cojam.web.utils.AES256Util;
@@ -29,6 +31,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Autowired
     MyConfig myConfig;
 
+    @Autowired
+    MemberDao memberDao;
+
     @SneakyThrows
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -39,8 +44,11 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         if(exception.getMessage().contains("not Certification")){
             String memberKey = exception.getMessage().split("TT")[1];
-            memberKey = new AES256Util(myConfig.getJoinParameterKey()).encrypt(memberKey);
-            responseDataDTO.setItem(memberKey);
+            Member param = new Member();
+            param.setMemberKey(memberKey);
+            Member memberCertification = memberDao.getMemberJoinCertification(param);
+            String parameter = String.format("%s**%s**%s",memberCertification.getMemberKey(),memberCertification.getMemberEmail(),memberCertification.getFpNumber());
+            responseDataDTO.setItem(new AES256Util(myConfig.getJoinParameterKey()).encrypt(parameter));
             responseDataDTO.setCode(ResponseDataCode.NOT_CERTIFICATION);
             responseDataDTO.setStatus(ResponseDataStatus.ERROR);
             responseDataDTO.setMessage("No Certification E-mail.");

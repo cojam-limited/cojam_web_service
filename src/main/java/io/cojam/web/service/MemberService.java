@@ -122,36 +122,36 @@ public class MemberService {
             //parameter 암호화
             parameter = aes256Util.encrypt(parameter);
 
-
+            responseDataDTO.setItem(parameter);
 
             //이메일 전송
             Mail mail = new Mail();
             String message = "";
-            message +="Hi there,";
-            message +="\n";
-            message +="Thank you for joining COJAM!";
-            message +="\n";
-            message +="In this email you will find a link that, when clicked, will bring you back to a confirmation page.";
-            message +="\n";
-            message +="Once you've confirmed your email, you can start using COJAM.";
-            message +="\n";
-            message += "Join Confirm (Link) : ";
-            message +=myConfig.getHostUrl()+"/user/join/confirm?";
-            message +="a7="+parameter;
-            message +="\n";
-            message += "COJAM LIMITED";
-            message +="\n";
-            message += "E-Mail : ask@cojam.io";
-            message +="\n";
-            message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
-            message +="\n";
-            message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
-            message +="\n";
+            message +="<div>Hi there,</div>";
+
+            message +="<div>Thank you for joining COJAM!</div>";
+
+            message +="<div>In this email you will find a link that, when clicked, will bring you back to a confirmation page.</div>";
+
+            message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
+
+            message += "<div>Join Confirm Code : ";
+            message += fpNumber;
+            message +="</div>";
+            message += "<div>COJAM LIMITED</div>";
+            message += "<div>E-Mail : ask@cojam.io</div>";
+
+            message += "<div>Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland</div>";
+
+            message += "<div>Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea</div>";
+
             mail.setAddress(member.getMemberEmail());
             mail.setMessage(message);
             mail.setTitle("Link of Join confirm.");
-            mailService.mailSend(mail);
+
             memberDao.saveMemberJoinCertification(member);
+
+            mailService.mailSend(mail);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -579,6 +579,71 @@ public class MemberService {
 
 
     @Transactional
+    public ResponseDataDTO joinConfirmMemberNew(String memberKey,String memberEmail,String fpNumber,String emailCode){
+
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+        Member member = new Member();
+        member.setMemberKey(memberKey);
+        member.setMemberEmail(memberEmail);
+        member.setFpNumber(fpNumber);
+        Member detail =memberDao.getMemberInfoForMemberKey(member);
+        if(detail == null || detail.getCertification()){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        Member memberCertification = memberDao.getMemberJoinCertification(member);
+        if(memberCertification == null
+                || !memberEmail.equals(memberCertification.getMemberEmail())
+                || !fpNumber.equals(memberCertification.getFpNumber())
+        ){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        if(!fpNumber.equals(emailCode)){
+            response.setMessage("This is incorrect information.");
+            response.setCheck(false);
+            return response;
+        }
+
+        ZonedDateTime utcDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
+
+
+        // ZonedDateTime => Timestamp 변환
+        Timestamp nowTimestamp = Timestamp.valueOf(utcDateTime.toLocalDateTime());
+
+        long lifetime = nowTimestamp.getTime() - memberCertification.getCreatedDateTime().getTime();
+        long seconds = lifetime / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        if(hours > 6){
+            response.setMessage("Your authentication information has expired.");
+            response.setCheck(false);
+            return response;
+        }
+
+        memberDao.removeMemberJoinCertification(member);
+        memberDao.updateMemberJoinCertification(member);
+
+        Wallet wallet = walletService.getWalletInfo(memberKey);
+
+        if(wallet == null){
+            walletService.saveWallet(detail.getMemberKey(),detail.getMemberId());
+        }
+
+        response.setItem(responseMap);
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+
+    @Transactional
     public ResponseDataDTO resendEMail(String memberKey){
 
         ResponseDataDTO response = new ResponseDataDTO();
@@ -611,36 +676,34 @@ public class MemberService {
             //parameter 암호화
             parameter = aes256Util.encrypt(parameter);
 
-
+            responseMap.put("parameter",parameter);
 
             //이메일 전송
             Mail mail = new Mail();
             String message = "";
-            message +="Hi there,";
-            message +="\n";
-            message +="Thank you for joining COJAM!";
-            message +="\n";
-            message +="In this email you will find a link that, when clicked, will bring you back to a confirmation page.";
-            message +="\n";
-            message +="Once you've confirmed your email, you can start using COJAM.";
-            message +="\n";
-            message += "Join Confirm (Link) : ";
-            message+=myConfig.getHostUrl()+"/user/join/confirm?";
-            message+="a7="+parameter;
-            message +="\n";
-            message += "COJAM LIMITED";
-            message +="\n";
-            message += "E-Mail : ask@cojam.io";
-            message +="\n";
-            message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
-            message +="\n";
-            message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
-            message +="\n";
+            message +="<div>Hi there,</div>";
+
+            message +="<div>Thank you for joining COJAM!</div>";
+
+            message +="<div>In this email you will find a link that, when clicked, will bring you back to a confirmation page.</div>";
+
+            message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
+
+            message += "<div>Join Confirm Code : ";
+            message += fpNumber;
+            message +="</div>";
+            message += "<div>COJAM LIMITED</div>";
+            message += "<div>E-Mail : ask@cojam.io</div>";
+
+            message += "<div>Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland</div>";
+
+            message += "<div>Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea</div>";
+
             mail.setAddress(detail.getMemberEmail());
             mail.setMessage(message);
             mail.setTitle("Link of Join confirm.");
-            mailService.mailSend(mail);
             memberDao.saveMemberJoinCertification(detail);
+            mailService.mailSend(mail);
 
         }catch (Exception e){
             e.printStackTrace();

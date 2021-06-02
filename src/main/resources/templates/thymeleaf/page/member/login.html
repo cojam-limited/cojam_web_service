@@ -85,8 +85,8 @@
                             window.location = response.item.url;
                         } else {
                             if(response.code == "998"){
-                                $.cookie("a4", response.item, {expires : 1});
-                                location.href ='/user/join/completed';
+                                alert(response.item);
+                                location.href ='/user/join/completed?a4='+response.item;
                             }else {
                                 toastr.error(response.message);
                             }

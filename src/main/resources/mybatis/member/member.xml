@@ -108,9 +108,14 @@
             ,M.CERTIFICATION
             ,M.LOCK_TRANSACTION_ID
             ,W.WALLET_ADDRESS
-        FROM TB_MEMBER M , TB_WALLET W
-        WHERE M.MEMBER_KEY = W.MEMBER_KEY
-        AND MEMBER_ROLE ='USER'
+            ,C.FP_NUMBER
+        FROM TB_MEMBER M
+        LEFT OUTER JOIN TB_WALLET W
+        ON M.MEMBER_KEY = W.MEMBER_KEY
+        LEFT OUTER JOIN TB_JOIN_CERTIFICATION C
+        on M.MEMBER_KEY = C.MEMBER_KEY
+        AND M.MEMBER_EMAIL = C.MEMBER_EMAIL
+        WHERE MEMBER_ROLE ='USER'
         <if test='searchText != null and !searchText.equals("")'>
             AND (
                 M.MEMBER_NAME like CONCAT('%',#{searchText},'%')
@@ -127,9 +132,8 @@
     <select id="getServiceUserListCnt" parameterType="io.cojam.web.domain.Member" resultType="integer">
        SELECT
            COUNT(*) CNT
-        FROM TB_MEMBER M , TB_WALLET W
-        WHERE M.MEMBER_KEY = W.MEMBER_KEY
-        AND MEMBER_ROLE ='USER'
+        FROM TB_MEMBER M
+        WHERE MEMBER_ROLE ='USER'
         <if test='searchText != null and !searchText.equals("")'>
             AND (
             M.MEMBER_NAME like CONCAT('%',#{searchText},'%')
@@ -154,9 +158,14 @@
             ,M.LOCK_TRANSACTION_ID
             ,M.CERTIFICATION
             ,W.WALLET_ADDRESS
-        FROM TB_MEMBER M , TB_WALLET W
-        WHERE M.MEMBER_KEY = W.MEMBER_KEY
-        AND MEMBER_ROLE IN ('ADMIN','VIP')
+            ,C.FP_NUMBER
+        FROM TB_MEMBER M
+        LEFT OUTER JOIN TB_WALLET W
+        ON M.MEMBER_KEY = W.MEMBER_KEY
+        LEFT OUTER JOIN TB_JOIN_CERTIFICATION C
+        on M.MEMBER_KEY = C.MEMBER_KEY
+        AND M.MEMBER_EMAIL = C.MEMBER_EMAIL
+        WHERE MEMBER_ROLE IN ('ADMIN','VIP')
         ORDER BY M.CREATED_DATE_TIME DESC
         LIMIT #{startIndex}, #{pageSize}
     </select>
