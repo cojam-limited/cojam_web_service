@@ -45,6 +45,9 @@ public class MyPageController {
         member.setMemberKey(account.getMemberKey());
         Wallet wallet = walletService.getWalletInfo(account.getMemberKey());
         model.addAttribute("member",memberService.getMemberInfoForMemberKey(member));
+        if(wallet ==null){
+            wallet = new Wallet();
+        }
         model.addAttribute("wallet",wallet);
 
         return "thymeleaf/page/myPage/index";
