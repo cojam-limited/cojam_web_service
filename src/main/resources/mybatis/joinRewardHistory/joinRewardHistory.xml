@@ -27,7 +27,7 @@
             COUNT(*)  CNT
         FROM TB_LOGIN_REWARD_HISTORY
         WHERE MEMBER_KEY = #{memberKey}
-        AND LOGIN_DATE = DATE_FORMAT(NOW(),'%Y-%m-%d')
+        AND LOGIN_DATE = DATE_FORMAT(DATE_ADD(NOW(),INTERVAL 9 HOUR ),'%Y-%m-%d')
     </select>
 
     <insert id="saveLoginRewardHistory" parameterType="io.cojam.web.domain.JoinRewardHistory">
@@ -37,7 +37,7 @@
         )
         VALUES
         (
-            #{memberKey}, DATE_FORMAT(NOW(),'%Y-%m-%d'), #{rewardAmount}, #{transactionId}, now()
+            #{memberKey}, DATE_FORMAT(DATE_ADD(NOW(),INTERVAL 9 HOUR ),'%Y-%m-%d'), #{rewardAmount}, #{transactionId}, now()
         )
     </insert>
 
