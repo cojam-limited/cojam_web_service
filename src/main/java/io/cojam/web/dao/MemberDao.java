@@ -62,4 +62,6 @@ public interface MemberDao {
 
     int updateMemberJoinCertification(Member member);
 
+    Integer checkRejectEmailName(String emailName);
+
 }

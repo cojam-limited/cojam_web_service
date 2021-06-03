@@ -97,6 +97,13 @@ public class MemberService {
             return responseDataDTO;
         }
 
+        String emailName = member.getMemberEmail().split("@")[1];
+        if(memberDao.checkRejectEmailName(emailName.trim()) > 0){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("You can not use temporary email");
+            return responseDataDTO;
+        }
+
         //멤버 시퀀스 채번
         member.setMemberKey(sequenceService.getSequence(SequenceCode.TB_MEMBER));
         //비밀번호 암호화

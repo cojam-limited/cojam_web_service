@@ -39,7 +39,7 @@
 		$(document).ready(function() {
 			$("input").keydown(function(key) {
 				if (key.keyCode == 13) {
-					fnChangePass();
+					//fnChangePass();
 				}
 			});
 		});
@@ -56,6 +56,10 @@
 				toastr.warning('Email format is incorrect.');
 				return;
 			}
+
+			alert(1);
+			return;
+
 			$.ajax({
 				url:"/user/pass/email",
 				type :  "POST",

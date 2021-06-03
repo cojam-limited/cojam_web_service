@@ -65,8 +65,8 @@
         </div>
         <!-- 카타고리 영역 끝 -->
         <!-- 리스트 끝 -->
-        <div class="quest-list-columns">
-            <ul id="questList">
+        <div class="quest-list-columns" id="questList">
+            <ul>
                 <th:block th:if="${questList}!=null">
                     <li th:each="item,i : ${questList}"
                         th:data-parameter1="${item.questKey}"
@@ -120,9 +120,12 @@
                     </li>
                 </th:block>
             </ul>
+            <th:block th:if="${totalListCnt > 0} ">
+                <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+            </th:block>
         </div>
         <!-- 리스트 끝 -->
-        <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+
 
 
         <!-- 등록버튼 -->
