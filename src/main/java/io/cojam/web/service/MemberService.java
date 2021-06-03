@@ -97,6 +97,13 @@ public class MemberService {
             return responseDataDTO;
         }
 
+        String emailName = member.getMemberEmail().split("@")[1];
+        if(memberDao.checkRejectEmailName(emailName.trim()) > 0){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("You can not use temporary email");
+            return responseDataDTO;
+        }
+
         //멤버 시퀀스 채번
         member.setMemberKey(sequenceService.getSequence(SequenceCode.TB_MEMBER));
         //비밀번호 암호화
@@ -136,8 +143,8 @@ public class MemberService {
             message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
 
             message += "<div>Join Confirm Code : ";
-            message += fpNumber;
-            message +="</div>";
+            message += "<b>"+fpNumber+"</b>";
+            message += "</div>";
             message += "<div>COJAM LIMITED</div>";
             message += "<div>E-Mail : ask@cojam.io</div>";
 
@@ -208,20 +215,21 @@ public class MemberService {
         //이메일 전송
         Mail mail = new Mail();
 
-        String message = "Change Password (Link) : ";
+        String message = "Change Password (Link) : <a target='_blank' href='";
         message+=myConfig.getHostUrl()+"/user/pass/change?";
         message+="fpNumber="+detail.getFpNumber()+"&";
         message+="memberKey="+detail.getMemberKey()+"&";
         message+="memberId="+detail.getMemberId();
-        message +="\n";
+        message+="'>LINK</a>";
+        message +="<br/>";
         message += "COJAM LIMITED";
-        message +="\n";
+        message +="<br/>";
         message += "E-Mail : ask@cojam.io";
-        message +="\n";
+        message +="<br/>";
         message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
-        message +="\n";
+        message +="<br/>";
         message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
-        message +="\n";
+        message +="<br/>";
         mail.setAddress(detail.getMemberEmail());
         mail.setMessage(message);
         mail.setTitle("Link of Password Management.");
@@ -470,6 +478,11 @@ public class MemberService {
             //토큰 전송
             Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
             Wallet rWallet = walletService.getWalletInfo(detail.getMemberKey());
+            if(mWallet== null || rWallet ==null){
+                response.setCheck(false);
+                response.setMessage("Your wallet has not been created.");
+                return response;
+            }
 
             if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
                 BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_M_AMOUNT, Convert.Unit.ETHER).toBigInteger();
@@ -690,7 +703,7 @@ public class MemberService {
             message +="<div>Once you've confirmed your email, you can start using COJAM.</div>";
 
             message += "<div>Join Confirm Code : ";
-            message += fpNumber;
+            message += "<b>"+fpNumber+"</b>";
             message +="</div>";
             message += "<div>COJAM LIMITED</div>";
             message += "<div>E-Mail : ask@cojam.io</div>";
@@ -714,5 +727,58 @@ public class MemberService {
         response.setCheck(true);
         response.setMessage("success");
         return response;
+    }
+
+
+
+
+    @Transactional
+    public ResponseDataDTO memberAccess(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            member.setAccess(true);
+            memberDao.updateMemberAccess(member);
+        }
+
+
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
+
+    @Transactional
+    public ResponseDataDTO memberReject(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            member.setAccess(false);
+            memberDao.updateMemberAccess(member);
+        }
+
+
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
     }
 }

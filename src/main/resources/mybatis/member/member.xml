@@ -11,6 +11,7 @@
             ,MEMBER_ROLE
             ,MEMBER_PASS AS member_password
             ,CERTIFICATION
+            ,ACCESS
         FROM TB_MEMBER
         WHERE MEMBER_ID = #{userId}
     </select>
@@ -107,6 +108,7 @@
             ,M.WALLET_LOCK
             ,M.CERTIFICATION
             ,M.LOCK_TRANSACTION_ID
+            ,M.ACCESS
             ,W.WALLET_ADDRESS
             ,C.FP_NUMBER
         FROM TB_MEMBER M
@@ -289,5 +291,19 @@
         SET CERTIFICATION = true
         WHERE MEMBER_KEY = #{memberKey}
         AND CERTIFICATION = false
+    </update>
+
+    <select id="checkRejectEmailName" parameterType="String" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_REJECT_EMAIL
+        WHERE EMAIL_NAME LIKE CONCAT(#{emailName},'%')
+    </select>
+
+
+    <update id="updateMemberAccess" parameterType="io.cojam.web.domain.Member">
+        UPDATE TB_MEMBER
+        SET ACCESS = #{access}
+        WHERE MEMBER_KEY = #{memberKey}
     </update>
 </mapper>

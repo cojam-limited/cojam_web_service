@@ -51,10 +51,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'support@cojam.io'
-    password: '!1wjdwogjs'
+    username: 'cojam.limited@gmail.com'
+    password: 'YFCqZ1KWya85NpXf'
     properties:
       mail:
         smtp:
@@ -93,6 +93,9 @@ app:
     recommendAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
     recommendPassphrase: "!1wjdwogjs"
     passphrase: "!1wjdwogjs"
+    eventWalletId: "0c109712c239534be85bdeacc4ef1cd0"
+    eventAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
+    eventPassphrase: "!1wjdwogjs"
     url: http://localhost:3000
 #개발 환경
 ---
@@ -132,10 +135,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'support@cojam.io'
-    password: '!1wjdwogjs'
+    username: 'cojam.limited@gmail.com'
+    password: 'YFCqZ1KWya85NpXf'
     properties:
       mail:
         smtp:
@@ -174,6 +177,9 @@ app:
     recommendAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
     recommendPassphrase: "!1wjdwogjs"
     passphrase: "!1wjdwogjs"
+    eventWalletId: "0c109712c239534be85bdeacc4ef1cd0"
+    eventAddress: "0xd3b63ca1215a9f13d38e3a782672cda6ae098e40"
+    eventPassphrase: "!1wjdwogjs"
     url: http://localhost:3000
 #운영 환경
 ---
@@ -214,10 +220,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'support@cojam.io'
-    password: '!1wjdwogjs'
+    username: 'cojam.limited@gmail.com'
+    password: 'YFCqZ1KWya85NpXf'
     properties:
       mail:
         smtp:
@@ -256,4 +262,7 @@ app:
     recommendAddress: "0xfb193104052446709612d410a030227da96d08b2"
     recommendPassphrase: "Cojam2029@"
     passphrase: "Cojam2021@"
+    eventWalletId: "4a718acc3eb9487c88857779c3d8cef7"
+    eventAddress: "0x1b9ce6cc1a341e7b7b3fe06b77a16c92edcf2533"
+    eventPassphrase: "Cojam2027@"
     url: http://localhost:3000

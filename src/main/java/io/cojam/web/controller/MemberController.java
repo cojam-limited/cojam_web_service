@@ -239,4 +239,25 @@ public class MemberController {
         return memberService.memberWalletUnLock(memberLock.getMemberKeys(),account);
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/member/access", method= RequestMethod.POST)
+    public ResponseDataDTO access(
+            @Valid MemberLock memberLock
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.memberAccess(memberLock.getMemberKeys(),account);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/cms/member/reject", method= RequestMethod.POST)
+    public ResponseDataDTO reject(
+            @Valid MemberLock memberLock
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.memberReject(memberLock.getMemberKeys(),account);
+    }
+
 }

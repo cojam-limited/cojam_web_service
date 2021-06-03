@@ -9,6 +9,7 @@ public class WalletCode {
     public static final String TRANSACTION_TYPE_BETTION_SEND = "BETTION_S";
     public static final String TRANSACTION_TYPE_BETTION_RECEIVE = "BETTION_R";
     public static final String TRANSACTION_TYPE_CREATOR_FEE = "CREATOR_F";
+    public static final String TRANSACTION_TYPE_EVNET_M = "EVENT_M";
 
 
     public static final String TRANSACTION_STATUS_CONFIRM = "CONFIRMED";

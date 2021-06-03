@@ -67,13 +67,17 @@ public class JoinRewardService {
     }
 
 
+    public Integer getLoginRewardInfo(String memberKey){
+        return joinRewardHistoryDao.getLoginRewardInfo(memberKey);
+    }
+
     @Transactional
     public ResponseDataDTO loginRewardMember(String memberKey){
         ResponseDataDTO response = new ResponseDataDTO();
         Integer checkCount = joinRewardHistoryDao.getLoginRewardInfo(memberKey);
         if(checkCount > 0){
             response.setCheck(false);
-            response.setMessage("You already have referral information.");
+            response.setMessage("You got your reward today.");
             return response;
         }else{
 
@@ -92,6 +96,10 @@ public class JoinRewardService {
                     joinRewardHistory.setTransactionId(transaction.getTransactionId());
                     joinRewardHistoryDao.saveLoginRewardHistory(joinRewardHistory);
                 }
+            }else{
+                response.setCheck(false);
+                response.setMessage("Your wallet has not been created.");
+                return response;
             }
             response.setCheck(true);
             response.setMessage("success");

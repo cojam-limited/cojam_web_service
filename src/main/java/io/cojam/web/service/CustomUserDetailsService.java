@@ -27,6 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(memberInfo ==null){
             throw new UsernameNotFoundException(memberId);
         }
+
+        if(!memberInfo.getAccess()){
+            throw new UsernameNotFoundException(memberId);
+        }
+
         Account account = new Account();
         account.setMemberKey(memberInfo.getMemberKey());
         account.setMemberPassword(memberInfo.getMemberPassword());
