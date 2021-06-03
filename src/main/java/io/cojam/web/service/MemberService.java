@@ -728,4 +728,57 @@ public class MemberService {
         response.setMessage("success");
         return response;
     }
+
+
+
+
+    @Transactional
+    public ResponseDataDTO memberAccess(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            member.setAccess(true);
+            memberDao.updateMemberAccess(member);
+        }
+
+
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
+
+    @Transactional
+    public ResponseDataDTO memberReject(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            Member member = new Member();
+            member.setMemberKey(memberKey);
+            member.setAccess(false);
+            memberDao.updateMemberAccess(member);
+        }
+
+
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
 }
