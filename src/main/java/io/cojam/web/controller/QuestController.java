@@ -81,6 +81,7 @@ public class QuestController {
 
         model.addAttribute("questList", questList);
         model.addAttribute("pagination", pagination);
+        model.addAttribute("totalListCnt", totalListCnt);
         return "thymeleaf/page/quest/list :: #questList";
     }
 
@@ -173,5 +174,6 @@ public class QuestController {
         betting.setMemberKey(account.getMemberKey());
         return questService.noRewardInfo(betting,account);
     }
+
 
 }

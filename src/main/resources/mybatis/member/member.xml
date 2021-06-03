@@ -290,4 +290,11 @@
         WHERE MEMBER_KEY = #{memberKey}
         AND CERTIFICATION = false
     </update>
+
+    <select id="checkRejectEmailName" parameterType="String" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_REJECT_EMAIL
+        WHERE EMAIL_NAME = #{emailName}
+    </select>
 </mapper>
