@@ -59,6 +59,11 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             responseDataDTO.setStatus(ResponseDataStatus.ERROR);
             responseDataDTO.setMessage("No Certification E-mail.");
 
+        }else if(exception.getMessage().contains("temporary email")){
+            responseDataDTO.setCode(ResponseDataCode.ERROR);
+            responseDataDTO.setStatus(ResponseDataStatus.ERROR);
+            responseDataDTO.setMessage("You can not use temporary email.");
+
         }else{
             responseDataDTO.setCode(ResponseDataCode.ERROR);
             responseDataDTO.setStatus(ResponseDataStatus.ERROR);
