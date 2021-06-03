@@ -4,10 +4,7 @@ import io.cojam.web.account.Account;
 import io.cojam.web.constant.WalletCode;
 import io.cojam.web.domain.*;
 import io.cojam.web.domain.wallet.Transaction;
-import io.cojam.web.service.MemberService;
-import io.cojam.web.service.QuestService;
-import io.cojam.web.service.TransactionService;
-import io.cojam.web.service.WalletService;
+import io.cojam.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,6 +32,9 @@ public class MyPageController {
     @Autowired
     QuestService questService;
 
+    @Autowired
+    JoinRewardService joinRewardService;
+
     @GetMapping
     public String index(
             Model model
@@ -49,6 +49,9 @@ public class MyPageController {
             wallet = new Wallet();
         }
         model.addAttribute("wallet",wallet);
+
+
+        model.addAttribute("loginRewardInfo",joinRewardService.getLoginRewardInfo(account.getMemberKey()));
 
         return "thymeleaf/page/myPage/index";
 
@@ -205,5 +208,15 @@ public class MyPageController {
     ) throws Exception {
 
         return memberService.recommendMember(recommendMemberId,account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/loginReward", method= RequestMethod.POST)
+    public ResponseDataDTO loginReward(
+           @AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return joinRewardService.loginRewardMember(account.getMemberKey());
     }
 }

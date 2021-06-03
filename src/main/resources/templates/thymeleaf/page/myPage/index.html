@@ -42,7 +42,13 @@
                 <a data-izimodal-open="#modalCtNotice" data-izimodal-transitionin="comingIn"><i class="uil uil-question-circle"></i></a></div>
         </dt>
         <dd>
-            <a href="javascript:alert('Coming Soon.')" class="btn-red">KLAY swap</a>
+            <th:block th:if="${loginRewardInfo} > 0">
+                <a id="loginRewardBtn" href="javascript:toastr.error('You got your reward today.')" class="btn-grey">Login Reward</a>
+            </th:block>
+            <th:block th:unless="${loginRewardInfo} > 0">
+                <a id="loginRewardBtn" href="javascript:fnLoginReward()" class="btn-red">Login Reward</a>
+            </th:block>
+
             <th:block th:if="${!member.walletLock}">
                 <a href="#" class="btn-purple" data-izimodal-open="#modalSendCT" data-izimodal-transitionin="comingIn">CT Send</a>
             </th:block>
@@ -664,6 +670,24 @@
             }
 
         });
+
+
+        function fnLoginReward(){
+                $.ajax({
+                    url: "/user/mypage/loginReward",
+                    type: "POST",
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('Compensation has been paid.');
+                            $('#loginRewardBtn').addClass("btn-grey");
+                            $('#loginRewardBtn').removeClass("btn-red");
+                            $('#loginRewardBtn').attr('href','javascript:toastr.error(\'You got your reward today.\');');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+        }
     </script>
     <th:block layout:fragment="script">
     </th:block>

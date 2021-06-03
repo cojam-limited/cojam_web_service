@@ -51,10 +51,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'donotreply@cojam.io'
-    password: 'Cojam2020@'
+    username: 'support@cojam.io'
+    password: 'zHU4h9tPx6NS32mw'
     properties:
       mail:
         smtp:
@@ -132,10 +132,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'donotreply@cojam.io'
-    password: 'Cojam2020@'
+    username: 'support@cojam.io'
+    password: 'zHU4h9tPx6NS32mw'
     properties:
       mail:
         smtp:
@@ -214,10 +214,10 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   mail:
-    host: smtp.gmail.com
+    host: smtp-relay.sendinblue.com
     port: 587
-    username: 'donotreply@cojam.io'
-    password: 'Cojam2020@'
+    username: 'support@cojam.io'
+    password: 'zHU4h9tPx6NS32mw'
     properties:
       mail:
         smtp:
