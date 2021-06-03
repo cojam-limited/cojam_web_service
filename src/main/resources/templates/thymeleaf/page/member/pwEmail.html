@@ -56,10 +56,6 @@
 				toastr.warning('Email format is incorrect.');
 				return;
 			}
-
-			alert(1);
-			return;
-
 			$.ajax({
 				url:"/user/pass/email",
 				type :  "POST",
