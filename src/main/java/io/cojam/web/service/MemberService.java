@@ -208,20 +208,21 @@ public class MemberService {
         //이메일 전송
         Mail mail = new Mail();
 
-        String message = "Change Password (Link) : ";
+        String message = "Change Password (Link) : <a target='_blank' href='";
         message+=myConfig.getHostUrl()+"/user/pass/change?";
         message+="fpNumber="+detail.getFpNumber()+"&";
         message+="memberKey="+detail.getMemberKey()+"&";
         message+="memberId="+detail.getMemberId();
-        message +="\n";
+        message+="'>LINK</a>";
+        message +="<br/>";
         message += "COJAM LIMITED";
-        message +="\n";
+        message +="<br/>";
         message += "E-Mail : ask@cojam.io";
-        message +="\n";
+        message +="<br/>";
         message += "Address (Ireland) : The Tara Building, Tara street, Dublin 2, Ireland";
-        message +="\n";
+        message +="<br/>";
         message += "Address (Korea) : 373 Gangnam-daero, Seocho-gu, Seoul, Republic of Korea";
-        message +="\n";
+        message +="<br/>";
         mail.setAddress(detail.getMemberEmail());
         mail.setMessage(message);
         mail.setTitle("Link of Password Management.");
@@ -470,6 +471,11 @@ public class MemberService {
             //토큰 전송
             Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
             Wallet rWallet = walletService.getWalletInfo(detail.getMemberKey());
+            if(mWallet== null || rWallet ==null){
+                response.setCheck(false);
+                response.setMessage("Your wallet has not been created.");
+                return response;
+            }
 
             if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
                 BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_M_AMOUNT, Convert.Unit.ETHER).toBigInteger();
