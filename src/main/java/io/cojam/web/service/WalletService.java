@@ -6,6 +6,7 @@ import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.WalletDao;
 import io.cojam.web.domain.*;
 import io.cojam.web.domain.wallet.*;
+import io.cojam.web.klaytn.service.EventApiService;
 import io.cojam.web.klaytn.service.RecommendApiService;
 import io.cojam.web.klaytn.service.WalletApiService;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,9 @@ public class WalletService {
 
     @Autowired
     RecommendApiService recommendApiService;
+
+    @Autowired
+    EventApiService eventApiService;
 
     @Autowired
     MyConfig myConfig;
@@ -207,6 +211,34 @@ public class WalletService {
                 transaction.setSpenderAddress(myConfig.getRecommendAddress());
                 transaction.setTransactionId(receipt.getTransactionId());
                 transaction.setTransactionType(WalletCode.TRANSACTION_TYPE_LOGIN_REWARD);
+                transactionService.saveTransaction(transaction);
+                return transaction;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+    @Transactional
+    public Transaction sendEventRewardToken(Wallet wallet,BigInteger amount,String transactionType) {
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Transaction transaction = null;
+        try {
+            TransactionReceipt receipt = eventApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
+                    .assertThenReturn("sendToken", wallet.getMemberKey());
+            if(receipt ==null || StringUtils.isBlank(receipt.getTransactionId())){
+                return null;
+            }else {
+                //SAVE TRANSACTION
+                transaction = new Transaction();
+                transaction.setAmount(amount.toString());
+                transaction.setRecipientAddress(wallet.getWalletAddress());
+                transaction.setSpenderAddress(myConfig.getRecommendAddress());
+                transaction.setTransactionId(receipt.getTransactionId());
+                transaction.setTransactionType(transactionType);
                 transactionService.saveTransaction(transaction);
                 return transaction;
             }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.EventDao">
+    <select id="checkSendEvent" parameterType="String" resultType="Integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_EVENT_SEND_HISTORY
+        WHERE SEND_TYPE = #{type}
+        AND SEND_YN ='Y'
+    </select>
+
+
+    <update id="updateSendYn" parameterType="String" >
+        UPDATE TB_EVENT_SEND_HISTORY
+        SET SEND_YN = IF(SEND_YN='Y','N','Y')
+        WHERE SEND_TYPE = #{type}
+    </update>
+
+
+    <select id="getEventRewardList"  resultType="io.cojam.web.domain.EventSendHistory">
+        SELECT
+            SEQ
+            ,MEMBER_KEY
+            ,MEMBER_ID
+            ,ADDRESS
+            ,TYPE
+            ,AMOUNT
+            ,SEND_YN
+            ,TRANSACTION_ID
+        FROM TB_EVENT_REWARD_HISTORY
+        WHERE SEND_YN = 'N'
+        ORDER BY SEQ
+        LIMIT 0,30
+    </select>
+
+    <update id="updateEventRewardHistory"  parameterType="io.cojam.web.domain.EventSendHistory">
+        UPDATE TB_EVENT_REWARD_HISTORY
+        SET SEND_YN = #{sendYn}
+        ,TRANSACTION_ID = #{transactionId}
+        ,SEND_DATE_TIME = now()
+        WHERE SEQ=#{seq}
+    </update>
+</mapper>

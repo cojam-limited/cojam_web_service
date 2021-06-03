@@ -3,8 +3,12 @@ package io.cojam.web.handler;
 
 import io.cojam.web.account.Account;
 import io.cojam.web.account.UserAccount;
+import io.cojam.web.dao.MemberDao;
+import io.cojam.web.domain.Member;
 import io.cojam.web.encoder.SHA256Util;
 import io.cojam.web.service.CustomUserDetailsService;
+import io.cojam.web.service.MemberService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,6 +28,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    MemberDao memberDao;
+
+    @Autowired
+    MemberService memberService;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -42,6 +52,21 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (!account.getCertification()) {
             throw new DisabledException("not CertificationTT"+account.getMemberKey());
         }
+
+        Member member = new Member();
+        member.setMemberKey(account.getMemberKey());
+        Member detail = memberService.getMemberInfoForMemberKey(member);
+
+        if(detail!=null && !StringUtils.isBlank(detail.getMemberEmail())){
+            String emailName = detail.getMemberEmail().split("@")[1];
+            if(memberDao.checkRejectEmailName(emailName.trim()) > 0){
+                throw new DisabledException("temporary email");
+            }
+        }
+
+
+
+
 
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

@@ -295,6 +295,6 @@
         SELECT
             COUNT(*) CNT
         FROM TB_REJECT_EMAIL
-        WHERE EMAIL_NAME = #{emailName}
+        WHERE EMAIL_NAME LIKE CONCAT(#{emailName},'%')
     </select>
 </mapper>
