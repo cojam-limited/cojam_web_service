@@ -35,6 +35,7 @@ public class Member extends Common{
     private String lockTransactionId;
     private Boolean certification;
     private Timestamp createdDateTime;
+    private Boolean access;
 
 
 

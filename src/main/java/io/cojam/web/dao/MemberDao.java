@@ -4,6 +4,7 @@ import io.cojam.web.domain.AccountDto;
 import io.cojam.web.domain.LoginDto;
 import io.cojam.web.domain.Member;
 import io.cojam.web.domain.Recommend;
+import jnr.a64asm.Mem;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -63,5 +64,7 @@ public interface MemberDao {
     int updateMemberJoinCertification(Member member);
 
     Integer checkRejectEmailName(String emailName);
+
+    int updateMemberAccess(Member member);
 
 }
