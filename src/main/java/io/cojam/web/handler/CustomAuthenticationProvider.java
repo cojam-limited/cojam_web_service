@@ -49,25 +49,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Password not match");
         }
 
-        if (!account.getCertification()) {
-            throw new DisabledException("not CertificationTT"+account.getMemberKey());
-        }
-
         Member member = new Member();
         member.setMemberKey(account.getMemberKey());
         Member detail = memberService.getMemberInfoForMemberKey(member);
 
+
+
         if(detail!=null && !StringUtils.isBlank(detail.getMemberEmail())){
             String emailName = detail.getMemberEmail().split("@")[1];
-            if(memberDao.checkRejectEmailName(emailName.trim()) > 0){
+            if(memberDao.checkEnableEmailName(emailName.trim()) < 1){
                 throw new DisabledException("temporary email");
             }
+
         }
 
-
-
-
-
+        if (!account.getCertification()) {
+            throw new DisabledException("not CertificationTT"+account.getMemberKey());
+        }
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 account,

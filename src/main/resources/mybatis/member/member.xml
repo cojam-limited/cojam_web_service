@@ -306,4 +306,20 @@
         SET ACCESS = #{access}
         WHERE MEMBER_KEY = #{memberKey}
     </update>
+
+
+    <select id="checkEnableEmailName" parameterType="String" resultType="integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_ENABLE_EMAIL
+        WHERE EMAIL_NAME =#{emailName}
+        AND USE_YN = 'Y'
+    </select>
+
+
+    <select id="getEnableEmailName" resultType="String">
+        SELECT GROUP_CONCAT(EMAIL_NAME) EMAIL_NAME
+        FROM TB_ENABLE_EMAIL WHERE USE_YN = 'Y'
+    </select>
+
 </mapper>

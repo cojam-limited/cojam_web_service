@@ -23,4 +23,10 @@
         FROM TB_WALLET
         WHERE MEMBER_KEY = #{value}
     </select>
+
+    <update id="updateWalletInfo"  parameterType="io.cojam.web.domain.Wallet">
+        UPDATE TB_WALLET
+        SET WALLET_STATUS = #{walletStatus}
+        WHERE MEMBER_KEY = #{memberKey}
+    </update>
 </mapper>

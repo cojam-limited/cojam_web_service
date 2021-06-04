@@ -67,4 +67,7 @@ public interface MemberDao {
 
     int updateMemberAccess(Member member);
 
+    Integer checkEnableEmailName(String emailName);
+
+    String getEnableEmailName();
 }

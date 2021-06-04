@@ -62,7 +62,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         }else if(exception.getMessage().contains("temporary email")){
             responseDataDTO.setCode(ResponseDataCode.ERROR);
             responseDataDTO.setStatus(ResponseDataStatus.ERROR);
-            responseDataDTO.setMessage("You can not use temporary email.");
+            responseDataDTO.setMessage(String.format("please use emails from %s",memberDao.getEnableEmailName()));
 
         }else{
             responseDataDTO.setCode(ResponseDataCode.ERROR);

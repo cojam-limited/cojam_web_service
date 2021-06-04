@@ -52,6 +52,11 @@ public class WalletService {
         return 0;
     }
 
+
+    public Wallet getWalletInfo(Wallet wallet){
+        return walletApiService.getWalletInfo(wallet);
+    }
+
     public String getWalletBalance(String memberKey){
         String amount="0";
         Wallet wallet = walletDao.getWalletInfo(memberKey);
@@ -132,8 +137,6 @@ public class WalletService {
         return responseDataDTO;
     }
 
-
-    @Cacheable(value = "memberWalletInfo",key = "#memberKey",cacheManager = "userCacheManager")
     public Wallet getWalletInfo(String memberKey){
         return walletDao.getWalletInfo(memberKey);
     }
@@ -246,5 +249,9 @@ public class WalletService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int updateWalletInfo(Wallet wallet){
+        return walletDao.updateWalletInfo(wallet);
     }
 }
