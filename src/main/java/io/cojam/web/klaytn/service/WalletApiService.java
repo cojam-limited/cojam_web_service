@@ -47,6 +47,7 @@ public class WalletApiService {
                     .walletAddress(walletData.getAddress())
                     .walletId(walletData.getId())
                     .memberKey(memberKey)
+                    .walletStatus(walletData.getStatus())
                     .walletName(walletData.getName())
                     .transactionId(walletData.getTransactionId())
                     .build();
@@ -62,6 +63,23 @@ public class WalletApiService {
             BalanceResponseDTO hibBalance = Arrays.stream(balanceResponseDTO)
                     .filter( dto -> dto.getSymbol().equals(Token.TICKER)).toArray(BalanceResponseDTO[]::new)[0];
             return hibBalance.getAmount();
+        });
+    }
+
+
+    public Wallet getWalletInfo(Wallet wallet) {
+        return serviceTemplate(() -> {
+            WalletDataDTO walletData = restTemplate.getForEntity(
+                    String.format("/user-wallets/%s",
+                            wallet.getWalletId()),
+                    WalletDataDTO.class).getBody();
+            return Wallet.builder()
+                    .walletAddress(walletData.getAddress())
+                    .walletId(walletData.getId())
+                    .walletStatus(walletData.getStatus())
+                    .walletName(walletData.getName())
+                    .transactionId(walletData.getTransactionId())
+                    .build();
         });
     }
 

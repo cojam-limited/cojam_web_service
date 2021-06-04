@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.EmailDao">
+    <select id="getEnableEmailList" parameterType="io.cojam.web.domain.Email" resultType="io.cojam.web.domain.Email">
+        SELECT
+            EMAIL_NAME
+            ,USE_YN
+        FROM TB_ENABLE_EMAIL
+        WHERE 1=1
+        <if test='searchWord != null and !searchWord.equals("")'>
+            AND EMAIL_NAME like CONCAT('%',LOWER(#{searchWord}),'%')
+        </if>
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getEnableEmailListCnt" parameterType="io.cojam.web.domain.Email" resultType="Integer">
+        SELECT
+            COUNT(*) CNT
+        FROM TB_ENABLE_EMAIL
+        WHERE 1=1
+        <if test='searchWord != null and !searchWord.equals("")'>
+            AND EMAIL_NAME like CONCAT('%',LOWER(#{searchWord}),'%')
+        </if>
+    </select>
+
+    <update id="updateEnableEmail" parameterType="io.cojam.web.domain.Email">
+        UPDATE TB_ENABLE_EMAIL
+        SET USE_YN = #{useYn}
+        WHERE EMAIL_NAME = #{emailName}
+    </update>
+
+    <update id="deleteEnableEmail" parameterType="io.cojam.web.domain.Email">
+        DELETE
+        FROM TB_ENABLE_EMAIL
+        WHERE EMAIL_NAME = #{emailName}
+    </update>
+
+    <insert id="saveEnableEmail" parameterType="io.cojam.web.domain.Email">
+        INSERT INTO TB_ENABLE_EMAIL(EMAIL_NAME) VALUES (#{emailName})
+    </insert>
+
+    <select id="getEnableEmailInfo" parameterType="io.cojam.web.domain.Email" resultType="io.cojam.web.domain.Email">
+        SELECT
+            EMAIL_NAME
+            ,USE_YN
+        FROM TB_ENABLE_EMAIL
+        WHERE EMAIL_NAME = #{emailName}
+    </select>
+</mapper>

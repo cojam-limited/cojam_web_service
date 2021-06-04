@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:tr="http://www.thymeleaf.org"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+
+
+        <th:block  th:replace="thymeleaf/fragment/popup :: modalEnableEmailAdd"></th:block>
+
+
+        <div class="table-title">
+            <h2><i class="uil uil-file-alt"></i> Enable E-mail </h2>
+            <div class="modal-btn">
+                <a href="#" data-izimodal-open="#modalEnableEmailAdd" data-izimodal-transitionin="comingIn"><i class="uil uil-plus-circle"></i> Add New E-mail name</a>
+            </div>
+        </div>
+        <form th:name="boardFrm" th:method="GET" action="/cms/email">
+            <input th:type="hidden" th:name="page" />
+            <div class="table-option">
+                <div>
+                    <input type="text" name="searchWord" placeholder="검색어를 입력하세요." th:value="${param.searchWord}"><button type="button" th:onclick="|javascript:fnSearch()|"><i class="uil uil-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-default" id="boardList">
+            <table>
+                <colgroup>
+                    <col width="10%"/>
+                    <col width="*"/>
+                    <col width="10%"/>
+                    <col width="18%"/>
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <td>No.</td>
+                    <td>Email Name</td>
+                    <td>Use YN</td>
+                    <td>Function</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${boardList} !=null">
+                        <tr th:each="item,i : ${boardList}">
+                            <td th:text="${(pagination.totalListCnt - (i.index+(pagination.pageSize*(pagination.page-1))))}"></td>
+                            <td th:text="${item.emailName}"></td>
+                            <td>
+                                <select name="emailUseYn">
+                                    <option value="Y" th:selected="${item.useYn eq 'Y'}">Y(사용)</option>
+                                    <option value="N" th:selected="${item.useYn eq 'N'}">N(미사용)</option>
+                                </select>
+                                <input type="hidden" name="emailKeys" th:value="${item.emailName}">
+                            </td>
+                            <td>
+                                <ul>
+                                    <li th:attr="onclick=|fnDeleteBoard('${item.emailName}')|"><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function (){
+            fnGetList();
+        });
+
+        function fnGetList(){
+            ajaxView("/cms/email/list","POST",$("form[name=boardFrm]").serialize(),"boardList");
+        }
+
+        function fnMovePage(page){
+            $("input[name=page]").val(page);
+            fnGetList();
+        }
+
+        function fnSearch(){
+            $("input[name=page]").val(1);
+            fnGetList();
+        }
+
+        function fnDeleteBoard(emailName){
+
+            $.ajax({
+                url:"/cms/email/delete",
+                type :  "POST",
+                dataType : "json",
+                data : {
+                    "emailName" : emailName
+                },
+                success : function(response){
+                    if(response.check){
+                        toastr.success('Email name is deleted.')
+                        fnGetList();
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        }
+
+
+        let previous;
+        $(document).on('focus click','select[name=emailUseYn]',function (e){
+            previous = $(this).val();
+        });
+
+        $(document).on('change','select[name=emailUseYn]',function (e){
+            const result = confirm("상태를 변경 하시겠습니까?");
+            const index = $('select[name=emailUseYn]').index(this);
+            if (result) {
+
+                $.ajax({
+                    url: "/cms/email/update",
+                    type: "POST",
+                    data: {
+                        "useYn" : $(this).val()
+                        ,"emailName" : $("input[name=emailKeys]").eq(index).val()
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                        } else {
+                            toastr.error(response.message);
+                            $('select[name=emailUseYn]').eq(index).val(previous).prop("selected", true);
+                        }
+                    },
+                    error : function(error){
+                        toastr.error(error.status,error.statusText);
+                        $('select[name=emailUseYn]').eq(index).val(previous).prop("selected", true);
+                    }
+                });
+            } else{
+                $('select[name=emailUseYn]').eq(index).val(previous).prop("selected", true);
+
+            }
+        });
+    </script>
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+</html>

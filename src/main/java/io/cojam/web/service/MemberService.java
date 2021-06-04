@@ -57,6 +57,7 @@ public class MemberService {
     ContractApplicationService contractApplicationService;
 
 
+
     @Transactional
     public ResponseDataDTO saveMember(Member member){
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
@@ -98,11 +99,13 @@ public class MemberService {
         }
 
         String emailName = member.getMemberEmail().split("@")[1];
-        if(memberDao.checkRejectEmailName(emailName.trim()) > 0){
+        if(memberDao.checkEnableEmailName(emailName.trim()) < 1){
             responseDataDTO.setCheck(false);
-            responseDataDTO.setMessage("You can not use temporary email");
+            responseDataDTO.setMessage(String.format("please use emails from %s",memberDao.getEnableEmailName()));
             return responseDataDTO;
         }
+
+
 
         //멤버 시퀀스 채번
         member.setMemberKey(sequenceService.getSequence(SequenceCode.TB_MEMBER));
@@ -470,10 +473,7 @@ public class MemberService {
                 return response;
             }
 
-            Recommend recommend = new Recommend();
-            recommend.setMemberKey(account.getMemberKey());
-            recommend.setRecommendKey(detail.getMemberKey());
-            memberDao.saveRecommend(recommend);
+
 
             //토큰 전송
             Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
@@ -483,6 +483,25 @@ public class MemberService {
                 response.setMessage("Your wallet has not been created.");
                 return response;
             }
+
+            mWallet = walletService.getWalletInfo(mWallet);
+            if(mWallet == null || !mWallet.getWalletStatus().equals("ACTIVE")){
+                response.setCheck(false);
+                response.setMessage("Your wallet has not been created.");
+                return response;
+            }
+
+            rWallet = walletService.getWalletInfo(rWallet);
+            if(rWallet == null || !rWallet.getWalletStatus().equals("ACTIVE")){
+                response.setCheck(false);
+                response.setMessage("Recommender wallet has not been created.");
+                return response;
+            }
+
+            Recommend recommend = new Recommend();
+            recommend.setMemberKey(account.getMemberKey());
+            recommend.setRecommendKey(detail.getMemberKey());
+            memberDao.saveRecommend(recommend);
 
             if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
                 BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_M_AMOUNT, Convert.Unit.ETHER).toBigInteger();
@@ -781,4 +800,37 @@ public class MemberService {
         responseDataDTO.setMessage("success.");
         return responseDataDTO;
     }
+
+    public Integer checkEnableEmailName(String emailName){
+        return memberDao.checkEnableEmailName(emailName);
+    }
+
+    @Transactional
+    public ResponseDataDTO getWalletInfo(Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        Wallet wallet = walletService.getWalletInfo(account.getMemberKey());
+        if(wallet!= null){
+            Boolean isChangeStus = true;
+            if(!StringUtils.isBlank(wallet.getWalletStatus()) && wallet.getWalletStatus().equals("ACTIVE")){
+                isChangeStus = false;
+            }
+            wallet = walletService.getWalletInfo(wallet);
+            if(isChangeStus){
+                wallet.setMemberKey(account.getMemberKey());
+                walletService.updateWalletInfo(wallet);
+            }
+
+        }else{
+            wallet = new Wallet();
+        }
+
+        response.setCheck(true);
+        response.setItem(wallet);
+        response.setMessage("success");
+
+        return response;
+
+    }
+
 }

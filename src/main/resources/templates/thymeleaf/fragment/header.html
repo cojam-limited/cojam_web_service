@@ -38,14 +38,22 @@
                             success : function(response){
                                 if(response.check){
                                     let amount = parseFloat(response.item);
-                                    $('#myToken').html("("+amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT)")
+                                    let amountT;
+                                    if(amount.toString().indexOf('.')> -1){
+                                        var parts = amount.toString().split(".");
+                                        amountT = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+                                    }else{
+                                        amountT = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
+
+                                    $('#myToken').html("("+amountT+" CT)")
                                     if($('#myWalletBalance').length > 0){
-                                        $('#myWalletBalance').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                        $('#myWalletBalance').html(amountT+" CT")
                                         fnGetCoingeckoPrice('krw',amount);
                                         fnGetCoingeckoPrice('usd',amount);
                                     }
                                     if($('#mobileMyToken').length > 0){
-                                        $('#mobileMyToken').html(amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                        $('#mobileMyToken').html(amountT+" CT")
                                     }
 
                                 } else {
