@@ -38,6 +38,9 @@
                     <li th:classappend="${#strings.contains(currentPage, '/cms/members')}?'active':''">
                         <a th:href="@{/cms/members}"><span><i class="uil uil-users-alt"></i></span> Members</a>
                     </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/email')}?'active':''">
+                        <a th:href="@{/cms/email}"><span><i class="uil uil-envelope-check"></i></span> Enable E-mail</a>
+                    </li>
                     <li th:classappend="${#strings.contains(currentPage, '/cms/post')}?'active':''">
                         <a th:href="@{/cms/post}"><span><i class="uil uil-file-alt"></i></span> Post</a>
                     </li>

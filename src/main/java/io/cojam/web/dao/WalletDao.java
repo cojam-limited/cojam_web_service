@@ -12,4 +12,6 @@ public interface WalletDao {
     int saveWallet(Wallet wallet);
 
     Wallet getWalletInfo(String memberKey);
+
+    int updateWalletInfo(Wallet wallet);
 }

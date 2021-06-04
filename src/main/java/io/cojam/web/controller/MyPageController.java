@@ -219,4 +219,15 @@ public class MyPageController {
     ) throws Exception {
         return joinRewardService.loginRewardMember(account.getMemberKey());
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/walletInfo", method= RequestMethod.POST)
+    public ResponseDataDTO getWalletInfo(
+            @AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+
+        return memberService.getWalletInfo(account);
+    }
 }

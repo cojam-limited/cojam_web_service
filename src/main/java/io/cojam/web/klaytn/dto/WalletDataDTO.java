@@ -12,4 +12,5 @@ public class WalletDataDTO {
     private String transactionId;
     private String blockchain;
     private Timestamp createdAt;
+    private String status;
 }

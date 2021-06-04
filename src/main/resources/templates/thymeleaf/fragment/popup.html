@@ -563,18 +563,26 @@
                     <ul id="groundDetail">
                         <th:block th:if="${detail}!= null">
                             <li th:if="${detail.fileKey} !=null or ${detail.fileKey} !=''">
-                                <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
-                                    <a th:href="${detail.snsUrl}" target="_blank">
-                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
-                                    </a>
-                                    <div>
-                                        <span th:text="${detail.snsDesc} !=null and ${detail.snsDesc} != ''? ${detail.snsDesc}:${detail.snsTitle}"></span>
-                                    </div>
+                                <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">
+                                    <iframe width="100%" height="650" th:src="'https://www.youtube.com/embed/'+${detail.snsId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </th:block>
-                                <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
-                                    <a th:href="@{/user/media/image(id=${detail.fileKey})}" target="_blank">
-                                        <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
-                                    </a>
+                                <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">
+                                    <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                        <a th:href="${detail.snsUrl}" target="_blank">
+                                            <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                        </a>
+                                    </th:block>
+                                    <th:block th:unless="${detail.snsUrl} !=null and ${detail.snsUrl} !=''">
+                                        <th:block th:if="${detail.imageLink} !=null and ${detail.imageLink} !=''">
+                                            <a th:href="${detail.imageLink}" target="_blank">
+                                                <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                            </a>
+                                        </th:block>
+                                        <th:block th:unless="${detail.imageLink} !=null and ${detail.imageLink} !=''">
+                                            <img th:src="@{/user/media/image(id=${detail.fileKey})}" width="100%" alt="" title="" />
+                                        </th:block>
+
+                                    </th:block>
                                 </th:block>
                             </li>
                             <li>
@@ -1723,6 +1731,62 @@
             $(document).ready(function (){
                 $('#modalCtNotice').iziModal({width : '600px'});
             });
+        </script>
+    </th:block>
+</th:block>
+<th:block  th:fragment="modalEnableEmailAdd">
+    <!-- 모달 - 카테고리 등록 -->
+    <div class="modal-category-add" id="modalEnableEmailAdd" style="display: none;">
+        <fieldset>
+            <div class="mca-area">
+                <h2>Add New E-mail Name</h2>
+                <div>
+                    <input type="text" name="emailName" placeholder="please input email." style="width: 100%">
+                </div>
+                <p class="close-btn"><i class="uil uil-times modal-close" data-izimodal-close=""></i></p>
+                <p class="mca-btn">
+                    <a href="javascript:fnSaveEmail()">Complete</a>
+                </p>
+            </div>
+        </fieldset>
+    </div>
+    <!-- 모달 - 카테고리 등록 끝 -->
+    <th:block layout:fragment="script">
+        <script>
+            $(document).ready(function(){
+                $('#modalEnableEmailAdd').iziModal({width : '500px',
+                    onOpening: function(modal){
+                        $('input[name=emailName]').val('');
+                    }
+                })
+
+            });
+
+            function fnSaveEmail(){
+
+                if($('input[name=emailName]').val() ==''){
+                    toastr.warning('Please input E-mail name');
+                    return ;
+                }
+
+                $.ajax({
+                    url:"/cms/email/save",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        "emailName" : $('input[name=emailName]').val()
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                            fnMovePage(1);
+                            $('#modalEnableEmailAdd').iziModal('close');
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
         </script>
     </th:block>
 </th:block>

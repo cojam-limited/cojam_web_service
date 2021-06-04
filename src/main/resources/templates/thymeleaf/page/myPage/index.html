@@ -35,11 +35,15 @@
         <dt>
             <div><i class="uil uil-envelope-check"></i> Email : <span th:text="${member.memberEmail}"></span></div>
             <div><i class="uil uil-wallet"></i> Wallet address : <span id="myWalletAddress" th:text="${wallet.walletAddress}"></span><i class="uil uil-copy" onclick="clipBoard('myWalletAddress')"></i></div>
-            <div><i class="uil uil-wallet"></i> Wallet balance :
+            <div><i class="uil uil-history"></i> Wallet status :
+                <span id="myWalletStatus"></span>
+            </div>
+            <div><i class="uil uil-coins"></i> Wallet balance :
                 <span id="myWalletBalance"></span>
                 <span id="myWalletBalanceToKrw" class="myWalletBalance" style="cursor: pointer"></span>
                 <span id="myWalletBalanceToUsd" class="myWalletBalance" style="display: none;cursor: pointer"></span>
-                <a data-izimodal-open="#modalCtNotice" data-izimodal-transitionin="comingIn"><i class="uil uil-question-circle"></i></a></div>
+                <a data-izimodal-open="#modalCtNotice" data-izimodal-transitionin="comingIn"><i class="uil uil-question-circle"></i></a>
+            </div>
         </dt>
         <dd>
             <th:block th:if="${loginRewardInfo} > 0">
@@ -512,6 +516,7 @@
         $("body").addClass("bg-mypage");
         $(document).ready(function (e){
             fnGetMyVotingList();
+            fnGetWalletStatus();
         });
 
         function fnSetTransactionKey(key){
@@ -687,6 +692,30 @@
                         }
                     }
                 });
+        }
+
+
+        function fnGetWalletStatus(){
+            $.ajax({
+                url:"/user/mypage/walletInfo",
+                type :  "POST",
+                contentType : false,
+                processData : false,
+                beforeSend : function(xhr)
+                {
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
+                },
+                complete: function () {
+                },
+                success : function(response){
+                    if(response.check){
+                        const item = response.item;
+                        $('#myWalletStatus').html(item.walletStatus);
+                    }
+                },error : function (e){
+
+                }
+            });
         }
     </script>
     <th:block layout:fragment="script">
