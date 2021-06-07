@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:tr="http://www.thymeleaf.org"
+      layout:decorator="thymeleaf/layout/cms_default_layout">
+<th:block layout:fragment="content">
+    <div class="content">
+        <div class="table-title">
+            <h2><i class="uil uil-medal"></i> Reward </h2>
+        </div>
+        <form th:name="boardFrm" th:method="GET" action="/cms/email">
+            <input th:type="hidden" th:name="page" />
+        </form>
+
+        <div class="table-default" id="boardList">
+            <table>
+                <colgroup>
+                    <col width="10%"/>
+                    <col width="*"/>
+                    <col width="25%"/>
+                    <col width="20%"/>
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <td>No.</td>
+                    <td>Reward</td>
+                    <td>Amount</td>
+                    <td>Use YN</td>
+                    <td>Function</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${list} !=null">
+                        <tr th:each="item,i : ${list}">
+                            <td th:text="${i.index+1}"></td>
+                            <td>
+                                <th:block th:switch="${item.rewardType}">
+                                    <th:block th:case="JOIN">
+                                        Join
+                                    </th:block>
+                                    <th:block th:case="LOGIN">
+                                        Login daily
+                                    </th:block>
+                                    <th:block th:case="REC_M">
+                                        추천인 등록
+                                    </th:block>
+                                    <th:block th:case="REC_R">
+                                        피추천인
+                                    </th:block>
+                                </th:block>
+                            </td>
+                            <td>
+                                <input type="text" th:name="${item.rewardType}+'_amount'" th:value="${item.rewardAmount}"/>
+                            </td>
+                            <td>
+                                <select th:name="${item.rewardType}+'_useYn'">
+                                    <option value="Y" th:selected="${item.useYn eq 'Y'}">Y(사용)</option>
+                                    <option value="N" th:selected="${item.useYn eq 'N'}">N(미사용)</option>
+                                </select>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li th:attr="onclick=|fnUpdateReward('${item.rewardType}')|"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function (){
+            fnGetList();
+        });
+
+        function fnGetList(){
+            ajaxView("/cms/reward/list","POST",$("form[name=boardFrm]").serialize(),"boardList");
+        }
+
+
+
+
+        function fnUpdateReward(rewardType){
+            const amount = $('input[name='+rewardType+'_amount]').val();
+            const useYn = $('select[name='+rewardType+'_useYn]').val();
+
+            if(!$.isNumeric( amount )){
+                toastr.warning('Please enter amount');
+                return;
+            }
+
+            if(confirm('Do you want to update?')){
+                $.ajax({
+                    url:"/cms/reward/update",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        "rewardAmount" : amount,
+                        "useYn" : useYn,
+                        "rewardType" : rewardType,
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success.')
+                            fnGetList();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    <th:block layout:fragment="script">
+    </th:block>
+</th:block>
+</html>

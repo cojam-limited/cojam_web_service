@@ -44,6 +44,9 @@ public class WalletService {
     @Autowired
     SeasonService seasonService;
 
+    @Autowired
+    OtpService otpService;
+
     public int saveWallet(String memberKey,String memberId){
         Wallet wallet =walletApiService.createUserWallet(memberKey,memberId);
         if(wallet != null && wallet.getWalletAddress()!= null){
@@ -71,9 +74,20 @@ public class WalletService {
     }
 
     @Transactional
-    public ResponseDataDTO sendToken(String memberKey, TokenSendRequest request) {
+    public ResponseDataDTO sendToken(String memberKey, TokenSendRequest request,String code) {
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         try {
+            /*
+            ResponseDataDTO otpResponse =otpService.validate(memberKey,code);
+            if(!otpResponse.getCheck()){
+                return otpResponse;
+            }else {
+                responseDataDTO.setMessage("Season is not active.");
+                responseDataDTO.setCheck(false);
+                return responseDataDTO;
+            }
+             */
+
             Season season = seasonService.getSeasonInfo();
             if(season ==null || StringUtils.isBlank(season.getTransferPay())){
                 responseDataDTO.setMessage("Season is not active.");
@@ -169,10 +183,10 @@ public class WalletService {
     }
 
     @Transactional
-    public Transaction sendJoinRewardToken(Wallet wallet) {
+    public Transaction sendJoinRewardToken(Wallet wallet , String rewardAmount) {
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         Transaction transaction = null;
-        BigInteger amount = org.web3j.utils.Convert.toWei(WalletCode.JOIN_REWARD_AMOUNT, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
+        BigInteger amount = org.web3j.utils.Convert.toWei(rewardAmount, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
         try {
             TransactionReceipt receipt = recommendApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
                     .assertThenReturn("sendToken", wallet.getMemberKey());
@@ -197,10 +211,10 @@ public class WalletService {
 
 
     @Transactional
-    public Transaction sendLoginRewardToken(Wallet wallet) {
+    public Transaction sendLoginRewardToken(Wallet wallet,String rewardAmount) {
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         Transaction transaction = null;
-        BigInteger amount = org.web3j.utils.Convert.toWei(WalletCode.LOGIN_REWARD_AMOUNT, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
+        BigInteger amount = org.web3j.utils.Convert.toWei(rewardAmount, org.web3j.utils.Convert.Unit.ETHER).toBigInteger();
         try {
             TransactionReceipt receipt = recommendApiService.sendMasterWalletTokenTransferTransaction(wallet.getWalletAddress(),amount,Token.TICKER)
                     .assertThenReturn("sendToken", wallet.getMemberKey());

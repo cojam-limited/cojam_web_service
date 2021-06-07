@@ -83,6 +83,13 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+
+    // 추가
+    implementation 'de.taimos:totp:1.0'
+    // 추가
+    implementation 'commons-codec:commons-codec:1.10'
+    // 추가
+    implementation 'com.google.zxing:javase:3.2.1'
 }
 
 test {

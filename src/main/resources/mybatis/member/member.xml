@@ -321,5 +321,24 @@
         SELECT GROUP_CONCAT(EMAIL_NAME) EMAIL_NAME
         FROM TB_ENABLE_EMAIL WHERE USE_YN = 'Y'
     </select>
-
+    
+    <select id="getOtpInfo" parameterType="String" resultType="io.cojam.web.domain.MemberOtp">
+        SELECT
+            MEMBER_KEY
+            ,SECRET_KEY
+            ,USE_YN
+        FROM TB_MEMBER_OTP
+        WHERE MEMBER_KEY = #{memberKey}
+    </select>
+    
+    <insert id="saveMemberOtp" parameterType="io.cojam.web.domain.MemberOtp">
+        INSERT INTO TB_MEMBER_OTP
+            (
+             MEMBER_KEY, SECRET_KEY, CREATE_DATE_TIME
+             )
+        VALUES
+            (
+              #{memberKey},#{secretKey},now()
+            )
+    </insert>
 </mapper>
