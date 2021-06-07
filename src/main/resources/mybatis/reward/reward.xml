@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.RewardDao">
+    <select id="getRewardInfo" parameterType="String" resultType="io.cojam.web.domain.RewardInfo">
+        SELECT
+            REWARD_TYPE
+            ,REWARD_AMOUNT
+            ,USE_YN
+        FROM TB_REWARD_INFO
+        WHERE REWARD_TYPE = #{rewardType}
+    </select>
+
+    <select id="getRewardInfoList" resultType="io.cojam.web.domain.RewardInfo">
+        SELECT
+            REWARD_TYPE
+            ,REWARD_AMOUNT
+            ,USE_YN
+        FROM TB_REWARD_INFO
+    </select>
+
+    <update id="updateRewardInfo" parameterType="io.cojam.web.domain.RewardInfo">
+        UPDATE TB_REWARD_INFO
+            SET REWARD_AMOUNT = #{rewardAmount}
+            ,USE_YN = #{useYn}
+        WHERE REWARD_TYPE = #{rewardType}
+    </update>
+
+    <update id="updateRewardInfoRecUseYn" parameterType="io.cojam.web.domain.RewardInfo">
+        UPDATE TB_REWARD_INFO
+            SET USE_YN = #{useYn}
+        WHERE REWARD_TYPE IN ('REC_M','REC_R')
+    </update>
+
+</mapper>

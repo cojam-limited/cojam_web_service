@@ -2,6 +2,7 @@ package io.cojam.web.service;
 
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.ResponseDataCode;
+import io.cojam.web.constant.RewardCode;
 import io.cojam.web.constant.SequenceCode;
 import io.cojam.web.constant.WalletCode;
 import io.cojam.web.dao.MemberDao;
@@ -11,6 +12,7 @@ import io.cojam.web.domain.wallet.TransactionReceipt;
 import io.cojam.web.encoder.PasswordEncoding;
 import io.cojam.web.encoder.SHA256Util;
 import io.cojam.web.klaytn.service.RecommendApiService;
+import io.cojam.web.otp.OtpInfo;
 import io.cojam.web.service.contract.ContractApplicationService;
 import io.cojam.web.utils.AES256Util;
 import io.cojam.web.utils.CommonUtils;
@@ -56,7 +58,11 @@ public class MemberService {
     @Autowired
     ContractApplicationService contractApplicationService;
 
+    @Autowired
+    OtpService otpService;
 
+    @Autowired
+    RewardService rewardService;
 
     @Transactional
     public ResponseDataDTO saveMember(Member member){
@@ -453,78 +459,90 @@ public class MemberService {
     @Transactional
     public ResponseDataDTO recommendMember(String recommendMemberId,Account account){
         ResponseDataDTO response = new ResponseDataDTO();
-        int checkCount = memberDao.getRecommendCount(account.getMemberKey());
-        if(checkCount > 0){
+        RewardInfo recInfoM =rewardService.getRewardInfo(RewardCode.REWARD_TYPE_REC_M);
+        RewardInfo recInfoR =rewardService.getRewardInfo(RewardCode.REWARD_TYPE_REC_R);
+
+        if(recInfoM!=null && recInfoR!=null && "Y".equals(recInfoM.getUseYn()) && "Y".equals(recInfoR.getUseYn())){
+            int checkCount = memberDao.getRecommendCount(account.getMemberKey());
+            if(checkCount > 0){
+                response.setCheck(false);
+                response.setMessage("You already have referral information.");
+                return response;
+            }else{
+                Member param = new Member();
+                param.setMemberId(recommendMemberId);
+                Member detail = memberDao.getMemberInfo(param);
+                if(detail==null){
+                    response.setCheck(false);
+                    response.setMessage("This user does not exist.");
+                    return response;
+                }
+                if(detail.getMemberKey().equals(account.getMemberKey())){
+                    response.setCheck(false);
+                    response.setMessage("You cannot recommend yourself.");
+                    return response;
+                }
+
+
+
+                //토큰 전송
+                Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
+                Wallet rWallet = walletService.getWalletInfo(detail.getMemberKey());
+                if(mWallet== null || rWallet ==null){
+                    response.setCheck(false);
+                    response.setMessage("Your wallet has not been created.");
+                    return response;
+                }
+
+                mWallet = walletService.getWalletInfo(mWallet);
+                if(mWallet == null || !mWallet.getWalletStatus().equals("ACTIVE")){
+                    response.setCheck(false);
+                    response.setMessage("Your wallet has not been created.");
+                    return response;
+                }
+
+                rWallet = walletService.getWalletInfo(rWallet);
+                if(rWallet == null || !rWallet.getWalletStatus().equals("ACTIVE")){
+                    response.setCheck(false);
+                    response.setMessage("Recommender wallet has not been created.");
+                    return response;
+                }
+
+                Recommend recommend = new Recommend();
+                recommend.setMemberKey(account.getMemberKey());
+                recommend.setRecommendKey(detail.getMemberKey());
+                memberDao.saveRecommend(recommend);
+
+                if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
+                    BigInteger amount = Convert.toWei(recInfoM.getRewardAmount(), Convert.Unit.ETHER).toBigInteger();
+                    Transaction transaction =walletService.sendRecommendToken(mWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_M);
+                    if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
+                        recommend.setMTransactionId(transaction.getTransactionId());
+                        memberDao.updateRecommend(recommend);
+                    }
+                }
+
+                if(rWallet!= null && !StringUtils.isBlank(rWallet.getWalletAddress())){
+                    BigInteger amount = Convert.toWei(recInfoR.getRewardAmount(), Convert.Unit.ETHER).toBigInteger();
+                    Transaction transaction =walletService.sendRecommendToken(rWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_R);
+                    if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
+                        recommend.setRTransactionId(transaction.getTransactionId());
+                        memberDao.updateRecommend(recommend);
+                    }
+                }
+
+                response.setCheck(true);
+                response.setItem(detail);
+                response.setMessage("success");
+            }
+
+        }else {
             response.setCheck(false);
-            response.setMessage("You already have referral information.");
+            response.setMessage("Compensation has been discontinued.\nPlease try again later.");
             return response;
-        }else{
-            Member param = new Member();
-            param.setMemberId(recommendMemberId);
-            Member detail = memberDao.getMemberInfo(param);
-            if(detail==null){
-                response.setCheck(false);
-                response.setMessage("This user does not exist.");
-                return response;
-            }
-            if(detail.getMemberKey().equals(account.getMemberKey())){
-                response.setCheck(false);
-                response.setMessage("You cannot recommend yourself.");
-                return response;
-            }
-
-
-
-            //토큰 전송
-            Wallet mWallet = walletService.getWalletInfo(account.getMemberKey());
-            Wallet rWallet = walletService.getWalletInfo(detail.getMemberKey());
-            if(mWallet== null || rWallet ==null){
-                response.setCheck(false);
-                response.setMessage("Your wallet has not been created.");
-                return response;
-            }
-
-            mWallet = walletService.getWalletInfo(mWallet);
-            if(mWallet == null || !mWallet.getWalletStatus().equals("ACTIVE")){
-                response.setCheck(false);
-                response.setMessage("Your wallet has not been created.");
-                return response;
-            }
-
-            rWallet = walletService.getWalletInfo(rWallet);
-            if(rWallet == null || !rWallet.getWalletStatus().equals("ACTIVE")){
-                response.setCheck(false);
-                response.setMessage("Recommender wallet has not been created.");
-                return response;
-            }
-
-            Recommend recommend = new Recommend();
-            recommend.setMemberKey(account.getMemberKey());
-            recommend.setRecommendKey(detail.getMemberKey());
-            memberDao.saveRecommend(recommend);
-
-            if(mWallet!= null && !StringUtils.isBlank(mWallet.getWalletAddress())){
-                BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_M_AMOUNT, Convert.Unit.ETHER).toBigInteger();
-                Transaction transaction =walletService.sendRecommendToken(mWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_M);
-                if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
-                    recommend.setMTransactionId(transaction.getTransactionId());
-                    memberDao.updateRecommend(recommend);
-                }
-            }
-
-            if(rWallet!= null && !StringUtils.isBlank(rWallet.getWalletAddress())){
-                BigInteger amount = Convert.toWei(WalletCode.RECOMMEND_R_AMOUNT, Convert.Unit.ETHER).toBigInteger();
-                Transaction transaction =walletService.sendRecommendToken(rWallet,amount,WalletCode.TRANSACTION_TYPE_RECOMMEND_R);
-                if(transaction != null && !StringUtils.isBlank(transaction.getTransactionId())){
-                    recommend.setRTransactionId(transaction.getTransactionId());
-                    memberDao.updateRecommend(recommend);
-                }
-            }
-
-            response.setCheck(true);
-            response.setItem(detail);
-            response.setMessage("success");
         }
+
+
 
         return response;
 
@@ -833,4 +851,29 @@ public class MemberService {
 
     }
 
+
+
+    @Transactional
+    public ResponseDataDTO getOtpInfo(Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+
+        MemberOtp otp = memberDao.getOtpInfo(account.getMemberKey());
+        boolean isOtp = false;
+        if(otp == null){
+           isOtp = false;
+        } else{
+            if(!otp.getUseYn().equals("Y")){
+                isOtp = false;
+            }else{
+                isOtp = true;
+            }
+        }
+        responseMap.put("isOtp",isOtp);
+        response.setCheck(true);
+        response.setItem(responseMap);
+        response.setMessage("success");
+        return response;
+
+    }
 }
