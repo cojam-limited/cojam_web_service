@@ -4,6 +4,7 @@ import io.cojam.web.account.Account;
 import io.cojam.web.constant.WalletCode;
 import io.cojam.web.domain.*;
 import io.cojam.web.domain.wallet.Transaction;
+import io.cojam.web.otp.TOTPTokenValidation;
 import io.cojam.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -35,10 +37,14 @@ public class MyPageController {
     @Autowired
     JoinRewardService joinRewardService;
 
+    @Autowired
+    OtpService otpService;
+
     @GetMapping
     public String index(
             Model model
             , @AuthenticationPrincipal Account account
+            ,String code
     )
     {
         Member member = new Member();
@@ -52,6 +58,9 @@ public class MyPageController {
 
 
         model.addAttribute("loginRewardInfo",joinRewardService.getLoginRewardInfo(account.getMemberKey()));
+
+        //otpService.generateSecurityKey(account.getMemberId());
+
 
         return "thymeleaf/page/myPage/index";
 
@@ -229,5 +238,15 @@ public class MyPageController {
     ) throws Exception {
 
         return memberService.getWalletInfo(account);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/otpInfo", method= RequestMethod.POST)
+    public ResponseDataDTO otpInfo(
+            @AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.getOtpInfo(account);
     }
 }

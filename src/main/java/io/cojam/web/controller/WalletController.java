@@ -42,10 +42,11 @@ public class WalletController {
     public ResponseDataDTO transfer(@AuthenticationPrincipal Account account
             ,@NotNull(message = "amount 필드가 존재해야 합니다.") String amount
             ,@NotNull(message = "to 필드가 존재해야 합니다.") @NotEmpty(message = "to 값이 존재해야 합니다.") String to
+            ,String code
             , HttpServletResponse response) throws Exception {
         TokenSendRequest request = new TokenSendRequest();
         request.setAmount(Convert.toPeb(amount, Convert.Unit.KLAY).toBigInteger());
         request.setTo(to);
-        return walletService.sendToken(account.getMemberKey(),request);
+        return walletService.sendToken(account.getMemberKey(),request,code);
     }
 }

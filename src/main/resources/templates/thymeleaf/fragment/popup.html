@@ -424,6 +424,7 @@
                     <ul>
                         <li><input name="to" type="text" class="w100p" placeholder="Enter the recipient address" /></li>
                         <li><input name="amount" type="number" class="w100p" placeholder="Please enter CT amount" /></li>
+                        <!--<li><input name="code" type="number" class="w100p" placeholder="Please enter Otp code" /></li>-->
                     </ul>
                     <p>
                         <a href="javascript:fnSendCT();">Send CT</a>
@@ -436,7 +437,18 @@
     <th:block layout:fragment="script">
         <script>
             $(document).ready(function(){
-                $('#modalSendCT').iziModal({width : '500px'});
+                $('#modalSendCT').iziModal({
+                    width : '500px',
+                    onOpening: function(modal){
+                        modal.startLoading();
+                        $.post('/user/mypage/otpInfo/', function(data) {
+                            const isOtp = data.item.isOtp;
+                            modal.stopLoading();
+                        }).fail(function(response) {
+                            $("#modalSendCT").iziModal('close');
+                        });
+                    }
+                });
             });
 
             function fnSendCT(){
@@ -455,7 +467,17 @@
                     toastr.warning('Please enter amount');
                     return;
                 }
+                /*
+                if($("input[name=code]").val()==""){
+                    toastr.warning('Please enter code');
+                    return;
+                }
 
+                if(!$.isNumeric( $("input[name=code]").val() )){
+                    toastr.warning('Please enter code');
+                    return;
+                }
+                 */
                 if(confirm("Do you really want to send?")){
                     $.ajax({
                         url: "/user/wallet/transfer",

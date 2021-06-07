@@ -53,6 +53,9 @@
                     <li th:classappend="${#strings.contains(currentPage, '/cms/season')}?'active':''">
                         <a th:href="@{/cms/season}"><span><i class="uil uil-file-redo-alt"></i></span> Season</a>
                     </li>
+                    <li th:classappend="${#strings.contains(currentPage, '/cms/reward')}?'active':''">
+                        <a th:href="@{/cms/reward}"><span><i class="uil uil-medal"></i></span> Reward</a>
+                    </li>
                 </ul>
             </div>
             <!-- 왼쪽메뉴 끝 -->

@@ -1,9 +1,6 @@
 package io.cojam.web.dao;
 
-import io.cojam.web.domain.AccountDto;
-import io.cojam.web.domain.LoginDto;
-import io.cojam.web.domain.Member;
-import io.cojam.web.domain.Recommend;
+import io.cojam.web.domain.*;
 import jnr.a64asm.Mem;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -70,4 +67,8 @@ public interface MemberDao {
     Integer checkEnableEmailName(String emailName);
 
     String getEnableEmailName();
+
+    MemberOtp getOtpInfo(String memberKey);
+
+    int saveMemberOtp(MemberOtp memberOtp);
 }

@@ -17,14 +17,13 @@ import java.security.*;
 import java.security.spec.RSAPublicKeySpec;
 
 @Controller
-@RequestMapping("/login")
 public class LoginController {
 
     private static String RSA_WEB_KEY = "_RSA_WEB_Key_"; // 개인키 session key
     private static String RSA_INSTANCE = "RSA"; // rsa transformation
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @GetMapping
+    @GetMapping(value = "/login")
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         RequestCache requestCache = new HttpSessionRequestCache();
         SavedRequest savedRequest = requestCache.getRequest(request, response);
@@ -37,6 +36,14 @@ public class LoginController {
             request.getSession().setAttribute("prevPage", "/");
         }
         return "thymeleaf/page/member/login";
+    }
+
+    @GetMapping(value = "/loginP")
+    public String loginOtpPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        RequestCache requestCache = new HttpSessionRequestCache();
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        return "thymeleaf/page/member/loginP";
     }
 
     /**
