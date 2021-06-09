@@ -4,9 +4,11 @@ package io.cojam.web.service.contract;
 import com.klaytn.caver.Caver;
 import com.klaytn.caver.methods.response.KlayTransactionReceipt;
 import com.klaytn.caver.utils.ChainId;
+import com.klaytn.caver.utils.Convert;
 import com.klaytn.caver.wallet.KlayWalletUtils;
 import io.cojam.web.contract.web3.CojamMarket;
 import io.cojam.web.contract.web3.CojamToken;
+import io.cojam.web.domain.MyConfig;
 import io.cojam.web.domain.Wallet;
 import io.cojam.web.domain.wallet.TransactionReceipt;
 import io.cojam.web.klaytn.dto.Data;
@@ -53,6 +55,9 @@ public class ContractApplicationService {
 
     @Value("${app.sdk-enclave.remainAddress}")
     private String remainAddress;
+
+    @Autowired
+    MyConfig myConfig;
 
 
     public TransactionReceipt draftMarket(BigInteger marketKey, String creator, String title, BigInteger creatorFee, BigInteger creatorPercentage, BigInteger cojamPercentage, BigInteger charityPercentage, List<BigInteger> answerKeys) {
@@ -247,5 +252,26 @@ public class ContractApplicationService {
         this.cojamMarket = CojamMarket.load(marketAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
         String payload = this.cojamMarket.unlock(addressList).encodeFunctionCall();
         return walletApiService.contractCallMaster(marketAddress,BigInteger.ZERO,new Data(payload));
+    }
+
+
+    public String getTotalSupply() throws Exception {
+        String dummyWalletKey = "0x6f993629f0d3836153141053f314286d555b4ac21f14057004c7e900413aa1a30x000x02c3d28f9d2618f03f8a499774ac28332471ae6a";
+        String caverUrl = "";
+        int chinId;
+        if(myConfig.getProfile().equals("prod")){
+            caverUrl = Caver.MAINNET_URL;
+            chinId = ChainId.BAOBAB_TESTNET;
+        }else{
+            caverUrl = Caver.BAOBAB_URL;
+            chinId = ChainId.MAINNET;
+        }
+
+
+
+
+        this.cojamTokenCaver = io.cojam.web.contract.caver.CojamToken.load(tokenAddress,Caver.build(caverUrl),KlayWalletUtils.loadCredentials(dummyWalletKey),chinId,new com.klaytn.caver.tx.gas.DefaultGasProvider());
+        BigInteger amount =this.cojamTokenCaver.totalSupply().send();
+        return Convert.fromPeb(String.valueOf(amount), Convert.Unit.KLAY).toString();
     }
 }

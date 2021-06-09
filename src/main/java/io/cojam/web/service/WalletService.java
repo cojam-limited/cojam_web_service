@@ -268,4 +268,6 @@ public class WalletService {
     public int updateWalletInfo(Wallet wallet){
         return walletDao.updateWalletInfo(wallet);
     }
+
+
 }
