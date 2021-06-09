@@ -260,7 +260,7 @@ public class ContractApplicationService {
         String caverUrl = "";
         int chinId;
         if(myConfig.getProfile().equals("prod")){
-            caverUrl = Caver.MAINNET_URL;
+            caverUrl = "https://tn.henesis.io/klaytn/mainnet?clientId=30c53153a44235aa2d799189911edec5";
             chinId = ChainId.MAINNET;
         }else{
             caverUrl = Caver.BAOBAB_URL;
