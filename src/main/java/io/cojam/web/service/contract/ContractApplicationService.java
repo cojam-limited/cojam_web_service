@@ -261,10 +261,10 @@ public class ContractApplicationService {
         int chinId;
         if(myConfig.getProfile().equals("prod")){
             caverUrl = Caver.MAINNET_URL;
-            chinId = ChainId.BAOBAB_TESTNET;
+            chinId = ChainId.MAINNET;
         }else{
             caverUrl = Caver.BAOBAB_URL;
-            chinId = ChainId.MAINNET;
+            chinId = ChainId.BAOBAB_TESTNET;
         }
 
 
