@@ -71,4 +71,6 @@ public interface MemberDao {
     MemberOtp getOtpInfo(String memberKey);
 
     int saveMemberOtp(MemberOtp memberOtp);
+
+    int updateMemberOtp(MemberOtp memberOtp);
 }

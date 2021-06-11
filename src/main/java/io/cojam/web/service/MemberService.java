@@ -64,6 +64,8 @@ public class MemberService {
     @Autowired
     RewardService rewardService;
 
+
+
     @Transactional
     public ResponseDataDTO saveMember(Member member){
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
@@ -794,6 +796,32 @@ public class MemberService {
         return responseDataDTO;
     }
 
+
+    @Transactional
+    public ResponseDataDTO memberOtpInit(List<String> memberKeyList, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+
+        if(memberKeyList == null || memberKeyList.size() < 1){
+            responseDataDTO.setCheck(false);
+            responseDataDTO.setMessage("parameter is wrong!");
+            return responseDataDTO;
+        }
+        for (String memberKey:memberKeyList
+        ) {
+            MemberOtp otp = new MemberOtp();
+            otp.setUseYn("N");
+            otp.setMemberKey(memberKey);
+            memberDao.updateMemberOtp(otp);
+        }
+
+
+
+        responseDataDTO.setCode(ResponseDataCode.SUCCESS);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success.");
+        return responseDataDTO;
+    }
+
     @Transactional
     public ResponseDataDTO memberReject(List<String> memberKeyList, Account account){
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
@@ -873,6 +901,62 @@ public class MemberService {
         response.setCheck(true);
         response.setItem(responseMap);
         response.setMessage("success");
+        return response;
+
+    }
+
+    @Transactional
+    public OtpInfo createOtp(Account account){
+        MemberOtp otp = memberDao.getOtpInfo(account.getMemberKey());
+        if(otp == null || !otp.getUseYn().equals("Y")){
+            OtpInfo otpInfo = otpService.generateSecurityKey(account.getMemberId());
+            otp = new MemberOtp();
+            otp.setMemberKey(account.getMemberKey());
+            otp.setSecretKey(otpInfo.getSecretKey());
+            otp.setUseYn("N");
+            memberDao.saveMemberOtp(otp);
+            return otpInfo;
+        }else {
+            return null;
+        }
+    }
+
+    public MemberOtp getOtpInfo(String memberKey){
+        return memberDao.getOtpInfo(memberKey);
+    };
+
+
+    @Transactional
+    public ResponseDataDTO confirmMemberOtp(String otpCode,Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+        Map<String,Object> responseMap = new HashMap<>();
+
+        MemberOtp otp = memberDao.getOtpInfo(account.getMemberKey());
+
+        if(otp != null){
+
+            ResponseDataDTO otpResponse = otpService.validate(account.getMemberKey(),otpCode);
+            if(!otpResponse.getCheck()){
+                response.setCheck(false);
+                response.setItem(responseMap);
+                response.setMessage("Code does not match.");
+            }
+
+            if(!otp.getUseYn().equals("Y")){
+                otp.setUseYn("Y");
+                memberDao.updateMemberOtp(otp);
+            }else{
+                response.setCheck(false);
+                response.setItem(responseMap);
+                response.setMessage("OTP has already been registered.");
+            }
+        } else{
+            response.setCheck(false);
+            response.setItem(responseMap);
+            response.setMessage("This is incorrect information.");
+        }
+
+
         return response;
 
     }

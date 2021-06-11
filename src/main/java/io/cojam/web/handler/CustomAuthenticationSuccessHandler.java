@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.ResponseDataCode;
 import io.cojam.web.constant.ResponseDataStatus;
+import io.cojam.web.dao.MemberDao;
+import io.cojam.web.domain.MemberOtp;
 import io.cojam.web.domain.ResponseDataDTO;
 import io.cojam.web.service.JoinRewardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +42,22 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         ObjectMapper mapper = new ObjectMapper();	//JSON 변경용
 
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        Map<String, String> items = new HashMap<String,String>();
         responseDataDTO.setCode(ResponseDataCode.SUCCESS);
         responseDataDTO.setStatus(ResponseDataStatus.SUCCESS);
         Account account = (Account) authentication.getPrincipal();
 
+
         joinRewardService.joinRewardMember(account.getMemberKey());
         //joinRewardService.loginRewardMember(account.getMemberKey());
+
+
 
         String prevPage = request.getSession().getAttribute("prevPage")==null || request.getSession().getAttribute("prevPage").toString().equals("/") ?"/user/home":request.getSession().getAttribute("prevPage").toString();	//이전 페이지 가져오기
         if(prevPage.contains("/login")){
             prevPage = "/user/home";
         }
-        Map<String, String> items = new HashMap<String,String>();
+
         items.put("url", prevPage);	// 이전 페이지 저장
         responseDataDTO.setItem(items);
 

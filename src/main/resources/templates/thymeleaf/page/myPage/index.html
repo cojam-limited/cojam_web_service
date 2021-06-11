@@ -84,6 +84,7 @@
                     <li><strong>Title</strong></li>
                     <li><strong>Status Flow</strong></li>
                     <li style="text-align:center;"><strong>My Answer</strong></li>
+                    <li style="text-align:center;"><strong>CT</strong></li>
                     <li style="text-align:center;"><strong>Multiply</strong></li>
                     <li style="text-align:center;"><strong>Prediction Fee</strong></li>
                 </ul>
@@ -280,7 +281,8 @@
                                 </li>
                             </th:block>
                         </th:block>
-                        <li><span>My Answer : </span><th:block th:text="${item.answerTitle}"></th:block> (<th:block th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></th:block> CT)</li>
+                        <li><span>My Answer : </span><th:block th:text="${item.answerTitle}"></th:block></li>
+                        <li><span>CT : </span><th:block th:text="${#numbers.formatInteger(item.bettingCoin,0,'COMMA')}"></th:block> CT</li>
                         <li>
                             <span>Multiply : </span><th:block th:text="${item.magnification}"></th:block>
                         </li>

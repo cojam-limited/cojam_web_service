@@ -2,6 +2,7 @@ package io.cojam.web.controller;
 
 import io.cojam.web.account.Account;
 import io.cojam.web.domain.*;
+import io.cojam.web.otp.OtpInfo;
 import io.cojam.web.service.MemberService;
 import io.cojam.web.utils.AES256Util;
 import lombok.NonNull;
@@ -22,6 +23,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -251,6 +253,16 @@ public class MemberController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/cms/member/otpInit", method= RequestMethod.POST)
+    public ResponseDataDTO otpInit(
+            @Valid MemberLock memberLock
+            ,@AuthenticationPrincipal Account account
+            , HttpServletResponse response
+    ) throws Exception {
+        return memberService.memberOtpInit(memberLock.getMemberKeys(),account);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/cms/member/reject", method= RequestMethod.POST)
     public ResponseDataDTO reject(
             @Valid MemberLock memberLock
@@ -260,4 +272,33 @@ public class MemberController {
         return memberService.memberReject(memberLock.getMemberKeys(),account);
     }
 
+
+    @RequestMapping(value = "/user/check", method= RequestMethod.GET)
+    public String membersOtp(Model model,@AuthenticationPrincipal Account account) throws UnsupportedEncodingException {
+        MemberOtp otp = memberService.getOtpInfo(account.getMemberKey());
+
+        if(otp==null || !otp.getUseYn().equals("Y")){
+            OtpInfo otpInfo = memberService.createOtp(account);
+            if(otpInfo !=null){
+                model.addAttribute("secretKey",otpInfo.getSecretKey());
+                model.addAttribute("memberId",account.getMemberId());
+            }else {
+                model.addAttribute("secretKey",null);
+                model.addAttribute("memberId",null);
+            }
+            return "thymeleaf/page/member/otpRegister";
+        }else {
+            return "redirect:/user/mypage";
+
+        }
+    }
+
+
+    @RequestMapping(value = "/user/otp", method= RequestMethod.POST)
+    @ResponseBody
+    public ResponseDataDTO membersOtpProc(@NotEmpty @NotNull String otpCode,@AuthenticationPrincipal Account account) throws UnsupportedEncodingException {
+        MemberOtp otp = memberService.getOtpInfo(account.getMemberKey());
+
+        return memberService.confirmMemberOtp(otpCode,account);
+    }
 }
