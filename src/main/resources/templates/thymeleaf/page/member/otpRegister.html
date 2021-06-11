@@ -14,9 +14,16 @@
             Scan the QR Code through the APP and register.<br/>
             Help: <a href="https://support.google.com/accounts/answer/1066447?co=GENIE.Platform%3DAndroid&hl=ko&oco=0" target="_blank">Click</a>
         </h2>
+        <h2 style="font-size: 16px;">
+
+        </h2>
         <h3>
             <img id="otpLoading" src="/assets/image/common/loadingOtp.gif" width="100%"/>
-            <img id="viewQrImage" onload="$('#otpLoading').hide();$('#btnArea').show();" th:src="'https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=otpauth://totp/cojam ('+${memberId}+')?secret='+${secretKey}+'&issuer=cojam'"/>
+            <img id="viewQrImage" onload="$('#otpLoading').hide();$('#btnArea').show();" th:src="'https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=otpauth://totp/Cojam ('+${memberId}+')?secret='+${secretKey}+'&issuer=cojam'"/>
+        </h3>
+        <h3 id="otpInfoArea">
+            Account : <b th:text="'Cojam('+${memberId}+')'"></b><br/>
+            Secret code : <b th:text="${secretKey}"></b><br/>
         </h3>
         <h2 style="font-size: 16px;display: none" id="codeArea">
             <ul>
@@ -35,6 +42,7 @@
             if(otpType=="A"){
                 if(confirm('Have you completed registration?')){
                     $('#viewQrImage').hide();
+                    $('#otpInfoArea').hide();
                     $('#codeArea').show();
                     toastr.success('Enter the otp code to complete the registration.');
                     otpType='C';
