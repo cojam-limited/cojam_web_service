@@ -444,7 +444,12 @@
                         $.post('/user/mypage/otpInfo/', function(data) {
                             const isOtp = data.item.isOtp;
                             if(!isOtp){
-                                fnLogOut("C");
+                                if(confirm('Do you want to register otp?')){
+                                    fnLogOut("C");
+                                }else{
+                                    $("#modalSendCT").iziModal('close');
+                                }
+
                             }
                             modal.stopLoading();
                         }).fail(function(response) {
