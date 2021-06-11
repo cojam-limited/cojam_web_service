@@ -39,7 +39,6 @@
                 </dl>
             </fieldset>
         </form>
-
     </div>
     <!-- index.html 고유 스크립트 추가 -->
     <th:block layout:fragment="script">
@@ -78,12 +77,8 @@
                     },
                     success : function(response){
                         if(response.code == "200"){
-                            const url = response.item.url;
-                            if(url.indexOf('127.0.0.1')> -1 || url.indexOf('10.10.0.4')){
-                                window.location = '/user/home';
-                                return;
-                            }
-                            window.location = response.item.url;
+                            location.replace('/user/check');
+                            return;
                         } else {
                             if(response.code == "998"){
                                 location.href ='/user/join/completed?a4='+response.item;
@@ -94,7 +89,6 @@
                     }
                 });
             }
-
         </script>
     </th:block>
 </div>

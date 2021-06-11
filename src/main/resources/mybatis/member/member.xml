@@ -111,12 +111,15 @@
             ,M.ACCESS
             ,W.WALLET_ADDRESS
             ,C.FP_NUMBER
+            ,IFNULL(TMO.USE_YN,'N') AS OTP_USE_YN
         FROM TB_MEMBER M
         LEFT OUTER JOIN TB_WALLET W
         ON M.MEMBER_KEY = W.MEMBER_KEY
         LEFT OUTER JOIN TB_JOIN_CERTIFICATION C
         on M.MEMBER_KEY = C.MEMBER_KEY
         AND M.MEMBER_EMAIL = C.MEMBER_EMAIL
+        LEFT OUTER JOIN TB_MEMBER_OTP TMO
+        on M.MEMBER_KEY = TMO.MEMBER_KEY
         WHERE MEMBER_ROLE ='USER'
         <if test='searchText != null and !searchText.equals("")'>
             AND (
@@ -340,5 +343,13 @@
             (
               #{memberKey},#{secretKey},now()
             )
+        ON DUPLICATE KEY UPDATE
+            SECRET_KEY=#{secretKey} , CREATE_DATE_TIME = now();
     </insert>
+
+    <update id="updateMemberOtp" parameterType="io.cojam.web.domain.MemberOtp">
+        UPDATE TB_MEMBER_OTP
+        SET USE_YN = #{useYn}
+        WHERE MEMBER_KEY = #{memberKey}
+    </update>
 </mapper>

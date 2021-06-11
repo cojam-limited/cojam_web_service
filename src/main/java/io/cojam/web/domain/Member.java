@@ -36,6 +36,7 @@ public class Member extends Common{
     private Boolean certification;
     private Timestamp createdDateTime;
     private Boolean access;
+    private String otpUseYn;
 
 
 
