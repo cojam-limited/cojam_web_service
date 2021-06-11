@@ -77,16 +77,13 @@ public class WalletService {
     public ResponseDataDTO sendToken(String memberKey, TokenSendRequest request,String code) {
         ResponseDataDTO responseDataDTO = new ResponseDataDTO();
         try {
-            /*
+
             ResponseDataDTO otpResponse =otpService.validate(memberKey,code);
             if(!otpResponse.getCheck()){
-                return otpResponse;
-            }else {
-                responseDataDTO.setMessage("Season is not active.");
+                responseDataDTO.setMessage("Code does not match.");
                 responseDataDTO.setCheck(false);
                 return responseDataDTO;
             }
-             */
 
             Season season = seasonService.getSeasonInfo();
             if(season ==null || StringUtils.isBlank(season.getTransferPay())){
@@ -268,4 +265,6 @@ public class WalletService {
     public int updateWalletInfo(Wallet wallet){
         return walletDao.updateWalletInfo(wallet);
     }
+
+
 }

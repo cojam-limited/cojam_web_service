@@ -167,26 +167,5 @@
         <!-- 상단영역 끝 -->
     </div>
     <!-- 상단영역 끝 -->
-    <script>
-        function fnLogOut() {
-
-            $.ajax({
-                url:"/logout",
-                type :  "POST",
-                dataType : "json",
-                beforeSend : function(xhr)
-                {
-                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"),$("meta[name='_csrf']").attr("content"));
-                },
-                success : function(response){
-                    if(response.code == "200"){
-                        window.location = response.item.url;
-                    } else {
-                        alert(response.message);
-                    }
-                }
-            });
-        }
-    </script>
 </th:block>
 </html>

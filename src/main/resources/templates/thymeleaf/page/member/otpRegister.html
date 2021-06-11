@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="thymeleaf/layout/login_layout">
+<th:block layout:fragment="css">
+    <!--<link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<div layout:fragment="content" class="join-complete-area">
+    <div>
+        <p><a href="/user/home"><img src="/assets/image/common/logo_black.png" alt="" title="" /></a></p>
+        <h2 style="font-size: 16px;">
+            For CT transmission,<br/> google otp registration is required.<br/>
+            Scan the QR Code through the APP and register.<br/>
+            Help: <a href="https://support.google.com/accounts/answer/1066447?co=GENIE.Platform%3DAndroid&hl=ko&oco=0" target="_blank">Click</a>
+        </h2>
+        <h3>
+            <img id="otpLoading" src="/assets/image/common/loadingOtp.gif" width="100%"/>
+            <img id="viewQrImage" onload="$('#otpLoading').hide();$('#btnArea').show();" th:src="'https://chart.googleapis.com/chart?chs=200x200&chld=M%7C0&cht=qr&chl=otpauth://totp/cojam ('+${memberId}+')?secret='+${secretKey}+'&issuer=cojam'"/>
+        </h3>
+        <h2 style="font-size: 16px;display: none" id="codeArea">
+            <ul>
+                <li>
+                    OTP Code : <input type="text" name="otpCode" title="CODE" maxlength="35" class="id-icn" placeholder="Input otp code." value=""/>
+                </li>
+            </ul>
+        </h2>
+        <div id="btnArea" style="display: none">
+            <a style="width: 100%" href="javascript:fnConfirmOTP()">Confirm</a>
+        </div>
+    </div>
+    <script>
+        let otpType="A";
+        function fnConfirmOTP(){
+            if(otpType=="A"){
+                if(confirm('Have you completed registration?')){
+                    $('#viewQrImage').hide();
+                    $('#codeArea').show();
+                    toastr.success('Enter the otp code to complete the registration.');
+                    otpType='C';
+                }
+            }else{
+
+                if($("input[name=otpCode]").val()=="") {
+                    toastr.warning('Input otp code.');
+                    return;
+                }
+
+                $.ajax({
+                    url:"/user/otp",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        otpCode: $("input[name=otpCode]").val()
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('OTP registered is complete.');
+                            location.replace('/user/mypage')
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+</div>
+</html>

@@ -290,7 +290,7 @@ $(document).ready(function() {
 });
 
 
-function fnLogOut() {
+function fnLogOut(type) {
 
 	$.ajax({
 		url:"/logout",
@@ -303,7 +303,12 @@ function fnLogOut() {
 		success : function(response){
 			console.debug(response)
 			if(response.code == "200"){
-				window.location = response.item.url;
+				if(type=="C"){
+					window.location = '/loginP'
+				}else{
+					window.location = response.item.url;
+				}
+
 			} else {
 				alert(response.message);
 			}

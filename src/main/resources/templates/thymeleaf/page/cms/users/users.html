@@ -13,6 +13,7 @@
                 <a href="javascript:fnUnLockWallet();">Unlock</a>
                 <a href="javascript:fnReject();">Reject</a>
                 <a href="javascript:fnAccess();">Allow</a>
+                <a href="javascript:fnOtpInit();">OTP init</a>
             </div>
         </div>
         <form th:name="boardFrm" th:method="GET" action="/cms/users">
@@ -38,6 +39,7 @@
                     <col width="18%"/>
                     <col width="6%"/>
                     <col width="6%"/>
+                    <col width="6%"/>
                     <col width="10%"/>
                     <col width="10%"/>
                 </colgroup>
@@ -52,6 +54,7 @@
                     <td>Join Date</td>
                     <td>Lock</td>
                     <td>Access</td>
+                    <td>OTP</td>
                     <td>Email verification</td>
                     <td>CODE</td>
                 </tr>
@@ -88,6 +91,7 @@
                             </script>
                             <td><p th:text="${item.walletLock}?'T':'F'" th:classappend="${item.walletLock}?'true':'false'"></p></td>
                             <td><p th:text="${item.access}?'T':'F'" th:classappend="${item.access}?'true':'false'"></p></td>
+                            <td><p th:text="${item.otpUseYn}=='Y'?'T':'F'" th:classappend="${item.otpUseYn}=='Y'?'true':'false'"></p></td>
                             <td><p th:text="${item.certification}?'T':'F'" th:classappend="${item.certification}?'true':'false'"></p></td>
                             <td th:text="${item.fpNumber}"></td>
                         </tr>
@@ -252,6 +256,42 @@
                 if (result) {
                     $.ajax({
                         url: "/cms/member/access",
+                        type: "POST",
+                        data: {
+                            'memberKeys':lists
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        },
+                        error : function(error){
+                            toastr.error(error.status,error.statusText);
+                        }
+                    });
+                }
+            }
+
+
+            function fnOtpInit(){
+                if(!$('input:checkbox[name="memberKeys"]').is(":checked")){
+                    toastr.warning('Please select a check box');
+                    return;
+                }
+
+                const lists = [];
+                $("input[name='memberKeys']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+                    lists.push($(this).val());
+                });
+
+
+                const result = confirm("Would you like to change the state to 'OTP'?");
+                if (result) {
+                    $.ajax({
+                        url: "/cms/member/otpInit",
                         type: "POST",
                         data: {
                             'memberKeys':lists

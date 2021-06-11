@@ -21,11 +21,9 @@ public class OtpService {
 
     public OtpInfo generateSecurityKey(String memberId) {
         String secretKey = TOTPTokenGenerator.generateSecretKey();
-        System.out.println(secretKey);
         String email = memberId+"@cojam.io";
         String company = "cojam";
         String barcodeUrl = TOTPTokenGenerator.getGoogleAuthenticatorBarCode(secretKey, email, company);
-        System.out.println(barcodeUrl);
         return OtpInfo.builder()
                 .secretKey(secretKey)
                 .barcodeUrl(barcodeUrl)
@@ -37,6 +35,11 @@ public class OtpService {
 
         MemberOtp otp = memberDao.getOtpInfo(memberKey);
         if(otp == null){
+            response.setCheck(false);
+            response.setMessage("Invalid 2FA Code");
+        }
+
+        if(!otp.getUseYn().equals("Y")){
             response.setCheck(false);
             response.setMessage("Invalid 2FA Code");
         }

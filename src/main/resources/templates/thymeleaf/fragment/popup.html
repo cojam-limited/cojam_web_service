@@ -424,7 +424,7 @@
                     <ul>
                         <li><input name="to" type="text" class="w100p" placeholder="Enter the recipient address" /></li>
                         <li><input name="amount" type="number" class="w100p" placeholder="Please enter CT amount" /></li>
-                        <!--<li><input name="code" type="number" class="w100p" placeholder="Please enter Otp code" /></li>-->
+                        <li><input name="code" type="number" class="w100p" placeholder="Please enter Otp code" /></li>
                     </ul>
                     <p>
                         <a href="javascript:fnSendCT();">Send CT</a>
@@ -443,6 +443,9 @@
                         modal.startLoading();
                         $.post('/user/mypage/otpInfo/', function(data) {
                             const isOtp = data.item.isOtp;
+                            if(!isOtp){
+                                fnLogOut("C");
+                            }
                             modal.stopLoading();
                         }).fail(function(response) {
                             $("#modalSendCT").iziModal('close');
