@@ -590,13 +590,13 @@
             , Q.COMPLETED
             , Q.PENDING
             ,truncate((Q.TOTAL_AMOUNT
-                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
-                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
-                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT,2) AS magnification
+                  - (Q.TOTAL_AMOUNT * S.cojam_fee / 100 )
+                  - ((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - (Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT,2) AS magnification
             ,truncate(((Q.TOTAL_AMOUNT
-                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
-                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
-                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
+                  - (Q.TOTAL_AMOUNT * S.cojam_fee / 100 )
+                  - ((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - (Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
             , IF(B.QUEST_KEY = A.QUEST_KEY AND B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY AND A.SELECTED , TRUE, FALSE)  AS ANSWER_SELECTED
         FROM TB_QUEST_BETTING B
         JOIN TB_QUEST_ANSWER A
