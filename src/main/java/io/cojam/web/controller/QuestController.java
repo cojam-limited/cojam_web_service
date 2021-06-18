@@ -92,7 +92,11 @@ public class QuestController {
         quest.setQuestKey(idx);
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
         model.addAttribute("detail", questService.getQuestDetailUser(quest));
-
+        try {
+            contractApplicationService.getMarketInfo(sequenceService.changeSequenceStringToBigInteger(idx,SequenceCode.TB_QUEST));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "thymeleaf/page/quest/view";
     }
 
