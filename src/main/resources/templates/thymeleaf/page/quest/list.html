@@ -91,7 +91,7 @@
                         <h4 th:text="${item.questTitle}"></h4>
                         <ul>
                             <li th:each=" subItem , i : ${#strings.arraySplit(item.answersStr,'^#')}"
-                                th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                                th:with="answer=${#strings.arraySplit(subItem,'!+')}"
                             >
                                 <div th:text="${answer[0]}"></div>
                                 <p th:id="'answer_'+${item.questKey}+'_'+${i.index}"></p>
