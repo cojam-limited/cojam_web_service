@@ -68,7 +68,7 @@
                     <ul>
 
                         <li th:each=" subItem , i : ${#strings.arraySplit(detail.answersStr,'^#')}"
-                            th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                            th:with="answer=${#strings.arraySplit(subItem,'!+')}"
                             class="answerSelectList"
                             th:attr="data-questAnswerKey=${answer[2]},data-answerTotal=${answer[1]}"
                             th:classappend="${answer[3]=='true'}?'active':''"
@@ -139,7 +139,7 @@
                             <select name="selectAnswerList" title="" class="w100p">
                                 <option selected value="">ALL</option>
                                 <option th:each="subItem , i : ${#strings.arraySplit(detail.answersStr,'^#')}"
-                                        th:with="answer=${#strings.arraySplit(subItem,'%')}"
+                                        th:with="answer=${#strings.arraySplit(subItem,'!+')}"
                                         th:text="${answer[0]}"
                                         th:value="${answer[2]}"></option>
                             </select>
