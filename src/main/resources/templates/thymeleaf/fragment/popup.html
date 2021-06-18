@@ -1612,7 +1612,8 @@
                             if(data.check){
                                 const item = data.item;
                                 betQuestKey =item.betQuestKey;
-                                $('#rewardAreaCT').html(item.rewardCoin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
+                                const rewardCoin = item.rewardCoin;
+                                $('#rewardAreaCT').html(rewardCoin.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" CT")
 
                                 if(rewardType =='S'){
                                     $('#rewardTypeImg').attr('src','/assets/image/content/coin.png');

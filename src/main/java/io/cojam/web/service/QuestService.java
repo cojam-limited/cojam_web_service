@@ -913,15 +913,15 @@ public class QuestService {
                     float answer_total_ct = Float.parseFloat(answer.getTotalAmount());
 
                     // 3. Get Fee
-                    double cojam_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCojamFee()) / 100);
-                    double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
-                    double charity_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCharityFee()) / 100);
+                    double cojam_ct = market_total_ct * Long.parseLong(detail.getCojamFee()) / 100;
+                    double creator_ct = market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay());
+                    double charity_ct = market_total_ct * Long.parseLong(detail.getCharityFee()) / 100;
                     double real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
-                    double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
+                    double magnification = real_total_ct / answer_total_ct * 100;
 
 
                     float b_coin = Long.parseLong(betting.getBettingCoin());
-                    r_coin = Math.floor(b_coin * magnification / 100);
+                    r_coin = b_coin * magnification / 100;
                 }else if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
                     r_coin = Long.parseLong(betting.getBettingCoin());
                 }
@@ -1000,15 +1000,15 @@ public class QuestService {
                 float answer_total_ct = Float.parseFloat(answer.getTotalAmount());
 
                 // 3. Get Fee
-                double cojam_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCojamFee()) / 100);
-                double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
-                double charity_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCharityFee()) / 100);
+                double cojam_ct = market_total_ct * Long.parseLong(detail.getCojamFee()) / 100;
+                double creator_ct = market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay());
+                double charity_ct = market_total_ct * Long.parseLong(detail.getCharityFee()) / 100;
                 double real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
-                double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
+                double magnification = real_total_ct / answer_total_ct * 100;
 
 
                 float b_coin = Long.parseLong(betting.getBettingCoin());
-                r_coin = Math.floor(b_coin * magnification / 100);
+                r_coin = b_coin * magnification / 100;
                 responseMap.put("type","S");
 
             }else if (QuestCode.QUEST_STATUS_TYPE_ADJOURN.equals(detail.getQuestStatus())) {
@@ -1125,11 +1125,11 @@ public class QuestService {
                     float answer_total_ct = Float.parseFloat(selectedAnswer.getTotalAmount());
 
                     // 3. Get Fee
-                    double cojam_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCojamFee()) / 100);
-                    double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
-                    double charity_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCharityFee()) / 100);
-                    double real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
-                    double remain_ct = real_total_ct;
+                    float cojam_ct = market_total_ct * Float.parseFloat(detail.getCojamFee()) / 100;
+                    float creator_ct = market_total_ct * Float.parseFloat(detail.getCreatorFee()) / 100 + Float.parseFloat(detail.getCreatorPay());
+                    float charity_ct = market_total_ct * Float.parseFloat(detail.getCharityFee()) / 100;
+                    float real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
+                    float remain_ct = real_total_ct;
 
                     // 4. Set Attributes
                     Map<String,Object> json = new HashMap<>();
@@ -1143,7 +1143,7 @@ public class QuestService {
                     json.put("COJAM_CHARITY_ADDRESS", myConfig.getCharityAddress());
 
                     // 5. Get Scale of Betting
-                    double magnification = Math.floor(real_total_ct / answer_total_ct * 100);
+                    float magnification = real_total_ct / answer_total_ct * 100;
 
                     // 6. Get/Set List of Address with CT
                     Betting bparam = new Betting();
@@ -1155,8 +1155,8 @@ public class QuestService {
                     for (Betting betting : bettingList
                          ) {
                         String address = betting.getSpenderAddress();
-                        float b_coin = Long.parseLong(betting.getBettingCoin());
-                        double r_coin = Math.floor(b_coin * magnification / 100);
+                        float b_coin = Float.parseFloat(betting.getBettingCoin());
+                        float r_coin = b_coin * magnification / 100;
 
                         if (address != null) {
                             Object old = gospel.get(address);
@@ -1164,7 +1164,7 @@ public class QuestService {
                             remain_ct -= r_coin;
 
                             if(old != null) {
-                                double old_coin = (double) old;
+                                float old_coin = (float) old;
                                 r_coin = r_coin + old_coin;
 
                                 gospel.put(address, r_coin);
@@ -1178,8 +1178,8 @@ public class QuestService {
                         Object old = gospel.get(detail.getCreatorAddress());
 
                         if (old != null) {
-                            double old_coin = (double) old;
-                            double r_coin = creator_ct + old_coin;
+                            float old_coin = (float) old;
+                            float r_coin = creator_ct + old_coin;
                             gospel.put(detail.getCreatorAddress(), r_coin);
                         } else {
                             gospel.put(detail.getCreatorAddress(), creator_ct);
@@ -1193,8 +1193,8 @@ public class QuestService {
                         Object old = gospel.get("COJAM_OWNER_ADDRESS");
 
                         if (old != null) {
-                            double old_coin = (double) old;
-                            double r_coin = creator_ct + old_coin;
+                            float old_coin = (float) old;
+                            float r_coin = creator_ct + old_coin;
 
                             gospel.put("COJAM_OWNER_ADDRESS", r_coin);
                         } else {
@@ -1275,7 +1275,7 @@ public class QuestService {
                             float market_total_ct = Float.parseFloat(detail.getTotalAmount());
 
                             // 3. Get Fee
-                            double creator_ct = Math.floor(market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay()));
+                            double creator_ct = market_total_ct * Long.parseLong(detail.getCreatorFee()) / 100 + Long.parseLong(detail.getCreatorPay());
 
                             //SAVE TRANSACTION
                             Transaction transaction = new Transaction();
