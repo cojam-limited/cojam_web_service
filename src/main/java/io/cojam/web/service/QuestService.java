@@ -440,7 +440,6 @@ public class QuestService {
             for (QuestAnswer answer:list
                  ) {
                 BigInteger answerKey = new BigInteger(answer.getQuestAnswerKey());
-                System.out.println(String.format("answerKey : s",answerKey));
                 bigIntegerList.add(new BigInteger(answer.getQuestAnswerKey()));
             }
             BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
