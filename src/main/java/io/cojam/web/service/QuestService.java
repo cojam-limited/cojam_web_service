@@ -768,6 +768,10 @@ public class QuestService {
             betting.setMemberKey(account.getMemberKey());
             questDao.saveBetting(betting);
 
+            answer.setTotalAmount("0");
+            questDao.updateQuestAnswer(answer);
+            questDao.updateQuestTotalAmount(detail);
+
             //Contract 호출
             BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
 
@@ -786,9 +790,6 @@ public class QuestService {
                 betting.setSpenderAddress(wallet.getWalletAddress());
                 betting.setTransactionId(transactionReceipt.getTransactionId());
                 questDao.updateBetting(betting);
-                answer.setTotalAmount("0");
-                questDao.updateQuestAnswer(answer);
-                questDao.updateQuestTotalAmount(detail);
                 //SAVE TRANSACTION
                 Transaction transaction = new Transaction();
                 transaction.setAmount(amount+"");
