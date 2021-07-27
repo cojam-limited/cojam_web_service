@@ -4,7 +4,10 @@ package io.cojam.web.controller;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.cojam.web.domain.Popup;
 import io.cojam.web.domain.Season;
+import io.cojam.web.domain.wallet.TransactionReceipt;
+import io.cojam.web.klaytn.service.WalletApiService;
 import io.cojam.web.service.*;
+import io.cojam.web.service.contract.ContractApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.parameters.P;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.math.BigInteger;
 
 @Controller
 public class HomeController {
@@ -31,10 +36,11 @@ public class HomeController {
     @Autowired
     QuestService questService;
 
+    @Autowired
+    ContractApplicationService contractApplicationService;
+
     @RequestMapping(value = "/user/home" , method = RequestMethod.GET)
     public String home(Model model) {
-        //model.addAttribute("seasonInfo",seasonService.getSeasonInfo());
-
         model.addAttribute("mainPopupList",popupService.getMainPopupList(new Popup()));
         return "thymeleaf/page/home/index";
     }

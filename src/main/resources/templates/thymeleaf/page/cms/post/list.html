@@ -72,7 +72,7 @@
                             <td th:text="${item.memberName}"></td>
                             <td>
                                 <ul>
-                                    <li th:onclick="'window.location.href = \'' + @{/cms/post/view(idx=${item.boardKey})} + '\''"><a href="/admin/views/post/view.html"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
+                                    <li><a th:href="@{/cms/post/view(idx=${item.boardKey})}"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
                                     <li th:attr="onclick=|fnDeleteBoard('${item.boardKey}')|"><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
                                 </ul>
                             </td>

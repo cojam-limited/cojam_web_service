@@ -19,7 +19,17 @@
         <div class="quest-view">
             <div>
                 <h2>
-                    <span>Confirmed</span> <th:block th:text="${detail.questTitle}"></th:block>
+                    <!--<span>Confirmed</span>-->
+
+                    <select th:if="${detail.questTitleKr}!=null and ${detail.questTitleCh} " name="languageSelect">
+                        <option value="EN">&nbsp;🇺🇸&nbsp;&nbsp;English</option>
+                        <option th:if="${detail.questTitleKr}!=null" value="KR">&nbsp;🇰🇷&nbsp;&nbsp;Korean</option>
+                        <option th:if="${detail.questTitleCh}!=null" value="CH">&nbsp;🇨🇳&nbsp;&nbsp;Chinese</option>
+                    </select>
+                    <th:block th:text="${detail.questTitle}"></th:block>
+                </h2>
+                <h2>
+
                 </h2>
                 <p>
                     <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">

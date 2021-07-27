@@ -13,7 +13,18 @@
                         <dd><i id="questModalClose" class="uil uil-times modal-close" data-izimodal-close=""></i></dd>
                     </dl>
                     <ul class="mqa-content2">
-                        <li><input name="questTitle" id="questTitle" type="text" class="w100p" placeholder="Please enter a title" /></li>
+                        <li>
+                            <select class="w100p" name="languageSelect">
+                                <option value="EN">&nbsp;🇺🇸&nbsp;&nbsp;English</option>
+                                <option value="KR">&nbsp;🇰🇷&nbsp;&nbsp;Korean</option>
+                                <option value="CH">&nbsp;🇨🇳&nbsp;&nbsp;Chinese</option>
+                            </select>
+                        </li>
+                        <li>
+                            <textarea name="questTitle" id="questTitleEN" type="text" class="w100p" placeholder="Please enter a title(English)"></textarea>
+                            <textarea name="questTitleKr" id="questTitleKR" type="text" class="w100p" placeholder="Please enter a title(Korean)" style="display: none"></textarea>
+                            <textarea name="questTitleCh" id="questTitleCH" type="text" class="w100p" placeholder="Please enter a title(Chinese)" style="display: none"></textarea>
+                        </li>
                         <li>
                             <select name="seasonCategoryKey" title="" class="w100p">
                                 <option value="" selected="selected">Please select a category</option>
@@ -93,6 +104,23 @@
             });
             //$('#endDateTime').datetimepicker('setTime', new Date());
 
+
+        });
+
+        $(document).on('change','select[name=languageSelect]',function (e){
+            if($(this).val()=="EN"){
+                $('#questTitleKR').hide();
+                $('#questTitleCH').hide();
+                $('#questTitleEN').show();
+            } else if($(this).val()=="KR"){
+                $('#questTitleCH').hide();
+                $('#questTitleEN').hide();
+                $('#questTitleKR').show();
+            } else if($(this).val()=="CH"){
+                $('#questTitleKR').hide();
+                $('#questTitleEN').hide();
+                $('#questTitleCH').show();
+            }
 
         });
 
@@ -230,6 +258,15 @@
             $('input[name=imageLink]').val('');
             $('#fileRoute').val('');
             $('#endDateTime').datetimepicker('setTime', new Date());
+
+            $('#questTitleCH').hide();
+            $('#questTitleKR').hide();
+            $('#questTitleEN').show();
+
+            $('#questTitleCH').val('');
+            $('#questTitleKR').val('');
+            $('#questTitleEN').val('');
+
             const liChild = document.createElement('li');
             const inputChild = document.createElement('input');
 
@@ -616,8 +653,16 @@
                                 </th:block>
                             </li>
                             <li>
-                                <span>Title</span>
+                                <span>Title(Engilish)</span>
                                 <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitle}"/>
+                            </li>
+                            <li th:if="${detail.questTitleKr}!=null">
+                                <span>Title(Korean)</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitleKr}"/>
+                            </li>
+                            <li th:if="${detail.questTitleCh}!=null">
+                                <span>Title(Chinese)</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitleCh}"/>
                             </li>
                             <li>
                                 <span>Category</span>
@@ -946,8 +991,16 @@
                                 </th:block>
                             </li>
                             <li>
-                                <span>Title</span>
+                                <span>Title(Engilish)</span>
                                 <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitle}"/>
+                            </li>
+                            <li th:if="${detail.questTitleKr}!=null">
+                                <span>Title(Korean)</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitleKr}"/>
+                            </li>
+                            <li th:if="${detail.questTitleCh}!=null">
+                                <span>Title(Chinese)</span>
+                                <input name="name" type="text" class="w100p" placeholder="" th:value="${detail.questTitleCh}"/>
                             </li>
                             <li>
                                 <span>Category</span>

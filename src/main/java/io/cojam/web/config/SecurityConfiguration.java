@@ -90,6 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ,"/user/pass/**"
                         ,"/user/media/**"
                         ,"/api/v1/totalSupply"
+                        ,"/getSuccessInfo"
                 ).permitAll()
                 .antMatchers("/user/**").hasAnyAuthority("USER","ADMIN","VIP") // /user/ 로 시작하는 URL은 MEMBER라는 권한을 가진 사용자만 접근 가능
                 .antMatchers("/cms/**").hasAnyAuthority("ADMIN","VIP") // /member/ 로 시작하는 URL은 MEMBER라는 권한을 가진 사용자만 접근 가능
