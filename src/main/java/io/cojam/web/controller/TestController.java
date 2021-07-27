@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 @Controller
 public class TestController {
-
+    /*
     @Autowired
     QuestService questService;
 
@@ -26,4 +26,5 @@ public class TestController {
             ,@NotNull @NotEmpty  String selectedAnswerKey) throws Exception {
         return questService.getSuccessInfo(selectedQuestKey,selectedAnswerKey);
     }
+     */
 }
