@@ -256,8 +256,7 @@ public class GroundController {
     @RequestMapping(value = "/getSuccessInfo" , method = RequestMethod.POST)
     public ResponseDataDTO getSuccessInfo(
             @NotNull @NotEmpty String selectedQuestKey
-            ,@NotNull @NotEmpty  String selectedAnswerKey
-            , @AuthenticationPrincipal Account account) throws Exception {
+            ,@NotNull @NotEmpty  String selectedAnswerKey) throws Exception {
         return questService.getSuccessInfo(selectedQuestKey,selectedAnswerKey);
     }
 

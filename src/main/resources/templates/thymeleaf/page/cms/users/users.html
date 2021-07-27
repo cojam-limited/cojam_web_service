@@ -57,6 +57,7 @@
                     <td>OTP</td>
                     <td>Email verification</td>
                     <td>CODE</td>
+                    <td>&nbsp;Recommender</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -94,6 +95,7 @@
                             <td><p th:text="${item.otpUseYn}=='Y'?'T':'F'" th:classappend="${item.otpUseYn}=='Y'?'true':'false'"></p></td>
                             <td><p th:text="${item.certification}?'T':'F'" th:classappend="${item.certification}?'true':'false'"></p></td>
                             <td th:text="${item.fpNumber}"></td>
+                            <td th:text="${item.rMemberId}"></td>
                         </tr>
                     </th:block>
                 </form>

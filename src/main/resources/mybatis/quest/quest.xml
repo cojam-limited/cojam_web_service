@@ -9,14 +9,16 @@
             QUEST_KEY, SEASON_CATEGORY_KEY, START_DATE_TIME, END_DATE_TIME, QUEST_TITLE,
             COMPLETED, CREATOR_ADDRESS, QUEST_DESC, HOT, PENDING,
             QUEST_STATUS, MEMBER_KEY, SEASON_KEY, ANSWERS_TX, SNS_URL,
-            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE, IMAGE_LINK
+            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE, IMAGE_LINK,
+            QUEST_TITLE_KR,QUEST_TITLE_CH
         )
         VALUES
         (
             #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endDateTime}, #{questTitle},
             #{completed}, #{creatorAddress}, #{questDesc}, #{hot}, #{pending},
             #{questStatus}, #{memberKey}, #{seasonKey}, #{answersTx}, #{snsUrl},
-            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}, #{imageLink}
+            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}, #{imageLink},
+            #{questTitleKr},#{questTitleCh}
         )
     </insert>
     <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
@@ -85,6 +87,8 @@
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.minimum_pay
         FROM	TB_QUEST Q
@@ -149,6 +153,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -221,6 +227,8 @@
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             IF(now() > Q.END_DATE_TIME,true,false) AS MARKET_CLOSED,
             S.*
@@ -354,6 +362,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -445,6 +455,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -690,6 +702,8 @@
             S.maximum_pay,
             S.minimum_pay,
             Q.TOTAL_AMOUNT,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             A.ANSWERS_STR
         FROM	TB_QUEST Q
         JOIN TB_SEASON S

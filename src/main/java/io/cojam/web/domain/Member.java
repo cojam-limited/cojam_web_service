@@ -37,7 +37,7 @@ public class Member extends Common{
     private Timestamp createdDateTime;
     private Boolean access;
     private String otpUseYn;
-
+    private String rMemberId;
 
 
 

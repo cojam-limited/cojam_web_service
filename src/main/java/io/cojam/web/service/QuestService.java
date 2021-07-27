@@ -27,6 +27,7 @@ import org.web3j.utils.Convert;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.*;
 
 
@@ -461,8 +462,6 @@ public class QuestService {
                             bigIntegerList_copy.add(bigIntegerList.get((i * maxCount) + a));
                         }
                     }
-
-                    System.out.println("BigIntegerList Copy : {}" + bigIntegerList_copy);
                     transactionReceipt = contractApplicationService.answer(questKeyBigInteger,bigIntegerList_copy);
                 }
             } else {
@@ -766,7 +765,9 @@ public class QuestService {
             betting.setBettingStatus(QuestCode.BETTING_STATUS_ONGOING);
             betting.setMemberKey(account.getMemberKey());
             questDao.saveBetting(betting);
-
+            answer.setTotalAmount("0");
+            questDao.updateQuestAnswer(answer);
+            questDao.updateQuestTotalAmount(detail);
             //Contract 호출
             BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
 
@@ -785,9 +786,6 @@ public class QuestService {
                 betting.setSpenderAddress(wallet.getWalletAddress());
                 betting.setTransactionId(transactionReceipt.getTransactionId());
                 questDao.updateBetting(betting);
-                answer.setTotalAmount("0");
-                questDao.updateQuestAnswer(answer);
-                questDao.updateQuestTotalAmount(detail);
                 //SAVE TRANSACTION
                 Transaction transaction = new Transaction();
                 transaction.setAmount(amount+"");
@@ -1117,16 +1115,22 @@ public class QuestService {
                 QuestAnswer aParam = new QuestAnswer();
                 aParam.setQuestAnswerKey(selectedAnswerKey);
                 QuestAnswer selectedAnswer =questDao.getQuestAnswerDetail(aParam);
+
                 if(selectedAnswer !=null){
                     // 1. Get Total CT
                     float market_total_ct = Float.parseFloat(detail.getTotalAmount());
                     // 2. Get Answer Total CT
                     float answer_total_ct = Float.parseFloat(selectedAnswer.getTotalAmount());
-
                     // 3. Get Fee
                     float cojam_ct = market_total_ct * Float.parseFloat(detail.getCojamFee()) / 100;
+                    cojam_ct = (float) ((int)(cojam_ct * 100) / 100.0);
+
                     float creator_ct = market_total_ct * Float.parseFloat(detail.getCreatorFee()) / 100 + Float.parseFloat(detail.getCreatorPay());
+                    creator_ct = (float) ((int)(creator_ct * 100) / 100.0);
+
                     float charity_ct = market_total_ct * Float.parseFloat(detail.getCharityFee()) / 100;
+                    charity_ct = (float) ((int)(charity_ct * 100) / 100.0);
+
                     float real_total_ct = market_total_ct - cojam_ct - creator_ct - charity_ct;
                     float remain_ct = real_total_ct;
 
@@ -1143,7 +1147,7 @@ public class QuestService {
 
                     // 5. Get Scale of Betting
                     float magnification = real_total_ct / answer_total_ct * 100;
-
+                    //magnification = (float) ((int)(magnification * 100) / 100.0);
                     // 6. Get/Set List of Address with CT
                     Betting bparam = new Betting();
                     bparam.setQuestKey(selectedQuestKey);
@@ -1159,15 +1163,14 @@ public class QuestService {
 
                         if (address != null) {
                             Object old = gospel.get(address);
-
                             remain_ct -= r_coin;
-
                             if(old != null) {
                                 float old_coin = (float) old;
                                 r_coin = r_coin + old_coin;
-
+                                r_coin = (float) ((int)(r_coin * 100) / 100.0);
                                 gospel.put(address, r_coin);
                             } else {
+                                r_coin = (float) ((int)(r_coin * 100) / 100.0);
                                 gospel.put(address, r_coin);
                             }
                         }
@@ -1208,6 +1211,7 @@ public class QuestService {
                     gospel.put("COJAM_CHARITY_ADDRESS", charity_ct);
 
                     // 9. set Remain CT
+                    remain_ct = (float) ((int)(remain_ct * 100) / 100.0);
                     json.put("remain_ct", remain_ct);
 
                     json.put("transfer_gospel", gospel);

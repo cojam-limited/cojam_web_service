@@ -112,6 +112,14 @@
             ,W.WALLET_ADDRESS
             ,C.FP_NUMBER
             ,IFNULL(TMO.USE_YN,'N') AS OTP_USE_YN
+            ,(
+                SELECT
+                    M1.MEMBER_ID
+                FROM TB_RECOMMEND R , TB_MEMBER M1
+                WHERE R.RECOMMEND_KEY = M1.MEMBER_KEY
+                AND R.MEMBER_KEY = M.MEMBER_KEY
+                LIMIT 1
+            ) AS R_MEMBER_ID
         FROM TB_MEMBER M
         LEFT OUTER JOIN TB_WALLET W
         ON M.MEMBER_KEY = W.MEMBER_KEY
