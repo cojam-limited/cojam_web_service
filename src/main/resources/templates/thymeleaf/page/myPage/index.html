@@ -128,10 +128,18 @@
 
                                     </th:block>
                                     <th:block th:unless="${item.questStatus == 'SUCCESS'}">
-                                        <span th:data-detailBettingtKey="${item.bettingKey}"
-                                              th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
-                                              style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #08298A;"
-                                        ></span>
+                                        <th:block th:if="${item.receiveAddress} != null">
+                                            <span th:data-detailBettingtKey="${item.bettingKey}"
+                                                  th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                                  style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #FF722C;"
+                                            ></span>
+                                        </th:block>
+                                        <th:block th:unless="${item.receiveAddress} != null">
+                                            <span th:data-detailBettingtKey="${item.bettingKey}"
+                                                  th:onclick="fnReward('A',this.getAttribute('data-detailBettingtKey'))"
+                                                  style="vertical-align: middle;cursor:pointer;display: inline-block; width: 20px; height: 20px; border-radius: 50%; background: #08298A;"
+                                            ></span>
+                                        </th:block>
                                     </th:block>
 
                                 </th:block>
