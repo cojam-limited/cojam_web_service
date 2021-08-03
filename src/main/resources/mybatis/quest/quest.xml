@@ -9,14 +9,16 @@
             QUEST_KEY, SEASON_CATEGORY_KEY, START_DATE_TIME, END_DATE_TIME, QUEST_TITLE,
             COMPLETED, CREATOR_ADDRESS, QUEST_DESC, HOT, PENDING,
             QUEST_STATUS, MEMBER_KEY, SEASON_KEY, ANSWERS_TX, SNS_URL,
-            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE, IMAGE_LINK
+            SNS_ID, FILE_KEY, SNS_TITLE, SNS_DESC, SNS_TYPE, IMAGE_LINK,
+            QUEST_TITLE_KR,QUEST_TITLE_CH
         )
         VALUES
         (
             #{questKey}, #{seasonCategoryKey}, #{createDateTime}, #{endDateTime}, #{questTitle},
             #{completed}, #{creatorAddress}, #{questDesc}, #{hot}, #{pending},
             #{questStatus}, #{memberKey}, #{seasonKey}, #{answersTx}, #{snsUrl},
-            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}, #{imageLink}
+            #{snsId}, #{fileKey}, #{snsTitle}, #{snsDesc}, #{snsType}, #{imageLink},
+            #{questTitleKr},#{questTitleCh}
         )
     </insert>
     <insert id="saveQuestAnswer" parameterType="io.cojam.web.domain.QuestAnswer">
@@ -85,6 +87,8 @@
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.minimum_pay
         FROM	TB_QUEST Q
@@ -149,6 +153,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -221,6 +227,8 @@
             Q.UPDATE_DATE_TIME,
             Q.TOTAL_AMOUNT,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             IF(now() > Q.END_DATE_TIME,true,false) AS MARKET_CLOSED,
             S.*
@@ -354,6 +362,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -370,7 +380,7 @@
         JOIN (
             SELECT
             A.QUEST_KEY
-            ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'%',TOTAL_AMOUNT,'%',QUEST_ANSWER_KEY) SEPARATOR '^#') AS ANSWERS_STR
+            ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'!+',TOTAL_AMOUNT,'!+',QUEST_ANSWER_KEY) SEPARATOR '^#') AS ANSWERS_STR
             FROM TB_QUEST_ANSWER A
             GROUP BY A.QUEST_KEY
         ) A
@@ -445,6 +455,8 @@
             Q.UPDATE_MEMBER_KEY,
             Q.UPDATE_DATE_TIME,
             Q.IMAGE_LINK,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             C.CATEGORY_NAME,
             S.creator_fee,
             S.charity_fee,
@@ -463,7 +475,7 @@
         JOIN (
             SELECT
             A.QUEST_KEY
-        ,GROUP_CONCAT(CONCAT(ANSWER_TITLE, '%', TOTAL_AMOUNT, '%', QUEST_ANSWER_KEY, '%',
+        ,GROUP_CONCAT(CONCAT(ANSWER_TITLE, '!+', TOTAL_AMOUNT, '!+', QUEST_ANSWER_KEY, '!+',
         IF(SELECTED, 'true', 'false')) SEPARATOR '^#') AS ANSWERS_STR
             FROM TB_QUEST_ANSWER A
             GROUP BY A.QUEST_KEY
@@ -580,6 +592,7 @@
             , B.QUEST_ANSWER_KEY
             , B.MEMBER_KEY
             , B.CREATED_DATE_TIME
+            , B.RECEIVE_ADDRESS
             , A.ANSWER_TITLE
             , A.TOTAL_AMOUNT  AS ANSWER_TOTAL_AMOUNT
             , Q.QUEST_STATUS
@@ -590,13 +603,13 @@
             , Q.COMPLETED
             , Q.PENDING
             ,truncate((Q.TOTAL_AMOUNT
-                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
-                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
-                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT,2) AS magnification
+                  - (Q.TOTAL_AMOUNT * S.cojam_fee / 100 )
+                  - ((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - (Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT,2) AS magnification
             ,truncate(((Q.TOTAL_AMOUNT
-                  - CONVERT(Q.TOTAL_AMOUNT * S.cojam_fee / 100 , DECIMAL )
-                  - FLOOR((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
-                  - FLOOR(Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
+                  - (Q.TOTAL_AMOUNT * S.cojam_fee / 100 )
+                  - ((Q.TOTAL_AMOUNT * S.creator_fee / 100) + S.creator_pay)
+                  - (Q.TOTAL_AMOUNT * S.charity_fee / 100)) / A.TOTAL_AMOUNT) * B.BETTING_COIN,2) AS magnification_coin
             , IF(B.QUEST_KEY = A.QUEST_KEY AND B.QUEST_ANSWER_KEY = A.QUEST_ANSWER_KEY AND A.SELECTED , TRUE, FALSE)  AS ANSWER_SELECTED
         FROM TB_QUEST_BETTING B
         JOIN TB_QUEST_ANSWER A
@@ -690,6 +703,8 @@
             S.maximum_pay,
             S.minimum_pay,
             Q.TOTAL_AMOUNT,
+            Q.QUEST_TITLE_KR,
+            Q.QUEST_TITLE_CH,
             A.ANSWERS_STR
         FROM	TB_QUEST Q
         JOIN TB_SEASON S
@@ -699,7 +714,7 @@
         JOIN (
         SELECT
         A.QUEST_KEY
-        ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'%',TOTAL_AMOUNT,'%',QUEST_ANSWER_KEY) SEPARATOR '^#') AS ANSWERS_STR
+        ,GROUP_CONCAT( CONCAT(ANSWER_TITLE,'!+',TOTAL_AMOUNT,'!+',QUEST_ANSWER_KEY) SEPARATOR '^#') AS ANSWERS_STR
         FROM TB_QUEST_ANSWER A
         GROUP BY A.QUEST_KEY
         ) A

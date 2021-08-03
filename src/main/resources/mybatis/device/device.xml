@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.DeviceDao">
+
+    <insert id="saveDeviceInfo" parameterType="io.cojam.web.domain.DeviceInfo">
+        INSERT INTO TB_DEVICE_INFO
+        (
+            MEMBER_KEY, TOKEN, DEVICE_TYPE
+        )
+        VALUES
+        (
+            #{memberKey}, #{token}, #{deviceType}
+        )
+    </insert>
+
+    <delete id="deleteDeviceInfo" parameterType="io.cojam.web.domain.DeviceInfo">
+        DELETE FROM TB_DEVICE_INFO
+        WHERE TOKEN = #{token}
+    </delete>
+</mapper>

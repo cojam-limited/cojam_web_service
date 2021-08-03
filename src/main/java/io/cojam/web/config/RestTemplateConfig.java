@@ -120,6 +120,18 @@ public class RestTemplateConfig {
         return restTemplate;
     }
 
+    @Bean
+    @Qualifier("burnClient")
+    public RestTemplate burnRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+        restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(
+                String.format("%s/api/v2/klay/wallets/%s", sdkEnclaveUrl, "9541385ad29cf60d347e39f991f497f7")));
+        restTemplate.setInterceptors(
+                Collections.singletonList(new HeaderInterceptor())
+        );
+        return restTemplate;
+    }
+
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory

@@ -26,6 +26,8 @@ public class Quest extends Common{
     private String endUtcDateTime;
     @NotEmpty @NotNull
     private String questTitle;
+    private String questTitleKr;
+    private String questTitleCh;
     private Boolean completed;
     private String creatorAddress;
     private String questDesc;

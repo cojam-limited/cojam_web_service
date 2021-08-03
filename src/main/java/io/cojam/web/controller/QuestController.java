@@ -1,5 +1,6 @@
 package io.cojam.web.controller;
 
+import com.klaytn.caver.utils.Convert;
 import io.cojam.web.account.Account;
 import io.cojam.web.constant.QuestCode;
 import io.cojam.web.constant.SequenceCode;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.web3j.utils.Convert;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -92,7 +92,11 @@ public class QuestController {
         quest.setQuestKey(idx);
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
         model.addAttribute("detail", questService.getQuestDetailUser(quest));
-
+        try {
+            contractApplicationService.getMarketInfo(sequenceService.changeSequenceStringToBigInteger(idx,SequenceCode.TB_QUEST));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "thymeleaf/page/quest/view";
     }
 

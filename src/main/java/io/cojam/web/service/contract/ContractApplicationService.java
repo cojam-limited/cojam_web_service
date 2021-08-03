@@ -274,4 +274,13 @@ public class ContractApplicationService {
         BigInteger amount =this.cojamTokenCaver.totalSupply().send();
         return Convert.fromPeb(String.valueOf(amount), Convert.Unit.KLAY).toString();
     }
+
+
+    public TransactionReceipt burnAddress(BigInteger amount) {
+        Web3j web3j = Web3j.build(new org.web3j.protocol.http.HttpService());
+        this.cojamToken = CojamToken.load(tokenAddress, web3j, EthSigner.getDummyCredentials(), new DefaultGasProvider());
+        String payload = this.cojamToken.burn(amount).encodeFunctionCall();
+        return walletApiService.contractCallMasterBurn(tokenAddress,BigInteger.ZERO,new Data(payload));
+    }
+
 }

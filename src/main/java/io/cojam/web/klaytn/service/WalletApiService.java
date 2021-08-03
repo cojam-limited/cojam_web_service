@@ -33,6 +33,10 @@ public class WalletApiService {
     private RestTemplate restTemplate;
 
 
+    @Qualifier("burnClient")
+    @Autowired
+    private RestTemplate restTemplateBurn;
+
 
     public Wallet createUserWallet(String memberKey,String memberId) {
         return serviceTemplate(() -> {
@@ -153,6 +157,25 @@ public class WalletApiService {
             ).getBody();
             receipt.setToAddress(contractAddress);
 
+            return receipt;
+        });
+    }
+
+
+    public TransactionReceipt contractCallMasterBurn(String contractAddress, BigInteger value, Data data) {
+        return serviceTemplate(() -> {
+            ContractCallRequest contractCallRequest = ContractCallRequest.builder()
+                    .passphrase("Cojam2035@")
+                    .contractAddress(contractAddress)
+                    .value(value)
+                    .data(data.getPayload())
+                    .build();
+            TransactionReceipt receipt = restTemplateBurn.postForEntity(
+                    "/contract-call",
+                    contractCallRequest,
+                    TransactionReceipt.class
+            ).getBody();
+            receipt.setToAddress(contractAddress);
             return receipt;
         });
     }
