@@ -29,5 +29,5 @@ public class MyVoting extends Common{
     private Boolean answerSelected;
     private Boolean completed;
     private Boolean pending;
-
+    private String receiveAddress;
 }
