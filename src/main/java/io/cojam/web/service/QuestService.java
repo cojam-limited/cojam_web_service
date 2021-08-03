@@ -765,6 +765,7 @@ public class QuestService {
             betting.setBettingStatus(QuestCode.BETTING_STATUS_ONGOING);
             betting.setMemberKey(account.getMemberKey());
             questDao.saveBetting(betting);
+
             answer.setTotalAmount("0");
             questDao.updateQuestAnswer(answer);
             questDao.updateQuestTotalAmount(detail);
