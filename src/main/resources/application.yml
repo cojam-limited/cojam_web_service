@@ -247,13 +247,13 @@ app:
         timeout: 60
   klaytn:
     contracts:
-      marketAddress: "0x8Ab95fAb0c6F038312E14eC08461b008E03Eda0d"
+      marketAddress: "0xC31585Bf0808Ab4aF1acC29E0AA6c68D2B4C41CD"
   sdk-enclave:
     apiSecret: "5cs80y8woXhe+BpU67T8NCFh1VfALyeSz5VJQxCX6C8="
     accessToken: "eyJhbGciOiJIUzUxMiJ9.eyJlbWFpbCI6InN1cHBvcnRAY29qYW0uaW8iLCJpZCI6ImVjNDM5MWFhZjcwYWU2NjcyNzE3Mzg2NGRiOWVlM2QyIiwidHlwZSI6IkxPTkciLCJsb25nVHlwZSI6dHJ1ZSwiaXNzIjoiaGVuZXNpcy13YWxsZXQtaWRlbnRpdHktcHJvZC1tYWlubmV0IiwiaWF0IjoxNjE5NTA5NDg1LCJleHAiOjE2NTEwNDU0ODV9.6Op6kCkhqaeg2MZG7g9G2xjPvz_AMdMBWMnPVToEL8dn9WUJLvA2336gQboqA-ZGWqz9hHLIF-HoX2r_7vtZ8g"
     masterWalletId: "bdebedc64f25ac3a343d15a376dcc0a0"
     masterWalletAddress: "0x281650e1270265dde07ae465d179eb560132eafa"
-    marketAddress: "0x8Ab95fAb0c6F038312E14eC08461b008E03Eda0d"
+    marketAddress: "0xC31585Bf0808Ab4aF1acC29E0AA6c68D2B4C41CD"
     tokenAddress: "0x7f223b1607171b81ebd68d22f1ca79157fd4a44b"
     feeAddress: "0x24a0f37edb290010e4b15597d17581e439505606"
     charityAddress: "0x946de569a7d041b56c98306b3c06d8dfd04e78ae"
