@@ -592,6 +592,7 @@
             , B.QUEST_ANSWER_KEY
             , B.MEMBER_KEY
             , B.CREATED_DATE_TIME
+            , B.RECEIVE_ADDRESS
             , A.ANSWER_TITLE
             , A.TOTAL_AMOUNT  AS ANSWER_TOTAL_AMOUNT
             , Q.QUEST_STATUS
