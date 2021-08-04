@@ -17,20 +17,15 @@
     <div class="container">
         <!-- 상세 -->
         <div class="quest-view">
+            <select th:if="${detail.questTitleKr}!=null and ${detail.questTitleCh} " name="languageSelect">
+                <option value="EN">&nbsp;🇺🇸&nbsp;&nbsp;English</option>
+                <option th:if="${detail.questTitleKr}!=null" value="KR">&nbsp;🇰🇷&nbsp;&nbsp;Korean</option>
+                <option th:if="${detail.questTitleCh}!=null" value="CH">&nbsp;🇨🇳&nbsp;&nbsp;Chinese</option>
+            </select>
             <div>
-                <h2>
-                    <!--<span>Confirmed</span>-->
-
-                    <select th:if="${detail.questTitleKr}!=null and ${detail.questTitleCh} " name="languageSelect">
-                        <option value="EN">&nbsp;🇺🇸&nbsp;&nbsp;English</option>
-                        <option th:if="${detail.questTitleKr}!=null" value="KR">&nbsp;🇰🇷&nbsp;&nbsp;Korean</option>
-                        <option th:if="${detail.questTitleCh}!=null" value="CH">&nbsp;🇨🇳&nbsp;&nbsp;Chinese</option>
-                    </select>
-                    <th:block th:text="${detail.questTitle}"></th:block>
-                </h2>
-                <h2>
-
-                </h2>
+                <h2 class="questTitle" id="questTitleEn"><th:block th:text="${detail.questTitle}"></th:block></h2>
+                <h2 class="questTitle"  id="questTitleKr" th:if="${detail.questTitleKr}!=null" style="display: none"><th:block th:text="${detail.questTitleKr}"></th:block></h2>
+                <h2 class="questTitle"  id="questTitleCh" th:if="${detail.questTitleCh}!=null" style="display: none"><th:block th:text="${detail.questTitleCh}"></th:block></h2>
                 <p>
                     <th:block th:if="${detail.snsUrl} !=null and ${detail.snsUrl} !='' and ${detail.snsType} == 'Y'">
                         <iframe width="100%" height="650" th:src="'https://www.youtube.com/embed/'+${detail.snsId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -335,6 +330,17 @@
                 }
             });
 
+            $(document).on('change','select[name=languageSelect]',function (e){
+                $('.questTitle').hide();
+                if($(this).val()=="EN"){
+                    $('#questTitleEn').show();
+                } else if($(this).val()=="KR"){
+                    $('#questTitleKr').show();
+                } else if($(this).val()=="CH"){
+                    $('#questTitleCh').show();
+                }
+
+            });
 
         </script>
     </th:block>

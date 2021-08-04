@@ -67,6 +67,9 @@ public class QuestService {
     @Autowired
     TransactionService transactionService;
 
+    @Autowired
+    PushMessageService pushMessageService;
+
 
 
     public Integer getQuestListAdminCnt(Quest quest){
@@ -1319,6 +1322,8 @@ public class QuestService {
                                     e.printStackTrace();
                                 }
                             }
+                            //PUSH 발송
+                            pushMessageService.sendPushMessage("QT_S",detail.getQuestKey());
                         }else{
                             response.setMessage("Success if Fail!");
                             response.setCheck(false);
@@ -1411,6 +1416,9 @@ public class QuestService {
                                 e.printStackTrace();
                             }
                         }
+
+                        //PUSH 발송
+                        pushMessageService.sendPushMessage("QT_A",detail.getQuestKey());
                     }else{
                         response.setMessage("Success if Fail!");
                         response.setCheck(false);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.cojam.web.dao.PushMessageDao">
+
+    <select id="getBettingTokenList" parameterType="String" resultType="String">
+        SELECT
+            DISTINCT
+            D.TOKEN
+        FROM TB_QUEST_BETTING B , TB_DEVICE_INFO D
+        WHERE B.MEMBER_KEY = D.MEMBER_KEY
+        AND B.QUEST_KEY = #{key}
+        UNION
+        SELECT D.TOKEN
+        FROM TB_DEVICE_INFO D
+        WHERE D.MEMBER_KEY = (SELECT Q.MEMBER_KEY FROM TB_QUEST Q WHERE Q.QUEST_KEY = #{key})
+    </select>
+</mapper>
