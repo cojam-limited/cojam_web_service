@@ -18,4 +18,9 @@
         DELETE FROM TB_DEVICE_INFO
         WHERE TOKEN = #{token}
     </delete>
+
+    <delete id="deleteDeviceInfoMemberKey" parameterType="io.cojam.web.domain.DeviceInfo">
+        DELETE FROM TB_DEVICE_INFO
+        WHERE MEMBER_KEY = #{memberKey}
+    </delete>
 </mapper>

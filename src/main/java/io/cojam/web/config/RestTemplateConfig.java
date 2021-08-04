@@ -54,6 +54,12 @@ public class RestTemplateConfig {
     @Value("${app.sdk-enclave.eventWalletId}")
     private String eventWalletId;
 
+    @Value("${firebase.key}")
+    private String FCM_KEY;
+
+    @Value("${firebase.url}")
+    private String FCM_URL;
+
     @Bean
     public RestTemplate defaultRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
@@ -132,6 +138,18 @@ public class RestTemplateConfig {
         return restTemplate;
     }
 
+    @Bean
+    @Qualifier("fcmClient")
+    public RestTemplate fcmRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory());
+        restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(
+                String.format("%s", FCM_URL)));
+        restTemplate.setInterceptors(
+                Collections.singletonList(new FcmHeaderInterceptor())
+        );
+        return restTemplate;
+    }
+
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory
@@ -161,6 +179,17 @@ public class RestTemplateConfig {
             headers.add(X_HENESIS_TIMESTAMP, timestamp);
             headers.add(X_HENESIS_SIGNATURE, createSignature(request, body, timestamp));
             headers.add("Authorization", "Bearer " + sdkToken);
+            return execution.execute(request, body);
+        }
+    }
+
+    private class FcmHeaderInterceptor implements ClientHttpRequestInterceptor {
+        @Override
+        public ClientHttpResponse intercept(HttpRequest request, byte[] body,
+                                            ClientHttpRequestExecution execution) throws IOException {
+            HttpHeaders headers = request.getHeaders();
+            headers.add("Content-Type","application/json");
+            headers.add("Authorization", "key=" + FCM_KEY);
             return execution.execute(request, body);
         }
     }

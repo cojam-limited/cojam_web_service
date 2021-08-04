@@ -14,6 +14,9 @@ server:
   port: 8090
 myConfig:
   joinParameterKey: 'AEa#&9$+VV.HNUTz'
+firebase:
+  key: 'AAAAlOkSRrk:APA91bGv66r8UnjgcTQjFMYBeIZaLAOu_gItOExyxN489WHjYqMbrJ6UN_hs533TL4KuV_tJpTwa7XUa6JY_jrXoP3dScaisBq3U1ksUX24G5kMfY_zje5ttq7rb9v9q06aa5xHNFj4I'
+  url: 'https://fcm.googleapis.com/fcm/send'
 #local 환경
 ---
 spring:

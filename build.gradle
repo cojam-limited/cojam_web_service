@@ -90,6 +90,11 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.10'
     // 추가
     implementation 'com.google.zxing:javase:3.2.1'
+
+    implementation group: 'de.bytefish.fcmjava', name: 'fcmjava-core', version: '2.5'
+
+    implementation group: 'de.bytefish.fcmjava', name: 'fcmjava-client', version: '2.5'
+
 }
 
 test {

@@ -303,12 +303,18 @@ function fnLogOut(type) {
 		success : function(response){
 			console.debug(response)
 			if(response.code == "200"){
-				if(type=="C"){
-					window.location = '/loginP'
-				}else{
-					window.location = response.item.url;
-				}
+				try {
+					const data = JSON.stringify({type: "logout"});
+					window.ReactNativeWebView.postMessage(data);
+				} catch (error) {
 
+				}finally {
+					if(type=="C"){
+						window.location = '/loginP'
+					}else{
+						window.location = response.item.url;
+					}
+				}
 			} else {
 				alert(response.message);
 			}
@@ -404,4 +410,14 @@ function changeLocalToUtc(localTime,type){
 	utcTime = moment(utcTime).utc().format(type);
 
 	return utcTime
+}
+
+let Platform = '';
+
+function setPlatform(os){
+	Platform = os;
+}
+
+function getPlatform(){
+	return Platform;
 }

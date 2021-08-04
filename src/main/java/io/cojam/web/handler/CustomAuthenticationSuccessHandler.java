@@ -59,6 +59,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         items.put("url", prevPage);	// 이전 페이지 저장
+        items.put("key",account.getMemberKey());
         responseDataDTO.setItem(items);
 
         response.setCharacterEncoding("UTF-8");
