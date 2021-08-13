@@ -16,6 +16,18 @@
     </div>
     <!-- 타이틀영역 끝 -->
     <div class="container-top-round">
+        <!-- 탭메뉴 -->
+        <div class="notice-tab" id="noticefilters" th:if="${categoryList} != null">
+            <a href="#posChk" data-filter="*" th:classappend="${param.boardCategoryKey eq null or param.boardCategoryKey eq ''}?'active':''">All</a>
+            <a th:each="item : ${categoryList}"
+               th:attrappend="data-value=${item.boardCategoryKey}"
+               th:attr="data-filter='.sort0'+${item.orderNumber}"
+               th:classappend="${item.boardCategoryKey eq param.boardCategoryKey}?'active':''"
+               th:text="${item.categoryName}"
+               href="#posChk"
+            ></a>
+        </div>
+        <!-- 탭메뉴 끝 -->
         <form th:name="boardFrm" th:method="POST">
             <input th:type="hidden" th:name="boardCategoryKey" th:value="${param.boardCategoryKey}"/>
             <input th:type="hidden" th:name="page" />
@@ -110,6 +122,13 @@
                     $('.qna_list > div > ul').eq(index).css({ background : '#fff' });
                     $('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
                 }
+            });
+
+            $(document).on('click','.notice-tab > a',function (e){
+                const dataValue= $(this).attr('data-value')=='*'?'':$(this).attr('data-value');
+                $("input[name=boardCategoryKey]").val(dataValue);
+                $("input[name=page]").val(1);
+                fnGetList();
             });
         </script>
     </th:block>

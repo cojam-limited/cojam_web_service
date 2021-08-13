@@ -39,8 +39,8 @@ public class BoardService {
         return boardDao.getNoticeBoardListCnt(board);
     }
 
-    public List<BoardCategory> getNoticeCategoryList(){
-        return boardDao.getNoticeCategoryList();
+    public List<BoardCategory> getNoticeCategoryList(String resultYn){
+        return boardDao.getNoticeCategoryList(resultYn);
     }
 
     public Board getNoticeBoardDetail(Board board){

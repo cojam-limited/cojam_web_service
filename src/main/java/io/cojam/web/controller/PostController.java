@@ -25,7 +25,7 @@ public class PostController {
 
     @GetMapping
     public String list(Model model,Board board) {
-        model.addAttribute("categoryList",boardService.getNoticeCategoryList());
+        model.addAttribute("categoryList",boardService.getNoticeCategoryList(null));
         return "thymeleaf/page/cms/post/list";
     }
 
@@ -52,7 +52,7 @@ public class PostController {
 
     @RequestMapping(value = "/register" , method = RequestMethod.GET)
     public String register(Model model) {
-        model.addAttribute("categoryList",boardService.getNoticeCategoryList());
+        model.addAttribute("categoryList",boardService.getNoticeCategoryList(null));
         return "thymeleaf/page/cms/post/register";
     }
 
@@ -76,7 +76,7 @@ public class PostController {
     public String view(Model model,String idx){
         Board board = new Board();
         board.setBoardKey(idx);
-        model.addAttribute("categoryList",boardService.getNoticeCategoryList());
+        model.addAttribute("categoryList",boardService.getNoticeCategoryList(null));
         model.addAttribute("detail", boardService.getNoticeBoardDetail(board));
         return "thymeleaf/page/cms/post/view";
     }

@@ -23,7 +23,7 @@ public class NoticeController {
     @GetMapping
     public String list(Model model,Board board){
         model.addAttribute("boardList",null);
-        model.addAttribute("categoryList",boardService.getNoticeCategoryList());
+        model.addAttribute("categoryList",boardService.getNoticeCategoryList("N"));
         model.addAttribute("param",board);
         return "thymeleaf/page/notice/index";
     }
