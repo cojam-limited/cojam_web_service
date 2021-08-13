@@ -90,12 +90,23 @@
         </if>
     </select>
 
-    <select id="getNoticeCategoryList"  resultType="io.cojam.web.domain.BoardCategory">
+    <select id="getNoticeCategoryList" parameterType="String" resultType="io.cojam.web.domain.BoardCategory">
         SELECT
             BOARD_CATEGORY_KEY,
             CATEGORY_NAME,
             ORDER_NUMBER
         FROM	TB_BOARD_CATEGORY
+        WHERE 1=1
+        <if test='resultYn != null and !resultYn.equals("")'>
+            <choose>
+                <when test='resultYn.equals("Y")'>
+                    AND BOARD_CATEGORY_KEY = 'BCT2021022500000002'
+                </when>
+                <otherwise>
+                    AND BOARD_CATEGORY_KEY != 'BCT2021022500000002'
+                </otherwise>
+            </choose>
+        </if>
         ORDER BY ORDER_NUMBER , BOARD_CATEGORY_KEY
     </select>
 
@@ -134,15 +145,15 @@
         </if>
 
         <if test='resultYn != null and !resultYn.equals("")'>
+            <choose>
+                <when test='resultYn.equals("Y")'>
+                    AND B.BOARD_CATEGORY_KEY = 'BCT2021022500000002'
+                </when>
+                <otherwise>
+                    AND B.BOARD_CATEGORY_KEY != 'BCT2021022500000002'
+                </otherwise>
+            </choose>
         </if>
-        <choose>
-            <when test='resultYn.equals("Y")'>
-                AND B.BOARD_CATEGORY_KEY = 'BCT2021022500000002'
-            </when>
-            <otherwise>
-                AND B.BOARD_CATEGORY_KEY != 'BCT2021022500000002'
-            </otherwise>
-        </choose>
         ORDER BY B.BOARD_KEY DESC
         LIMIT 5
     </select>

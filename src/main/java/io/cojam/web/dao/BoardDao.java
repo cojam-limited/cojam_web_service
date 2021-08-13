@@ -36,7 +36,7 @@ public interface BoardDao {
      * 게시글 카테고리 목록
      * @return
      */
-    List<BoardCategory> getNoticeCategoryList();
+    List<BoardCategory> getNoticeCategoryList(String resultYn);
 
     /**
      * 게시글 상세

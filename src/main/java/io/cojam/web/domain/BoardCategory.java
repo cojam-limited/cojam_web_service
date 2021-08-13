@@ -9,4 +9,5 @@ public class BoardCategory {
     private String boardCategoryKey;
     private String categoryName;
     private int orderNumber;
+    private String resultYn;
 }
