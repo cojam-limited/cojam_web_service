@@ -26,4 +26,5 @@ public class Board extends Common{
     private String categoryName;
     private String memberName;
     private String searchWord;
+    private String resultYn;
 }

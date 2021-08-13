@@ -24,6 +24,9 @@ public class BoardService {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    PushMessageService pushMessageService;
+
     public List<Board> getHomeBoardList(Board board){
         return boardDao.getHomeBoardList(board);
     }
@@ -117,6 +120,15 @@ public class BoardService {
 
         fileService.deleteFileInfo(detail.getBoardFile());
         boardDao.deleteBoard(board);
+        responseDataDTO.setCheck(true);
+        responseDataDTO.setMessage("success");
+        responseDataDTO.setItem(board.getBoardKey());
+        return responseDataDTO;
+    }
+
+    public ResponseDataDTO sendBoard(Board board, Account account){
+        ResponseDataDTO responseDataDTO = new ResponseDataDTO();
+        pushMessageService.sendPushMessage("NOTICE",board.getBoardKey());
         responseDataDTO.setCheck(true);
         responseDataDTO.setMessage("success");
         responseDataDTO.setItem(board.getBoardKey());

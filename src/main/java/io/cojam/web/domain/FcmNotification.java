@@ -9,5 +9,5 @@ public class FcmNotification {
     private String title;
     private String body;
     private String image;
-
+    private String icon;
 }

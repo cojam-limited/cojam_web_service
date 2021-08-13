@@ -111,4 +111,17 @@ public class PostController {
         return boardService.deleteBoard(board,account);
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/send" , method = RequestMethod.POST)
+    public ResponseDataDTO send(
+            @NotEmpty @NotNull String boardKey
+            ,@AuthenticationPrincipal Account account
+    ) {
+        Board board = new Board();
+        board.setBoardKey(boardKey);
+
+        return boardService.sendBoard(board,account);
+    }
+
 }

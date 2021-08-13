@@ -808,7 +808,7 @@
 
 /* 리스트 */
 .notice-list {width:100%; margin-top:40px; overflow:hidden;}
-.notice-list > ul {display:flex; justify-content:space-between; flex-wrap:wrap; width:100%; overflow:hidden;}
+.notice-list > ul {display:flex; flex-wrap:wrap; width:100%; overflow:hidden;}
 .notice-list > ul > li {width:31.3%; margin:0 1% 20px 1%; border:#e5e5e5 0.5px solid; border-radius:10px; background:#fff; box-shadow:0 0 10px 0 rgba(0,0,0,0.1); overflow:hidden; cursor:pointer;}
 .notice-list > ul > li > p {height:250px; background:#000; overflow:hidden;}
 .notice-list > ul > li > p span {display:block; height:250px;}
