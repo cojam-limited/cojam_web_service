@@ -76,4 +76,5 @@ public class Quest extends Common{
     private Boolean finished;
     private String imageLink;
     private Boolean marketClosed;
+    private Boolean push;
 }

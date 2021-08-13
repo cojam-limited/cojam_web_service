@@ -630,6 +630,42 @@ public class QuestService {
     }
 
     @Transactional
+    public ResponseDataDTO pushMarket(String questKey,Account account){
+        ResponseDataDTO response = new ResponseDataDTO();
+
+        Quest detail = questDao.getQuestDetail(questKey);
+
+        if(detail != null){
+            if(!detail.getIsActive()){
+                response.setCheck(false);
+                response.setMessage("Don't active Season.");
+                return response;
+            }
+
+            if(detail.getPush()){
+                detail.setPush(false);
+            }else{
+                detail.setPush(true);
+            }
+
+            detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_PUSH);
+            detail.setUpdateMemberKey(account.getMemberKey());
+            questDao.updateQuestStatus(detail);
+            response.setCheck(true);
+            response.setMessage("success");
+
+        }else {
+            response.setCheck(false);
+            response.setMessage("No data.");
+            return response;
+        }
+
+        response.setCheck(true);
+        response.setMessage("success");
+        return response;
+    }
+
+    @Transactional
     public ResponseDataDTO finishMarket(String questKey,Account account){
         ResponseDataDTO response = new ResponseDataDTO();
 
@@ -1264,6 +1300,24 @@ public class QuestService {
                             response.setMessage(String.format("Finish transaction status is %s",transactionStatus ==null?"null":transactionStatus.getStatus()));
                             return response;
                         }
+
+                        //
+                        if(!StringUtils.isBlank(detail.getSuccessTx())){
+                            TransactionStatus successStatus = transactionApiService.getTransactionStatusById(detail.getSuccessTx());
+                            String bStatus = successStatus.getStatus();
+                            if (WalletCode.TRANSACTION_STATUS_CONFIRM.equals(bStatus)) {
+                                response.setCheck(false);
+                                response.setMessage("You've already been rewarded!");
+                                return response;
+                            }else if(WalletCode.TRANSACTION_STATUS_REQUESTED.equals(bStatus) || WalletCode.TRANSACTION_STATUS_PENDING.equals(bStatus)){
+                                response.setCheck(false);
+                                response.setMessage("Reward is in progress.");
+                                return response;
+                            }
+                        }
+
+
+
                         //cnotract successMarket 호출
                         BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
                         BigInteger questAnswerKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(selectedAnswerKey,SequenceCode.TB_QUEST_ANSWER);
@@ -1323,7 +1377,10 @@ public class QuestService {
                                 }
                             }
                             //PUSH 발송
-                            pushMessageService.sendPushMessage("QT_S",detail.getQuestKey());
+                            if(detail.getPush()){
+                                pushMessageService.sendPushMessage("QT_S",detail.getQuestKey());
+                            }
+
                         }else{
                             response.setMessage("Success if Fail!");
                             response.setCheck(false);
@@ -1395,6 +1452,12 @@ public class QuestService {
                         member.setMemberKey(detail.getMemberKey());
                         member = memberService.getMemberInfoForMemberKey(member);
 
+                        //PUSH 발송
+                        if(detail.getPush()){
+                            pushMessageService.sendPushMessage("QT_A",detail.getQuestKey());
+                        }
+
+
                         if(!StringUtils.isBlank(member.getMemberEmail())){
                             Mail mail = new Mail();
                             String message = String.format("[%s] is adjourn!. <br>",detail.getQuestTitle());
@@ -1416,9 +1479,6 @@ public class QuestService {
                                 e.printStackTrace();
                             }
                         }
-
-                        //PUSH 발송
-                        pushMessageService.sendPushMessage("QT_A",detail.getQuestKey());
                     }else{
                         response.setMessage("Success if Fail!");
                         response.setCheck(false);

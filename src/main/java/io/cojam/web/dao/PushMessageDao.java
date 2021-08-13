@@ -10,4 +10,6 @@ import java.util.List;
 public interface PushMessageDao {
 
     List<String> getBettingTokenList(String key);
+
+    List<String> getNoticeTokenList(String key);
 }

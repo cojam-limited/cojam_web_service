@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/user/notice")
-public class NoticeController {
+@RequestMapping(value = "/user/result")
+public class ResultController {
 
     @Autowired
     BoardService boardService;
@@ -23,14 +23,13 @@ public class NoticeController {
     @GetMapping
     public String list(Model model,Board board){
         model.addAttribute("boardList",null);
-        model.addAttribute("categoryList",boardService.getNoticeCategoryList());
         model.addAttribute("param",board);
-        return "thymeleaf/page/notice/index";
+        return "thymeleaf/page/result/index";
     }
 
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public String getList(Model model , @RequestParam(defaultValue = "1") int page , Board board){
-        board.setResultYn("N");
+        board.setResultYn("Y");
         // 총 게시물 수
         int totalListCnt = boardService.getNoticeBoardListCnt(board);
 
@@ -45,16 +44,16 @@ public class NoticeController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("pagination", pagination);
 
-        return "thymeleaf/page/service/index :: #boardList";
+        return "thymeleaf/page/result/index :: #boardList";
     }
 
     @RequestMapping(value = "/view",method = RequestMethod.GET)
     public String view(Model model,String idx){
         Board board = new Board();
         board.setBoardKey(idx);
-        board.setResultYn("N");
+        board.setResultYn("Y");
         model.addAttribute("detail", boardService.getNoticeBoardDetail(board));
         model.addAttribute("relatedList", boardService.getNoticeRelatedList(board));
-        return "thymeleaf/page/notice/view";
+        return "thymeleaf/page/result/view";
     }
 }

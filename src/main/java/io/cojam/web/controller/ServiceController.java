@@ -28,6 +28,6 @@ public class ServiceController {
     @Cacheable(value = "question" ,cacheManager = "userCacheManager")
     public String question(Model model) {
         model.addAttribute("questionList",questionService.getHomeQuestionList());
-        return "thymeleaf/page/service/index :: #questionList";
+        return "thymeleaf/page/home/index :: #questionList";
     }
 }

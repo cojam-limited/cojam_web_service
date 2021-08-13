@@ -98,36 +98,69 @@
             <h2>Notice & News</h2>
             <h3>Stay connected with COJAM!</h3>
             <ul id="noticeTop3">
-                <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
-                    th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
-                >
-                    <p>
-                        <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
-                    </p>
-                    <div>
-                        <dl>
-                            <dt>
-                                <i class="uil uil-calendar-alt"></i>&nbsp;
-                                <!--<th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>-->
-                                <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
-                                <script>
-                                    /*<![CDATA[*/
-                                    noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
-                                    noticeCreateDateTime = "[[${item.createDateTime}]]";
-                                    $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
-                                    /*]]>*/
-                                </script>
-                            </dt>
-                            <dd>
-                                <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
-                            <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
-                            </dd>
-                        </dl>
-                        <h2 th:text="${item.boardTitle}"></h2>
-                    </div>
-                </li>
+                <th:block th:if="${boardList}!=null">
+                    <li  th:if="${item.boardCategoryKey}=='BCT2021022500000002'"
+                         th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
+                         th:onclick="'window.location.href = \'' + @{/user/result/view(idx=${item.boardKey})} + '\''"
+                    >
+                        <p>
+                            <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                        </p>
+                        <div>
+                            <dl>
+                                <dt>
+                                    <i class="uil uil-calendar-alt"></i>&nbsp;
+                                    <!--<th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>-->
+                                    <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
+                                    <script>
+                                        /*<![CDATA[*/
+                                        noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
+                                        noticeCreateDateTime = "[[${item.createDateTime}]]";
+                                        $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
+                                        /*]]>*/
+                                    </script>
+                                </dt>
+                                <dd>
+                                    <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                                <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                                </dd>
+                            </dl>
+                            <h2 th:text="${item.boardTitle}"></h2>
+                        </div>
+                    </li>
+                    <li  th:unless="${item.boardCategoryKey}=='BCT2021022500000002'"
+                         th:class="'item sort0'+${i.count}" class="item sort01" th:each="item, i: ${boardList}"
+                         th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                    >
+                        <p>
+                            <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                        </p>
+                        <div>
+                            <dl>
+                                <dt>
+                                    <i class="uil uil-calendar-alt"></i>&nbsp;
+                                    <!--<th:block th:text="${#dates.format(item.createDateTime,'yyyy.MM.dd HH.mm')}"></th:block>-->
+                                    <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
+                                    <script>
+                                        /*<![CDATA[*/
+                                        noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
+                                        noticeCreateDateTime = "[[${item.createDateTime}]]";
+                                        $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
+                                        /*]]>*/
+                                    </script>
+                                </dt>
+                                <dd>
+                                    <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                                <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                                </dd>
+                            </dl>
+                            <h2 th:text="${item.boardTitle}"></h2>
+                        </div>
+                    </li>
+
+                </th:block>
             </ul>
-            <div><a th:href="@{/user/notice}">More</a></div>
+            <div><a th:href="@{/user/results}">More</a></div>
         </div>
     </div>
     <!-- 공지사항 끝 -->
@@ -187,6 +220,28 @@
         </div>
     </div>
     <!-- 서비스 끝 -->
+    <div class="main-qna" th:disabled="${questionList} == null">
+        <div>
+            <h2>Q&A</h2>
+            <h3 style="color: #ffffff">If you have any other questions, please feel free to ask us!</h3>
+            <div class="qna_list" id="questionList">
+                <div th:each="item : ${questionList}">
+                    <ul>
+                        <li><i class="xi-help-o"></i></li>
+                        <li th:text="${item.question}"></li>
+                        <li><i class="xi-plus"></i></li>
+                    </ul>
+                    <dl>
+                        <dt><i class="xi-comment-o"></i></dt>
+                        <dd>
+                            <h2>The answer is.</h2>
+                            <div th:utext="${item.answer}"></div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <th:block  th:replace="thymeleaf/fragment/popup :: homePopup(${mainPopupList})"></th:block>
     <!-- 질문답변 끝 -->
@@ -194,6 +249,7 @@
         $(document).ready(function (){
             fnGetQuestList();
             fnGetNoticeList();
+            fnGetQuestionList();
         });
 
 
@@ -217,6 +273,24 @@
             }
 
         }, '.main-notice > div > ul > li');
+
+        function fnGetQuestionList(){
+            ajaxView("/user/community/question","POST",null,"questionList");
+        }
+
+        $(document).on('click','.qna_list > div',function (){
+            const index = $('.qna_list > div').index(this);
+            if($('.qna_list > div').eq(index).find('.xi-plus') && $('.qna_list > div').eq(index).find('.xi-plus').length > 0){
+                $('.qna_list > div > dl').eq(index).slideDown(300, 'easeOutQuad');
+                $('.qna_list > div > ul').eq(index).css({ background : '#fff3f3' });
+                $('.qna_list > div').eq(index).find('.xi-plus').removeClass('xi-plus').addClass('xi-minus')
+            }else {
+                $('.qna_list > div > dl').eq(index).slideUp(300, 'easeOutQuad');
+                $('.qna_list > div > ul').eq(index).css({ background : '#fff' });
+                $('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
+            }
+        });
     </script>
+
 </th:block>
 </html>

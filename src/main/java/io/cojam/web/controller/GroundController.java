@@ -303,4 +303,12 @@ public class GroundController {
             , @AuthenticationPrincipal Account account) throws Exception {
         return questService.adjournRetrieveMarket(retrieveQuestKey,account);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/push" , method = RequestMethod.POST)
+    public ResponseDataDTO push(
+            @NotNull @NotEmpty String questKey
+            , @AuthenticationPrincipal Account account) throws Exception {
+        return questService.pushMarket(questKey,account);
+    }
 }

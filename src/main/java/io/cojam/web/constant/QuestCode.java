@@ -16,6 +16,7 @@ public class QuestCode {
     public static final String QUEST_STATUS_TYPE_ANSWER = "A";
     public static final String QUEST_STATUS_TYPE_APPROVE = "AP";
     public static final String QUEST_STATUS_TYPE_HOT = "HOT";
+    public static final String QUEST_STATUS_TYPE_PUSH = "PUSH";
     public static final String QUEST_STATUS_TYPE_FINISH = "FINISH";
     public static final String QUEST_STATUS_TYPE_SUCCESS = "SUCCESS";
     public static final String QUEST_STATUS_TYPE_ADJOURN = "ADJOURN";

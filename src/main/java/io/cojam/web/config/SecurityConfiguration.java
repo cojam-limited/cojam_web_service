@@ -86,6 +86,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         ,"/user/community/**"
                         ,"/user/about/**"
                         ,"/user/notice/**"
+                        ,"/user/result/**"
                         ,"/user/idFind/**"
                         ,"/user/pass/**"
                         ,"/user/media/**"

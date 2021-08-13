@@ -12,9 +12,9 @@
                 <div>
                     <a href="/user/home">Home</a>
                     <a href="/user/quest">Quest</a>
-                    <a href="/user/community">Community</a>
+                    <a href="/user/result">Results</a>
                     <a href="/user/about">About</a>
-                    <a href="/user/notice">Notice</a>
+                    <a href="/user/community">Community</a>
                 </div>
             </dt>
             <dd sec:authorize="isAuthenticated()">
@@ -118,20 +118,20 @@
                 <p><i class="uil uil-file-question-alt"></i></p>
                 <div>Quest</div>
             </li>
-            <li onclick="location.href='/user/community';"
-                th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
-                <p><i class="uil uil-book"></i></p>
-                <div>Community</div>
+            <li onclick="location.href='/user/result';"
+                th:classappend="${#strings.contains(currentPage, '/user/result')}?'active':''">
+                <p><i class="uil uil-newspaper"></i></p>
+                <div>Results</div>
             </li>
             <li onclick="location.href='/user/about';"
                 th:classappend="${#strings.contains(currentPage, '/user/about')}?'active':''">
                 <p><i class="uil uil-building"></i></p>
                 <div>About</div>
             </li>
-            <li onclick="location.href='/user/notice';"
-                th:classappend="${#strings.contains(currentPage, '/user/notice')}?'active':''">
-                <p><i class="uil uil-newspaper"></i></p>
-                <div>Notice</div>
+            <li onclick="location.href='/user/community';"
+                th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
+                <p><i class="uil uil-book"></i></p>
+                <div>Community</div>
             </li>
         </ul>
     </div>
