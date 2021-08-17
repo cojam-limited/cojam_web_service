@@ -633,32 +633,7 @@ public class QuestService {
     public ResponseDataDTO pushMarket(String questKey,Account account){
         ResponseDataDTO response = new ResponseDataDTO();
 
-        Quest detail = questDao.getQuestDetail(questKey);
-
-        if(detail != null){
-            if(!detail.getIsActive()){
-                response.setCheck(false);
-                response.setMessage("Don't active Season.");
-                return response;
-            }
-
-            if(detail.getPush()){
-                detail.setPush(false);
-            }else{
-                detail.setPush(true);
-            }
-
-            detail.setStatusType(QuestCode.QUEST_STATUS_TYPE_PUSH);
-            detail.setUpdateMemberKey(account.getMemberKey());
-            questDao.updateQuestStatus(detail);
-            response.setCheck(true);
-            response.setMessage("success");
-
-        }else {
-            response.setCheck(false);
-            response.setMessage("No data.");
-            return response;
-        }
+        pushMessageService.sendPushMessage("QT_ALL",questKey);
 
         response.setCheck(true);
         response.setMessage("success");
@@ -1377,9 +1352,7 @@ public class QuestService {
                                 }
                             }
                             //PUSH 발송
-                            if(detail.getPush()){
-                                pushMessageService.sendPushMessage("QT_S",detail.getQuestKey());
-                            }
+                            pushMessageService.sendPushMessage("QT_S",detail.getQuestKey());
 
                         }else{
                             response.setMessage("Success if Fail!");
@@ -1453,10 +1426,7 @@ public class QuestService {
                         member = memberService.getMemberInfoForMemberKey(member);
 
                         //PUSH 발송
-                        if(detail.getPush()){
-                            pushMessageService.sendPushMessage("QT_A",detail.getQuestKey());
-                        }
-
+                        pushMessageService.sendPushMessage("QT_A",detail.getQuestKey());
 
                         if(!StringUtils.isBlank(member.getMemberEmail())){
                             Mail mail = new Mail();
