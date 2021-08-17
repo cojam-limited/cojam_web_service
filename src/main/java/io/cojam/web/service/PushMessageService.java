@@ -88,6 +88,21 @@ public class PushMessageService {
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
+        }else if(pushType.equals("QT_ALL")){
+            Quest detail = questService.getQuestDetail(key);
+            if(detail != null){
+                List<String> tokenList = this.getNoticeTokenList(key);
+                if(tokenList!=null){
+                    FcmData fcmData = FcmData.builder()
+                            .title("Approved Market")
+                            .message(detail.getQuestTitle())
+                            .pushType(pushType)
+                            .build();
+                    String image = "";
+                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
+                    this.sendFcm(tokenList,fcmData,image);
+                }
+            }
         }
     }
 
