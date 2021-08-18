@@ -62,6 +62,7 @@ $(document).ready(function() {
 	// 메인 - 비주얼 //
 	$(".main-vegas").vegas({
 		slides: [
+			{ src: "/assets/image/content/main_visual_img00.jpg" },
 			{ src: "/assets/image/content/main_visual_img01.jpg" },
 			{ src: "/assets/image/content/main_visual_img02.jpg" },
 			{ src: "/assets/image/content/main_visual_img03.jpg" },
