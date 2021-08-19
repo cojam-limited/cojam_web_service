@@ -47,7 +47,7 @@ public class PushMessageService {
                     FcmData fcmData = FcmData.builder()
                             .title("Success Market")
                             .message(detail.getQuestTitle())
-                            .image(image)
+                            .pictureUrl(image)
                             .pushType(pushType)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
@@ -65,7 +65,7 @@ public class PushMessageService {
                             .title("Adjourn Market")
                             .message(detail.getQuestTitle())
                             .pushType(pushType)
-                            .image(image)
+                            .pictureUrl(image)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
                 }
@@ -91,7 +91,7 @@ public class PushMessageService {
                             .title(title)
                             .message(detail.getBoardTitle())
                             .pushType(pushType)
-                            .image(image)
+                            .pictureUrl(image)
                             .build();
 
                     this.sendFcm(tokenList,fcmData,image);
@@ -107,7 +107,7 @@ public class PushMessageService {
                     FcmData fcmData = FcmData.builder()
                             .title("Approved Market")
                             .message(detail.getQuestTitle())
-                            .image(image)
+                            .pictureUrl(image)
                             .pushType(pushType)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
