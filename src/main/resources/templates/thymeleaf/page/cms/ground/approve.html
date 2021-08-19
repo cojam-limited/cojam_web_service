@@ -13,6 +13,7 @@
         <div class="table-title">
             <h2><i class="uil uil-chat-info"></i>  Approve Market </h2>
             <div>
+                <!--<a href="javascript:fnQuest('PU')">Push</a>-->
                 <a href="javascript:fnQuest('H')">Hot</a>
                 <a href="javascript:fnQuest('P')">Pend</a>
                 <a href="javascript:fnQuest('UP')">Unpend</a>
@@ -54,6 +55,7 @@
                     <td>Title</td>
                     <td>End Date <span><i class="uil uil-align-center-v"></i></span></td>
                     <td>Total(minimum)</td>
+                    <td>Push</td>
                     <td>Finish</td>
                     <td>Pend <span><i class="uil uil-align-center-v"></i></span></td>
                     <td>hot <span><i class="uil uil-align-center-v"></i></span></td>
@@ -77,6 +79,10 @@
                             /*]]>*/
                         </script>
                         <td><th:block th:text="${#numbers.formatInteger(item.totalAmount,0,'COMMA')}"></th:block>(<th:block th:text="${item.minimumPay}"></th:block>)</td>
+                        <td th:attr="onclick=|fnSendQuest
+                                    ('${item.questKey}')|" style="cursor: pointer">
+                            <abbr TITLE="전송"><i class="uil uil-message"></i></abbr>
+                        </td>
                         <td><p th:text="${item.finishTx}!=null?'T':'F'" th:classappend="${item.finishTx}!=null?'true':'false'"></p></td>
                         <td><p th:text="${item.pending}?'T':'F'" th:classappend="${item.pending}?'true':'false'"></p></td>
                         <td><p th:text="${item.hot}?'T':'F'" th:classappend="${item.hot}?'true':'false'"></p></td>
@@ -219,6 +225,27 @@
                     adjournQuestKey = questKey;
                     adjournQuestTitle = title;
                     $("#modalGroundAdjourn").iziModal('open');
+                }
+            }
+
+            function fnSendQuest(questKey){
+                if(confirm("Do you want push message?")){
+                    $.ajax({
+                        url:"/cms/ground/push",
+                        type :  "POST",
+                        dataType : "json",
+                        data : {
+                            "questKey" : questKey
+                        },
+                        success : function(response){
+                            if(response.check){
+                                toastr.success('success');
+                                //fnGetList();
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        }
+                    });
                 }
             }
 

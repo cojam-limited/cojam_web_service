@@ -89,6 +89,7 @@
             Q.IMAGE_LINK,
             Q.QUEST_TITLE_KR,
             Q.QUEST_TITLE_CH,
+            Q.PUSH,
             C.CATEGORY_NAME,
             S.minimum_pay
         FROM	TB_QUEST Q
@@ -229,6 +230,7 @@
             Q.IMAGE_LINK,
             Q.QUEST_TITLE_KR,
             Q.QUEST_TITLE_CH,
+            Q.PUSH,
             C.CATEGORY_NAME,
             IF(now() > Q.END_DATE_TIME,true,false) AS MARKET_CLOSED,
             S.*
@@ -292,7 +294,9 @@
                     ,RETRIEVE_DATE_TIME = now()
                     ,RETRIEVE_TX = #{retrieveTx}
                 </when>
-
+                <when test='statusType.equals("PUSH")'>
+                    ,PUSH = #{push}
+                </when>
             </choose>
         </if>
         WHERE QUEST_KEY = #{questKey}

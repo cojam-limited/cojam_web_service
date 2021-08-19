@@ -11,4 +11,6 @@ public interface DeviceDao {
     int saveDeviceInfo(DeviceInfo deviceInfo);
 
     int deleteDeviceInfo(DeviceInfo deviceInfo);
+
+    int deleteDeviceInfoMemberKey(DeviceInfo deviceInfo);
 }

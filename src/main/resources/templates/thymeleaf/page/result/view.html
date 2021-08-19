@@ -11,7 +11,7 @@
 <th:block layout:fragment="content">
     <!-- 타이틀영역 -->
     <div class="title-area">
-        Community
+        Results
     </div>
     <!-- 타이틀영역 끝 -->
 
@@ -43,7 +43,7 @@
                     <ul th:disabled="${relatedList}==null">
                         <li
                                 th:each="item : ${relatedList}"
-                                th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                                th:onclick="'window.location.href = \'' + @{/user/result/view(idx=${item.boardKey})} + '\''"
                         >
                             <p>
                                 <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
@@ -54,7 +54,7 @@
                 </dd>
             </dl>
             <div>
-                <a th:href="@{/user/community}" class="btn-purple">List</a>
+                <a th:href="@{/user/result}" class="btn-purple">List</a>
             </div>
         </div>
         <!-- 상세 끝 -->

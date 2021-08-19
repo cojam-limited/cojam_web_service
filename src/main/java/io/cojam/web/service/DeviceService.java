@@ -25,6 +25,10 @@ public class DeviceService {
         return deviceDao.deleteDeviceInfo(deviceInfo);
     }
 
+    int deleteDeviceInfoMemberKey(DeviceInfo deviceInfo){
+        return deviceDao.deleteDeviceInfoMemberKey(deviceInfo);
+    }
+
     @Transactional
     public ResponseDataDTO saveDeviceProc(Account account, DeviceInfo deviceInfo){
         ResponseDataDTO response = new ResponseDataDTO();
@@ -39,6 +43,10 @@ public class DeviceService {
             response.setCheck(false);
             response.setMessage("no device type!");
             return response;
+        }
+
+        if(!StringUtils.isBlank(deviceInfo.getMemberKey())){
+            this.deleteDeviceInfoMemberKey(deviceInfo);
         }
 
         this.deleteDeviceInfo(deviceInfo);

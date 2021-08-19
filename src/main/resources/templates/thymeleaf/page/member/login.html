@@ -78,12 +78,19 @@
                     },
                     success : function(response){
                         if(response.code == "200"){
-                            const url = response.item.url;
-                            if(url.indexOf('127.0.0.1')> -1 || url.indexOf('10.10.0.4')){
-                                window.location = '/user/home';
-                                return;
+                            try {
+                                const data = JSON.stringify({type: "login", key: response.item.key});
+                                window.ReactNativeWebView.postMessage(data);
+                            } catch (error) {
+
+                            }finally {
+                                const url = response.item.url;
+                                if(url.indexOf('127.0.0.1')> -1 || url.indexOf('10.10.0.4')){
+                                    window.location = '/user/home';
+                                    return;
+                                }
+                                window.location = response.item.url;
                             }
-                            window.location = response.item.url;
                         } else {
                             if(response.code == "998"){
                                 location.href ='/user/join/completed?a4='+response.item;

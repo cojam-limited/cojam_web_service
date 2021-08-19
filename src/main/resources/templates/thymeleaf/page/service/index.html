@@ -15,50 +15,61 @@
         Community
     </div>
     <!-- 타이틀영역 끝 -->
-    <div class="main-qna" th:disabled="${questionList} == null">
-        <div>
-            <h2>Q&A</h2>
-            <h3>If you have any other questions, please feel free to ask us!</h3>
-            <div class="qna_list" id="questionList">
-                <div th:each="item : ${questionList}">
-                    <ul>
-                        <li><i class="xi-help-o"></i></li>
-                        <li th:text="${item.question}"></li>
-                        <li><i class="xi-plus"></i></li>
-                    </ul>
-                    <dl>
-                        <dt><i class="xi-comment-o"></i></dt>
-                        <dd>
-                            <h2>The answer is.</h2>
-                            <div th:utext="${item.answer}"></div>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
+    <div class="container-top-round">
+        <!-- 탭메뉴 -->
+        <div class="notice-tab" id="noticefilters" th:if="${categoryList} != null">
+            <a href="#posChk" data-filter="*" th:classappend="${param.boardCategoryKey eq null or param.boardCategoryKey eq ''}?'active':''">All</a>
+            <a th:each="item : ${categoryList}"
+               th:attrappend="data-value=${item.boardCategoryKey}"
+               th:attr="data-filter='.sort0'+${item.orderNumber}"
+               th:classappend="${item.boardCategoryKey eq param.boardCategoryKey}?'active':''"
+               th:text="${item.categoryName}"
+               href="#posChk"
+            ></a>
         </div>
-    </div>
-    <!-- 컨택트 -->
-    <div class="about-contact">
-        <h2>&nbsp;</h2>
-        <h2>SNS</h2>
-        <p>Stay Connected with COJAM</p>
-        <!--<div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2381.7918151963217!2d-6.257478683484973!3d53.34698277997919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48670e85677f5bbd%3A0x52de8be53512895!2sThe%20Tara%20Building%20-%20Coworking%20Dublin%202!5e0!3m2!1sko!2skr!4v1612514538649!5m2!1sko!2skr" width="100%" height="600" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe></div>-->
-        <div class="about-contact-content">
-            <div>
+        <!-- 탭메뉴 끝 -->
+        <form th:name="boardFrm" th:method="POST">
+            <input th:type="hidden" th:name="boardCategoryKey" th:value="${param.boardCategoryKey}"/>
+            <input th:type="hidden" th:name="page" />
+        </form>
+
+        <!-- 리스트 -->
+        <div id="boardList">
+            <div class="notice-list">
                 <ul>
-                    <li><a target="_blank" href="https://blog.naver.com/cojam_limited"><img src="../../assets/image/content/sns_icon_naver.png" alt="">Naver Blog</a></li>
-                    <li><a target="_blank" href="https://cojam-official.medium.com/"><img src="../../assets/image/content/sns_icon_medium.png" alt="">Medium</a></li>
-                    <li><a target="_blank" href="https://www.instagram.com/cojam_official/"><img src="../../assets/image/content/sns_icon_instagram.png" alt="">Instagram</a></li>
+                    <li th:if="${boardList}!=null" th:class="'item sort0'+${i.count}" th:each="item, i: ${boardList}"
+                        th:onclick="'window.location.href = \'' + @{/user/notice/view(idx=${item.boardKey})} + '\''"
+                    >
+                        <p>
+                            <span th:style="'background:url(/user/media/image?id='+${item.boardFile}+') center no-repeat; background-size:cover;'"></span>
+                        </p>
+                        <div>
+                            <dl>
+                                <dt>
+                                    <i class="uil uil-calendar-alt"></i>&nbsp;
+                                    <span th:id="'noticeCreateDateTimeId_'+${i.index}"></span>&nbsp;
+                                    <script>
+                                        /*<![CDATA[*/
+                                        noticeCreateDateTimeId = "noticeCreateDateTimeId_[[${i.index}]]";
+                                        noticeCreateDateTime = "[[${item.createDateTime}]]";
+                                        $('#'+noticeCreateDateTimeId).append(changeUtcToLocal(noticeCreateDateTime,'YYYY.MM.DD HH.mm'))
+                                        /*]]>*/
+                                    </script>
+                                </dt>
+                                <dd>
+                                    <span th:if="${i.count%2==0}" th:text="${item.categoryName}"></span>
+                                <dd th:if="${i.count%2!=0}"><em th:text="${item.categoryName}">News</em></dd>
+                                </dd>
+                            </dl>
+                            <h2 th:text="${item.boardTitle}"></h2>
+                        </div>
+                    </li>
                 </ul>
             </div>
-            <div>
-                <ul>
-                    <li><a target="_blank" href="https://twitter.com/OfficialCojam"><img src="../../assets/image/content/sns_icon_twiter.png" alt="">Twitter</a></li>
-                    <li><a target="_blank" href="https://www.facebook.com/cojam.limited/"><img src="../../assets/image/content/sns_icon_facebook.png" alt="">Facebook</a></li>
-                    <li><a target="_blank" href="https://open.kakao.com/o/gVOJyBad"><img src="../../assets/image/content/sns_icon_kakao.png" alt="">KaKao</a></li>
-                </ul>
-            </div>
+            <!-- 리스트 끝 -->
+            <th:block th:if="${pagination} != null" th:replace="thymeleaf/fragment/page :: paging-list(${pagination})"></th:block>
         </div>
+
     </div>
 
     <div class="container-top-round"  style="display: none">
@@ -84,20 +95,20 @@
         </div>
     </div>
 
-    <div class="service-content5">
+    <!--<div class="service-content5">
         <h2> Life is Always a Question!</h2>
         <p> Predicting and sharing answers to various questions is the goal of COJAM.</p>
-    </div>
+    </div>-->
     <!-- 서비스 끝 -->
     <th:block layout:fragment="script">
         <script>
             $("body").addClass("bg-service");
             $(document).ready(function (){
-                fnGetQuestionList();
+                fnGetList();
             });
 
-            function fnGetQuestionList(){
-                ajaxView("/user/community/question","POST",null,"questionList");
+            function fnGetList(){
+                ajaxView("/user/notice/list","POST",$("form[name=boardFrm]").serialize(),"boardList");
             }
 
             $(document).on('click','.qna_list > div',function (){
@@ -111,6 +122,13 @@
                     $('.qna_list > div > ul').eq(index).css({ background : '#fff' });
                     $('.qna_list > div').eq(index).find('.xi-minus').removeClass('xi-minus').addClass('xi-plus')
                 }
+            });
+
+            $(document).on('click','.notice-tab > a',function (e){
+                const dataValue= $(this).attr('data-value')=='*'?'':$(this).attr('data-value');
+                $("input[name=boardCategoryKey]").val(dataValue);
+                $("input[name=page]").val(1);
+                fnGetList();
             });
         </script>
     </th:block>

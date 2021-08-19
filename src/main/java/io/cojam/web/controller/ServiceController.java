@@ -1,6 +1,7 @@
 package io.cojam.web.controller;
 
 import io.cojam.web.account.Account;
+import io.cojam.web.service.BoardService;
 import io.cojam.web.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,9 +18,12 @@ public class ServiceController {
     @Autowired
     QuestionService questionService;
 
-    @GetMapping
-    public String serviceList() {
+    @Autowired
+    BoardService boardService;
 
+    @GetMapping
+    public String serviceList(Model model) {
+        model.addAttribute("categoryList",boardService.getNoticeCategoryList("N"));
         return "thymeleaf/page/service/index";
     }
 
@@ -28,6 +32,6 @@ public class ServiceController {
     @Cacheable(value = "question" ,cacheManager = "userCacheManager")
     public String question(Model model) {
         model.addAttribute("questionList",questionService.getHomeQuestionList());
-        return "thymeleaf/page/service/index :: #questionList";
+        return "thymeleaf/page/home/index :: #questionList";
     }
 }

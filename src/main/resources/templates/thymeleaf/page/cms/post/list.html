@@ -72,6 +72,8 @@
                             <td th:text="${item.memberName}"></td>
                             <td>
                                 <ul>
+                                    <li th:attr="onclick=|fnSendBoard
+                                    ('${item.boardKey}')|"><abbr TITLE="전송"><i class="uil uil-message"></i></abbr></li>
                                     <li><a th:href="@{/cms/post/view(idx=${item.boardKey})}"><abbr TITLE="수정"><i class="uil uil-file-edit-alt"></i></abbr></a></li>
                                     <li th:attr="onclick=|fnDeleteBoard('${item.boardKey}')|"><abbr TITLE="삭제"><i class="uil uil-trash-alt"></i></abbr></li>
                                 </ul>
@@ -104,23 +106,46 @@
         }
 
         function fnDeleteBoard(boardKey){
-
-            $.ajax({
-                url:"/cms/post/delete",
-                type :  "POST",
-                dataType : "json",
-                data : {
-                    "boardKey" : boardKey
-                },
-                success : function(response){
-                    if(response.check){
-                        toastr.success('Post is deleted.')
-                        fnGetList();
-                    } else {
-                        toastr.error(response.message);
+            if(confirm("Do you want delete?")){
+                $.ajax({
+                    url:"/cms/post/delete",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        "boardKey" : boardKey
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('Post is deleted.')
+                            fnGetList();
+                        } else {
+                            toastr.error(response.message);
+                        }
                     }
-                }
-            });
+                });
+            }
+        }
+
+
+        function fnSendBoard(boardKey){
+            if(confirm("Do you want push message?")){
+                $.ajax({
+                    url:"/cms/post/send",
+                    type :  "POST",
+                    dataType : "json",
+                    data : {
+                        "boardKey" : boardKey
+                    },
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('success');
+                            fnGetList();
+                        } else {
+                            toastr.error(response.message);
+                        }
+                    }
+                });
+            }
         }
     </script>
     <th:block layout:fragment="script">
