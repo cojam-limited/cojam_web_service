@@ -40,13 +40,16 @@ public class PushMessageService {
             if(detail != null){
                 List<String> tokenList = this.getBettingTokenList(key);
                 if(tokenList!=null){
+
+                    String image = "";
+                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
+
                     FcmData fcmData = FcmData.builder()
                             .title("Success Market")
                             .message(detail.getQuestTitle())
+                            .image(image)
                             .pushType(pushType)
                             .build();
-                    String image = "";
-                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
@@ -55,13 +58,15 @@ public class PushMessageService {
             if(detail != null){
                 List<String> tokenList = this.getBettingTokenList(key);
                 if(tokenList!=null){
+                    String image = "";
+                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
+
                     FcmData fcmData = FcmData.builder()
                             .title("Adjourn Market")
                             .message(detail.getQuestTitle())
                             .pushType(pushType)
+                            .image(image)
                             .build();
-                    String image = "";
-                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
@@ -78,13 +83,17 @@ public class PushMessageService {
                     }else {
                         title = "Notice";
                     }
+
+                    String image = "";
+                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getBoardFile());
+
                     FcmData fcmData = FcmData.builder()
                             .title(title)
                             .message(detail.getBoardTitle())
                             .pushType(pushType)
+                            .image(image)
                             .build();
-                    String image = "";
-                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getBoardFile());
+
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
@@ -93,13 +102,14 @@ public class PushMessageService {
             if(detail != null){
                 List<String> tokenList = this.getNoticeTokenList(key);
                 if(tokenList!=null){
+                    String image = "";
+                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
                     FcmData fcmData = FcmData.builder()
                             .title("Approved Market")
                             .message(detail.getQuestTitle())
+                            .image(image)
                             .pushType(pushType)
                             .build();
-                    String image = "";
-                    image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getFileKey());
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
