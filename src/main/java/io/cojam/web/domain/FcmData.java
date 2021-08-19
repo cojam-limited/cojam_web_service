@@ -9,4 +9,5 @@ public class FcmData {
     private String title;
     private String message;
     private String pushType;
+    private String image;
 }
