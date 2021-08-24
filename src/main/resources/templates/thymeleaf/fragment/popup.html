@@ -1696,7 +1696,7 @@
                     success : function(response){
                         if(response.check){
                             toastr.success('success');
-                            fnMovePage(1);
+                            fnGetMyVotingList();
                         } else {
                             toastr.error(response.message);
                         }
