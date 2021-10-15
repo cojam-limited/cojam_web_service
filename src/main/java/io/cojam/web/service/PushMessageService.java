@@ -49,6 +49,7 @@ public class PushMessageService {
                             .message(detail.getQuestTitle())
                             .pictureUrl(image)
                             .pushType(pushType)
+                            .pushKey(key)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
                 }
@@ -66,6 +67,7 @@ public class PushMessageService {
                             .message(detail.getQuestTitle())
                             .pushType(pushType)
                             .pictureUrl(image)
+                            .pushKey(key)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
                 }
@@ -92,8 +94,8 @@ public class PushMessageService {
                             .message(detail.getBoardTitle())
                             .pushType(pushType)
                             .pictureUrl(image)
+                            .pushKey(key)
                             .build();
-
                     this.sendFcm(tokenList,fcmData,image);
                 }
             }
@@ -109,6 +111,7 @@ public class PushMessageService {
                             .message(detail.getQuestTitle())
                             .pictureUrl(image)
                             .pushType(pushType)
+                            .pushKey(key)
                             .build();
                     this.sendFcm(tokenList,fcmData,image);
                 }
