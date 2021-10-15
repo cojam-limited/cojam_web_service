@@ -10,4 +10,5 @@ public class FcmData {
     private String message;
     private String pushType;
     private String pictureUrl;
+    private String pushKey;
 }
