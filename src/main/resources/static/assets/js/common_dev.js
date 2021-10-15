@@ -426,17 +426,3 @@ function getPlatform(){
 
 
 
-(function () {
-	window.document.addEventListener('message', function (e) {
-		console.log("react native에서 메세지를 받음", JSON.parse(e.data));
-		let message;
-		try {
-			message = JSON.parse(e.data)
-			location.href = message;
-		}
-		catch (err) {
-			console.error("메세지를 파싱할수 없음 " + err);
-			return;
-		}
-	});
-}());
