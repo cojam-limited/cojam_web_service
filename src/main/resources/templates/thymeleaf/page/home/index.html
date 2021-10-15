@@ -177,6 +177,15 @@
         $(document).ready(function (){
             fnGetQuestList();
             fnGetQuestionList();
+
+            window.addEventListener("message", function(event) {
+                alert(11111);
+                console.log("Received post message", event);
+                alert(event.data);
+
+                location.href = event.data;
+
+            }, false);
         });
 
         function fnGetQuestList(){
