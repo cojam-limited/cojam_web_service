@@ -340,10 +340,10 @@
         <div th:id="'mainPop'+${popup.popupKey}" class="main-popup" th:style="'top:'+${popup.positionX}+'px; left:'+${popup.positionY}+'px;display:none;'" >
             <div>
                 <a th:href="@{${popup.popupLink}}" target="_blank">
-                    <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" />
+                    <img th:src="@{/user/media/image(id=${popup.popupFileKey})}" alt="" title="" style="max-width: 1280px;"/>
                 </a>
             </div>
-            <dl>
+            <dl style="font-size: 15px;">
                 <dt class="mainPopDayClose">Don't open any more today</dt>
                 <dd class="mainPopupClose">Close</dd>
             </dl>
