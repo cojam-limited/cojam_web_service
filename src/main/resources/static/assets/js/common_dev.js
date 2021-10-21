@@ -2,7 +2,9 @@ $(document).ready(function() {
 	// 인쿠르트 //
 	//$("#header").load("/include/header.html")
 	//$("#footer").load("/include/footer.html")
-
+	window.addEventListener("message", function(event) {
+		location.href = event.data;
+	}, false);
 
 	// 상단영역 //
 	$(window).scroll(function() {
@@ -422,3 +424,7 @@ function setPlatform(os){
 function getPlatform(){
 	return Platform;
 }
+
+
+
+
