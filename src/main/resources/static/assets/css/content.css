@@ -216,12 +216,25 @@
 .main-vegas .mv-copy h2 {font-weight:800; font-size:70px; line-height:70px; color:#fff;}
 .main-vegas .mv-copy h3 {margin-top:20px; font-weight:200; font-size:36px; line-height:46px; color:#fff;}
 
+/* ERROR 영역 - error */
+.error-vegas {height:80px;}
+.error-vegas .mv-btm {position:absolute; bottom:30px; left:50%; width:100px; margin:0 0 0 -50px; cursor:pointer; z-index:9;}
+.error-vegas .mv-copy {position:absolute; top:50%; left:50%; width:1000px; margin:-80px 0 0 -500px; text-align:center;}
+.error-vegas .mv-copy h2 {font-weight:800; font-size:70px; line-height:70px; color:#fff;}
+.error-vegas .mv-copy h3 {margin-top:20px; font-weight:200; font-size:36px; line-height:46px; color:#fff;}
+
 @media all and (max-width:479px) {
   .main-vegas {height:100%;}
   .main-vegas .mv-btm {bottom:70px;}
   .main-vegas .mv-copy {width:100%; margin:-100px 0 0 -50%; padding:0 20px;}
   .main-vegas .mv-copy h2 {font-size:45px; line-height:45px;}
   .main-vegas .mv-copy h3 {font-size:20px; line-height:30px;}
+
+  .error-vegas {height:100%;display: none}
+  .error-vegas .mv-btm {bottom:70px;}
+  .error-vegas .mv-copy {width:100%; margin:-100px 0 0 -50%; padding:0 20px;}
+  .error-vegas .mv-copy h2 {font-size:45px; line-height:45px;}
+  .error-vegas .mv-copy h3 {font-size:20px; line-height:30px;}
 }
 @media all and (min-width:480px) and (max-width:767px) {
   .main-vegas {height:100%;}
@@ -229,15 +242,22 @@
   .main-vegas .mv-copy {width:100%; margin:-100px 0 0 -50%; padding:0 20px;}
   .main-vegas .mv-copy h2 {font-size:45px; line-height:45px;}
   .main-vegas .mv-copy h3 {font-size:20px; line-height:30px;}
+
+  .error-vegas {height:100%;display: none}
+  .error-vegas .mv-btm {bottom:70px;}
+  .error-vegas .mv-copy {width:100%; margin:-100px 0 0 -50%; padding:0 20px;}
+  .error-vegas .mv-copy h2 {font-size:45px; line-height:45px;}
+  .error-vegas .mv-copy h3 {font-size:20px; line-height:30px;}
 }
 @media all and (min-width:768px) and (max-width:991px) {
   .main-vegas .mv-copy {width:750px; margin:-110px 0 0 -375px;}
+  .error-vegas .mv-copy {width:750px; margin:-110px 0 0 -375px;}
 }
 @media all and (min-width:992px) and (max-width:1299px) {
-
+  .error-vegas {height:100%;display: none}
 }
 @media all and (min-width:1300px) {
-
+  .error-vegas {height:100%;display: none}
 }
 
 
