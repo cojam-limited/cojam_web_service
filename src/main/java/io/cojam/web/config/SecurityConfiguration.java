@@ -73,10 +73,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().ignoringAntMatchers("/saveDeviceInfo").ignoringAntMatchers("/error/**").and()
+
                 .authorizeRequests()
                 .antMatchers(
                         "/login"
+                        ,"/loginProc"
                         ,"/error/**"
                         ,"/logout"
                         ,"/user/join/**"
