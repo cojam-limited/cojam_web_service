@@ -111,13 +111,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(customSuccessLogoutHandler)
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("SESSIONID")
                 .permitAll();
 
-        http
+        /*http
                 .exceptionHandling()
                 .authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/login"));
-
+*/
 
 
     }
