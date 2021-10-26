@@ -114,10 +114,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .deleteCookies("SESSIONID")
                 .permitAll();
 
-        /*http
+        http
                 .exceptionHandling()
                 .authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/login"));
-*/
+
 
 
     }
