@@ -73,10 +73,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().ignoringAntMatchers("/saveDeviceInfo").and()
+                .csrf().ignoringAntMatchers("/saveDeviceInfo").ignoringAntMatchers("/error/**").and()
                 .authorizeRequests()
                 .antMatchers(
                         "/login"
+                        ,"/loginProc"
+                        ,"/error/**"
                         ,"/logout"
                         ,"/user/join/**"
                         ,"/user/home/**"
@@ -110,7 +112,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(customSuccessLogoutHandler)
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("SESSIONID")
                 .permitAll();
 
         http
