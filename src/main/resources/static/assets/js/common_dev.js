@@ -3,7 +3,11 @@ $(document).ready(function() {
 	//$("#header").load("/include/header.html")
 	//$("#footer").load("/include/footer.html")
 	window.addEventListener("message", function(event) {
-		location.href = event.data;
+		const pushUrl = event.data;
+
+		if(typeof pushUrl =='string' && pushUrl.valueOf().indexOf('/user/result/view?') > -1){
+			location.href = event.data;
+		}
 	}, false);
 
 	// 상단영역 //
