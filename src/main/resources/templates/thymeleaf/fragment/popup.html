@@ -1284,20 +1284,24 @@
         }
 
         function fnSuccessMarket(){
-            $.ajax({
-                url: "/cms/ground/successMarket",
-                type: "POST",
-                data : $('form[name=successFrm]').serialize(),
-                success : function(response){
-                    if(response.check){
-                        toastr.success('Success Complete!');
-                        fnGetList();
-                        $("#modalViewSuccessInfo").iziModal('close');
-                    } else {
-                        toastr.error(response.message);
+            if(confirm("success market??")){
+                $.ajax({
+                    url: "/cms/ground/successMarket",
+                    type: "POST",
+                    data : $('form[name=successFrm]').serialize(),
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('Success Complete!');
+                            fnGetList();
+                            $("#modalViewSuccessInfo").iziModal('close');
+                        } else {
+                            toastr.error(response.message);
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                return
+            }
         }
 
     </script>
@@ -1497,21 +1501,26 @@
 
 
         }
+
         function fnAdjournMarket(){
-            $.ajax({
-                url: "/cms/ground/adjournMarket",
-                type: "POST",
-                data : $('form[name=adjournFrm]').serialize(),
-                success : function(response){
-                    if(response.check){
-                        toastr.success('Adjourn Complete!');
-                        fnGetList();
-                        $("#modalViewAdjournInfo").iziModal('close');
-                    } else {
-                        toastr.error(response.message);
+            if(confirm('adjourn market??')){
+                $.ajax({
+                    url: "/cms/ground/adjournMarket",
+                    type: "POST",
+                    data : $('form[name=adjournFrm]').serialize(),
+                    success : function(response){
+                        if(response.check){
+                            toastr.success('Adjourn Complete!');
+                            fnGetList();
+                            $("#modalViewAdjournInfo").iziModal('close');
+                        } else {
+                            toastr.error(response.message);
+                        }
                     }
-                }
-            });
+                });
+            }else{
+                return;
+            }
         }
 
     </script>
