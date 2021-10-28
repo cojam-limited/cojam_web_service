@@ -153,7 +153,7 @@ public class QuestService {
             QuestAnswer answer = new QuestAnswer();
             answer.setQuestKey(quest.getQuestKey());
             for (String title:quest.getAnswers()
-                 ) {
+            ) {
                 //answer.setQuestAnswerKey(sequenceService.getSequence(SequenceCode.TB_QUEST_ANSWER));
                 answer.setAnswerTitle(title);
                 questDao.saveQuestAnswer(answer);
@@ -240,9 +240,9 @@ public class QuestService {
                     return response;
                 }else{
                     /*
-                    * contract 호출
-                    *
-                    */
+                     * contract 호출
+                     *
+                     */
                     BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
                     BigInteger creator_pay = Convert.toWei(String.valueOf(season.getCreatorPay()), Convert.Unit.ETHER).toBigInteger();
 
@@ -442,7 +442,7 @@ public class QuestService {
             List<BigInteger> bigIntegerList = new ArrayList<>();
 
             for (QuestAnswer answer:list
-                 ) {
+            ) {
                 BigInteger answerKey = new BigInteger(answer.getQuestAnswerKey());
                 bigIntegerList.add(new BigInteger(answer.getQuestAnswerKey()));
             }
@@ -1171,7 +1171,7 @@ public class QuestService {
 
                     Map<String,Object> gospel = new HashMap<>();
                     for (Betting betting : bettingList
-                         ) {
+                    ) {
                         String address = betting.getSpenderAddress();
                         float b_coin = Float.parseFloat(betting.getBettingCoin());
                         float r_coin = b_coin * magnification / 100;
@@ -1276,22 +1276,11 @@ public class QuestService {
                             return response;
                         }
 
-                        //
                         if(!StringUtils.isBlank(detail.getSuccessTx())){
-                            TransactionStatus successStatus = transactionApiService.getTransactionStatusById(detail.getSuccessTx());
-                            String bStatus = successStatus.getStatus();
-                            if (WalletCode.TRANSACTION_STATUS_CONFIRM.equals(bStatus)) {
-                                response.setCheck(false);
-                                response.setMessage("You've already been rewarded!");
-                                return response;
-                            }else if(WalletCode.TRANSACTION_STATUS_REQUESTED.equals(bStatus) || WalletCode.TRANSACTION_STATUS_PENDING.equals(bStatus)){
-                                response.setCheck(false);
-                                response.setMessage("Reward is in progress.");
-                                return response;
-                            }
+                            response.setCheck(false);
+                            response.setMessage("It is already success.");
+                            return response;
                         }
-
-
 
                         //cnotract successMarket 호출
                         BigInteger questKeyBigInteger = sequenceService.changeSequenceStringToBigInteger(detail.getQuestKey(),SequenceCode.TB_QUEST);
