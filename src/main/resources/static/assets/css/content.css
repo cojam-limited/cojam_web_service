@@ -483,6 +483,35 @@
 
 }
 
+/* 메인 - 질문답변 */
+.common-error {width:100%; background:url('/assets/image/error/error_bg.png') center no-repeat; background-size:cover; height: 800px;}
+.common-error > div {width:1300px; margin:0 auto; padding:100px 0; overflow:hidden;}
+.common-error > div > h2 {text-align:center; font-weight:700; font-size:40px; line-height:40px; color:#fff;}
+.common-error > div > h3 {margin-top:20px; text-align:center; font-size:20px; line-height:28px; color:#9695C8;}
+
+@media all and (max-width:479px) {
+  .common-error {height:100%;}
+  .common-error > div {width:100%; padding:60px 20px 110px 20px;}
+  .common-error > div > h2 {font-size:28px; line-height:28px;}
+  .common-error > div > h3 {margin-top:15px; font-size:14px; line-height:20px;}
+}
+@media all and (min-width:480px) and (max-width:767px) {
+  .common-error {height:100%;}
+  .common-error > div {width:100%; padding:60px 20px 110px 20px;}
+  .common-error > div > h2 {font-size:28px; line-height:28px;}
+  .common-error > div > h3 {margin-top:15px; font-size:14px; line-height:20px;}
+}
+@media all and (min-width:768px) and (max-width:991px) {
+  .common-error {height:100%;}
+  .common-error > div {width:750px;}
+}
+@media all and (min-width:992px) and (max-width:1299px) {
+  .common-error > div {width:1024px;}
+}
+@media all and (min-width:1300px) {
+
+}
+
 .qna_list {width:100%; margin-top:50px; padding:20px 30px; border-radius:10px; background:#fff; overflow:hidden;}
 .qna_list > div {width:100%;}
 .qna_list > div:first-child ul {border-top:none;}
