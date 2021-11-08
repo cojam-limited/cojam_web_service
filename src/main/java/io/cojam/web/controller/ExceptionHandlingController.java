@@ -12,6 +12,10 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
+
+/**
+ * Custom Error Page
+ */
 @Controller
 public class ExceptionHandlingController implements ErrorController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

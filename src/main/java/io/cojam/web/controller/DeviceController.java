@@ -20,6 +20,13 @@ public class DeviceController {
     @Autowired
     DeviceService deviceService;
 
+    /**
+     * 모바일 앱 디바이스 정보 저장
+     * @param deviceInfo
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/saveDeviceInfo" , method = RequestMethod.POST)
     public ResponseDataDTO getAnswerList(
