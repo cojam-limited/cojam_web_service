@@ -20,12 +20,25 @@ public class EmailController {
     @Autowired
     EmailService emailService;
 
+    /**
+     * 관리자 이메일 관리
+     * @param model
+     * @param board
+     * @return
+     */
     @GetMapping
     public String list(Model model, Board board) {
         return "thymeleaf/page/cms/email/list";
     }
 
 
+    /**
+     * 관리자 이메일 허용 목록
+     * @param model
+     * @param page
+     * @param email
+     * @return
+     */
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public String getList(Model model , @RequestParam(defaultValue = "1") int page , Email email){
 
@@ -46,6 +59,12 @@ public class EmailController {
         return "thymeleaf/page/cms/email/list :: #boardList";
     }
 
+
+    /**
+     * 허용할 이메일 저장
+     * @param email
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/save",method = RequestMethod.POST)
     public ResponseDataDTO saveEmail(Email email){
@@ -54,6 +73,11 @@ public class EmailController {
     }
 
 
+    /**
+     * 이메일 삭제
+     * @param email
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public ResponseDataDTO deleteEmail(Email email){
@@ -61,6 +85,11 @@ public class EmailController {
     }
 
 
+    /**
+     * 이메일 수정
+     * @param email
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public ResponseDataDTO updateEmail(Email email){

@@ -39,28 +39,52 @@ public class MemberController {
     @Autowired
     MyConfig myConfig;
 
+    /**
+     * 회원가입 page
+     * @return
+     */
     @RequestMapping(value = "/user/join", method= RequestMethod.GET)
     public String joinPage() {
         return "thymeleaf/page/member/join";
     }
 
+    /**
+     * 회원가입 process
+     * @param member
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/user/join", method= RequestMethod.POST)
     public ResponseDataDTO joinProc(@Valid Member member , HttpServletResponse response) throws Exception {
         return memberService.saveMember(member);
     }
 
+    /**
+     * 회원가입 완료 Page(이메일 인증 전)
+     * @param a4
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/join/completed", method= RequestMethod.GET)
     public String joinCompleted(String a4,Model model) {
         model.addAttribute("a4",a4);
         return "thymeleaf/page/member/joinCompleted";
     }
 
+
     @RequestMapping(value = "/user/join/joinConfirm", method= RequestMethod.GET)
     public String joinConfirm() {
         return "thymeleaf/page/member/joinConfirm";
     }
 
+    /**
+     * 이메일 인증 여부 체크
+     * @param a7
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/user/join/confirm", method= RequestMethod.GET)
     @ResponseBody
     public String joinConfirm(@NotNull @NotEmpty @Length(min = 10) String a7) throws Exception {
@@ -92,6 +116,12 @@ public class MemberController {
         return memberService.joinConfirmMemberNew(memberKey,memberEmail,fpNumber,emailCode);
     }
 
+    /**
+     * 이메일 인증 재발송
+     * @param a4
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/user/join/resend", method= RequestMethod.POST)
     @ResponseBody
     public ResponseDataDTO resendEmail(@NotNull @NotEmpty @Length(min = 10) String a4) throws Exception {
@@ -103,18 +133,37 @@ public class MemberController {
     }
 
 
-
+    /**
+     * 아이디 찾기 Page
+     * @return
+     */
     @RequestMapping(value = "/user/idFind", method= RequestMethod.GET)
     public String idSearch() {
         return "thymeleaf/page/member/idFind";
     }
 
+    /**
+     * 아이디 찾기 Process
+     * @param memberName
+     * @param memberEmail
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/user/idFind", method= RequestMethod.POST)
     public ResponseDataDTO idSearchProc(@Valid @NonNull @NotEmpty String memberName , @Valid @NonNull @NotEmpty @Email String memberEmail , HttpServletResponse response) throws Exception {
         return memberService.searchId(memberName,memberEmail);
     }
 
+    /**
+     * 비밀번호 변경 page
+     * @param fpNumber
+     * @param memberKey
+     * @param memberId
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/pass/change", method= RequestMethod.GET)
     public String passChange(String fpNumber, String memberKey, String memberId, Model model) {
         if(StringUtils.isBlank(fpNumber)
@@ -130,6 +179,13 @@ public class MemberController {
         return "thymeleaf/page/member/pwChange";
     }
 
+    /**
+     * 비민번호 변경 process
+     * @param passChange
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/user/pass/change", method= RequestMethod.POST)
     public ResponseDataDTO passChange(

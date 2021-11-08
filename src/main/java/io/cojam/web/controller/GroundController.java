@@ -15,6 +15,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+
+/**
+ * 관리자 퀘스트 관리
+ */
 @Controller
 @RequestMapping(value = "/cms/ground")
 public class GroundController {
@@ -22,12 +26,24 @@ public class GroundController {
     @Autowired
     QuestService questService;
 
+    /**
+     * adjourn page
+     * @return
+     */
     @RequestMapping(value = "/adjourn" , method = RequestMethod.GET)
     public String adjourn() {
 
         return "thymeleaf/page/cms/ground/adjourn";
     }
 
+
+    /**
+     * adjourn page list
+     * @param model
+     * @param page
+     * @param quest
+     * @return
+     */
     @RequestMapping(value = "/adjourn/list" , method = RequestMethod.GET)
     public String adjournList(Model model , @RequestParam(defaultValue = "1") int page , Quest quest) {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_ADJOURN);
@@ -48,12 +64,23 @@ public class GroundController {
         return "thymeleaf/page/cms/ground/adjourn :: #questList";
     }
 
+    /**
+     * aprrove page
+     * @return
+     */
     @RequestMapping(value = "/approve" , method = RequestMethod.GET)
     public String approve() {
 
         return "thymeleaf/page/cms/ground/approve";
     }
 
+    /**
+     * approve page list
+     * @param model
+     * @param page
+     * @param quest
+     * @return
+     */
     @RequestMapping(value = "/approve/list" , method = RequestMethod.GET)
     public String approveList(Model model , @RequestParam(defaultValue = "1") int page , Quest quest) {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_APPROVE);
@@ -74,12 +101,23 @@ public class GroundController {
         return "thymeleaf/page/cms/ground/approve :: #questList";
     }
 
+    /**
+     * invalid page
+     * @return
+     */
     @RequestMapping(value = "/invalid" , method = RequestMethod.GET)
     public String invalid() {
 
         return "thymeleaf/page/cms/ground/invalid";
     }
 
+    /**
+     * invalid page list
+     * @param model
+     * @param page
+     * @param quest
+     * @return
+     */
     @RequestMapping(value = "/invalid/list" , method = RequestMethod.GET)
     public String invalidList(Model model , @RequestParam(defaultValue = "1") int page , Quest quest) {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_INVALID);
@@ -101,11 +139,22 @@ public class GroundController {
     }
 
 
+    /**
+     * ongoing page
+     * @return
+     */
     @RequestMapping(value = "/ongoing" , method = RequestMethod.GET)
     public String ongoing() {
         return "thymeleaf/page/cms/ground/ongoing";
     }
 
+    /**
+     * ongoing page list
+     * @param model
+     * @param page
+     * @param quest
+     * @return
+     */
     @RequestMapping(value = "/ongoing/list" , method = RequestMethod.GET)
     public String ongoingList(Model model , @RequestParam(defaultValue = "1") int page , Quest quest) {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_ONGOING);
@@ -127,13 +176,23 @@ public class GroundController {
     }
 
 
-
+    /**
+     * success page
+     * @return
+     */
     @RequestMapping(value = "/success" , method = RequestMethod.GET)
     public String success() {
 
         return "thymeleaf/page/cms/ground/success";
     }
 
+    /**
+     * success page list
+     * @param model
+     * @param page
+     * @param quest
+     * @return
+     */
     @RequestMapping(value = "/success/list" , method = RequestMethod.GET)
     public String successList(Model model , @RequestParam(defaultValue = "1") int page , Quest quest) {
         quest.setQuestStatus(QuestCode.QUEST_STATUS_SUCCESS);
@@ -154,6 +213,13 @@ public class GroundController {
         return "thymeleaf/page/cms/ground/success :: #questList";
     }
 
+    /**
+     * Draft quest (Market contract call)
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/draft" , method = RequestMethod.POST)
     public ResponseDataDTO draft(
@@ -162,6 +228,13 @@ public class GroundController {
         return questService.draftMarket(questKey,account);
     }
 
+    /**
+     * pending quest
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/pending" , method = RequestMethod.POST)
     public ResponseDataDTO pending(
@@ -170,6 +243,13 @@ public class GroundController {
         return questService.pendingMarket(questKey,account);
     }
 
+    /**
+     * unpending quest
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/unpending" , method = RequestMethod.POST)
     public ResponseDataDTO unPending(
@@ -179,6 +259,14 @@ public class GroundController {
     }
 
 
+    /**
+     * invalid quest
+     * @param questKey
+     * @param description
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/invalid" , method = RequestMethod.POST)
     public ResponseDataDTO invalid(
@@ -188,6 +276,12 @@ public class GroundController {
         return questService.invalidMarket(questKey,description,account);
     }
 
+    /**
+     * quest 상세 정보
+     * @param questKey
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/quest/{questKey}" , method = RequestMethod.POST)
     public String questDetail(@PathVariable String questKey,Model model) {
         ResponseDataDTO response = new ResponseDataDTO();
@@ -199,6 +293,13 @@ public class GroundController {
     }
 
 
+    /**
+     * Answer quest(Market contract call)
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/answer" , method = RequestMethod.POST)
     public ResponseDataDTO answer(
@@ -207,6 +308,13 @@ public class GroundController {
         return questService.answerApprove(questKey,account);
     }
 
+    /**
+     * Approve quest(Market contract call)
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/approveMarket" , method = RequestMethod.POST)
     public ResponseDataDTO approve(
@@ -215,6 +323,13 @@ public class GroundController {
         return questService.approveMarket(questKey,account);
     }
 
+    /**
+     * Hot quest 선정
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/hot" , method = RequestMethod.POST)
     public ResponseDataDTO hot(
@@ -223,6 +338,13 @@ public class GroundController {
         return questService.hotMarket(questKey,account);
     }
 
+    /**
+     * finish quest(Market contract call)
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/finish" , method = RequestMethod.POST)
     public ResponseDataDTO finish(
@@ -231,7 +353,13 @@ public class GroundController {
         return questService.finishMarket(questKey,account);
     }
 
-
+    /**
+     * 퀘스트 질문 목록
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/getAnswerList" , method = RequestMethod.POST)
     public ResponseDataDTO getAnswerList(
@@ -251,7 +379,13 @@ public class GroundController {
         return response;
     }
 
-
+    /**
+     * Quest success 로 진행시 보상 정보
+     * @param selectedQuestKey
+     * @param selectedAnswerKey
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/getSuccessInfo" , method = RequestMethod.POST)
     public ResponseDataDTO getSuccessInfo(
@@ -260,7 +394,14 @@ public class GroundController {
         return questService.getSuccessInfo(selectedQuestKey,selectedAnswerKey);
     }
 
-
+    /**
+     * Success quest (Market contract call)
+     * @param selectedQuestKey
+     * @param selectedAnswerKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/successMarket" , method = RequestMethod.POST)
     public ResponseDataDTO successMarket(
@@ -270,6 +411,13 @@ public class GroundController {
         return questService.successMarket(selectedQuestKey,selectedAnswerKey,account);
     }
 
+    /**
+     * Quest adjourn 시 보상 정보
+     * @param adjournQuestKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/getAdjournInfo" , method = RequestMethod.POST)
     public ResponseDataDTO getAdjournInfo(
@@ -278,6 +426,14 @@ public class GroundController {
         return questService.getAdjournInfo(adjournQuestKey);
     }
 
+    /**
+     * Adjourn quest (Market contract call)
+     * @param adjournQuestKey
+     * @param adjournDesc
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/adjournMarket" , method = RequestMethod.POST)
     public ResponseDataDTO adjournMarket(
@@ -288,6 +444,13 @@ public class GroundController {
     }
 
 
+    /**
+     * success 보상 찾아가지 않을 시 토큰 회수(3개월 이후) (Market contract call)
+     * @param retrieveQuestKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/retrieve" , method = RequestMethod.POST)
     public ResponseDataDTO retrieveMarket(
@@ -296,6 +459,13 @@ public class GroundController {
         return questService.retrieveMarket(retrieveQuestKey,account);
     }
 
+    /**
+     * adjourn 보상 찾아가지 않을 시 토큰 회수(3개월 이후) (Market contract call)
+     * @param retrieveQuestKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/adjourn/retrieve" , method = RequestMethod.POST)
     public ResponseDataDTO adjournRetrieveMarket(
@@ -304,6 +474,13 @@ public class GroundController {
         return questService.adjournRetrieveMarket(retrieveQuestKey,account);
     }
 
+    /**
+     * market approve 시 앱 푸시 발송
+     * @param questKey
+     * @param account
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/push" , method = RequestMethod.POST)
     public ResponseDataDTO push(

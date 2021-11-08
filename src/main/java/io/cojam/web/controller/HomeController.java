@@ -39,34 +39,44 @@ public class HomeController {
     @Autowired
     ContractApplicationService contractApplicationService;
 
+    /**
+     * 사용자 Home menu page
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/home" , method = RequestMethod.GET)
     public String home(Model model) {
         model.addAttribute("mainPopupList",popupService.getMainPopupList(new Popup()));
         return "thymeleaf/page/home/index";
     }
 
+    /**
+     * Home notice list
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/home/notice",method = RequestMethod.POST)
     public String notice(Model model) {
         model.addAttribute("boardList",boardService.getHomeBoardList(null));
         return "thymeleaf/page/home/index :: #noticeTop3";
     }
 
-
-
-    @RequestMapping(value = "/user/home/seasonInfo",method = RequestMethod.POST)
-    @Cacheable(value = "seasonInfo" ,cacheManager = "userCacheManager")
-    public String seasonInfo(Model model) {
-        Season seasonInfo = seasonService.getSeasonInfo();
-        model.addAttribute("seasonInfo",seasonInfo);
-        return "thymeleaf/page/home/index :: #seasonInfo";
-    }
-
+    /**
+     * 관리자 Home page
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/cms/home" , method = RequestMethod.GET)
     public String homeCms(Model model) {
 
         return "thymeleaf/page/cms/home/index";
     }
 
+    /**
+     * Home 최근 퀘스트 정보
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/user/home/questInfo",method = RequestMethod.POST)
     public String questInfo(Model model) {
 
