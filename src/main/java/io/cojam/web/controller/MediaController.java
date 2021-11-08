@@ -30,6 +30,12 @@ public class MediaController {
     @Autowired
     FileService fileService;
 
+    /**
+     * 아이디로 이미지 호출
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/user/media/image", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<byte[]> getAtcm(
@@ -83,6 +89,12 @@ public class MediaController {
 
     }
 
+    /**
+     * 아이디로 비디오 호출
+     * @param req
+     * @param res
+     * @param id
+     */
     @RequestMapping(value = "/user/media/video/{id}", method = RequestMethod.GET)
     public void getVideo(HttpServletRequest req, HttpServletResponse res, @PathVariable String id) {
         FileInfo fileInfo = fileService.getFileInfo(id);

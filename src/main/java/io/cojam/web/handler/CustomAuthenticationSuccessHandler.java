@@ -47,7 +47,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         responseDataDTO.setStatus(ResponseDataStatus.SUCCESS);
         Account account = (Account) authentication.getPrincipal();
 
-
+        //가입시 리워드 보상(처음 한번만 보상)
         joinRewardService.joinRewardMember(account.getMemberKey());
         //joinRewardService.loginRewardMember(account.getMemberKey());
 

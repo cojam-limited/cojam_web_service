@@ -78,6 +78,8 @@ public class PushMessageService {
             Board detail = boardService.getNoticeBoardDetail(board);
             if(detail != null){
                 List<String> tokenList = this.getNoticeTokenList(key);
+
+
                 if(tokenList!=null){
                     String title="";
                     if(detail.getBoardCategoryKey().equals("BCT2021022500000002")){
@@ -88,6 +90,8 @@ public class PushMessageService {
 
                     String image = "";
                     image += String.format("%s/user/media/image?id=%s",myConfig.getHostUrl(),detail.getBoardFile());
+
+
 
                     FcmData fcmData = FcmData.builder()
                             .title(title)
@@ -122,16 +126,35 @@ public class PushMessageService {
     public String sendFcm(List<String> tokenList , FcmData fcmData, String image){
         String result="";
         try {
-            result = fcmRestService.sendFcmService(
-                    tokenList,
-                    FcmNotification.builder()
-                            .body(fcmData.getMessage())
-                            .title(fcmData.getTitle())
-                            .icon("notification_icon")
-                            .image(StringUtils.isBlank(image)?null:image)
-                            .build(),
-                    fcmData
-            );
+
+            int tokenListSize = tokenList.size();
+            int maxListSize = 1000;
+            int page = tokenListSize%maxListSize==0?tokenListSize/maxListSize:(tokenListSize/maxListSize)+1;
+
+            if(page==0){
+                page = 1;
+            }else if(tokenListSize < maxListSize){
+                page = 1;
+            }
+
+            for (int i=0;i<page;i++){
+                int lastIndex= (i+1)*maxListSize;
+                if(lastIndex > tokenListSize){
+                    lastIndex = tokenListSize;
+                }
+                List<String> pageTokenList = tokenList.subList(i*maxListSize,lastIndex);
+
+                result = fcmRestService.sendFcmService(
+                        pageTokenList,
+                        FcmNotification.builder()
+                                .body(fcmData.getMessage())
+                                .title(fcmData.getTitle())
+                                .icon("notification_icon")
+                                .image(StringUtils.isBlank(image)?null:image)
+                                .build(),
+                        fcmData
+                );
+            }
         }catch (Exception e){
             e.printStackTrace();
             result = e.getMessage();
