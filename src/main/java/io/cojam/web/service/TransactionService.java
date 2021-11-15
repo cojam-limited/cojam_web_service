@@ -87,7 +87,9 @@ public class TransactionService {
                     String transactionId = item.getTransactionId();
                     System.out.println(String.format("%s. Transaction ID : %s",i,transactionId));
                     if(!StringUtils.isBlank(transactionId)){
+                        System.out.println("통신 시작");
                         TransactionStatus transactionStatus = transactionApiService.getTransactionStatusById(transactionId);
+                        System.out.println("통신 성공");
                         if(transactionStatus !=null || !WalletCode.TRANSACTION_STATUS_REQUESTED.equals(transactionStatus.getStatus())){
                             item.setStatus(transactionStatus.getStatus());
                             transactionDao.updateTransactionStatusCheck(item);
