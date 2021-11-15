@@ -376,7 +376,7 @@ public class CojamMarket extends SmartContract {
                                     null);
                         }else{
                             return new Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
-                                    results.get(0)==null?null:new BigInteger("10"),
+                                    new BigInteger("10"),
                                     results.get(1)==null?null:(String) results.get(1).getValue(),
                                     results.get(2)==null?null:(String) results.get(2).getValue(),
                                     results.get(3)==null?null:(String) results.get(3).getValue(),
