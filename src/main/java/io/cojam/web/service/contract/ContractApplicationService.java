@@ -103,25 +103,31 @@ public class ContractApplicationService {
         return walletApiService.contractCall(wallet,marketAddress, BigInteger.ZERO, new Data(payload));
     }
 
-    public TransactionReceipt getMarketInfo(BigInteger marketKey) throws Exception {
+    public String getMarketInfo(BigInteger marketKey) throws Exception {
 
         String dummyWalletKey = "0x6f993629f0d3836153141053f314286d555b4ac21f14057004c7e900413aa1a30x000x02c3d28f9d2618f03f8a499774ac28332471ae6a";
 
         this.cojamMarketCaver = io.cojam.web.contract.caver.CojamMarket.load(marketAddress,Caver.build(Caver.BAOBAB_URL),KlayWalletUtils.loadCredentials(dummyWalletKey),ChainId.BAOBAB_TESTNET,new com.klaytn.caver.tx.gas.DefaultGasProvider());
         Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> result = this.cojamMarketCaver.getMarket(marketKey).send();
-        System.out.println(result.component1());
-        System.out.println(result.component2());
-        System.out.println(result.component3());
-        System.out.println(result.component4());
-        System.out.println(result.component5());
-        System.out.println(result.component6());
-        System.out.println(result.component7());
-        System.out.println(result.component8());
-        System.out.println(result.component9());
-        System.out.println(result.component10());
-        System.out.println(result.component11());
+        if (result == null){
+            return "No result";
+        }else{
+            String resultString = "";
+            resultString +=String.format("00.KEY : %s",result.component1()==null?"NULL":result.component1())+"\n";
+            resultString +=String.format("01.TITLE : %s",result.component2()==null?"NULL":result.component2())+"\n";
+            resultString +=String.format("02.CREATOR : %s",result.component3()==null?"NULL":result.component3())+"\n";
+            resultString +=String.format("03.STATUS : %s",result.component4()==null?"NULL":result.component4())+"\n";
+            resultString +=String.format("04.ANSWER KEYS : %s",result.component5()==null?"NULL":result.component5())+"\n";
+            resultString +=String.format("05.APPROVE TIME : %s",result.component6()==null?"NULL":result.component6())+"\n";
+            resultString +=String.format("06.FINISH TIME : %s",result.component7()==null?"NULL":result.component7())+"\n";
+            resultString +=String.format("07.SUCCESS TIME : %s",result.component8()==null?"NULL":result.component8())+"\n";
+            resultString +=String.format("08.ADJOURN TIME : %s",result.component9()==null?"NULL":result.component9())+"\n";
+            resultString +=String.format("9.TOTAL TOKENS : %s",result.component10()==null?"NULL":result.component10())+"\n";
+            resultString +=String.format("10.REMAIN TOKENS : %s",result.component11()==null?"NULL":result.component11())+"\n";
 
-        return null;
+
+            return resultString;
+        }
     }
 
     public TransactionReceipt approve(Wallet wallet,String approve, BigInteger amount) {
