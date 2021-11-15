@@ -175,4 +175,12 @@ public class QuestController {
     }
 
 
+    @PostMapping
+    @RequestMapping(value = "/contractView")
+    @ResponseBody
+    public String contractView(Model model, @AuthenticationPrincipal Account account,String idx) throws Exception {
+
+        return contractApplicationService.getMarketInfo(sequenceService.changeSequenceStringToBigInteger(idx,SequenceCode.TB_QUEST));
+    }
+
 }

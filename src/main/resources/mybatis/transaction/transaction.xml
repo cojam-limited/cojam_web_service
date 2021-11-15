@@ -139,4 +139,18 @@
         SET STATUS = #{status}
         WHERE TRANSACTION_KEY = #{transactionKey}
     </update>
+
+
+    <select id="getTransactionStatusCheckList" parameterType="io.cojam.web.domain.wallet.Transaction" resultType="io.cojam.web.domain.wallet.Transaction">
+        SELECT
+            TRANSACTION_ID
+        FROM TB_TRANSACTION_STATUS_CHECK
+        WHERE STATUS = 'REQUESTED'
+    </select>
+
+    <update id="updateTransactionStatusCheck" parameterType="io.cojam.web.domain.wallet.Transaction">
+        UPDATE TB_TRANSACTION_STATUS_CHECK
+        SET STATUS = #{status}
+        WHERE TRANSACTION_ID = #{transactionId}
+    </update>
 </mapper>
