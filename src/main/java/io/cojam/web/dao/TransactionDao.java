@@ -19,4 +19,10 @@ public interface TransactionDao {
     Transaction getTransaction(String transactionKey);
 
     int updateTransactionStatus(Transaction transaction);
+
+
+    List<Transaction> getTransactionStatusCheckList(Transaction transaction);
+
+    int updateTransactionStatusCheck(Transaction transaction);
+
 }
