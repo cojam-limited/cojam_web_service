@@ -107,6 +107,11 @@
                 fnGetList();
             });
 
+            function fnMovePage(page){
+                $("input[name=page]").val(page);
+                fnGetList();
+            }
+
             function fnGetList(){
                 ajaxView("/user/notice/list","POST",$("form[name=boardFrm]").serialize(),"boardList");
             }

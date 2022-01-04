@@ -361,18 +361,34 @@ public class CojamMarket extends SmartContract {
                     @Override
                     public Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> call() throws Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
-                                (BigInteger) results.get(0).getValue(), 
-                                (String) results.get(1).getValue(), 
-                                (String) results.get(2).getValue(), 
-                                (String) results.get(3).getValue(), 
-                                convertToNative((List<Uint256>) results.get(4).getValue()), 
-                                (BigInteger) results.get(5).getValue(), 
-                                (BigInteger) results.get(6).getValue(), 
-                                (BigInteger) results.get(7).getValue(), 
-                                (BigInteger) results.get(8).getValue(), 
-                                (BigInteger) results.get(9).getValue(), 
-                                (BigInteger) results.get(10).getValue());
+                        if(results == null){
+                            return new Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null);
+                        }else{
+                            return new Tuple11<BigInteger, String, String, String, List<BigInteger>, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
+                                    new BigInteger("10"),
+                                    results.get(1)==null?null:(String) results.get(1).getValue(),
+                                    results.get(2)==null?null:(String) results.get(2).getValue(),
+                                    results.get(3)==null?null:(String) results.get(3).getValue(),
+                                    results.get(4)==null?null:convertToNative((List<Uint256>) results.get(4).getValue()),
+                                    results.get(5)==null?null:(BigInteger) results.get(5).getValue(),
+                                    results.get(6)==null?null:(BigInteger) results.get(6).getValue(),
+                                    results.get(7)==null?null:(BigInteger) results.get(7).getValue(),
+                                    results.get(8)==null?null:(BigInteger) results.get(8).getValue(),
+                                    results.get(9)==null?null:(BigInteger) results.get(9).getValue(),
+                                    results.get(10)==null?null:(BigInteger) results.get(10).getValue());
+                        }
+
                     }
                 });
     }
