@@ -14,7 +14,7 @@
                     <a href="/user/quest">Quest</a>
                     <a href="/user/result">Results</a>
                     <a href="/user/about">About</a>
-                    <a href="/user/community">Community</a>
+                    <a href="https://www.cojamnft.com/" target="_blank">NFT</a>
                 </div>
             </dt>
             <dd sec:authorize="isAuthenticated()">
@@ -131,10 +131,10 @@
                 <p><i class="uil uil-building"></i></p>
                 <div>About</div>
             </li>
-            <li onclick="location.href='/user/community';"
+            <li onclick="location.href='window.open(\'https://www.cojamnft.com/\')';"
                 th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
                 <p><i class="uil uil-book"></i></p>
-                <div>Community</div>
+                <div>NFT</div>
             </li>
         </ul>
     </div>
