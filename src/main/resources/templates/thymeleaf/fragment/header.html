@@ -3,6 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <div th:fragment="headerFragment" id="header" th:with="currentPage=${#httpServletRequest.requestURI}">
+    <style>
+
+    </style>
     <div class="header">
         <dl>
             <dt>
@@ -14,7 +17,7 @@
                     <a href="/user/quest">Quest</a>
                     <a href="/user/result">Results</a>
                     <a href="/user/about">About</a>
-                    <a href="https://www.cojamnft.com/" target="_blank">NFT</a>
+                    <a href="https://www.cojamnft.com/" target="_blank" class="nftHeaderButton" style="color: #ffb703">NFT</a>
                 </div>
             </dt>
             <dd sec:authorize="isAuthenticated()">
@@ -133,8 +136,8 @@
             </li>
             <li onclick="window.open('https://www.cojamnft.com');"
                 th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
-                <p><i class="uil uil-book"></i></p>
-                <div>NFT</div>
+                <p><i class="uil uil-book" style="color:#ffb703;"></i></p>
+                <div style="color:#ffb703;">NFT</div>
             </li>
         </ul>
     </div>
