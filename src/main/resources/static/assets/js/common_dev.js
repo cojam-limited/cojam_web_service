@@ -17,7 +17,20 @@ $(document).ready(function() {
 				$('.header').css({ borderBottom : '#f9f9f9 0.5px solid', background : '#fff' });
 				$('.header > dl > dt > h2 > a img').attr("src", '/assets/image/common/logo_black.png');
 				$('.header > dl > dt > div').stop().animate({ padding : '15px 0' }, 350, 'easeOutQuad');
-				$('.header > dl > dt > div > a').css({ color : '#222' });
+				const headerButtonItems = $('.header > dl > dt > div > a');
+
+				if(headerButtonItems){
+					$(headerButtonItems).each(function (){
+						console.debug('$(this)',$(this))
+						if($(this).hasClass('nftHeaderButton')){
+							$(this).css({ color : '#ffb703' });
+						}else{
+							$(this).css({ color : '#222' });
+						}
+					});
+				}
+
+
 				$('.headeår > dl > dt > div > a:hover').css({ background : '#edf3f8' });
 				$('.header > dl > dt > div > a.active').css({ background : '#edf3f8' });
 				$('.header > dl > dt > div > div').stop().animate({ top : '65px' }, 350, 'easeOutQuad');
@@ -29,7 +42,20 @@ $(document).ready(function() {
 				$('.header').css({ borderBottom : 'rgba(255,255,255,0.1) 1px solid', background : 'none' });
 				$('.header > dl > dt > h2 > a img').attr("src", '/assets/image/common/logo_white.png');
 				$('.header > dl > dt > div').stop().animate({ padding : '20px 0' }, 350, 'easeOutQuad');
-				$('.header > dl > dt > div > a').css({ color : '#fff' });
+
+				const headerButtonItems = $('.header > dl > dt > div > a');
+				if(headerButtonItems){
+					$(headerButtonItems).each(function (){
+
+						if($(this).hasClass('nftHeaderButton')){
+							$(this).css({ color : '#ffb703' });
+						}else{
+							$(this).css({ color : '#fff' });
+						}
+					});
+				}
+
+
 				$('.header > dl > dt > div > a:hover').css({ background : 'rgba(255,255,255,0.2)' });
 				$('.header > dl > dt > div > a.active').css({ background : 'rgba(255,255,255,0.2)' });
 				$('.header > dl > dt > div > div').stop().animate({ top : '75px' }, 350, 'easeOutQuad');
