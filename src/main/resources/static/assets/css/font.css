@@ -3,9 +3,7 @@
 
 /* 폰트세팅 ///////////////////////////////////////////////////////////////////////*/
 /* 구글폰트 - 영문 */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Dosis:200,300,400,500,600,700,800');
-
-
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800|Montserrat:100,200,300,400,500,600,700,800,900|Dosis:200,300,400,500,600,700,800|Poppins:200,300,400,500,600,700,800');
 /* 나눔스케어 - 국문 */
 @font-face {
   font-family: 'NanumSquare';
