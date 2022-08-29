@@ -36,7 +36,7 @@ table {border-collapse: collapse; border-spacing: 0;}
 /* 사이트 기본구성 */
 html {height:100%;}
 body {height:100%; word-break:keep-all;}
-body,input,textarea,select,button {font-family:'Montserrat', 'Malgun Gothic', '맑은 고딕', '돋움', 'Tahoma'; font-weight:normal; font-size:13px; line-height:20px; color:#777;}
+body,input,textarea,select,button {font-family:'Poppins', 'Malgun Gothic', '맑은 고딕', '돋움', 'Tahoma'; font-weight:normal; font-size:13px; line-height:20px; color:#777;}
 table,th,h1,h2,h3,h4,h5,h6 {font-size:13px; font-weight:normal;}
 legend, caption {display:none;}
 img,input,select,textarea {vertical-align:middle; box-sizing: border-box;}
