@@ -17,6 +17,7 @@
                     <a href="/user/quest">Quest</a>
                     <a href="/user/result">Results</a>
                     <a href="/user/about">About</a>
+                    <a href="/user/community">Community</a>
                     <!--
                     <a href="https://www.cojamnft.com/" target="_blank" class="nftHeaderButton" style="color: #ffb703">NFT</a>
                     -->
@@ -136,6 +137,12 @@
                 <p><i class="uil uil-building"></i></p>
                 <div>About</div>
             </li>
+            <li onclick="location.href='/user/community';"
+                th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
+                <p><i class="uil uil-book"></i></p>
+                <div>Community</div>
+            </li>
+
             <!--
             <li onclick="window.open('https://www.cojamnft.com');"
                 th:classappend="${#strings.contains(currentPage, '/user/community')}?'active':''">
