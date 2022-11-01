@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.cojam.web.domain.Popup;
 import io.cojam.web.domain.Season;
 import io.cojam.web.domain.wallet.TransactionReceipt;
+import io.cojam.web.klaytn.dto.TransactionStatus;
+import io.cojam.web.klaytn.service.TransactionApiService;
 import io.cojam.web.klaytn.service.WalletApiService;
 import io.cojam.web.service.*;
 import io.cojam.web.service.contract.ContractApplicationService;
@@ -38,6 +40,9 @@ public class HomeController {
 
     @Autowired
     ContractApplicationService contractApplicationService;
+
+    @Autowired
+    TransactionApiService transactionApiService;
 
     /**
      * 사용자 Home menu page
