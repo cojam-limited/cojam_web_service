@@ -96,9 +96,10 @@ $(document).ready(function() {
 	// 메인 - 비주얼 //
 	$(".main-vegas").vegas({
 		slides: [
-			{ src: "/assets/image/content/main_visual_new_img01.jpg" },
-			{ src: "/assets/image/content/main_visual_new_img02.jpg" },
-			{ src: "/assets/image/content/main_visual_new_img03.jpg" },
+			{ src: "/assets/image/content/main_visual_new_img001.jpg" },
+			{ src: "/assets/image/content/main_visual_new_img002.jpg" },
+			{ src: "/assets/image/content/main_visual_new_img003.jpg" },
+			{ src: "/assets/image/content/main_visual_new_img004.jpg" },
 		],
 		animation: 'kenburns',
 		delay: 7000
